@@ -21,6 +21,8 @@ public class Constant {
         //服务器超时时间 16 秒
         public final static int TIME_OUT = 16;
 
+
+
         public static String BASE_URL = "http://39.108.14.94:9006/donghui_app/";
 
       //  public static String BASE_URL = "http://     192.168.1.165:9006/donghui_app/";
