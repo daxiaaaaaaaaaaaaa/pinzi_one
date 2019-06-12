@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_line"
+              android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="WebViewLayout">
+
+
+            <WebView
+                android:id="@+id/webview"
+                style="@style/NumberProgressBar_Default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </WebView>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/shape_red_input_bg"
+                android:gravity="center"
+                android:text="分享有惊喜"
+                android:textColor="@color/color_main_select"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginBottom="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="分享朋友购买后可获得佣金哦"
+                android:textColor="@color/color_text_dark"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>
+

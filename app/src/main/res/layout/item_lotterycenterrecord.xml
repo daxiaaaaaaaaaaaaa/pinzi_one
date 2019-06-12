@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@color/color_white"
+    >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+        <TextView
+            android:id="@+id/tv_lottery_record_time"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#222222"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:text="2017-05-01 15:00"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_lottery_record_result"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:textColor="#222222"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:text="100优惠券"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/v_line"
+        android:background="@color/color_line"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+</LinearLayout>

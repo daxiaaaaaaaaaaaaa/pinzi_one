@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/image_close"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="赠送佣金"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/iv_image_title"
+            android:layout_width="160dp"
+            android:layout_height="76dp"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/image_my_grant_commssion"/>
+
+        <LinearLayout
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_image_title"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:text="输入赠送人手机号："
+                android:textColor="#6e6e6e"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:maxLength="11"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_line"
+                android:inputType="number"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:text="佣金数量："
+                android:textColor="#6e6e6e"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/et_count"
+                android:maxLength="11"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_line"
+                android:inputType="numberDecimal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_cancel"
+                    android:gravity="center"
+                    android:text="取消"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_ok"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_ok_red"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

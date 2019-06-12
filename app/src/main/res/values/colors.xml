@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#99c2c8</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#303030</color>
+    <color name="color_yello">#F15A22</color>
+
+
+    <color name="color_background">#F2F2F2</color>
+    <color name="color_tap_select">#53CAC3</color>
+    <color name="color_tap_normal">#AAAEB9</color>
+    <color name="color_text">#222222</color>
+    <color name="color_main_title">#c71233</color>
+    <color name="color_text_dark">#999999</color>
+    <color name="color_text_hint">#BBBBBB</color>
+    <color name="color_progress_normal">#53CAC3</color>
+    <color name="color_progress_finish">#8A8FCB</color>
+    <color name="color_layout_bg">#e0e0e0</color>
+    <color name="textColorHint">#CFCFCF</color>
+    <color name="colorBackgroundDark">#e0e0e0</color>
+    <color name="color_transt">#00000000</color>
+    <color name="translucent_background">#80000000</color>
+
+    <color name="color_line">#e0e0e0</color>
+
+
+    <color name="color_hint">#999999</color>
+    <color name="color_main_select">#c71233</color>
+    <color name="color_main_unselect">#999999</color>
+
+    <color name="color_c71233">#c71233</color>
+    <color name="color_f9171a">#f9171a</color>
+    <color name="color_f9e7ea">#f9e7ea</color>
+
+    <color name="color_222222">#222222</color>
+    <color name="color_e0e0e0">#e0e0e0</color>
+    <color name="color_999999">#999999</color>
+
+    <color name="color_text_dark_input">#d7d7d7</color>
+    <color name="color_6e6e6e">#6e6e6e</color>
+    <color name="color_d8d8d8">#F7F7F7</color>
+    <color name="color_303030">#303030</color>
+    <color name="press">#e8e8e8</color>
+    <color name="color_fafafa">#fafafa</color>
+    <color name="color_bebebe">#bebebe</color>
+    <color name="color_383c3f">#383c3f</color>
+    <color name="color_a5a5a5">#a5a5a5</color>
+
+
+</resources>

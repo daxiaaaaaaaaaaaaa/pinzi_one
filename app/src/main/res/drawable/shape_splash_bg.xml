@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--&lt;!&ndash; 背景颜色 &ndash;&gt;-->
+    <!--<item android:drawable="@color/color_main_title" />-->
+
+    <item>
+        <!-- 图片 -->
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/image_welcome_test" />
+    </item>
+</layer-list>

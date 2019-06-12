@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:background="@drawable/shape_tv_press"
+        android:id="@+id/tv_item_friends_replays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="北京UIHBD:去当美妆博主吧，上什么班啊，上班屈才了。"
+        android:textColor="@color/color_222222"
+        android:textSize="14sp" />
+
+</LinearLayout>

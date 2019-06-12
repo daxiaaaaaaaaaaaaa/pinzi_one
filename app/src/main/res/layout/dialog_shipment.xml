@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="290dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_show_tips"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="发货"
+            android:textColor="@color/color_text"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:text="输入快递单号"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:textColor="@color/color_text"
+            android:paddingLeft="5dp"
+            android:textSize="14sp"
+            android:id="@+id/ett_courierNumber"
+            android:background="@drawable/shape_input_black_two"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:text="选择快递公司"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:textColor="@color/color_text"
+            android:textSize="14sp"
+            android:paddingLeft="5dp"
+            android:gravity="center_vertical"
+            android:id="@+id/tv_courierCompany"
+            android:background="@drawable/shape_input_black_two"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="5dp"/>
+
+        <View
+
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="32dp"
+            android:background="@color/color_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_no"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/color_text_dark"/>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/color_line"/>
+
+            <TextView
+                android:id="@+id/tv_ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/color_main_select"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

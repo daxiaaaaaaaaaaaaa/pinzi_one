@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"
+        />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_size_17"
+        android:paddingLeft="@dimen/widget_size_15"
+        android:paddingRight="@dimen/widget_size_15"
+        android:text="1、会员每日登录签到,可获得积分。\n\n2、会员在购买部分积分商品,在确定为有效订单后,可以随机获得购物积分。\n\n3、若发生因产品质量、服务投诉等各种原因而产生的退换货情况,积分以退换货后的新购买金额计算。办理退换货时,将会扣除您先前购买时产生的赠送积分。如您已经使用了相应积分,而导致账户积分不足,我们将会在您的退款金额中减去相应的金额,具体折算比例参照您在积分商城已经兑换的产品的价格和积分的比例来计算。\n\n4、积分可参与抽奖、抵扣商品金额、在积分商城进行商品兑换。\n\n5、秒杀等活动商品不参与购物回馈积分活动。\n\n6、活动最终解释权归779百香街所有。"
+        android:textColor="#333333"
+        android:textSize="@dimen/widget_size_15"/>
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

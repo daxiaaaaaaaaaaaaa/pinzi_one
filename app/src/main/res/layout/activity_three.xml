@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"
+        />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_size_17"
+        android:paddingLeft="@dimen/widget_size_15"
+        android:paddingRight="@dimen/widget_size_15"
+        android:text="1、所有用户都能参与幸运抽奖，每次抽奖消耗10积分，抽奖次数不限；\n\n2、获积分类奖品的用户，系统将会自动返还相应积分；获的优惠券类奖品的用户，系统将在24小时内自动发放至个人优惠券账户；获实物类奖品的用户，联系客服提交收货地址，未提交者视为自动放弃，实物奖品将在15个工作日内寄出；\n\n3、中将结果以界面的弹出窗为准，抽中实物请填写正确资料并与客服联系，工作人员统一发放，其他奖品为自动发放。\n\n4、活动最终解释权归779百香街所有。"
+        android:textColor="#333333"
+        android:textSize="@dimen/widget_size_15"/>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

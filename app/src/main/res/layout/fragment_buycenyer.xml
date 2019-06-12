@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+    <com.jilian.pinzi.views.CustomRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_white"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"/>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="115dp"
+            android:layout_height="88dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/image_no_data"/>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="暂无数据"
+            android:textColor="#989898"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/color_black"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="9"
+        android:background="@drawable/image_card_bg"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                tools:text="全品类通用券"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_daller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity=""
+                    android:text="￥"
+                    android:textColor="@color/color_white"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tc_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/tv_daller"
+                    tools:text="50"
+                    android:textColor="@color/color_white"
+                    android:textSize="38sp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_user_conditions"
+                tools:text="满299元可用"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:paddingLeft="25dp">
+
+
+            <TextView
+                android:id="@+id/tv_user_platform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                tools:text="·适用平台：全平台"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                tools:text=".有效期至：2017-08-01"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                tools:text=".详细说明：全场通用，不限条件，特殊商品除外。"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/shape_btn_login_normal"
+                    android:gravity="center"
+                    android:text="立即使用"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6">
+
+    </LinearLayout>
+</LinearLayout>

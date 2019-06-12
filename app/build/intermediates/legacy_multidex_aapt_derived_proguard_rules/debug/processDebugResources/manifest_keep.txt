@@ -1,0 +1,6 @@
+# Referenced at E:\github\pinzi_one\app\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:106
+-keep class com.jilian.pinzi.PinziApplication { <init>(...); }
+# Referenced at E:\github\pinzi_one\app\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:461
+-keep class io.rong.push.PushReceiver { <init>(...); }
+# Referenced at E:\github\pinzi_one\app\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:456
+-keep class io.rong.push.PushService { <init>(...); }

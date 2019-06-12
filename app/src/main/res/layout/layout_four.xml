@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/ll_four_container"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_white"
+        android:orientation="vertical">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="新品推荐"
+                android:textColor="@color/color_text"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/tv_four_more"
+                android:textColor="@color/color_text_dark"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="更多新品  >>"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/rv_four"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="15dp"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</LinearLayout>

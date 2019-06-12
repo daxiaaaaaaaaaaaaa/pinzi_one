@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_line"
+    android:orientation="vertical"
+    tools:context=".ui.SaleRecordDetailActivity">
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_service_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="服务单号：198014266" />
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_apply_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="申请时间：2017-05-01 16:00" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="审核进度：您的退货申请已经通过审核，请按照下方地址寄快递并填写快递单号。" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sale_record_detail_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingEnd="15dp"
+                android:visibility="gone"
+                android:paddingStart="15dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="收货人姓名：大梨" />
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="电话：180****1849" />
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="收货人地址：广东省深圳市南山区科兴科学园" />
+
+                <LinearLayout
+                    android:id="@+id/ll_sale_record_detail_info2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="物流信息填写："
+                        android:textColor="@color/color_999999"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/color_line" />
+
+                    <EditText
+                        android:id="@+id/et_sale_record_detail_express_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:hint="请输入快递名称"
+                        android:textColor="@color/color_222222"
+                        android:textColorHint="@color/color_999999" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/color_line" />
+
+                    <EditText
+                        android:id="@+id/et_sale_record_detail_express_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@null"
+                        android:hint="请输入快递单号"
+                        android:textColor="@color/color_222222"
+                        android:textColorHint="@color/color_999999" />
+
+                    <Button
+                        android:id="@+id/btn_sale_record_detail_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shape_round_red_bg"
+                        android:text="确定"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_sale_record_detail_info3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="物流信息："
+                        android:textColor="@color/color_999999"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_sale_record_detail_express_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        tools:text="快递名称：中通快递"
+                        android:textColor="@color/color_222222"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_sale_record_detail_express_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        tools:text="快递单号：4582551225546"
+                        android:textColor="@color/color_222222"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_reason_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="问题描述"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/color_line" />
+
+                <TextView
+                    android:id="@+id/tv_sale_record_detail_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_222222"
+                    android:textSize="16sp"
+                    tools:text="拿来看也没看就洗了，发现有些不对劲，吊牌都没有，洗的时候还有泡沫，细看领口有一处缝补的痕迹，虽然是特价买的但是还是感觉很不爽。" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

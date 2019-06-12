@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="120dp"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_marginRight="10dp"
+              android:layout_marginLeft="10dp"
+              android:background="@drawable/image_nouse_bg"
+              android:id="@+id/ll_parent"
+              android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.8"
+        android:orientation="vertical"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            tools:text="全品类通用券"
+            android:textColor="@color/color_text"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_user_platform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="适用平台：全平台"
+            android:textColor="#6e6e6e"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            tools:text="有效期限：2017-07-21"
+            android:textColor="#999999"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_daller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥"
+                android:textColor="@color/color_main_select"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tc_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="100"
+                android:textColor="@color/color_main_select"
+                android:textSize="26sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_user_conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="满299元可用"
+            android:textColor="@color/color_main_select"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:background="@drawable/shape_user_card"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="立即领取"
+            android:textColor="@color/color_white"
+            android:textSize="11sp"/>
+    </LinearLayout>
+</LinearLayout>

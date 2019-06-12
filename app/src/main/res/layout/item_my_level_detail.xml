@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:gravity="center_vertical"
+              android:orientation="vertical"
+              android:background="@color/color_white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="95dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal"
+            tools:src="@drawable/image_good_test">
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="11dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                tools:text="五粮液股份52°醇香型52°"
+                android:textColor="@color/color_text"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_monney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                tools:text="奖励佣金：20佣金"
+                android:textColor="@color/color_text_dark"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/tv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                tools:text="时间：2017-05-05 15：00"
+                android:textColor="@color/color_text_dark"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/color_line"/>
+</LinearLayout>

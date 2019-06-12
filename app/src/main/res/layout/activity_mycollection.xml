@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_line"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_one"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="商品"
+            android:textColor="@color/color_main_select"
+            android:textSize="16sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_two"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="店铺"
+            android:textColor="@color/color_text_dark"
+            android:textSize="16sp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/v_one"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_weight="1"
+            android:background="@color/color_main_select"
+            />
+
+        <View
+            android:id="@+id/v_two"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_weight="1"
+            android:background="@color/color_main_select"
+            android:visibility="invisible"
+            />
+
+
+    </LinearLayout>
+
+    <com.jilian.pinzi.views.NoScrollViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </com.jilian.pinzi.views.NoScrollViewPager>
+</LinearLayout>

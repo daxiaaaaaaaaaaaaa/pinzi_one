@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:text="取消订单"
+                android:textColor="@color/color_text_dark"
+                android:textSize="18sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_line"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="取消订单后，本单享有的优惠可能会一并取消，是否继续？"
+                android:textColor="@color/color_text"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="请选择取消订单的原因（必选）："
+                android:textColor="@color/color_text_dark"
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_one"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/image_checked"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="配送信息有误"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_two"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/image_uncheck"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="发票信息有误"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_three"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/image_uncheck"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="忘记使用优惠券、优币等"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_four"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/image_uncheck"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="商品买错了"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_five"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/image_uncheck"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="重复下单/误下单"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/image_close"/>
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_marginBottom="15dp"
+            android:textSize="16sp"
+            android:textColor="@color/color_white"
+            android:gravity="center"
+            android:text="确定"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_btn_login_normal"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+    </RelativeLayout>
+</RelativeLayout>

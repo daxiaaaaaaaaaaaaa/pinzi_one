@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="订单编号："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="提交时间："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="支付方式："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="实付金额："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="付款时间："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_oder_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="11977240"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_commi_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="2017-05-01 16:00"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_pay_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="在线支付"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_pay_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="¥180.00"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_pay_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:text="2017-05-01 16:01"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_red_input_bg"
+        android:gravity="center"
+        android:paddingBottom="6dp"
+        android:paddingLeft="13dp"
+        android:paddingRight="13dp"
+        android:paddingTop="6dp"
+        android:text="复制"
+        android:textColor="@color/color_main_select"
+        android:textSize="14sp"/>
+</RelativeLayout>

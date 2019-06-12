@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/color_white"
+              android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            tools:src="@drawable/iv_default_head"/>
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv_head"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="你们的祖·蓝"
+                android:textColor="@color/color_text"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_position_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="学生/深圳"
+                android:textColor="@color/color_text_dark"/>
+        </LinearLayout>
+
+        <ImageView
+            android:visibility="invisible"
+            android:layout_width="15dp"
+            android:layout_height="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:src="@drawable/image_three_point"
+            android:textColor="@color/color_main_select"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:lineSpacingExtra="2dp"
+        tools:text="拿来看也没看就洗了，发现有些不对劲，吊牌都没有，洗的时候还有泡沫，细看领口有一处缝补的痕迹，虽然是特价买的……"
+        android:textColor="@color/color_text"
+        android:textSize="16sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_line"/>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            tools:text="一周前"
+            android:textColor="@color/color_text_dark"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/tv_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="84dp"
+            tools:text="1200"
+            android:textColor="@color/color_text_dark"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            tools:text="520"
+            android:textColor="@color/color_main_select"
+            android:textSize="12sp"/>
+
+        <ImageView
+            android:visibility="invisible"
+            android:layout_width="17dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="42dp"
+            android:src="@drawable/image_home_fabulous__select"/>
+
+        <ImageView
+
+            android:visibility="invisible"
+            android:layout_width="17dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="116dp"
+            android:src="@drawable/image_home_comment"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

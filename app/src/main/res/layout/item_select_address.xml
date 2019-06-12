@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:background="@drawable/shape_white_four"
+              android:orientation="horizontal"
+              android:paddingBottom="16dp"
+              android:paddingTop="16dp"
+
+    >
+
+    <ImageView
+        android:id="@+id/iv_check"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/image_uncheck"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:textColor="#222222"
+                android:textSize="16sp"
+                tools:text="方大浩"/>
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textColor="#999999"
+                android:textSize="16sp"
+                tools:text="180****1849"/>
+
+            <TextView
+                android:id="@+id/tv_is_default"
+                android:layout_width="32dp"
+                android:layout_height="16dp"
+                android:background="@drawable/shape_red_round_bg"
+                android:gravity="center"
+                android:text="默认"
+                android:textColor="@color/color_c71233"
+                android:textSize="9sp"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_edit"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/image_edit"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="47dp"
+            android:layout_marginTop="5dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/color_222222"
+            tools:text="深圳市南山区高新技术产业园区北区朗山路16号华瀚创新园A座703/708"/>
+
+    </LinearLayout>
+
+</LinearLayout>

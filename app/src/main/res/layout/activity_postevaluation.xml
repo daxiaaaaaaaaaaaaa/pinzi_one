@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_line"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_line"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/color_white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:text="商品评分"
+                        android:textColor="@color/color_text"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_one"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="24dp"
+                        android:src="@drawable/image_my_star_active"/>
+
+                    <ImageView
+                        android:id="@+id/tv_two"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/image_my_star_active"/>
+
+                    <ImageView
+                        android:id="@+id/tv_three"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/image_my_star_active"/>
+
+                    <ImageView
+                        android:id="@+id/tv_four"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/image_my_star_active"/>
+
+                    <ImageView
+                        android:id="@+id/tv_five"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/image_my_star_active"/>
+
+                    <TextView
+                        android:textColor="@color/color_text_dark"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="(请选择评分)"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_white"
+                    android:gravity="top"
+                    android:maxLength="100"
+                    android:lineSpacingExtra="3dp"
+                    android:padding="16dp"
+                    android:hint="宝贝是否满足了你的期待？说说你的使用心得分享给其他想购买的朋友吧。"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="16sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_count"
+                        android:layout_marginRight="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="0/100"
+                        android:textColor="@color/color_text_dark"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="匿名评价"
+                        android:textColor="@color/color_text"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_is_hidden"
+                        android:layout_width="50dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/image_chat_turn_on"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="上传图片"
+                        android:textColor="@color/color_text"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="86dp"
+                        android:text="(最多9张)"
+                        android:textColor="@color/color_text_dark"
+                        android:textSize="16sp"/>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:paddingBottom="10dp"
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:paddingLeft="10dp">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_main_select"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+</LinearLayout>

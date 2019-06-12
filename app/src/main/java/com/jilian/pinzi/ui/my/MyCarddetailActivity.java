@@ -1,0 +1,202 @@
+package com.jilian.pinzi.ui.my;
+
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.TextView;
+
+import com.jilian.pinzi.Constant;
+import com.jilian.pinzi.PinziApplication;
+import com.jilian.pinzi.R;
+import com.jilian.pinzi.base.BaseActivity;
+import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.CouponCentreDto;
+import com.jilian.pinzi.ui.MainActivity;
+import com.jilian.pinzi.ui.main.IntegralMallActivity;
+import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.ui.shopcard.PaySuccessActivity;
+import com.jilian.pinzi.utils.DateUtil;
+import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.RxTimerUtil;
+import com.jilian.pinzi.utils.ToastUitl;
+
+import java.util.Date;
+
+/**
+ * 我的优惠券详情
+ */
+public class MyCarddetailActivity extends BaseActivity {
+    private MainViewModel viewModel;
+    private TextView tvName;
+    private TextView tvDaller;
+    private TextView tcCount;
+    private TextView tvUserPlatform;
+    private TextView tvDay;
+    private TextView tvDetail;
+    private TextView tvOk;
+    private TextView tvUserConditions;
+    private String id;
+    private String param;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PinziApplication.addActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PinziApplication.removeActivity(this);
+    }
+    @Override
+    protected void createViewModel() {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+    }
+
+    @Override
+    public int intiLayout() {
+        return R.layout.activity_mycarddetail;
+    }
+
+    @Override
+    public void initView() {
+        setleftImage(R.drawable.image_back, true, null);
+        tvName = (TextView) findViewById(R.id.tv_name);
+        tvDaller = (TextView) findViewById(R.id.tv_daller);
+        tcCount = (TextView) findViewById(R.id.tc_count);
+        tvUserPlatform = (TextView) findViewById(R.id.tv_user_platform);
+        tvDay = (TextView) findViewById(R.id.tv_day);
+        tvDetail = (TextView) findViewById(R.id.tv_detail);
+        tvOk = (TextView) findViewById(R.id.tv_ok);
+        tvUserConditions = (TextView) findViewById(R.id.tv_user_conditions);
+
+    }
+
+    @Override
+    public void initData() {
+        param = getIntent().getStringExtra(Constant.PARAM);
+        if ("GetCardCenterActivity".equals(param)) {
+            tvOk.setText("立即领取");
+        } else if("NoUserFragment".equals(param)){
+            tvOk.setText("立即使用");
+        }
+
+        id = getIntent().getStringExtra("id");
+        viewModel.CouponDetails(id);
+        viewModel.getCouponDetailliveData().observe(this, new Observer<BaseDto<CouponCentreDto>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<CouponCentreDto> couponCentreDtoBaseDto) {
+                if (EmptyUtils.isNotEmpty(couponCentreDtoBaseDto)) {
+                    initDetailView(couponCentreDtoBaseDto.getData());
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 显示优惠券详情
+     *
+     * @param data
+     */
+    private void initDetailView(CouponCentreDto data) {
+        if (data != null) {
+            //先 判断是代金券 还是 优惠券
+            //优惠券类型（1.折扣劵 2.代金券）
+            Integer type = data.getType();
+            if (type != null) {
+                if (type == 1) {
+                    //折扣劵
+                    tvUserConditions.setVisibility(View.INVISIBLE);
+                    //折扣
+                    String moneyOrDiscount = data.getMoneyOrDiscount();
+                    tcCount.setText(moneyOrDiscount + "折");
+                    tvDaller.setVisibility(View.GONE);
+                } else {
+                    //代金券
+                    tvUserConditions.setVisibility(View.VISIBLE);
+                    //使用条件
+                    tvUserConditions.setText("满" + data.getFullReduct() + "元可用");
+                    //面额
+                    String moneyOrDiscount = data.getMoneyOrDiscount();
+                    tcCount.setText(moneyOrDiscount);
+                    tvDaller.setVisibility(View.VISIBLE);
+                }
+
+                tvName.setText(data.getName());
+                tvUserPlatform.setText("适用平台：" + data.getStoreName());
+                tvDay.setText("有效期限：" +data.getValidityDate());
+
+                //优惠券详情 ：1—全场通用，不限制体条件，  其他——部分商品可用  这个 优惠券 详情 这样显示吗？
+
+                if(data.getUseType()==1){
+                    tvDetail.setText("详细说明：全场通用，不限条件" );
+                }
+                else{
+                    tvDetail.setText("详细说明：部分商品可用" );
+                }
+
+            }
+        }
+    }
+
+
+    @Override
+    public void initListener() {
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if ("GetCardCenterActivity".equals(param)) {
+                    toReceive(id);
+                }
+                else{
+                    toUse();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 去使用优惠券
+     */
+    private void toUse() {
+
+        finish();
+        startActivity(new Intent(MyCarddetailActivity.this, MainActivity.class));
+        PinziApplication.clearAllActivitys();
+
+    }
+
+    /**
+     * 领券优惠券
+     *
+     * @param id
+     */
+    public void toReceive(String id) {
+        getLoadingDialog().showDialog();
+        viewModel.GetCoupon(id, PinziApplication.getInstance().getLoginDto().getId());
+        viewModel.getStringliveData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
+                getLoadingDialog().dismiss();
+                if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
+                    ToastUitl.showImageToastSuccess("领取成功");
+                    RxTimerUtil.timer(500, new RxTimerUtil.IRxNext() {
+                        @Override
+                        public void doNext() {
+                            finish();
+                        }
+                    });
+
+                } else {
+                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
+                }
+            }
+        });
+    }
+}

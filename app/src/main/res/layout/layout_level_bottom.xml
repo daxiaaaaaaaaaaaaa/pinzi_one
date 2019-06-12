@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:id="@+id/ll_level_bottom"
+              android:layout_alignParentBottom="true"
+              android:orientation="vertical"
+              android:layout_height="180dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="+添加上级"
+            android:textColor="@color/color_main_select"/>
+
+        <EditText
+            android:maxLength="11"
+            android:inputType="number"
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_red_input_bg"
+            android:gravity="center"
+            android:hint="输入上级账号"
+            android:textColor="@color/color_main_select"
+            android:textColorHint="@color/color_main_select"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_btn_login_normal"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,70 @@
+package com.jilian.pinzi.adapter;
+
+import android.content.Context;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.jilian.pinzi.PinziApplication;
+import com.jilian.pinzi.R;
+import com.jilian.pinzi.adapter.common.CommonAdapter;
+import com.jilian.pinzi.adapter.common.CommonViewHolder;
+import com.jilian.pinzi.common.dto.ShopGoodsDto;
+import com.jilian.pinzi.utils.NumberUtils;
+import com.jilian.pinzi.utils.UrlUtils;
+
+import java.util.List;
+
+/**
+ * 商铺商品 Adapter
+ */
+public class ShopGoodsAdapter extends CommonAdapter<ShopGoodsDto> {
+    private  AddOrDelListener addOrDelListener;
+    public interface  AddOrDelListener{
+        void add(int position);
+        void del(int position);
+    }
+    /**
+     * 构造方法
+     *
+     * @param context  上下文
+     * @param layoutId 布局id
+     * @param datas    数据源
+     */
+    public ShopGoodsAdapter(Context context, int layoutId, List<ShopGoodsDto> datas,AddOrDelListener addOrDelListener)  {
+        super(context, layoutId, datas);
+        this.addOrDelListener = addOrDelListener;
+    }
+
+    @Override
+    protected void convert(CommonViewHolder holder, ShopGoodsDto shopGoodsDto, int position) {
+        ImageView ivHead = holder.getView(R.id.iv_photo);
+
+        ImageView  tvDel = holder.getView(R.id.tv_del);
+        ImageView tvAdd = holder.getView(R.id.tv_add);
+
+        TextView tvCount = holder.getView(R.id.tv_count);
+        tvCount.setText(String.valueOf(shopGoodsDto.getQuantity()));
+        Glide.with(mContext).load(UrlUtils.getUrl(shopGoodsDto.getFile())).into(ivHead);
+        holder.setText(R.id.tv_name, shopGoodsDto.getName());
+
+        String price;
+        // 1.普通用户 2.终端 3.渠道 4.总经销商
+        price = NumberUtils.forMatNumber(shopGoodsDto.getPersonBuy());
+
+        holder.setText(R.id.tv_price, price);
+       tvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addOrDelListener.add(position);
+            }
+        });
+        tvDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addOrDelListener.del(position);
+            }
+        });
+    }
+}

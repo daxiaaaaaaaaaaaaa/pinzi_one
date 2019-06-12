@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/colorBackgroundDark"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#9c9c9c"
+        tools:text="今天 10:00"/>
+
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_item_4round"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#262a37"
+                tools:text="秒杀专区暂时下线公告"/>
+
+            <ImageView
+                android:id="@+id/iv_points"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:src="@drawable/image_red_point"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:maxLines="3"
+            android:id="@+id/tv_content"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#999999"
+            tools:text="尊敬的用户，为了给您带来更好的体验，秒杀专区业务将于2017年4月26日22：00-2017年4月27日09:00期间进行"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="#e0e0e0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#c71233"
+                android:text="查看详情"/>
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/image_right_back" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

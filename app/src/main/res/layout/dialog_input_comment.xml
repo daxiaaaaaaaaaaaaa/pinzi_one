@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+               android:orientation="vertical"
+    >
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    </ScrollView>
+
+    <LinearLayout
+
+        android:id="@+id/ll_fragment_three_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_line"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <EditText
+            android:paddingLeft="5dp"
+            android:id="@+id/et_comment"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_friends_replay_bg"
+            android:gravity="center_vertical"
+            android:hint="评论"
+            android:textColor="@color/color_222222"
+            android:textColorHint="@color/color_999999"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="14dp"
+            android:src="@drawable/icon_friends_emoji"/>
+        <TextView
+            android:id="@+id/tv_ok"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:gravity="center"
+            android:background="@drawable/shape_ok_red"
+            android:layout_marginRight="10dp"
+            android:text="发送"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</LinearLayout >

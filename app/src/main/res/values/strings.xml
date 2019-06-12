@@ -1,0 +1,11 @@
+<resources>
+<string name="app_name">779百香街</string>
+<string name="user_service_text">1. 尊敬的779百香街用户：我们对《子隐私政策》进行了更新。本次更新我们做出了诸多有利于保护您个人信息的调整；明确了我们的产品与/或服务收集、使用及共享个人信息的类型方式和用途；以增强告知或即时提示的方式在收集、使用及共享个人信息时给予用户明示选择权，并在产品设置中允许用户即时撤销授权。明确了用户查询、更正和删除其个人信息的方式。增加了用户账户的锁定/解锁和注销功能，并提供给用户了30日注销后悔期。
+     \n\n2. 尊敬的 779百香街用户：我们对《子隐私政策》进行了更新。本次更新我们做出了诸多有利于保护您个人信息的调整；明确了我们的产品与/或服务收集、使用及共享个人信息的类型方式和用途；以增强告知或即时提示的方式在收集、使用及共享个人信息时给予用户明示选择权，并在产品设置中允许用户即时撤销授权。明确了用户查询、更正和删除其个人信息的方式。增加了用户账户的锁定/解锁和注销功能，并提供给用户了30日注销后悔期。</string>
+<string name="error_gif">错误信息</string>
+<!--解决选择相册中图片时候超过9张继续点击其它图片会crash的问题-->
+<plurals name="error_over_count">
+    <item quantity="one">You can only select one media file</item>
+    <item quantity="many">You can only select up to %1$d media files</item>
+</plurals>
+</resources>

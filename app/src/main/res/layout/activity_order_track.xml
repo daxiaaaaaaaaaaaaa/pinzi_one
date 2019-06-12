@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_line"
+    android:orientation="vertical"
+    tools:context=".ui.OrderTrackActivity">
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_order_track_head"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/iv_default_head" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_order_track_head">
+
+            <TextView
+                android:id="@+id/tv_order_track_express_delivery_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="配送快递："
+                android:textColor="@color/color_222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_order_track_express_delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_order_track_express_delivery_label"
+                android:textColor="@color/color_222222"
+                android:textSize="16sp"
+                tools:text="顺丰快递" />
+
+            <TextView
+                android:id="@+id/tv_order_track_num_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_order_track_express_delivery"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="快递单号："
+                android:textColor="@color/color_222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_order_track_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_order_track_express_delivery"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/tv_order_track_num_label"
+                android:textColor="@color/color_222222"
+                android:textSize="16sp"
+                tools:text="2765302256" />
+
+            <TextView
+                android:id="@+id/tv_order_track_phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_order_track_num"
+                android:text="联系电话："
+                android:textColor="@color/color_222222"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_order_track_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_order_track_num"
+                android:layout_toRightOf="@id/tv_order_track_phone_label"
+                android:textColor="@color/color_222222"
+                android:textSize="16sp"
+                tools:text="95338" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="27dp"
+        android:paddingTop="21dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_order_track_shipped"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_order_track_shipped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="已发货"
+                    android:textColor="@color/color_999999"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_order_track_shipped"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/iv_order_track_shipped"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_grey_dot" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_order_track_in_transit"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_order_track_in_transit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="运输中"
+                    android:textColor="@color/color_999999"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_order_track_in_transit"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+
+                <ImageView
+                    android:id="@+id/iv_order_track_in_transit"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_grey_dot" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_order_track_in_dispatch"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_order_track_in_dispatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="派件中"
+                    android:textColor="@color/color_999999"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_order_track_in_dispatch"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+
+                <ImageView
+                    android:id="@+id/iv_order_track_in_dispatch"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_grey_dot" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/ll_order_track_received"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_order_track_received"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="已签收"
+                    android:textColor="@color/color_999999"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_order_track_received"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0" />
+
+                <ImageView
+                    android:id="@+id/iv_order_track_received"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_grey_dot" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_e0e0e0"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/color_383c3f"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginStart="15dp"
+        android:text="物流详情"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:paddingTop="18dp"
+        android:id="@+id/rv_order_track"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
+
+</LinearLayout>
