@@ -1,90 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jilian.pinzi">
+          package="com.jilian.pinzi">
 
     <!-- 安装未知来源应用的权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <!-- 添加读写权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- 访问互联网权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- //网络权限，当禁用后，无法进行检索等相关业务 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- //读取设备硬件信息，统计数据 -->
     <!--
      <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
      //读取系统信息，包含系统版本等信息，用作统计
     -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- //获取设备的网络状态，鉴权所需网络代理 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- //获取统计数据 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- //鉴权所需该权限获取进程列表 -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <!-- //使用步行AR导航，配置Camera权限 -->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- 手机震动权限 -->
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
-    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.BODY_SENSORS"/>
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_GPS"/>
     <!-- SDK1.5需要android.permission.GET_TASKS权限判断本程序是否为当前运行的应用? -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
 
     <!-- 来电消音 -->
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <!-- 摄影机 -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <!-- 语音合成 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <!-- 获取手机imei -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
 
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".PinziApplication"
@@ -93,18 +92,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.PerfectInformationActivity" />
-        <activity android:name=".ui.UserCheckActivity" />
-        <activity android:name=".ui.ResetPwdActivity" />
-        <activity android:name=".ui.UserServiceActivity" />
-        <activity android:name=".ui.BindPhoneActivity" />
-        <activity android:name=".ui.NewsNoticeActivity" />
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.RegisterActivity"/>
+        <activity android:name=".ui.PerfectInformationActivity"/>
+        <activity android:name=".ui.UserCheckActivity"/>
+        <activity android:name=".ui.ResetPwdActivity"/>
+        <activity android:name=".ui.UserServiceActivity"/>
+        <activity android:name=".ui.BindPhoneActivity"/>
+        <activity android:name=".ui.NewsNoticeActivity"/>
         <!-- android:launchMode="singleTask -->
         <activity
             android:name=".ui.MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".ui.WelcomeActivity"
             android:configChanges="locale"
@@ -112,80 +111,82 @@
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.my.MemberActivity" />
-        <activity android:name=".ui.my.WalletActivity" />
-        <activity android:name=".ui.my.MyTntegralActivity" />
-        <activity android:name=".ui.my.MyCouponsActivity" />
-        <activity android:name=".ui.my.MyCardActivity" />
-        <activity android:name=".ui.my.MyCollectionActivity" />
-        <activity android:name=".ui.my.MyFootActivity" />
-        <activity android:name=".ui.my.AddressManagerActivity" />
-        <activity android:name=".ui.my.AddAddressActivity" />
-        <activity android:name=".ui.my.MyLevelsActivity"
-                  android:windowSoftInputMode="adjustResize"
+        <activity android:name=".ui.my.MemberActivity"/>
+        <activity android:name=".ui.my.WalletActivity"/>
+        <activity android:name=".ui.my.MyTntegralActivity"/>
+        <activity android:name=".ui.my.MyCouponsActivity"/>
+        <activity android:name=".ui.my.MyCardActivity"/>
+        <activity android:name=".ui.my.MyCollectionActivity"/>
+        <activity android:name=".ui.my.MyFootActivity"/>
+        <activity android:name=".ui.my.AddressManagerActivity"/>
+        <activity android:name=".ui.my.AddAddressActivity"/>
+        <activity
+            android:name=".ui.my.MyLevelsActivity"
+            android:windowSoftInputMode="adjustResize"
 
             />
-        <activity android:name=".ui.my.MyLevelsDetailActivity" />
-        <activity android:name=".ui.my.ShopAtActivity" />
-        <activity android:name=".ui.my.ServiceCenterActivity" />
-        <activity android:name=".ui.my.TopUpActivity" />
-        <activity android:name=".ui.my.TopUpSuccessActivity" />
-        <activity android:name=".ui.my.WithdrawalActivity" />
-        <activity android:name=".ui.my.WithdrawalAuditActivity" />
-        <activity android:name=".ui.my.MyCouponsRecordActivity" />
-        <activity android:name=".ui.my.MyTntegralRecordActivity" />
-        <activity android:name=".ui.my.MyInfoActivity" />
-        <activity android:name=".ui.my.UpdatePwdActivity" />
-        <activity android:name=".ui.my.MyCarddetailActivity" />
-        <activity android:name=".ui.my.SystemMsgActivity" />
-        <activity android:name=".ui.my.SystemMsgDetailActivity" />
-        <activity android:name=".ui.NewsNoticeDetailActivity" />
-        <activity android:name=".ui.SearchActivity" />
-        <activity android:name=".ui.my.MyCenterActivity" />
-        <activity android:name=".ui.my.MyShipmentActivity" />
-        <activity android:name=".ui.my.MyShipmentDetailActivity" />
-        <activity android:name=".ui.my.AboutWeActivity" />
-        <activity android:name=".ui.main.GetCardCenterActivity" />
-        <activity android:name=".ui.main.LotteryCenterActivity" />
-        <activity android:name=".ui.main.LotteryCenterRecordActivity" />
-        <activity android:name=".ui.main.IntegralMallActivity" />
-        <activity android:name=".ui.my.MyOrderActivity" />
-        <activity android:name=".ui.my.MyOrderWaitePayDetailActivity" />
-        <activity android:name=".ui.my.MyOrderWaiteGetGoodDetailActivity" />
-        <activity android:name=".ui.my.MyOrderFinishNoCommentDetailActivity" />
-        <activity android:name=".ui.my.MyOrderFinishHasCommentDetailActivity" />
-        <activity android:name=".ui.my.MyOrderCancelDetailActivity" />
-        <activity android:name=".ui.main.BuyCenterActivity" />
-        <activity android:name=".ui.main.SecondsKillZoneActivity" />
-        <activity android:name=".ui.main.SentimentRecommendedActivity" />
-        <activity android:name=".ui.main.MoreNewGoodsActivity" />
-        <activity android:name=".ui.main.MoreShopsActivity" />
-        <activity android:name=".ui.main.MoreGoodsActivity" />
-        <activity android:name=".ui.main.GoodsDetailActivity"
-                  android:configChanges="orientation|screenSize"
+        <activity android:name=".ui.my.MyLevelsDetailActivity"/>
+        <activity android:name=".ui.my.ShopAtActivity"/>
+        <activity android:name=".ui.my.ServiceCenterActivity"/>
+        <activity android:name=".ui.my.TopUpActivity"/>
+        <activity android:name=".ui.my.TopUpSuccessActivity"/>
+        <activity android:name=".ui.my.WithdrawalActivity"/>
+        <activity android:name=".ui.my.WithdrawalAuditActivity"/>
+        <activity android:name=".ui.my.MyCouponsRecordActivity"/>
+        <activity android:name=".ui.my.MyTntegralRecordActivity"/>
+        <activity android:name=".ui.my.MyInfoActivity"/>
+        <activity android:name=".ui.my.UpdatePwdActivity"/>
+        <activity android:name=".ui.my.MyCarddetailActivity"/>
+        <activity android:name=".ui.my.SystemMsgActivity"/>
+        <activity android:name=".ui.my.SystemMsgDetailActivity"/>
+        <activity android:name=".ui.NewsNoticeDetailActivity"/>
+        <activity android:name=".ui.SearchActivity"/>
+        <activity android:name=".ui.my.MyCenterActivity"/>
+        <activity android:name=".ui.my.MyShipmentActivity"/>
+        <activity android:name=".ui.my.MyShipmentDetailActivity"/>
+        <activity android:name=".ui.my.AboutWeActivity"/>
+        <activity android:name=".ui.main.GetCardCenterActivity"/>
+        <activity android:name=".ui.main.LotteryCenterActivity"/>
+        <activity android:name=".ui.main.LotteryCenterRecordActivity"/>
+        <activity android:name=".ui.main.IntegralMallActivity"/>
+        <activity android:name=".ui.my.MyOrderActivity"/>
+        <activity android:name=".ui.my.MyOrderWaitePayDetailActivity"/>
+        <activity android:name=".ui.my.MyOrderWaiteGetGoodDetailActivity"/>
+        <activity android:name=".ui.my.MyOrderFinishNoCommentDetailActivity"/>
+        <activity android:name=".ui.my.MyOrderFinishHasCommentDetailActivity"/>
+        <activity android:name=".ui.my.MyOrderCancelDetailActivity"/>
+        <activity android:name=".ui.main.BuyCenterActivity"/>
+        <activity android:name=".ui.main.SecondsKillZoneActivity"/>
+        <activity android:name=".ui.main.SentimentRecommendedActivity"/>
+        <activity android:name=".ui.main.MoreNewGoodsActivity"/>
+        <activity android:name=".ui.main.MoreShopsActivity"/>
+        <activity android:name=".ui.main.MoreGoodsActivity"/>
+        <activity
+            android:name=".ui.main.GoodsDetailActivity"
+            android:configChanges="orientation|screenSize"
             />
-        <activity android:name=".ui.friends.PublishFriendsActivity" />
-        <activity android:name=".ui.friends.SelectImageActivity" />
-        <activity android:name=".ui.friends.MyFriendsCircleActivity" />
-        <activity android:name=".ui.shopcard.FillOrderActivity" />
-        <activity android:name=".ui.shopcard.PayOrderActivity" />
-        <activity android:name=".ui.shopcard.PaySuccessActivity" />
-        <activity android:name=".ui.shopcard.SelectAdressActivity" />
-        <activity android:name=".ui.shopcard.SelectPersonActivity" />
-        <activity android:name=".ui.shopcard.SelectCardActivity" />
-        <activity android:name=".ui.shopcard.InvoiceActivity" />
-        <activity android:name=".ui.my.PostEvaluationActivity" />
-        <activity android:name=".ui.my.SettingActivity" />
-        <activity android:name=".ui.main.WebViewActivity" />
-        <activity android:name=".ui.main.ViewPhotosActivity" />
-        <activity android:name=".ui.shopcard.IntegralFillOrderActivity" />
-        <activity android:name=".ui.my.AfterSalesServiceActivity" />
-        <activity android:name=".ui.my.ApplyServiceActivity" />
+        <activity android:name=".ui.friends.PublishFriendsActivity"/>
+        <activity android:name=".ui.friends.SelectImageActivity"/>
+        <activity android:name=".ui.friends.MyFriendsCircleActivity"/>
+        <activity android:name=".ui.shopcard.FillOrderActivity"/>
+        <activity android:name=".ui.shopcard.PayOrderActivity"/>
+        <activity android:name=".ui.shopcard.PaySuccessActivity"/>
+        <activity android:name=".ui.shopcard.SelectAdressActivity"/>
+        <activity android:name=".ui.shopcard.SelectPersonActivity"/>
+        <activity android:name=".ui.shopcard.SelectCardActivity"/>
+        <activity android:name=".ui.shopcard.InvoiceActivity"/>
+        <activity android:name=".ui.my.PostEvaluationActivity"/>
+        <activity android:name=".ui.my.SettingActivity"/>
+        <activity android:name=".ui.main.WebViewActivity"/>
+        <activity android:name=".ui.main.ViewPhotosActivity"/>
+        <activity android:name=".ui.shopcard.IntegralFillOrderActivity"/>
+        <activity android:name=".ui.my.AfterSalesServiceActivity"/>
+        <activity android:name=".ui.my.ApplyServiceActivity"/>
         <activity android:name=".ui.friends.imagepager.ImagePagerActivity"/>
         <activity android:name=".ui.friends.FriendDetailActivity"/>
         <!-- 兼容7.0 -->
@@ -196,13 +197,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths"/>
         </provider>
 
         <!-- 配置APP ID -->
         <meta-data
             android:name="BUGLY_APPID"
-            android:value="d1518291-5dc9-45d2-91f4-91a7bc0c58b8" />
+            android:value="d1518291-5dc9-45d2-91f4-91a7bc0c58b8"/>
         <!--
            配置APP版本号 1.0.0 测试  2.0.0 正式
             阿里环境 使用版本号 1.0.0
@@ -215,34 +216,35 @@
         -->
         <meta-data
             android:name="BUGLY_APP_VERSION"
-            android:value="6.0.0" />
+            android:value="6.0.0"/>
         <!-- 配置APP渠道号 -->
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
-            android:value="6.0.0" />
+            android:value="6.0.0"/>
         <!-- 配置Bugly调试模式（true或者false） -->
         <meta-data
             android:name="BUGLY_ENABLE_DEBUG"
-            android:value="false" />
+            android:value="false"/>
 
         <activity
             android:name=".ui.main.ShopDetailActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.OrderTrackActivity" />
-        <activity android:name=".ui.SaleRecordDetailActivity" />
-        <activity android:name=".ui.my.PostEvaluationSeeActivity" />
-        <activity android:name=".ui.conversation.ConversationActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ui.OrderTrackActivity"/>
+        <activity android:name=".ui.SaleRecordDetailActivity"/>
+        <activity android:name=".ui.my.PostEvaluationSeeActivity"/>
+        <activity
+            android:name=".ui.conversation.ConversationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
                 <data
                     android:host="com.jilian.pinzi"
                     android:pathPrefix="/conversation/"
-                    android:scheme="rong" />
+                    android:scheme="rong"/>
             </intent-filter>
         </activity>
         <activity android:name=".ui.friends.MyFriendsCircleDetailActivity"/>
@@ -253,19 +255,20 @@
         <activity android:name=".ui.my.OneActivity"/>
         <activity android:name=".ui.my.TwoActivity"/>
         <activity android:name=".ui.ThreeActivity"/>
-
+        <activity android:name=".ui.MainNewsActivity"/>
+        <activity android:name=".ui.MainNewsDetailActivity"/>
 
         <!--<activity-->
-            <!--android:name="com.alipay.sdk.app.H5PayActivity"-->
-            <!--android:configChanges="orientation|keyboardHidden|navigation"-->
-            <!--android:exported="false"-->
-            <!--android:screenOrientation="behind" >-->
+        <!--android:name="com.alipay.sdk.app.H5PayActivity"-->
+        <!--android:configChanges="orientation|keyboardHidden|navigation"-->
+        <!--android:exported="false"-->
+        <!--android:screenOrientation="behind" >-->
         <!--</activity>-->
         <!--<activity-->
-            <!--android:name="com.alipay.sdk.auth.AuthActivity"-->
-            <!--android:configChanges="orientation|keyboardHidden|navigation"-->
-            <!--android:exported="false"-->
-            <!--android:screenOrientation="behind" >-->
+        <!--android:name="com.alipay.sdk.auth.AuthActivity"-->
+        <!--android:configChanges="orientation|keyboardHidden|navigation"-->
+        <!--android:exported="false"-->
+        <!--android:screenOrientation="behind" >-->
         <!--</activity>-->
 
 
@@ -275,8 +278,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
-
+            android:theme="@android:style/Theme.Light.NoTitleBar"/>
 
 
     </application>

@@ -146,6 +146,8 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     private LinearLayout llFourContainer;
     private LinearLayout llFhreeContainer;
     private LinearLayout rlReturn;
+    private LinearLayout llNews;
+    private LinearLayout llAcivity;
 
 
     @Override
@@ -452,6 +454,10 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         llFourContainer = (LinearLayout) view.findViewById(R.id.ll_four_container);
         llFhreeContainer = (LinearLayout) view.findViewById(R.id.ll_fhree_container);
         rlReturn = (LinearLayout) view.findViewById(R.id.rl_return);
+
+        llNews = (LinearLayout) view.findViewById(R.id.ll_news);
+        llAcivity = (LinearLayout)view. findViewById(R.id.ll_acivity);
+
         //
         tvOneMore = (TextView) view.findViewById(R.id.tv_one_more);
         tvTwoMore = (TextView) view.findViewById(R.id.tv_two_more);
@@ -556,6 +562,24 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void initListener() {
+        /**
+         * 活动
+         */
+        llAcivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        /**
+         * 咨询列表
+         */
+        llNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),MainNewsActivity.class));
+            }
+        });
         /**
          * 秒杀专区
          */
