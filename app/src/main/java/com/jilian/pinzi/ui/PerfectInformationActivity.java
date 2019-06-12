@@ -38,11 +38,13 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.CommonActivity;
 import com.jilian.pinzi.common.dto.LoginDto;
+import com.jilian.pinzi.common.dto.PhotoDto;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.listener.PhotpItemClickListener;
 import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
 import com.jilian.pinzi.ui.friends.SelectImageActivity;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
@@ -77,7 +79,7 @@ import static com.jilian.pinzi.Constant.FINALVALUE.FILE_PROVIDER;
 /**
  * 完善信息
  */
-public class PerfectInformationActivity extends BaseActivity implements CustomItemClickListener,PostEvaluationPhotoAdapter.ClosePhotonListener {
+public class PerfectInformationActivity extends BaseActivity implements PhotpItemClickListener {
 
     private TextView tvArea;
     private EditText tvName;
@@ -87,14 +89,24 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
     private TextView tvOk;
 
 
-    private CustomerGridLayManager gridLayoutManager;
+    private CustomerGridLayManager gridOne;
+
+    private CustomerGridLayManager gridTwo;
     //相机
     private final int FROM_CAPTURE = 10001;
     //相册
     private final int FROM_ALBUM = 10002;
-    private RecyclerView recyclerView;
-    private PostEvaluationPhotoAdapter adapter;
-    private List<String> datas;
+    private RecyclerView rvOne;
+    private RecyclerView rvTwo;
+
+
+    private PostEvaluationPhotoAdapter oneAdapter;
+
+    private PostEvaluationPhotoAdapter twoAdapter;
+
+    private List<PhotoDto> oneDatas;
+    private List<PhotoDto> twoDatas;
+
     private UserViewModel userViewModel;
     private String province;
     private String city;
@@ -127,7 +139,9 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
     public void initView() {
         setCenterTitle("完善信息", "#FFFFFF");
         setleftImage(R.drawable.image_back, true, null);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        rvOne = (RecyclerView) findViewById(R.id.rv_one);
+        rvTwo = (RecyclerView) findViewById(R.id.rv_two);
         setTitleBg(R.color.color_black);
         tvArea = (TextView) findViewById(R.id.tv_area);
         tvName = (EditText) findViewById(R.id.tv_name);
@@ -136,23 +150,49 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
         tvLinkphone = (TextView) findViewById(R.id.tv_linkphone);
         tvOk = (TextView) findViewById(R.id.tv_ok);
 
-        gridLayoutManager = new CustomerGridLayManager(this, 3);
-        gridLayoutManager.setCanScrollVertically(false);
+        gridOne = new CustomerGridLayManager(this, 3);
+        gridTwo = new CustomerGridLayManager(this, 3);
+
+        gridOne.setCanScrollVertically(false);
+        gridTwo.setCanScrollVertically(false);
+
         //解决卡顿 滑动
-        gridLayoutManager.setSmoothScrollbarEnabled(true);
-        gridLayoutManager.setAutoMeasureEnabled(true);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(false);
+        gridOne.setSmoothScrollbarEnabled(true);
+        gridOne.setAutoMeasureEnabled(true);
+
+        gridTwo.setSmoothScrollbarEnabled(true);
+        gridTwo.setAutoMeasureEnabled(true);
+
+
+        rvOne.setHasFixedSize(true);
+        rvOne.setNestedScrollingEnabled(false);
+
+
+        rvTwo.setHasFixedSize(true);
+        rvTwo.setNestedScrollingEnabled(false);
+
 
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(this, 10));//右间距
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(this, 10));//下间距
-        recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
-        recyclerView.setLayoutManager(gridLayoutManager);
-        datas = new ArrayList<>();
-        datas.add("");
-        adapter = new PostEvaluationPhotoAdapter(this, datas, this,this);
-        recyclerView.setAdapter(adapter);
+        rvOne.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
+        rvOne.setLayoutManager(gridOne);
+
+        rvTwo.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
+        rvTwo.setLayoutManager(gridTwo);
+
+        //营业执照
+        oneDatas = new ArrayList<>();
+        oneDatas.add(new PhotoDto(1, ""));
+        oneAdapter = new PostEvaluationPhotoAdapter(this, oneDatas, this);
+        rvOne.setAdapter(oneAdapter);
+
+
+        twoDatas = new ArrayList<>();
+        twoDatas.add(new PhotoDto(2, ""));
+        twoAdapter = new PostEvaluationPhotoAdapter(this, twoDatas, this);
+        rvTwo.setAdapter(twoAdapter);
+
 
     }
 
@@ -199,22 +239,22 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
                     ToastUitl.showImageToastFail("请输入正确的手机号码");
                     return;
                 }
-                uploadFile();
+                uploadOneFile();
             }
         });
     }
 
     /**
-     * 上传图片
+     * 上传营业执照
      */
-    private void uploadFile() {
-        if (datas.size() == 1) {
+    private void uploadOneFile() {
+        if (oneDatas.size() == 1) {
             ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
             return;
         }
         List<File> fileList = new ArrayList<>();
-        for (int i = 0; i < datas.size() - 1; i++) {
-            fileList.add(new File(datas.get(i)));
+        for (int i = 0; i < oneDatas.size() - 1; i++) {
+            fileList.add(new File(oneDatas.get(i).getUrl()));
         }
         getLoadingDialog().showDialog();
         userViewModel.photoImg(1, fileList);
@@ -224,7 +264,38 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
                 getLoadingDialog().dismiss();
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     //完善信息
-                    perfectInformation(stringBaseDto.getData());
+
+                    uploadTwoFile(stringBaseDto.getData());
+                } else {
+                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
+                }
+            }
+        });
+    }
+
+    /**
+     * 上传门店照片
+     *
+     * @param url 营业执照的URL
+     */
+    private void uploadTwoFile(String url) {
+        if (twoDatas.size() == 1) {
+            ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
+            return;
+        }
+        List<File> fileList = new ArrayList<>();
+        for (int i = 0; i < twoDatas.size() - 1; i++) {
+            fileList.add(new File(twoDatas.get(i).getUrl()));
+        }
+        getLoadingDialog().showDialog();
+        userViewModel.photoImg(1, fileList);
+        userViewModel.getPhotoImageliveData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
+                getLoadingDialog().dismiss();
+                if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
+                    //完善信息
+                    perfectInformation(url, stringBaseDto.getData());
                 } else {
                     ToastUitl.showImageToastFail(stringBaseDto.getMsg());
                 }
@@ -235,11 +306,12 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
     /**
      * 掉完善信息接口
      *
-     * @param url
+     * @param oneUrl 营业执照
+     * @param twoUrl 门店
      */
-    private void perfectInformation(String url) {
+    private void perfectInformation(String oneUrl, String twoUrl) {
 
-        userViewModel.perfectInformation(province, city, area, tvName.getText().toString(), tvContact.getText().toString(), tvLinkphone.getText().toString(), getUserId(), url);
+        userViewModel.perfectInformation(province, city, area, tvName.getText().toString(), tvContact.getText().toString(), tvLinkphone.getText().toString(), getUserId(), oneUrl,twoUrl);
         userViewModel.getPerfectInformationliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
@@ -303,7 +375,13 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
                                 RxPermissions.getInstance(PerfectInformationActivity.this).request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new PermissionsObserver() {
                                     @Override
                                     protected void onGetPermissionsSuccess() {
-                                        SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 4 - datas.size(), FROM_ALBUM);
+                                        if (type == 1) {
+                                            SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 4 - oneDatas.size(), FROM_ALBUM);
+                                        }
+                                        if (type == 2) {
+                                            SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 4 - twoDatas.size(), FROM_ALBUM);
+                                        }
+
                                     }
 
                                     @Override
@@ -323,6 +401,7 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
     }
 
     private String path;
+    private int type;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -330,19 +409,39 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
             switch (requestCode) {
                 //图库
                 case FROM_ALBUM:
+
                     List<Uri> uriList = SelectPhotoUtils.albumResult(data);
-                    for (int i = 0; i < uriList.size(); i++) {
-                        Uri uri = uriList.get(i);
-                        path = SelectPhotoUtils.getRealPathFromURI(this, uri);
-                        datas.add(0,path);
+                    if (type == 1) {
+                        for (int i = 0; i < uriList.size(); i++) {
+                            Uri uri = uriList.get(i);
+                            path = SelectPhotoUtils.getRealPathFromURI(this, uri);
+                            oneDatas.add(0, new PhotoDto(this.type, path));
+                        }
+                        oneAdapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
+                    if (type == 2) {
+                        for (int i = 0; i < uriList.size(); i++) {
+                            Uri uri = uriList.get(i);
+                            path = SelectPhotoUtils.getRealPathFromURI(this, uri);
+                            twoDatas.add(0, new PhotoDto(this.type, path));
+                        }
+                        twoAdapter.notifyDataSetChanged();
+                    }
+
                     break;
                 //相机
                 case FROM_CAPTURE:
-                    path = SelectPhotoUtils.capturePathResult();
-                    datas.add(0,path);
-                    adapter.notifyDataSetChanged();
+                    if (type == 1) {
+                        path = SelectPhotoUtils.capturePathResult();
+                        oneDatas.add(0, new PhotoDto(this.type, path));
+                        oneAdapter.notifyDataSetChanged();
+                    }
+                    if (type == 2) {
+                        path = SelectPhotoUtils.capturePathResult();
+                        twoDatas.add(0, new PhotoDto(this.type, path));
+                        twoAdapter.notifyDataSetChanged();
+                    }
+
                     break;
             }
 
@@ -391,18 +490,6 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
         }
     };
 
-    @Override
-    public void onItemClick(View view, int position) {
-        if (position == datas.size() - 1) {
-            if(datas.size() == 4){
-                return;
-            }
-            else{
-                showSelectPhotoTypeDialog();
-            }
-        }
-
-    }
 
     //不要删这行代码
 
@@ -413,10 +500,44 @@ public class PerfectInformationActivity extends BaseActivity implements CustomIt
         //super.onSaveInstanceState(outState);
     }
 
+
     @Override
-    public void close(int position) {
-        datas.remove(position);
-        adapter = new PostEvaluationPhotoAdapter(this, datas, this,this);
-        recyclerView.setAdapter(adapter);
+    public void onItemClick(View view, int position, int type) {
+        this.type = type;
+        if (type == 1) {
+            if (position == oneDatas.size() - 1) {
+                if (oneDatas.size() == 4) {
+                    return;
+                } else {
+
+                    showSelectPhotoTypeDialog();
+                }
+            }
+        }
+        if (type == 2) {
+            if (position == twoDatas.size() - 1) {
+                if (twoDatas.size() == 4) {
+                    return;
+                } else {
+                    showSelectPhotoTypeDialog();
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void close(int position, int type) {
+
+        if (type == 1) {
+            oneDatas.remove(position);
+            oneAdapter = new PostEvaluationPhotoAdapter(this, oneDatas, this);
+            rvOne.setAdapter(oneAdapter);
+        }
+        if (type == 2) {
+            twoDatas.remove(position);
+            twoAdapter = new PostEvaluationPhotoAdapter(this, twoDatas, this);
+            rvTwo.setAdapter(twoAdapter);
+        }
     }
 }

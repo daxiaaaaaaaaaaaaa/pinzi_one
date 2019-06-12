@@ -123,9 +123,10 @@ public class UserViewModel extends ViewModel {
      * @param contact   联系人
      * @param linkPhone 联系电话
      * @param id        ID
-     * @param imgUrl    图片地址
+     * @param oneUrl    营业执照图片地址
+     * @param twoUrl    门店图片地址
      */
-    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String imgUrl) {
+    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String oneUrl,String twoUrl) {
         userRepository = new UserRepositoryImpl();
         PerfectInformationVo vo = new PerfectInformationVo();
         vo.setProvince(province);
@@ -135,7 +136,7 @@ public class UserViewModel extends ViewModel {
         vo.setContact(contact);
         vo.setLinkPhone(linkPhone);
         vo.setId(id);
-        vo.setImgUrl(imgUrl);
+        vo.setImgUrl(oneUrl);
         perfectInformationliveData = userRepository.perfectInformation(vo);
     }
 

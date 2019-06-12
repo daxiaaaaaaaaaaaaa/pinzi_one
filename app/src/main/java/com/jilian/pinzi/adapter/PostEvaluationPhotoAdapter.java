@@ -12,24 +12,24 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.PhotoDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.listener.PhotpItemClickListener;
 
 import java.util.List;
 
 
 public class PostEvaluationPhotoAdapter extends RecyclerView.Adapter<PostEvaluationPhotoAdapter.ViewHolder> {
     private Activity mContext;
-    private List<String> datas;
-    private CustomItemClickListener listener;
-    private ClosePhotonListener closePhotonListener;
-    public interface ClosePhotonListener{
-        void close(int position);
-    }
-    public PostEvaluationPhotoAdapter(Activity context, List<String> datas, CustomItemClickListener listener,ClosePhotonListener closePhotonListener) {
+    private List<PhotoDto> datas;
+    private PhotpItemClickListener listener;
+
+
+    public PostEvaluationPhotoAdapter(Activity context, List<PhotoDto> datas, PhotpItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
-        this.closePhotonListener = closePhotonListener;
+
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PostEvaluationPhotoAdapter extends RecyclerView.Adapter<PostEvaluat
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
             if(position!=(datas.size()-1)){
-                Glide.with(mContext).load(datas.get(position)).into(holder.ivOne);
+                Glide.with(mContext).load(datas.get(position).getUrl()).into(holder.ivOne);
                 holder.ivClose.setVisibility(View.VISIBLE);
                 holder.rlClose.setVisibility(View.VISIBLE);
             }
@@ -59,7 +59,7 @@ public class PostEvaluationPhotoAdapter extends RecyclerView.Adapter<PostEvaluat
             holder.rlClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    closePhotonListener.close(position);
+                    listener.close(position,datas.get(position).getType());
                 }
             });
     }
@@ -82,7 +82,7 @@ public class PostEvaluationPhotoAdapter extends RecyclerView.Adapter<PostEvaluat
 
 
 
-        public ViewHolder(final View itemView, final CustomItemClickListener listener) {
+        public ViewHolder(final View itemView, final PhotpItemClickListener listener) {
             super(itemView);
             rlClose = (RelativeLayout) itemView.findViewById(R.id.rl_close);
 
@@ -92,7 +92,7 @@ public class PostEvaluationPhotoAdapter extends RecyclerView.Adapter<PostEvaluat
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(itemView, getAdapterPosition());
+                    listener.onItemClick(itemView, getAdapterPosition(),datas.get(getAdapterPosition()).getType());
                 }
             });
         }
