@@ -257,6 +257,8 @@
         <activity android:name=".ui.ThreeActivity"/>
         <activity android:name=".ui.MainNewsActivity"/>
         <activity android:name=".ui.MainNewsDetailActivity"/>
+        <activity android:name=".ui.MainActivityActivity"/>
+        <activity android:name=".ui.MainActivityDetailActivity"/>
 
         <!--<activity-->
         <!--android:name="com.alipay.sdk.app.H5PayActivity"-->

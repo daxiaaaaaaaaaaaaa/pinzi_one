@@ -569,6 +569,9 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View v) {
 
+                startActivity(new Intent(getActivity(),MainActivityActivity.class));
+
+
             }
         });
         /**
