@@ -85,9 +85,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.zhy:mpermission-api:1.+'
     implementation 'com.android.support:appcompat-v7:27.0.+'
-
     implementation 'com.android.support:support-v4:27.0.+'
-
     implementation 'com.android.support:cardview-v7:27.0.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
@@ -106,7 +104,6 @@ dependencies {
 
     //必须使用
     implementation 'com.lzy.net:okgo:3.0.4'
-
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
     implementation 'com.zhihu.android:matisse:0.5.0-alpha4'
     implementation 'com.squareup.okio:okio:1.5.0'
@@ -167,7 +164,6 @@ dependencies {
     //浏览图片的框架
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.orhanobut:logger:2.2.0'
-
     compile 'com.alibaba:fastjson:+'
 
     //滑动删除的list
@@ -185,31 +181,35 @@ dependencies {
 
     //    implementation project(':CallLib')
     implementation project(':RCSticker')
-
-
     implementation 'com.jwenfeng.library:PullToDetails:1.0.0'
+
     //视频播放的库
     implementation 'cn.jzvd:jiaozivideoplayer:6.4.1'
 
-//    implementation project(':videoplayerlibrary')
+    //    implementation project(':videoplayerlibrary')
 
     //引入rxJava
     compile 'io.reactivex.rxjava2:rxjava:2.1.8'
+
     //引入rxAndroid
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
     //引入rxJava适配器，方便rxJava与retrofit的结合
+
     //引入J神的rxrelay2，出现异常仍然可以处理
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
-    // 支付宝 SDK AAR 包所需的配置
-    implementation (name: 'alipaySdk-15.6.2-20190416165100-noUtdid', ext: 'aar')
-//
-//    compile 'com.google.zxing:core:3.0.0'
 
+    // 支付宝 SDK AAR 包所需的配置
+    implementation(name: 'alipaySdk-15.6.2-20190416165100-noUtdid', ext: 'aar')
+
+    //
+
+    //    compile 'com.google.zxing:core:3.0.0'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
     // Lifecycles, LiveData 和 ViewModel
-    compile "android.arch.lifecycle:runtime:1.0.0-alpha5"
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha5"
+    compile 'android.arch.lifecycle:runtime:1.0.0-alpha5'
+    compile 'android.arch.lifecycle:extensions:1.0.0-alpha5'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha5"
-
+    implementation files('libs/BaiduLBS_Android.jar')
 }

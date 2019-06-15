@@ -9,63 +9,166 @@
     <include
         layout="@layout/layout_title"/>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/sr_has_data"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlEnableAutoLoadMore="false"
-        app:srlEnableLoadMore="true"
-        app:srlPrimaryColor="@color/color_main_title">
+        android:layout_height="@dimen/widget_size_36"
+        android:layout_marginLeft="@dimen/widget_size_10"
+        android:layout_marginTop="@dimen/widget_size_10"
+        android:layout_marginRight="@dimen/widget_size_10"
+        android:background="@drawable/shape_white_100">
 
-        <com.scwang.smartrefresh.header.WaterDropHeader
+        <EditText
+            android:id="@+id/et_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/widget_size_10"
+            android:layout_marginRight="@dimen/widget_size_20"
+            android:layout_toRightOf="@+id/iv_search"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入关键词搜索"
+            android:maxLength="10"
+            android:textColor="@color/color_text"
+            android:textColorHint="@color/color_hint"
+            android:textSize="@dimen/font_size_14"/>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="@dimen/widget_size_14"
+            android:layout_height="@dimen/widget_size_14"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/widget_size_90"
+            android:src="@drawable/image_home_icon_search_grey"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:layout_height="@dimen/widget_size_40"
+            android:layout_marginLeft="@dimen/widget_size_15"
+            android:layout_marginTop="@dimen/widget_size_10"
+            android:layout_marginRight="@dimen/widget_size_15">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_item_4round_left">
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-                <LinearLayout
-                    android:id="@+id/ll_indcator"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp"/>
+                    android:layout_centerInParent="true"
+                    android:text="地区"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_14"/>
             </RelativeLayout>
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:background="@color/color_white"
-                android:paddingLeft="15dp"
-                android:paddingTop="15dp">
+                android:layout_weight="1"
+                android:background="@drawable/shape_input_0round">
 
-            </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <include
-                layout="@layout/layout_no_data"
-                />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="距离"
+                        android:textColor="@color/color_main_select"
+                        android:textSize="@dimen/font_size_14"/>
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="11dp"
+                        android:layout_marginLeft="@dimen/widget_size_5"
+                        android:src="@drawable/image_dis_top"/>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_input_4round_right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="好评优先"
+                    android:textColor="@color/color_main_select"
+                    android:textSize="@dimen/font_size_14"/>
+            </RelativeLayout>
         </LinearLayout>
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/sr_has_data"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/widget_size_10"
+            app:srlEnableAutoLoadMore="false"
+            app:srlEnableLoadMore="true"
+            app:srlPrimaryColor="@color/color_main_title">
+
+            <com.scwang.smartrefresh.header.WaterDropHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_white"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <include
+                    layout="@layout/layout_no_data"
+                    />
+            </LinearLayout>
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:id="@+id/ll_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.baidu.mapapi.map.MapView
+            android:layout_marginTop="@dimen/widget_size_10"
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.baidu.mapapi.map.MapView>
+    </LinearLayout>
 </LinearLayout>

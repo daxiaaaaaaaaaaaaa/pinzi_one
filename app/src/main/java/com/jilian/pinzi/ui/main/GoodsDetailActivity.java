@@ -262,8 +262,13 @@ public class GoodsDetailActivity extends BaseActivity {
         llCutomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showLoadingDialog();
                 LoginDto loginDto = PinziApplication.getInstance().getLoginDto();
+                if (loginDto == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                showLoadingDialog();
                 // 连接融云服务器
                 RongIM.connect(loginDto.getToken(), new RongIMClient.ConnectCallback() {
                     /**

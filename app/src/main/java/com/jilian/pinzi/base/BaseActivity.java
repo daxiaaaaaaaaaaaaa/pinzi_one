@@ -340,7 +340,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         imageView.setVisibility(View.VISIBLE);
 
     }
+    /**
+     * 设置右边图片
+     **/
+    public void setrightImageOne(int resource, View.OnClickListener listener) {
+        ImageView imageView = (ImageView) findViewById(R.id.iv_right_one);
+        imageView.setImageResource(resource);
+        imageView.setOnClickListener(listener);
+        imageView.setVisibility(View.VISIBLE);
 
+    }
+    /**
+     * 设置右边图片
+     **/
+    public void setrightImageTwo(int resource, View.OnClickListener listener) {
+        ImageView imageView = (ImageView) findViewById(R.id.iv_right_two);
+        imageView.setImageResource(resource);
+        imageView.setOnClickListener(listener);
+        imageView.setVisibility(View.VISIBLE);
+
+    }
     /**
      * 设置背景图片
      **/
