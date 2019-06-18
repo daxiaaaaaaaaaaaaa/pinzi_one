@@ -122,16 +122,18 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                 startActivity(intent);
             }
         });
-        setrightImageOne(R.drawable.image_my_location, new View.OnClickListener() {
+        setrightImageOne(R.drawable.image_shop_map, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(llNormal.getVisibility()  == View.VISIBLE){
                     llNormal.setVisibility(View.GONE);
                     llMap.setVisibility(View.VISIBLE);
+                    iv_right_one.setImageResource(R.drawable.image_shop_text);
                 }
                 else{
                     llNormal.setVisibility(View.VISIBLE);
                     llMap.setVisibility(View.GONE);
+                    iv_right_one.setImageResource(R.drawable.image_shop_map);
                 }
             }
         });

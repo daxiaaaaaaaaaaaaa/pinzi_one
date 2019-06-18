@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:tools="http://schemas.android.com/tools"
               android:background="@color/color_line"
               android:orientation="vertical">
 
@@ -29,13 +29,15 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="15dp"
                     android:src="@drawable/image_msg"/>
+
                 <ImageView
                     android:id="@+id/iv_new"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="26dp"
-                    android:src="@drawable/image_red_point"
                     android:layout_width="7dp"
-                    android:layout_height="7dp"/>
+                    android:layout_height="7dp"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/image_red_point"/>
+
                 <ImageView
                     android:id="@+id/iv_setting"
                     android:layout_width="18dp"
@@ -56,8 +58,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="24dp"
                     android:layout_marginTop="9dp"
+                    android:layout_marginBottom="24dp"
                     android:orientation="vertical">
 
                     <com.jilian.pinzi.views.CircularImageView
@@ -84,13 +86,13 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="6dp"
                         android:background="@drawable/shape_member"
-                        android:paddingBottom="4dp"
-                        android:paddingTop="4dp"
                         android:paddingLeft="8dp"
+                        android:paddingTop="4dp"
                         android:paddingRight="8dp"
-                        tools:text="黄金会员"
+                        android:paddingBottom="4dp"
                         android:textColor="@color/color_white"
-                        android:textSize="10sp"/>
+                        android:textSize="10sp"
+                        tools:text="黄金会员"/>
 
                     <TextView
                         android:id="@+id/tv_inivite_code"
@@ -106,12 +108,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:background="@color/color_white"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/widget_size_18"
+                android:paddingBottom="@dimen/widget_size_8">
 
                 <LinearLayout
-                    android:visibility="gone"
+
                     android:id="@+id/ll_wallet"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -183,6 +187,17 @@
 
                 </LinearLayout>
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/widget_size_8"
+                android:paddingBottom="@dimen/widget_size_18">
+
                 <LinearLayout
                     android:id="@+id/ll_my_card"
                     android:layout_width="0dp"
@@ -206,6 +221,56 @@
                         android:textSize="13sp"/>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_questionnaire_survey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/image_my_point"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="问卷调查"
+                        android:textColor="@color/color_text_dark"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_activity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/image_my_monney"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="活动"
+                        android:textColor="@color/color_text_dark"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -273,6 +338,7 @@
 
                     android:layout_marginRight="13dp"
                     android:background="@color/color_line"/>
+
                 <RelativeLayout
                     android:id="@+id/rl_my_shipment"
                     android:layout_width="match_parent"
@@ -301,6 +367,7 @@
 
                     android:layout_marginRight="13dp"
                     android:background="@color/color_line"/>
+
                 <RelativeLayout
                     android:id="@+id/rl_foot"
                     android:layout_width="match_parent"
@@ -414,8 +481,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="9dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/color_white"
                 android:orientation="vertical"
                 android:paddingLeft="20dp">
@@ -478,10 +545,10 @@
                     android:background="@color/color_line"/>
 
                 <RelativeLayout
-                    android:visibility="gone"
                     android:id="@+id/rl_five_shop_at"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"

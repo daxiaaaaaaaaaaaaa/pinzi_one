@@ -28,6 +28,15 @@ public class MainActivityDetailActivity extends BaseActivity {
         setNormalTitle("活动详情", v -> finish());
         tvGet = (TextView) findViewById(R.id.tv_get);
         tvSee = (TextView) findViewById(R.id.tv_see);
+        if(getIntent().getIntExtra("index",1)==2){
+            setrightTitle("上传作品", "#FFFFFF", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivityDetailActivity.this,PublishWorksActivity.class));
+                }
+            });
+            tvGet.setText("取消报名");
+        }
     }
 
     @Override

@@ -116,6 +116,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.main.BuyCardActivity"/>
         <activity android:name=".ui.my.MemberActivity"/>
         <activity android:name=".ui.my.WalletActivity"/>
         <activity android:name=".ui.my.MyTntegralActivity"/>
@@ -189,6 +190,11 @@
         <activity android:name=".ui.my.ApplyServiceActivity"/>
         <activity android:name=".ui.friends.imagepager.ImagePagerActivity"/>
         <activity android:name=".ui.friends.FriendDetailActivity"/>
+        <activity android:name=".ui.QuestionnaireSurveyActivity"/>
+        <activity android:name=".ui.QuestionnaireSurveyDetailActivity"/>
+        <activity android:name=".ui.MyActivityActivity"/>
+        <activity android:name=".ui.PublishWorksActivity"/>
+        <activity android:name=".ui.my.AboutActivity"/>
         <!-- 兼容7.0 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

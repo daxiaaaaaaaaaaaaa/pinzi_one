@@ -92,6 +92,12 @@ public class SettingActivity extends BaseActivity {
 
             }
         });
+        rlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this,AboutActivity.class));
+            }
+        });
     }
 
     private void showLogoutDialog() {

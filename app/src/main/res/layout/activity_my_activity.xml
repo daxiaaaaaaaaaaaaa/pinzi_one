@@ -3,7 +3,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/color_line"
-              android:orientation="vertical">
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+    >
 
     <include
         layout="@layout/layout_title"/>
@@ -20,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="商品"
+            android:text="我参与的活动"
             android:textColor="@color/color_main_select"
             android:textSize="16sp"/>
 
@@ -31,19 +33,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="店铺"
+            android:text="我的作品"
             android:textColor="@color/color_text_dark"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/tv_three"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="资讯"
-            android:textColor="@color/color_text_dark"
-            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -56,9 +49,8 @@
             android:id="@+id/v_one"
             android:layout_width="0dp"
             android:layout_height="2dp"
-
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
             android:layout_weight="1"
             android:background="@color/color_main_select"
             />
@@ -67,30 +59,27 @@
             android:id="@+id/v_two"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="@color/color_main_select"
-            android:visibility="invisible"
-            />
-
-        <View
-            android:id="@+id/v_three"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
             android:layout_weight="1"
             android:background="@color/color_main_select"
             android:visibility="invisible"
             />
     </LinearLayout>
 
-    <com.jilian.pinzi.views.NoScrollViewPager
-        android:id="@+id/viewPager"
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/widget_size_10"
+        android:id="@+id/rv_one"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
-    </com.jilian.pinzi.views.NoScrollViewPager>
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/widget_size_10"
+        android:id="@+id/rv_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

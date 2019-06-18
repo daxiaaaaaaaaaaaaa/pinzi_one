@@ -343,11 +343,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 设置右边图片
      **/
+    public  ImageView iv_right_one;
     public void setrightImageOne(int resource, View.OnClickListener listener) {
-        ImageView imageView = (ImageView) findViewById(R.id.iv_right_one);
-        imageView.setImageResource(resource);
-        imageView.setOnClickListener(listener);
-        imageView.setVisibility(View.VISIBLE);
+        iv_right_one = (ImageView) findViewById(R.id.iv_right_one);
+        iv_right_one.setImageResource(resource);
+        iv_right_one.setOnClickListener(listener);
+        iv_right_one.setVisibility(View.VISIBLE);
 
     }
     /**

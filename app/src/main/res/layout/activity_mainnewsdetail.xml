@@ -101,7 +101,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="49dp"
                 android:layout_marginBottom="7dp"
-                android:src="@drawable/image_home_fabulous_active"
+                android:src="@drawable/image_like_no"
 
                 />
         </RelativeLayout>

@@ -14,6 +14,7 @@ import com.jilian.pinzi.adapter.CarTapPagerAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.ui.my.fragment.GoodsFragment;
 import com.jilian.pinzi.ui.my.fragment.HasUserFragment;
+import com.jilian.pinzi.ui.my.fragment.NewsFragment;
 import com.jilian.pinzi.ui.my.fragment.NoUserFragment;
 import com.jilian.pinzi.ui.my.fragment.OuttimeFragment;
 import com.jilian.pinzi.ui.my.fragment.ShopFragment;
@@ -30,13 +31,18 @@ public class MyCollectionActivity extends BaseActivity {
     private List<Fragment> mFragmentList;
     private GoodsFragment goodsFragment;
     private ShopFragment shopFragment;
-
+    private NewsFragment  newsFragment;//我的咨询
     private CarTapPagerAdapter adapter;
     private NoScrollViewPager viewPager;
     private View vOne;
     private View vTwo;
     private TextView tvOne;
     private TextView tvTwo;
+    private TextView tvThree;
+    private View vThree;
+
+
+
     private String classify;//1.收藏 2.足迹
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class MyCollectionActivity extends BaseActivity {
         vTwo = (View) findViewById(R.id.v_two);
         tvOne = (TextView) findViewById(R.id.tv_one);
         tvTwo = (TextView) findViewById(R.id.tv_two);
+        tvThree = (TextView) findViewById(R.id.tv_three);
+        vThree = (View) findViewById(R.id.v_three);
     }
 
     @Override
@@ -85,8 +93,10 @@ public class MyCollectionActivity extends BaseActivity {
         mFragmentList = new ArrayList<>();
         goodsFragment = new GoodsFragment();
         shopFragment = new ShopFragment();
+        newsFragment = new NewsFragment();
         mFragmentList.add(goodsFragment);
         mFragmentList.add(shopFragment);
+        mFragmentList.add(newsFragment);
         adapter = new CarTapPagerAdapter(getSupportFragmentManager(), mFragmentList);
         viewPager.setAdapter(adapter);
     }
@@ -106,6 +116,12 @@ public class MyCollectionActivity extends BaseActivity {
             }
         });
 
+        tvThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(2);
+            }
+        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -119,20 +135,27 @@ public class MyCollectionActivity extends BaseActivity {
                     case 0:
                         vOne.setVisibility(View.VISIBLE);
                         vTwo.setVisibility(View.INVISIBLE);
+                        vThree.setVisibility(View.INVISIBLE);
                         tvOne.setTextColor(Color.parseColor("#c71233"));
                         tvTwo.setTextColor(Color.parseColor("#888888"));
+                        tvThree.setTextColor(Color.parseColor("#888888"));
                         break;
                     case 1:
                         vOne.setVisibility(View.INVISIBLE);
                         vTwo.setVisibility(View.VISIBLE);
                         tvOne.setTextColor(Color.parseColor("#888888"));
                         tvTwo.setTextColor(Color.parseColor("#c71233"));
+                        vThree.setVisibility(View.INVISIBLE);
+                        tvThree.setTextColor(Color.parseColor("#888888"));
                         break;
                     case 2:
                         vOne.setVisibility(View.INVISIBLE);
                         vTwo.setVisibility(View.INVISIBLE);
                         tvOne.setTextColor(Color.parseColor("#888888"));
                         tvTwo.setTextColor(Color.parseColor("#888888"));
+
+                        vThree.setVisibility(View.VISIBLE);
+                        tvThree.setTextColor(Color.parseColor("#c71233"));
                         break;
                 }
             }

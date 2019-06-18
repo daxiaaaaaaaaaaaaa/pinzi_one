@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_line"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+    >
+
+    <include
+        layout="@layout/layout_title"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginBottom="@dimen/widget_size_101"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_marginBottom="@dimen/widget_size_25"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/shape_btn_login_normal"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/color_white"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -27,7 +27,6 @@ import com.jilian.pinzi.ui.my.MyCenterActivity;
 import com.jilian.pinzi.ui.my.MyCollectionActivity;
 import com.jilian.pinzi.ui.my.MyCouponsActivity;
 import com.jilian.pinzi.ui.my.MyFootActivity;
-import com.jilian.pinzi.ui.my.MyInfoActivity;
 import com.jilian.pinzi.ui.my.MyOrderActivity;
 import com.jilian.pinzi.ui.my.MyShipmentActivity;
 import com.jilian.pinzi.ui.my.MyTntegralActivity;
@@ -36,14 +35,12 @@ import com.jilian.pinzi.ui.my.ServiceCenterActivity;
 import com.jilian.pinzi.ui.my.SettingActivity;
 import com.jilian.pinzi.ui.my.ShopAtActivity;
 import com.jilian.pinzi.ui.my.SystemMsgActivity;
-import com.jilian.pinzi.ui.my.UpdatePwdActivity;
 import com.jilian.pinzi.ui.my.WalletActivity;
 import com.jilian.pinzi.ui.my.MyLevelsActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.CircularImageView;
-import com.jilian.pinzi.views.CustomScrollViewPager;
 import com.jilian.pinzi.views.NoScrollViewPager;
 
 public class FiveFragment extends BaseFragment {
@@ -86,6 +83,8 @@ public class FiveFragment extends BaseFragment {
     private ImageView ivNew;
     private RelativeLayout rlFiveQrCode;
     private TextView tvFiveMyLevels;
+    private LinearLayout llQuestionnaireSurvey;
+    private LinearLayout llActivity;
 
 
 
@@ -111,6 +110,8 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        llQuestionnaireSurvey = (LinearLayout)view. findViewById(R.id.ll_questionnaire_survey);
+        llActivity = (LinearLayout) view.findViewById(R.id.ll_activity);
         rlMember = (RelativeLayout) view.findViewById(R.id.rl_member);
         rlAddressManager = (RelativeLayout) view.findViewById(R.id.rl_five_address_manager);
         rlMyLevels = (RelativeLayout) view.findViewById(R.id.rl_five_my_levels);
@@ -231,6 +232,19 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initListener() {
+        llActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MyActivityActivity.class));
+            }
+        });
+
+        llQuestionnaireSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), QuestionnaireSurveyActivity.class));
+            }
+        });
         rlFiveQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -31,6 +31,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:text="定金："
+                android:textColor="@color/color_text"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="运费："
                 android:textColor="@color/color_text"
                 android:textSize="14sp"/>
@@ -75,7 +82,14 @@
                 tools:text="¥ 198.00"
                 android:textColor="@color/color_main_select"
                 android:textSize="14sp"/>
-
+            <TextView
+                android:id="@+id/tv_preMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                tools:text="¥ 0.00"
+                android:textColor="@color/color_text_dark"
+                android:textSize="14sp"/>
             <TextView
                 android:id="@+id/tv_fright"
                 android:layout_width="wrap_content"
