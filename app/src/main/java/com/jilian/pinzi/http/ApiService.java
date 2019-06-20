@@ -22,6 +22,9 @@ import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.HotWordListDto;
 import com.jilian.pinzi.common.dto.HotWordSelectBusinessDto;
 import com.jilian.pinzi.common.dto.HotWordSelectDto;
+import com.jilian.pinzi.common.dto.InformationtDetailDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.InviteListDto;
 import com.jilian.pinzi.common.dto.InviteeDetailDto;
 import com.jilian.pinzi.common.dto.LoginDto;
@@ -61,6 +64,7 @@ import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.EditAdressVo;
 import com.jilian.pinzi.common.vo.GetWithdrawDepositVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
+import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.LoginVo;
 import com.jilian.pinzi.common.vo.PayOrderVo;
@@ -914,6 +918,39 @@ public interface ApiService {
      */
     @GET("user/getContent")
     Flowable<BaseDto<MyTntegralDetailDto>> getContent();
+
+    /**
+     * 资讯分类
+     * @param map
+     * @return
+     */
+    @GET("information/getInformationTypeList")
+    Flowable<BaseDto<List<InformationtTypeDto>>> getInformationTypeList(@QueryMap Map<String, String> map);
+
+    /**
+     *  资讯列表
+     * @param map
+     * @return
+     */
+    @GET("information/getInformationList")
+    Flowable<BaseDto<List<InformationtDto>>> getInformationList(@QueryMap Map<String, String> map);
+
+    /**
+     * 咨询详情
+     * @param map
+     * @return
+     */
+    @GET("information/getInformationDetail")
+    Flowable<BaseDto<InformationtDetailDto>> getInformationDetail(@QueryMap Map<String, String> map);
+
+    /**
+     * 评论资讯
+     * @param map
+     * @return
+     */
+    @GET("information/commentInformation")
+    Flowable<BaseDto> commentInformation(@QueryMap Map<String, String> map);
+
 }
 
 

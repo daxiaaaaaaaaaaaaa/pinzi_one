@@ -8,18 +8,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.utils.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 
 
 public class MainNewsAdapter extends RecyclerView.Adapter<MainNewsAdapter.ViewHolder> {
     private Activity mContext;
-    private List<String> datas;
+    private List<InformationtDto> datas;
     private CustomItemClickListener listener;
 
-    public MainNewsAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public MainNewsAdapter(Activity context, List<InformationtDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -39,6 +43,13 @@ public class MainNewsAdapter extends RecyclerView.Adapter<MainNewsAdapter.ViewHo
         } else {
             holder.vLine.setVisibility(View.VISIBLE);
         }
+        holder.tvName.setText(datas.get(position).getTitle());
+        holder.tvDate.setText("发表于 " + DateUtil.dateToString(DateUtil.DATE_FORMAT, new Date(datas.get(position).getCreateDate())));
+        Glide.with(mContext).
+                load(datas.get(position).getImgUrl()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
+                .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
+                .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
+                .into(holder.ivPhoto);//在RequestBuilder 中使用自定义的ImageViewTarge
     }
 
     @Override

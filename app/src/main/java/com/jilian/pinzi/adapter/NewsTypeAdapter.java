@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.NewsTypeDto;
 
 import java.util.List;
@@ -16,14 +17,14 @@ import java.util.List;
 
 public class NewsTypeAdapter extends RecyclerView.Adapter<NewsTypeAdapter.ViewHolder> {
     private Activity mContext;
-    private List<NewsTypeDto> datas;
+    private List<InformationtTypeDto> datas;
     private TypeTopListener listener;
 
     public interface TypeTopListener {
         void oneTypeClick(View view, int position);
     }
 
-    public NewsTypeAdapter(Activity context, List<NewsTypeDto> datas, TypeTopListener listener) {
+    public NewsTypeAdapter(Activity context, List<InformationtTypeDto> datas, TypeTopListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;

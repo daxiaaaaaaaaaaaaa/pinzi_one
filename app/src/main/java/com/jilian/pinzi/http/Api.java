@@ -22,6 +22,9 @@ import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.HotWordListDto;
 import com.jilian.pinzi.common.dto.HotWordSelectBusinessDto;
 import com.jilian.pinzi.common.dto.HotWordSelectDto;
+import com.jilian.pinzi.common.dto.InformationtDetailDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.InviteListDto;
 import com.jilian.pinzi.common.dto.InviteeDetailDto;
 import com.jilian.pinzi.common.dto.LoginDto;
@@ -63,6 +66,7 @@ import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
 import com.jilian.pinzi.common.vo.CollectionFootVo;
 import com.jilian.pinzi.common.vo.CommentGoodVo;
+import com.jilian.pinzi.common.vo.CommentInformationVo;
 import com.jilian.pinzi.common.vo.CommentReplyAddVo;
 import com.jilian.pinzi.common.vo.DeleteAdressVo;
 import com.jilian.pinzi.common.vo.DeleteFootVo;
@@ -83,6 +87,7 @@ import com.jilian.pinzi.common.vo.GoodsDetailVo;
 import com.jilian.pinzi.common.vo.GoodsEvaluateVo;
 import com.jilian.pinzi.common.vo.GoodsIsSecondCheckVo;
 import com.jilian.pinzi.common.vo.HotWordListVo;
+import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InviteListVo;
 import com.jilian.pinzi.common.vo.InviteeDetailVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
@@ -698,7 +703,7 @@ public class Api {
     }
 
     /**
-     *  积分兑换商品提交订单
+     * 积分兑换商品提交订单
      * post
      * json  积分兑换商品提交订单
      *
@@ -711,101 +716,111 @@ public class Api {
 
     /**
      * 我的订单列表
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<List<MyOrderDto>>>getMyOrderList(MyOrderListVo vo) {
+    public static Flowable<BaseDto<List<MyOrderDto>>> getMyOrderList(MyOrderListVo vo) {
         return RequetRetrofit.getInstance().getMyOrderList(HttpUtil.convertVo2Params(vo));
     }
 
 
-
     /**
-     *取消订单、确认收货、删除订单
+     * 取消订单、确认收货、删除订单
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<String>>updateOrderStatus(OrderStatusVo vo) {
+    public static Flowable<BaseDto<String>> updateOrderStatus(OrderStatusVo vo) {
         return RequetRetrofit.getInstance().updateOrderStatus(HttpUtil.convertVo2Params(vo));
     }
 
     /**
      * 获取运费
+     *
      * @param goodsIds
      * @return
      */
-    public static Flowable<BaseDto<String>>getFreight(String goodsIds) {
+    public static Flowable<BaseDto<String>> getFreight(String goodsIds) {
         return RequetRetrofit.getInstance().getFreight(goodsIds);
     }
 
     /**
      * 计算优惠券、积分、佣金抵扣金额
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<DiscountMoneyDto>>getDiscountMoney(DiscountMoneyVo vo) {
+    public static Flowable<BaseDto<DiscountMoneyDto>> getDiscountMoney(DiscountMoneyVo vo) {
         return RequetRetrofit.getInstance().getDiscountMoney(vo);
     }
 
 
     /**
      * 支付
+     *
      * @param
      * @return
      */
-    public static Flowable<BaseDto<String>>payOrder(PayOrderVo vo) {
+    public static Flowable<BaseDto<String>> payOrder(PayOrderVo vo) {
         return RequetRetrofit.getInstance().payOrder(vo);
     }
 
     /**
      * 我的上级 、下级、下二级、下三级
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<List<InviteListDto>>>getInviteList(InviteListVo vo) {
+    public static Flowable<BaseDto<List<InviteListDto>>> getInviteList(InviteListVo vo) {
         return RequetRetrofit.getInstance().getInviteList(HttpUtil.convertVo2Params(vo));
     }
 
     /**
      * 我的下级详情
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<InviteeDetailDto>>getInviteeDetail(InviteeDetailVo vo) {
+    public static Flowable<BaseDto<InviteeDetailDto>> getInviteeDetail(InviteeDetailVo vo) {
         return RequetRetrofit.getInstance().getInviteeDetail(HttpUtil.convertVo2Params(vo));
     }
 
     /**
      * 添加上级
+     *
      * @param vo
      * @return
      */
-    public static Flowable<BaseDto<String>>addMySuperior(AddMySuperiorVo vo) {
+    public static Flowable<BaseDto<String>> addMySuperior(AddMySuperiorVo vo) {
         return RequetRetrofit.getInstance().addMySuperior(HttpUtil.convertVo2Params(vo));
     }
 
     /**
      * 订单详情
+     *
      * @param orderId
      * @return
      */
-    public static Flowable<BaseDto<OrderDetailDto>>getOrderDetail(String orderId) {
+    public static Flowable<BaseDto<OrderDetailDto>> getOrderDetail(String orderId) {
         return RequetRetrofit.getInstance().getOrderDetail(orderId);
     }
 
     /**
-     *会员中心
+     * 会员中心
+     *
      * @param type
      * @param id
      * @return
      */
-    public static  Flowable<BaseDto<MemberDto>> MemberCenter(Integer type,  String id) {
-        return RequetRetrofit.getInstance().MemberCenter(type,id);
+    public static Flowable<BaseDto<MemberDto>> MemberCenter(Integer type, String id) {
+        return RequetRetrofit.getInstance().MemberCenter(type, id);
     }
 
 
     /**
      * 获取商铺详情
+     *
      * @param storeId
      * @param uId
      * @return
@@ -816,17 +831,19 @@ public class Api {
 
     /**
      * 商铺商品
+     *
      * @param identity
      * @param storeId
      * @param goodsName
      * @return
      */
-    public static Flowable<BaseDto<List<ShopGoodsDto>>> getStoreGoods(int identity, String storeId, String goodsName,String entrance) {
-        return RequetRetrofit.getInstance().getStoreGoods(identity, storeId, goodsName,entrance);
+    public static Flowable<BaseDto<List<ShopGoodsDto>>> getStoreGoods(int identity, String storeId, String goodsName, String entrance) {
+        return RequetRetrofit.getInstance().getStoreGoods(identity, storeId, goodsName, entrance);
     }
 
     /**
      * 评价
+     *
      * @param vo
      * @return
      */
@@ -836,6 +853,7 @@ public class Api {
 
     /**
      * 订单跟踪
+     *
      * @param orderId
      * @return
      */
@@ -845,38 +863,45 @@ public class Api {
 
     /**
      * 退货原因列表
+     *
      * @return
      */
-    public static  Flowable<BaseDto<List<RefundReasonDto>>> getRefundReason() {
+    public static Flowable<BaseDto<List<RefundReasonDto>>> getRefundReason() {
         return RequetRetrofit.getInstance().getRefundReason();
     }
+
     /**
      * 申请退货
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<String>> applyRefund( ApplyRefundVo vo) {
+    public static Flowable<BaseDto<String>> applyRefund(ApplyRefundVo vo) {
         return RequetRetrofit.getInstance().applyRefund(vo);
     }
+
     /**
      * 申请记录
+     *
      * @return
      */
-    public static Flowable<BaseDto<List<SaleRecordDto>>> getApplyRefundList(String uId, int pageNo, int pageSize){
+    public static Flowable<BaseDto<List<SaleRecordDto>>> getApplyRefundList(String uId, int pageNo, int pageSize) {
         return RequetRetrofit.getInstance().getApplyRefundList(uId, pageNo, pageSize);
     }
 
     /**
      * 查看评价
+     *
      * @param orderId
      * @return
      */
-    public static  Flowable<BaseDto<EvaluateDetailDto>> getEvaluateDetail(String orderId) {
+    public static Flowable<BaseDto<EvaluateDetailDto>> getEvaluateDetail(String orderId) {
         return RequetRetrofit.getInstance().getEvaluateDetail(orderId);
     }
 
     /**
      * 记录详情
+     *
      * @param aId
      * @return
      */
@@ -886,15 +911,15 @@ public class Api {
 
     /**
      * 删除足迹
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<String>> delUserFootprint( DeleteFootVo vo) {
+    public static Flowable<BaseDto<String>> delUserFootprint(DeleteFootVo vo) {
         return RequetRetrofit.getInstance().delUserFootprint(HttpUtil.convertVo2Params(vo));
     }
 
     /**
-     *
      * @param vo
      * @return
      */
@@ -903,118 +928,173 @@ public class Api {
     }
 
     /**
-     *新增点击
+     * 新增点击
+     *
      * @param id
      * @return
      */
-    public static  Flowable<BaseDto<String>> ClickByPageId( String id) {
+    public static Flowable<BaseDto<String>> ClickByPageId(String id) {
         return FriendRequetRetrofit.getInstance().ClickByPageId(id);
     }
+
     /**
-     *获取朋友列表
+     * 获取朋友列表
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<List<FriendCircleDto>>>  FriendCircleList( FriendCircleListVo vo) {
+    public static Flowable<BaseDto<List<FriendCircleDto>>> FriendCircleList(FriendCircleListVo vo) {
         return FriendRequetRetrofit.getInstance().FriendCircleList(HttpUtil.convertVo2Params(vo));
     }
 
     /**
-     *朋友圈删除
+     * 朋友圈删除
+     *
      * @param id
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleDelete( String id) {
+    public static Flowable<BaseDto<String>> FriendCircleDelete(String id) {
         return FriendRequetRetrofit.getInstance().FriendCircleDelete(id);
     }
 
 
     /**
-     *朋友圈评论
+     * 朋友圈评论
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleComment( FriendCircleCommentVo vo) {
+    public static Flowable<BaseDto<String>> FriendCircleComment(FriendCircleCommentVo vo) {
         return FriendRequetRetrofit.getInstance().FriendCircleComment(HttpUtil.convertVo2Params(vo));
     }
 
 
     /**
-     *朋友圈评论删除
+     * 朋友圈评论删除
+     *
      * @param id 评论ID
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleCommentDelete( String id) {
+    public static Flowable<BaseDto<String>> FriendCircleCommentDelete(String id) {
         return FriendRequetRetrofit.getInstance().FriendCircleCommentDelete(id);
     }
 
     /**
-     *朋友圈点赞
+     * 朋友圈点赞
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleLike( FriendCircleLikeVo vo) {
+    public static Flowable<BaseDto<String>> FriendCircleLike(FriendCircleLikeVo vo) {
         return FriendRequetRetrofit.getInstance().FriendCircleLike(HttpUtil.convertVo2Params(vo));
     }
 
     /**
-     *朋友圈取消点赞
+     * 朋友圈取消点赞
+     *
      * @param id 点赞ID
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleCancelLike( String id) {
+    public static Flowable<BaseDto<String>> FriendCircleCancelLike(String id) {
         return FriendRequetRetrofit.getInstance().FriendCircleCancelLike(id);
     }
 
     /**
-     *朋友圈评论回复
+     * 朋友圈评论回复
+     *
      * @param vo
      * @return
      */
-     public static  Flowable<BaseDto<String>>  CommentReplyAdd( CommentReplyAddVo vo) {
+    public static Flowable<BaseDto<String>> CommentReplyAdd(CommentReplyAddVo vo) {
         return FriendRequetRetrofit.getInstance().CommentReplyAdd(HttpUtil.convertVo2Params(vo));
     }
 
 
     /**
-     *发布朋友圈
+     * 发布朋友圈
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<String>>  FriendCircleIssue( FriendCircleIssueVo vo) {
+    public static Flowable<BaseDto<String>> FriendCircleIssue(FriendCircleIssueVo vo) {
         return FriendRequetRetrofit.getInstance().FriendCircleIssue(HttpUtil.convertVo2Params(vo));
     }
 
     /**
      * 刷新单条朋友圈
-     * @param  vo
-     * @return
-     */
-    public static Flowable<BaseDto<List<FriendCircleListDetailDto>>>    SingleFriendCircle(SingleFriendCircleVo vo) {
-        return FriendRequetRetrofit.getInstance().SingleFriendCircle(HttpUtil.convertVo2Params(vo));
-    }
-    /**
-     *我的朋友圈列表
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<List<FriendCircleDto>>>  MyFriendCircleList( FriendCircleListVo vo) {
+    public static Flowable<BaseDto<List<FriendCircleListDetailDto>>> SingleFriendCircle(SingleFriendCircleVo vo) {
+        return FriendRequetRetrofit.getInstance().SingleFriendCircle(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 我的朋友圈列表
+     *
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<FriendCircleDto>>> MyFriendCircleList(FriendCircleListVo vo) {
         return FriendRequetRetrofit.getInstance().MyFriendCircleList(HttpUtil.convertVo2Params(vo));
     }
 
     /**
-     *用户类型朋友圈列表
+     * 用户类型朋友圈列表
+     *
      * @param vo
      * @return
      */
-    public static  Flowable<BaseDto<List<FriendCircleDto>>>  UserTypeFriendCircleList(UserTypeFriendCircleListVo vo) {
+    public static Flowable<BaseDto<List<FriendCircleDto>>> UserTypeFriendCircleList(UserTypeFriendCircleListVo vo) {
         return FriendRequetRetrofit.getInstance().UserTypeFriendCircleList(HttpUtil.convertVo2Params(vo));
     }
+
     /**
      * 积分 抽奖说明
+     *
      * @return
      */
-    public static  Flowable<BaseDto<MyTntegralDetailDto>> getContent( ) {
+    public static Flowable<BaseDto<MyTntegralDetailDto>> getContent() {
         return RequetRetrofit.getInstance().getContent();
+    }
+
+    /**
+     * 资讯分类
+     *
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<InformationtTypeDto>>> getInformationTypeList(InformationVo vo) {
+        return FriendRequetRetrofit.getInstance().getInformationTypeList(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 资讯列表
+     *
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<InformationtDto>>> getInformationList(InformationVo vo) {
+        return FriendRequetRetrofit.getInstance().getInformationList(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 咨询详情
+     *
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<InformationtDetailDto>> getInformationDetail(InformationVo vo) {
+        return FriendRequetRetrofit.getInstance().getInformationDetail(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 评论资讯
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> commentInformation(CommentInformationVo vo) {
+        return FriendRequetRetrofit.getInstance().commentInformation(HttpUtil.convertVo2Params(vo));
     }
 }

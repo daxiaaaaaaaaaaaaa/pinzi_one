@@ -193,9 +193,7 @@ public class PayOrderActivity extends BaseActivity {
             @Override
             public void accept(FriendMsg eventMsg) throws Exception {
                 if (eventMsg != null) {
-                    if(eventMsg.getCode()==500){
-                        toPaySuccess();
-                    }
+                    
                 }
             }
         });
@@ -299,14 +297,14 @@ public class PayOrderActivity extends BaseActivity {
                     }
                     //钱包支付
                     else{
-                        toPaySuccess();
-                    }
-
-                }
-                else{
-                    ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
-                }
+                toPaySuccess();
             }
+
+        }
+                else{
+            ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
+        }
+    }
         });
     }
 

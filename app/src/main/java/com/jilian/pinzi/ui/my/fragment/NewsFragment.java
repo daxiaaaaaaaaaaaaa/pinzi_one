@@ -9,6 +9,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.MainNewsAdapter;
 import com.jilian.pinzi.adapter.MyNewsCollectAdapter;
 import com.jilian.pinzi.base.BaseFragment;
+import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.views.CustomerLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -25,7 +26,7 @@ public class NewsFragment extends BaseFragment implements CustomItemClickListene
 
     private MyNewsCollectAdapter mainNewsAdapter;
     private CustomerLinearLayoutManager linearLayoutManager;
-    private List<String> list;
+    private List<InformationtDto> list;
 
 
     @Override
@@ -61,12 +62,7 @@ public class NewsFragment extends BaseFragment implements CustomItemClickListene
         recyclerView .setLayoutManager(linearLayoutManager);
         srNoData.setEnableLoadMore(false);
         list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
+
         mainNewsAdapter = new MyNewsCollectAdapter(getActivity(), list, this);
         recyclerView.setAdapter(mainNewsAdapter);
     }

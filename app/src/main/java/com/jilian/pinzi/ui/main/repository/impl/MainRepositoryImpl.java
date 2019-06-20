@@ -17,6 +17,9 @@ import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.HotWordListDto;
 import com.jilian.pinzi.common.dto.HotWordSelectBusinessDto;
 import com.jilian.pinzi.common.dto.HotWordSelectDto;
+import com.jilian.pinzi.common.dto.InformationtDetailDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
@@ -28,6 +31,7 @@ import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
+import com.jilian.pinzi.common.vo.CommentInformationVo;
 import com.jilian.pinzi.common.vo.DiscountConpouVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
@@ -35,6 +39,7 @@ import com.jilian.pinzi.common.vo.GoodsDetailVo;
 import com.jilian.pinzi.common.vo.GoodsEvaluateVo;
 import com.jilian.pinzi.common.vo.GoodsIsSecondCheckVo;
 import com.jilian.pinzi.common.vo.HotWordListVo;
+import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
@@ -171,6 +176,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto<List<HotWordSelectDto>>> HotWordSelect(HotWordListVo vo) {
         return request(Api.HotWordSelect(vo)).send().get();
     }
+
     /**
      * 店铺搜索
      *
@@ -180,6 +186,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto<List<HotWordSelectBusinessDto>>> HotWordSelectBusiness(HotWordListVo vo) {
         return request(Api.HotWordSelectBusiness(vo)).send().get();
     }
+
     /**
      * 全部分类
      *
@@ -392,4 +399,50 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto<String>> ClickByPageId(String id) {
         return request(Api.ClickByPageId(id)).send().get();
     }
+
+    /**
+     * 资讯分类
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<InformationtTypeDto>>> getInformationTypeList(InformationVo vo) {
+        return request(Api.getInformationTypeList(vo)).send().get();
+    }
+
+    /**
+     * 资讯列表
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<InformationtDto>>> getInformationList(InformationVo vo) {
+        return request(Api.getInformationList(vo)).send().get();
+    }
+
+    /**
+     * 咨询详情
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<InformationtDetailDto>> getInformationDetail(InformationVo vo) {
+        return request(Api.getInformationDetail(vo)).send().get();
+    }
+
+    /**
+     * 评论资讯
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> commentInformation(CommentInformationVo vo) {
+        return request(Api.commentInformation(vo)).send().get();
+    }
+
+
 }

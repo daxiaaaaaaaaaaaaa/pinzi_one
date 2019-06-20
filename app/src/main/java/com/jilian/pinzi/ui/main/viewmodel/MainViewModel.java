@@ -18,6 +18,9 @@ import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.HotWordListDto;
 import com.jilian.pinzi.common.dto.HotWordSelectBusinessDto;
 import com.jilian.pinzi.common.dto.HotWordSelectDto;
+import com.jilian.pinzi.common.dto.InformationtDetailDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
@@ -29,6 +32,7 @@ import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
+import com.jilian.pinzi.common.vo.CommentInformationVo;
 import com.jilian.pinzi.common.vo.DiscountConpouVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
@@ -36,6 +40,7 @@ import com.jilian.pinzi.common.vo.GoodsDetailVo;
 import com.jilian.pinzi.common.vo.GoodsEvaluateVo;
 import com.jilian.pinzi.common.vo.GoodsIsSecondCheckVo;
 import com.jilian.pinzi.common.vo.HotWordListVo;
+import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
@@ -116,6 +121,30 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto<DiscountMoneyDto>> discountMoney;//抵扣金额
 
     private LiveData<BaseDto<String>> clickData;//点击次数新增
+
+    private LiveData<BaseDto<List<InformationtTypeDto>>> informationtTypeData;//咨询分类
+
+    private LiveData<BaseDto<List<InformationtDto>>> informationtData;//咨询列表
+
+    private LiveData<BaseDto<InformationtDetailDto>> informationtDetailData;//咨询详情
+
+    private LiveData<BaseDto> commentDetailData;//评论详情
+
+    public LiveData<BaseDto> getCommentDetailData() {
+        return commentDetailData;
+    }
+
+    public LiveData<BaseDto<List<InformationtTypeDto>>> getInformationtTypeData() {
+        return informationtTypeData;
+    }
+
+    public LiveData<BaseDto<List<InformationtDto>>> getInformationtData() {
+        return informationtData;
+    }
+
+    public LiveData<BaseDto<InformationtDetailDto>> getInformationtDetailData() {
+        return informationtDetailData;
+    }
 
     public LiveData<BaseDto<String>> getClickData() {
         return clickData;
@@ -386,6 +415,7 @@ public class MainViewModel extends ViewModel {
         vo.setWord(word);
         searchResultliveData = mainRepository.HotWordSelect(vo);
     }
+
     /**
      * 去搜索店铺
      */
@@ -395,6 +425,7 @@ public class MainViewModel extends ViewModel {
         vo.setWord(word);
         searcBussliveData = mainRepository.HotWordSelectBusiness(vo);
     }
+
     /**
      * 全部分类
      *
@@ -410,7 +441,7 @@ public class MainViewModel extends ViewModel {
      *
      * @return
      */
-    public void getBuyerCenterGoods(int pageNo, int pageSize, Integer identity, String goodsType,String entrance) {
+    public void getBuyerCenterGoods(int pageNo, int pageSize, Integer identity, String goodsType, String entrance) {
         mainRepository = new MainRepositoryImpl();
         BuyerCenterGoodsVo vo = new BuyerCenterGoodsVo();
         vo.setEntrance(entrance);
@@ -518,7 +549,7 @@ public class MainViewModel extends ViewModel {
      * @param goodsId
      * @param uId
      */
-    public void getGoodsEvaluate(Integer pageNo,Integer  pageSize,Integer type, String goodsId, String uId) {
+    public void getGoodsEvaluate(Integer pageNo, Integer pageSize, Integer type, String goodsId, String uId) {
         mainRepository = new MainRepositoryImpl();
         GoodsEvaluateVo vo = new GoodsEvaluateVo();
         vo.setGoodsId(goodsId);
@@ -651,7 +682,7 @@ public class MainViewModel extends ViewModel {
      * @param identity
      * @param goods
      */
-    public void getGoodsIsSecondCheck(String classes,Integer identity, String goods) {
+    public void getGoodsIsSecondCheck(String classes, Integer identity, String goods) {
         GoodsIsSecondCheckVo vo = new GoodsIsSecondCheckVo();
         vo.setIdentity(identity);
         vo.setGoods(goods);
@@ -787,11 +818,70 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 点击次数新增
+     *
      * @param id
      */
-    public void ClickByPageId(String id){
+    public void ClickByPageId(String id) {
         mainRepository = new MainRepositoryImpl();
         clickData = mainRepository.ClickByPageId(id);
+    }
+
+
+    /**
+     * 获取咨询分类
+     */
+    public void getInformationTypeList() {
+        mainRepository = new MainRepositoryImpl();
+        informationtTypeData = mainRepository.getInformationTypeList(new InformationVo());
+    }
+
+    /**
+     * 获取咨询列表
+     *
+     * @param typeId
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getInformationList(String typeId, int pageNo, int pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        InformationVo vo = new InformationVo();
+        vo.setTypeId(typeId);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        informationtData = mainRepository.getInformationList(vo);
+    }
+
+    /**
+     * 获取咨询详情
+     *
+     * @param id
+     * @param uId
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getInformationDetail(String id, String uId, Integer pageNo, Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        InformationVo vo = new InformationVo();
+        vo.setId(id);
+        vo.setuId(uId);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        informationtDetailData = mainRepository.getInformationDetail(vo);
+    }
+
+    /**
+     * 评论咨询
+     * @param id 资讯Id
+     * @param uId
+     * @param content
+     */
+    public void commentInformation(String id, String uId, String content) {
+        mainRepository = new MainRepositoryImpl();
+        CommentInformationVo vo = new CommentInformationVo();
+        vo.setId(id);
+        vo.setuId(uId);
+        vo.setContent(content);
+        commentDetailData = mainRepository.commentInformation(vo);
     }
 
 

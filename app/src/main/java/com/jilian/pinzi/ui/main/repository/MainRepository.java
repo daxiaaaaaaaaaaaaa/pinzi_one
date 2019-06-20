@@ -16,6 +16,9 @@ import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.HotWordListDto;
 import com.jilian.pinzi.common.dto.HotWordSelectBusinessDto;
 import com.jilian.pinzi.common.dto.HotWordSelectDto;
+import com.jilian.pinzi.common.dto.InformationtDetailDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
+import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
@@ -27,6 +30,7 @@ import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
+import com.jilian.pinzi.common.vo.CommentInformationVo;
 import com.jilian.pinzi.common.vo.DiscountConpouVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
@@ -34,6 +38,7 @@ import com.jilian.pinzi.common.vo.GoodsDetailVo;
 import com.jilian.pinzi.common.vo.GoodsEvaluateVo;
 import com.jilian.pinzi.common.vo.GoodsIsSecondCheckVo;
 import com.jilian.pinzi.common.vo.HotWordListVo;
+import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
@@ -297,4 +302,32 @@ public interface MainRepository {
      * @return
      */
     LiveData <BaseDto<String>>ClickByPageId(String id);
+
+    /**
+     * 资讯分类
+     * @param vo
+     * @return
+     */
+    LiveData <BaseDto<List<InformationtTypeDto>>>getInformationTypeList(InformationVo vo);
+
+    /**
+     * 资讯列表
+     * @param vo
+     * @return
+     */
+    LiveData <BaseDto<List<InformationtDto>>>getInformationList(InformationVo vo);
+
+    /**
+     * 咨询详情
+     * @param vo
+     * @return
+     */
+    LiveData <BaseDto<InformationtDetailDto>>getInformationDetail(InformationVo vo);
+
+    /**
+     * 评论资讯
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> commentInformation(CommentInformationVo vo);
 }

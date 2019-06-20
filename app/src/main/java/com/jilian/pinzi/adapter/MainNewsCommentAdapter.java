@@ -8,19 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.CommentListDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.views.CircularImageView;
 
+import java.util.Date;
 import java.util.List;
 
 
 public class MainNewsCommentAdapter extends RecyclerView.Adapter<MainNewsCommentAdapter.ViewHolder> {
     private Activity mContext;
-    private List<String> datas;
+    private List<CommentListDto> datas;
     private CustomItemClickListener listener;
 
-    public MainNewsCommentAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public MainNewsCommentAdapter(Activity context, List<CommentListDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -35,6 +39,14 @@ public class MainNewsCommentAdapter extends RecyclerView.Adapter<MainNewsComment
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.tvName.setText(datas.get(position).getUserName());
+        holder.tvContent.setText(datas.get(position).getContent());
+        holder.tvDate.setText(DateUtil.dateToString(DateUtil.DATE_FORMAT,new Date(datas.get(position).getCreateDate())));
+        Glide.with(mContext).
+                load(datas.get(position).getHeadImg()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
+                .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
+                .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
+                .into(holder.ivHead);//在RequestBuilder 中使用自定义的ImageViewTarge
 
     }
 

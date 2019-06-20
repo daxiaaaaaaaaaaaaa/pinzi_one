@@ -2,7 +2,6 @@ package com.jilian.pinzi.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
-import com.jilian.pinzi.common.dto.CollectionFootDto;
-import com.jilian.pinzi.common.dto.GoodlistDto;
+import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.MainNewsDetailActivity;
-import com.jilian.pinzi.ui.main.GoodsDetailActivity;
-import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.views.CustomerItemDecoration;
 import com.jilian.pinzi.views.CustomerLinearLayoutManager;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.List;
@@ -30,7 +21,7 @@ import java.util.List;
 
 public class MyNewsCollectAdapter extends RecyclerView.Adapter<MyNewsCollectAdapter.ViewHolder> implements CustomItemClickListener {
     private Activity mContext;
-    private List<String> datas;
+    private List<InformationtDto> datas;
     private CustomItemClickListener listener;
 
     @Override
@@ -38,7 +29,7 @@ public class MyNewsCollectAdapter extends RecyclerView.Adapter<MyNewsCollectAdap
         mContext.startActivity(new Intent(mContext, MainNewsDetailActivity.class));
     }
 
-    public MyNewsCollectAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public MyNewsCollectAdapter(Activity context, List<InformationtDto> datas, CustomItemClickListener listener) {
 
         mContext = context;
         this.datas = datas;

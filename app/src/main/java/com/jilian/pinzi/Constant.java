@@ -22,13 +22,16 @@ public class Constant {
         public final static int TIME_OUT = 16;
 
 
+        //一期
+        //public static String BASE_URL = "http://39.108.14.94:9006/donghui_app/";
 
-        public static String BASE_URL = "http://39.108.14.94:9006/donghui_app/";
+        //二期
+        public static String BASE_URL = "http://39.108.14.94:9010/donghui_app_test/";
 
-      //  public static String BASE_URL = "http://     192.168.1.165:9006/donghui_app/";
 
 
         public static String FIRE_URL = "http://39.108.14.94:9088";
+
     }
 
 
