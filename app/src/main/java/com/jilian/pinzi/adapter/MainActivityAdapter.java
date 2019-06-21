@@ -8,18 +8,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.utils.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.ViewHolder> {
     private Activity mContext;
-    private List<String> datas;
+    private List<ActivityDto> datas;
     private CustomItemClickListener listener;
 
-    public MainActivityAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public MainActivityAdapter(Activity context, List<ActivityDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -39,6 +43,19 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         } else {
             holder.vLine.setVisibility(View.VISIBLE);
         }
+
+        Glide.with(mContext).
+                load(datas.get(position).getImgUrl()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
+                .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
+                .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
+                .into(holder.ivPhoto);//在RequestBuilder 中使用自定义的ImageViewTarge
+
+        holder.tvName.setText(datas.get(position).getTitle());
+        holder.tvDate.setText("活动时间："+datas.get(position).getStartDate()+
+                "~"
+                +datas.get(position).getStartDate());
+        holder.tvRegistrationQuota.setText("报名名额："+datas.get(position).getPeopleNum());
+        holder.tvRegistrationNumber.setText("已报名人数："+datas.get(position).getAlreadyPeopleNum());
     }
 
     @Override

@@ -51,16 +51,18 @@ android {
 
 
 
-    compileSdkVersion 27
-    buildToolsVersion '28.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.jilian.pinzi"
-        minSdkVersion 18
-        targetSdkVersion 27
-        versionCode 2
-        versionName "V1.0.2"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        vectorDrawables.useSupportLibrary = true
         ndk {
             // 设置支持的SO库架构
             abiFilters "armeabi-v7a", "x86", 'armeabi'
@@ -212,4 +214,8 @@ dependencies {
     compile 'android.arch.lifecycle:extensions:1.0.0-alpha5'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha5"
     implementation files('libs/BaiduLBS_Android.jar')
+
+
+    //
+    implementation 'com.ycjiang:VideoPlayModule-Lite:2.+'
 }

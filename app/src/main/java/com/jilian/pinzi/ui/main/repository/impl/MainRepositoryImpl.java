@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.CommonRepository;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
@@ -27,6 +29,7 @@ import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
@@ -43,6 +46,7 @@ import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
+import com.jilian.pinzi.common.vo.ProductVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
@@ -445,4 +449,63 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     }
 
 
+    /**
+     * 活动列表
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<ActivityDto>>> getActivityList(ActivityVo vo) {
+        return request(Api.getActivityList(vo)).send().get();
+    }
+
+    /**
+     * 活动详情
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<ActivityDto>> getActivityDetail(ActivityVo vo) {
+        return request(Api.getActivityDetail(vo)).send().get();
+    }
+
+    /**
+     * 报名
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> applyActivity(ActivityVo vo) {
+        return request(Api.applyActivity(vo)).send().get();
+    }
+
+    /**
+     * 取消报名
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> cancelApply(ActivityVo vo) {
+        return request(Api.cancelApply(vo)).send().get();
+    }
+
+    /**
+     * 查看作品
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<ActivityProductDto>>> getActivityProductList(ProductVo vo) {
+        return request(Api.getActivityProductList(vo)).send().get();
+    }
+
+    /**
+     * 投票或取消投票
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> voteActivityProduct(ProductVo vo) {
+        return request(Api.voteActivityProduct(vo)).send().get();
+    }
 }

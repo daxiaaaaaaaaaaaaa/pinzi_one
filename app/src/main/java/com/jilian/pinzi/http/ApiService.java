@@ -2,6 +2,8 @@ package com.jilian.pinzi.http;
 
 
 import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.AddressDto;
 import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
@@ -951,6 +953,55 @@ public interface ApiService {
     @GET("information/commentInformation")
     Flowable<BaseDto> commentInformation(@QueryMap Map<String, String> map);
 
+    /**
+     *
+     * 活动列表
+     * @param map
+     * @return
+     */
+    @GET("activity/getActivityList")
+    Flowable<BaseDto<List<ActivityDto>>> getActivityList(@QueryMap Map<String, String> map);
+
+    /**
+     * 活动详情
+     * @param map
+     * @return
+     */
+    @GET("activity/getActivityDetail")
+    Flowable<BaseDto<ActivityDto>> getActivityDetail(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 报名
+     * @param map
+     * @return
+     */
+    @GET("activity/applyActivity")
+    Flowable<BaseDto> applyActivity(@QueryMap Map<String, String> map);
+
+    /**
+     * 取消报名
+     * @param map
+     * @return
+     */
+    @GET("activity/cancelApply")
+    Flowable<BaseDto> cancelApply(@QueryMap Map<String, String> map);
+
+    /**
+     * 查看作品
+     * @param map
+     * @return
+     */
+    @GET("activity/getActivityProductList")
+    Flowable<BaseDto<List<ActivityProductDto>>> getActivityProductList(@QueryMap Map<String, String> map);
+
+    /**
+     * 投票或取消投票
+     * @param map
+     * @return
+     */
+    @GET("activity/voteActivityProduct")
+    Flowable<BaseDto> voteActivityProduct(@QueryMap Map<String, String> map);
 }
 
 

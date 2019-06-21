@@ -11,6 +11,8 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.AllWorkAdapter;
 import com.jilian.pinzi.adapter.MainActivityAdapter;
 import com.jilian.pinzi.base.BaseActivity;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * 活动列表
  */
-public class MyActivityActivity extends BaseActivity implements CustomItemClickListener {
+public class MyActivityActivity extends BaseActivity implements CustomItemClickListener, AllWorkAdapter.ClickVideoListener {
     private TextView tvOne;
     private TextView tvTwo;
     private View vOne;
@@ -32,7 +34,10 @@ public class MyActivityActivity extends BaseActivity implements CustomItemClickL
     private MainActivityAdapter adapter;
     private LinearLayoutManager ll_one;
     private LinearLayoutManager ll_two;
-    private List<String> list;
+    private List<ActivityProductDto> list;
+
+    private List<ActivityDto> data;
+
     private AllWorkAdapter allWorkAdapter;
 
     @Override
@@ -65,18 +70,13 @@ public class MyActivityActivity extends BaseActivity implements CustomItemClickL
         rvTwo.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
 
         list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
+        data = new ArrayList<>();
         //我的活动
-        adapter = new MainActivityAdapter(this, list, this);
+        adapter = new MainActivityAdapter(this, data, this);
         rvOne.setAdapter(adapter);
 
         //我的作品
-        allWorkAdapter = new AllWorkAdapter(this, list, this);
+        allWorkAdapter = new AllWorkAdapter(this, list, this,this);
         rvTwo.setAdapter(allWorkAdapter);
 
     }
@@ -121,4 +121,10 @@ public class MyActivityActivity extends BaseActivity implements CustomItemClickL
         startActivity(intent);
 
     }
+
+    @Override
+    public void clickVideo(int position) {
+
+    }
+
 }

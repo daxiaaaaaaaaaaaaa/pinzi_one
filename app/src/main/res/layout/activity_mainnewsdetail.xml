@@ -67,7 +67,7 @@
                 tools:text=""/>
 
             <ImageView
-                android:id="@+id/iv_collect"
+
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_alignParentEnd="true"
@@ -91,7 +91,7 @@
 
             <ImageView
 
-                android:id="@+id/iv_share"
+                android:id="@+id/iv_collect"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_alignParentEnd="true"
@@ -100,7 +100,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="49dp"
                 android:layout_marginBottom="7dp"
-                android:src="@drawable/image_like_no"
 
                 />
         </RelativeLayout>

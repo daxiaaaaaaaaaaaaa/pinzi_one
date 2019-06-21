@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
     >
 
@@ -18,7 +19,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_good_test"
+            tools:src="@drawable/image_good_test"
             />
 
         <LinearLayout
@@ -34,7 +35,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="五粮液股份 52° 醇香酒型五粮液股份"
+                tools:text="五粮液股份 52° 醇香酒型五粮液股份"
                 android:textColor="@color/color_text"
                 android:textSize="16sp"/>
 
@@ -44,7 +45,7 @@
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活动时间：2019-01-01  19：00~20：00"
+                    tools:text="活动时间：2019-01-01  19：00~20：00"
                     android:textColor="@color/color_text_dark"
                     android:textSize="12sp"/>
             <TextView
@@ -52,7 +53,7 @@
                 android:id="@+id/tv_registration_quota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="报名名额：300人"
+                tools:text="报名名额：300人"
                 android:textColor="@color/color_text_dark"
                 android:textSize="12sp"/>
             <TextView
@@ -60,7 +61,7 @@
                 android:id="@+id/tv_registration_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已报名人数：200人"
+                tools:text="已报名人数：200人"
                 android:textColor="@color/color_text_dark"
                 android:textSize="12sp"/>
 

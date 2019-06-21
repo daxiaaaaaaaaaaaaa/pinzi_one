@@ -1,10 +1,13 @@
 package com.jilian.pinzi.ui.main.viewmodel;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.text.TextUtils;
 
 import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
@@ -28,6 +31,7 @@ import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
@@ -44,6 +48,7 @@ import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
+import com.jilian.pinzi.common.vo.ProductVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
@@ -129,6 +134,46 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto<InformationtDetailDto>> informationtDetailData;//咨询详情
 
     private LiveData<BaseDto> commentDetailData;//评论详情
+
+
+    private LiveData<BaseDto<List<ActivityDto>>> activityListData;//活动列表
+
+
+    private LiveData<BaseDto<ActivityDto>> activityDetailtData;//活动详情
+
+    private LiveData<BaseDto> applyData;//报名
+
+    private LiveData<BaseDto> cancelData;//取消报名
+
+
+    private LiveData<BaseDto<List<ActivityProductDto>>> productData;//查看作品
+
+
+    private LiveData<BaseDto> voteData;// 投票或取消投票
+
+    public LiveData<BaseDto<List<ActivityDto>>> getActivityListData() {
+        return activityListData;
+    }
+
+    public LiveData<BaseDto<ActivityDto>> getActivityDetailtData() {
+        return activityDetailtData;
+    }
+
+    public LiveData<BaseDto> getApplyData() {
+        return applyData;
+    }
+
+    public LiveData<BaseDto> getCancelData() {
+        return cancelData;
+    }
+
+    public LiveData<BaseDto<List<ActivityProductDto>>> getProductData() {
+        return productData;
+    }
+
+    public LiveData<BaseDto> getVoteData() {
+        return voteData;
+    }
 
     public LiveData<BaseDto> getCommentDetailData() {
         return commentDetailData;
@@ -871,7 +916,8 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 评论咨询
-     * @param id 资讯Id
+     *
+     * @param id      资讯Id
      * @param uId
      * @param content
      */
@@ -884,5 +930,93 @@ public class MainViewModel extends ViewModel {
         commentDetailData = mainRepository.commentInformation(vo);
     }
 
+
+    /**
+     * 活动列表
+     *
+     * @param identity 1.个人 2.门店 3.二批商 4.总经销商
+     * @param type     0.进行中 1.已结束
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getActivityList(String identity, int type, Integer pageNo, Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        ActivityVo vo = new ActivityVo();
+        vo.setIdentity(identity);
+        vo.setType(type);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        activityListData = mainRepository.getActivityList(vo);
+    }
+
+    /**
+     * 活动详情
+     *
+     * @param id  活动Id
+     * @param uId 用户Id
+     */
+    public void getActivityDetail(String id, String uId) {
+        mainRepository = new MainRepositoryImpl();
+        ActivityVo vo = new ActivityVo();
+        vo.setId(id);
+        vo.setuId(uId);
+        activityDetailtData = mainRepository.getActivityDetail(vo);
+    }
+
+    /**
+     * 报名
+     *
+     * @param aId 活动id
+     * @param uId
+     */
+    public void applyActivity(String aId, String uId) {
+        mainRepository = new MainRepositoryImpl();
+        ActivityVo vo = new ActivityVo();
+        vo.setaId(aId);
+        vo.setuId(uId);
+        applyData = mainRepository.applyActivity(vo);
+    }
+
+    /**
+     * 取消报名
+     *
+     * @param applyId 报名Id
+     */
+    public void cancelApply(String applyId) {
+        mainRepository = new MainRepositoryImpl();
+        ActivityVo vo = new ActivityVo();
+        vo.setApplyId(applyId);
+        cancelData = mainRepository.cancelApply(vo);
+    }
+
+    /**
+     * 查看作品
+     *
+     * @param uId
+     * @param aId 活动Id
+     */
+    public void getActivityProductList(String uId, String aId) {
+        mainRepository = new MainRepositoryImpl();
+        ProductVo vo = new ProductVo();
+        vo.setuId(uId);
+        vo.setaId(aId);
+        productData = mainRepository.getActivityProductList(vo);
+    }
+
+    /**
+     * 投票或取消投票
+     *
+     * @param uId
+     * @param apId
+     * @param type
+     */
+    public void voteActivityProduct(String uId, String apId, String type) {
+        mainRepository = new MainRepositoryImpl();
+        ProductVo vo = new ProductVo();
+        vo.setuId(uId);
+        vo.setApId(apId);
+        vo.setType(type);
+        voteData = mainRepository.voteActivityProduct(vo);
+    }
 
 }

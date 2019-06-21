@@ -271,6 +271,7 @@
         <activity android:name=".ui.MainNewsDetailActivity"/>
         <activity android:name=".ui.MainActivityActivity"/>
         <activity android:name=".ui.MainActivityDetailActivity"/>
+        <activity android:name=".ui.user.VideoPlayerDetailedActivity"/>
 
         <!--<activity-->
         <!--android:name="com.alipay.sdk.app.H5PayActivity"-->

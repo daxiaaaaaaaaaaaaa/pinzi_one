@@ -21,12 +21,62 @@
             android:orientation="vertical"
             tools:ignore="WebViewLayout">
 
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_size_15"
+                android:layout_marginTop="@dimen/widget_size_25"
+                android:text="活动标题"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_size_18"/>
+
+            <TextView
+
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_size_15"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_text_dark"
+                android:textSize="12sp"
+                tools:text="活动时间：2019-01-01  19：00~20：00"/>
+
+            <TextView
+                android:id="@+id/tv_registration_quota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_size_15"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_text_dark"
+                android:textSize="12sp"
+                tools:text="报名名额：300人"/>
+
+            <TextView
+                android:id="@+id/tv_registration_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_size_15"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_text_dark"
+                android:textSize="12sp"
+                tools:text="已报名人数：200人"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/widget_size_15"
+                android:layout_marginTop="@dimen/widget_size_25"
+                android:text="活动详情"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/font_size_18"/>
 
             <WebView
                 android:id="@+id/webview"
                 style="@style/NumberProgressBar_Default"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/widget_size_10">
 
             </WebView>
 

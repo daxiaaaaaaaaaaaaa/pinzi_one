@@ -2,6 +2,8 @@ package com.jilian.pinzi.http;
 
 
 import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.AddressDto;
 import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
@@ -55,6 +57,7 @@ import com.jilian.pinzi.common.dto.ShopGoodsDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddMySuperiorVo;
@@ -102,6 +105,7 @@ import com.jilian.pinzi.common.vo.OrderStatusVo;
 import com.jilian.pinzi.common.vo.PayOrderVo;
 import com.jilian.pinzi.common.vo.PerfectInformationVo;
 import com.jilian.pinzi.common.vo.PhotoImgVo;
+import com.jilian.pinzi.common.vo.ProductVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.RegisterVo;
 import com.jilian.pinzi.common.vo.ResetPwdVo;
@@ -1066,7 +1070,7 @@ public class Api {
      * @return
      */
     public static Flowable<BaseDto<List<InformationtTypeDto>>> getInformationTypeList(InformationVo vo) {
-        return FriendRequetRetrofit.getInstance().getInformationTypeList(HttpUtil.convertVo2Params(vo));
+        return RequetRetrofit.getInstance().getInformationTypeList(HttpUtil.convertVo2Params(vo));
     }
 
     /**
@@ -1076,7 +1080,7 @@ public class Api {
      * @return
      */
     public static Flowable<BaseDto<List<InformationtDto>>> getInformationList(InformationVo vo) {
-        return FriendRequetRetrofit.getInstance().getInformationList(HttpUtil.convertVo2Params(vo));
+        return RequetRetrofit.getInstance().getInformationList(HttpUtil.convertVo2Params(vo));
     }
 
     /**
@@ -1086,7 +1090,7 @@ public class Api {
      * @return
      */
     public static Flowable<BaseDto<InformationtDetailDto>> getInformationDetail(InformationVo vo) {
-        return FriendRequetRetrofit.getInstance().getInformationDetail(HttpUtil.convertVo2Params(vo));
+        return RequetRetrofit.getInstance().getInformationDetail(HttpUtil.convertVo2Params(vo));
     }
 
     /**
@@ -1095,6 +1099,60 @@ public class Api {
      * @return
      */
     public static Flowable<BaseDto> commentInformation(CommentInformationVo vo) {
-        return FriendRequetRetrofit.getInstance().commentInformation(HttpUtil.convertVo2Params(vo));
+        return RequetRetrofit.getInstance().commentInformation(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 活动列表
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<ActivityDto>>> getActivityList(ActivityVo vo) {
+        return RequetRetrofit.getInstance().getActivityList(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 活动详情
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<ActivityDto>> getActivityDetail(ActivityVo vo) {
+        return RequetRetrofit.getInstance().getActivityDetail(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 报名
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> applyActivity(ActivityVo vo) {
+        return RequetRetrofit.getInstance().applyActivity(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 取消报名
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> cancelApply(ActivityVo vo) {
+        return RequetRetrofit.getInstance().cancelApply(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 查看作品
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<ActivityProductDto>>> getActivityProductList(ProductVo vo) {
+        return RequetRetrofit.getInstance().getActivityProductList(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 投票或取消投票
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> voteActivityProduct(ProductVo vo) {
+        return RequetRetrofit.getInstance().voteActivityProduct(HttpUtil.convertVo2Params(vo));
     }
 }

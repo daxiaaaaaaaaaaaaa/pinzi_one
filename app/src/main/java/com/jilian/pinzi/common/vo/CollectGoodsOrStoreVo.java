@@ -6,7 +6,7 @@ public class CollectGoodsOrStoreVo  extends BaseVo {
     private static final long serialVersionUID = 5090860535454810722L;
     private String uId;//true number      用户Id
     private String goodOrStoreId;//true number    商品或店铺Id
-    private Integer type;//true number1.收藏商品 2.收藏店铺
+    private Integer type;//true number1.收藏商品 2.收藏店铺 3.收藏资讯
 
     public String getuId() {
         return uId;

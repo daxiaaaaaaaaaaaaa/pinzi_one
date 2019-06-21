@@ -2,6 +2,7 @@ package com.jilian.pinzi.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jilian.pinzi.PinziApplication;
@@ -22,6 +24,7 @@ import com.jilian.pinzi.common.dto.GoodsDetailDto;
 import com.jilian.pinzi.common.dto.InformationtDetailDto;
 import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.main.repository.impl.MainRepositoryImpl;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DateUtil;
@@ -48,6 +51,9 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
     private CustomerLinearLayoutManager linearLayoutManager;
     private MainNewsCommentAdapter adapter;
     private MainViewModel viewModel;
+    private ImageView ivCollect;
+
+
 
     @Override
     protected void createViewModel() {
@@ -63,7 +69,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
     public void initView() {
         setNormalTitle("资讯详情", v -> finish());
         webview = (WebView) findViewById(R.id.webview);
-
+        ivCollect = (ImageView) findViewById(R.id.iv_collect);
         tvNewTitle = (TextView) findViewById(R.id.tv_new_title);
         tvDate = (TextView) findViewById(R.id.tv_date);
         webview = (WebView) findViewById(R.id.webview);
@@ -87,7 +93,23 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
 
     @Override
     public void initListener() {
-
+        ivCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(PinziApplication.getInstance().getLoginDto()==null){
+                    Intent intent = new Intent(MainNewsDetailActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(mData)) {
+                    if (mData.getCollectId() == 0) {
+                        collectGoodsOrStore(getUserId(), mData.getId(), 3);
+                    } else {
+                        cancelCollect(String.valueOf(mData.getCollectId()));
+                    }
+                }
+            }
+        });
         etContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -101,7 +123,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
         });
 
     }
-
+    private  InformationtDetailDto mData;
     /**
      * 评论
      *
@@ -140,7 +162,14 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
             public void onChanged(@Nullable BaseDto<InformationtDetailDto> detailDtoBaseDto) {
                 hideLoadingDialog();
                 if (detailDtoBaseDto.isSuccess()) {
-                    if (EmptyUtils.isNotEmpty(detailDtoBaseDto.getData())) {
+                    if (EmptyUtils.isNotEmpty(detailDtoBaseDto.getData()))
+                    {
+                        mData = detailDtoBaseDto.getData();
+                        if (detailDtoBaseDto.getData().getCollectId() == 0) {
+                            ivCollect.setImageResource(R.drawable.image_colletion_normal);
+                        } else {
+                            ivCollect.setImageResource(R.drawable.image_colletion_selected);
+                        }
                         tvNewTitle.setText(detailDtoBaseDto.getData().getTitle());
                         tvDate.setText(DateUtil.dateToString(DateUtil.DATE_FORMAT_, new Date(detailDtoBaseDto.getData().getCreateDate())));
                         datas.addAll(detailDtoBaseDto.getData().getCommentList());
@@ -173,5 +202,45 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                 "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
+    }
+
+
+    private void collectGoodsOrStore(String uId, String goodOrStoreId, Integer type) {
+        showLoadingDialog();
+        viewModel.collectGoodsOrStore(uId, goodOrStoreId, type);
+        viewModel.getCollectGoodsOrStoreliveData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
+                hideLoadingDialog();
+                if (stringBaseDto.isSuccess()) {
+                    ToastUitl.showImageToastSuccess("收藏成功");
+                    getInformationDetail(getIntent().getStringExtra("id"), getLoginDto().getId());
+                } else {
+                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
+                }
+            }
+        });
+    }
+    /**
+     * 取消收藏
+     *
+     * @param cId
+     */
+    public void cancelCollect(String cId) {
+        showLoadingDialog();
+        viewModel.cancelCollect(cId);
+        viewModel.getCancelCollectliveData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
+                hideLoadingDialog();
+                if (stringBaseDto.isSuccess()) {
+                    ToastUitl.showImageToastSuccess("取消收藏成功");
+                    getInformationDetail(getIntent().getStringExtra("id"), getLoginDto().getId());
+
+                } else {
+                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
+                }
+            }
+        });
     }
 }

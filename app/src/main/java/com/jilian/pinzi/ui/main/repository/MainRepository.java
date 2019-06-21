@@ -3,6 +3,8 @@ package com.jilian.pinzi.ui.main.repository;
 import android.arch.lifecycle.LiveData;
 
 import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
@@ -26,6 +28,7 @@ import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
@@ -42,6 +45,7 @@ import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
+import com.jilian.pinzi.common.vo.ProductVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
@@ -146,6 +150,7 @@ public interface MainRepository {
 
     /**
      * 店铺搜索
+     *
      * @param vo
      * @return
      */
@@ -241,6 +246,7 @@ public interface MainRepository {
 
     /**
      * 判断是否有秒杀商品
+     *
      * @param vo
      * @return
      */
@@ -262,6 +268,7 @@ public interface MainRepository {
      * @return
      */
     LiveData<BaseDto<String>> addInvoice(InvoiceVo vo);
+
     /**
      * 提交订单
      * post
@@ -273,7 +280,7 @@ public interface MainRepository {
     LiveData<BaseDto<AddOrderDto>> addOrder(AddOrderVo vo);
 
     /**
-     *  积分兑换商品提交订单
+     * 积分兑换商品提交订单
      * post
      * json  积分兑换商品提交订单
      *
@@ -284,50 +291,106 @@ public interface MainRepository {
 
     /**
      * 获取运费
+     *
      * @param goodsIds
      * @return
      */
     LiveData<BaseDto<String>> getFreight(String goodsIds);
 
     /**
-     *  计算优惠券、积分、佣金抵扣金额
+     * 计算优惠券、积分、佣金抵扣金额
+     *
      * @param vo
      * @return
      */
-    LiveData <BaseDto<DiscountMoneyDto>>getDiscountMoney(DiscountMoneyVo vo);
+    LiveData<BaseDto<DiscountMoneyDto>> getDiscountMoney(DiscountMoneyVo vo);
 
     /**
      * 点击次数新增
+     *
      * @param id
      * @return
      */
-    LiveData <BaseDto<String>>ClickByPageId(String id);
+    LiveData<BaseDto<String>> ClickByPageId(String id);
 
     /**
      * 资讯分类
+     *
      * @param vo
      * @return
      */
-    LiveData <BaseDto<List<InformationtTypeDto>>>getInformationTypeList(InformationVo vo);
+    LiveData<BaseDto<List<InformationtTypeDto>>> getInformationTypeList(InformationVo vo);
 
     /**
      * 资讯列表
+     *
      * @param vo
      * @return
      */
-    LiveData <BaseDto<List<InformationtDto>>>getInformationList(InformationVo vo);
+    LiveData<BaseDto<List<InformationtDto>>> getInformationList(InformationVo vo);
 
     /**
      * 咨询详情
+     *
      * @param vo
      * @return
      */
-    LiveData <BaseDto<InformationtDetailDto>>getInformationDetail(InformationVo vo);
+    LiveData<BaseDto<InformationtDetailDto>> getInformationDetail(InformationVo vo);
 
     /**
      * 评论资讯
+     *
      * @param vo
      * @return
      */
     LiveData<BaseDto> commentInformation(CommentInformationVo vo);
+
+    /**
+     * 活动列表
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<List<ActivityDto>>> getActivityList(ActivityVo vo);
+
+
+    /**
+     * 活动详情
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<ActivityDto>> getActivityDetail(ActivityVo vo);
+
+    /**
+     * 报名
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> applyActivity(ActivityVo vo);
+
+    /**
+     * 取消报名
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> cancelApply(ActivityVo vo);
+
+    /**
+     * 查看作品
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<List<ActivityProductDto>>> getActivityProductList(ProductVo vo);
+
+    /**
+     * 投票或取消投票
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> voteActivityProduct(ProductVo vo);
 }

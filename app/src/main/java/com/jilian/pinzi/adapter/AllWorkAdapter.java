@@ -1,34 +1,79 @@
 package com.jilian.pinzi.adapter;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.AllWorksActivity;
+import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.views.CircularImageView;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHolder> implements CustomItemClickListener {
+public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHolder> implements CustomItemClickListener, AllWorkPhotoAdapter.ClickPhotoListener {
     private Activity mContext;
-    private List<String> datas;
+    private List<ActivityProductDto> datas;
     private CustomItemClickListener listener;
+    private ClickVideoListener clickVideoListener;
 
-    public AllWorkAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickVideoListener clickVideoListener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
+        this.clickVideoListener = clickVideoListener;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void clickPhoto(int position, List<String> datas) {
+        Intent intent = new Intent(mContext, ViewPhotosActivity.class);
+        intent.putExtra("url", getUrl(datas));
+        intent.putExtra("position", position);
+        mContext.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mContext).toBundle());
+    }
+    private String getUrl(List<String> datas) {
+        String url = "";
+        if (EmptyUtils.isNotEmpty(datas)) {
+            for (int i = 0; i < datas.size(); i++) {
+                if (i != datas.size() - 1) {
+                    url += datas.get(i) + ",";
+                }
+                else{
+                    url += datas.get(i) + "";
+                }
+            }
+        }
+        return url;
+
+    }
+    public interface ClickVideoListener {
+        void clickVideo(int position);
+
+
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,16 +84,53 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,3);
-        holder.recyclerView.setLayoutManager(gridLayoutManager);
-        HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION,  DisplayUtil.dip2px(mContext,15));//下间距
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION,  DisplayUtil.dip2px(mContext,15));//下间距
-        if(holder.recyclerView.getItemDecorationCount()<=0){
-            holder.recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
-        }
+        //判断是视频 还是 图片
+        //图片
+        if (EmptyUtils.isNotEmpty(datas.get(position).getPathUrl())) {
+            holder.recyclerView.setVisibility(View.VISIBLE);
+            holder.rlVideo.setVisibility(View.GONE);
 
-        holder.recyclerView.setAdapter(new AllWorkPhotoAdapter(mContext,datas,this));
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3);
+            holder.recyclerView.setLayoutManager(gridLayoutManager);
+            HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+            stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(mContext, 15));//下间距
+            stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(mContext, 15));//下间距
+            if (holder.recyclerView.getItemDecorationCount() <= 0) {
+                holder.recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
+            }
+            String imageUrl = datas.get(position).getPathUrl();
+            List<String> urlList = new ArrayList<>();
+            if (imageUrl.contains(",")) {
+                urlList = Arrays.asList(imageUrl.split(","));
+            } else {
+                urlList.add(imageUrl);
+            }
+            holder.recyclerView.setAdapter(new AllWorkPhotoAdapter(mContext, urlList, this));
+        }
+        if (EmptyUtils.isNotEmpty(datas.get(position).getVideo())) {
+            holder.recyclerView.setVisibility(View.GONE);
+            holder.rlVideo.setVisibility(View.VISIBLE);
+            holder.rlVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickVideoListener.clickVideo(position);
+                }
+            });
+            if (EmptyUtils.isNotEmpty(datas.get(position).getBitmap())) {
+                holder.btnVideo.setImageBitmap(datas.get(position).getBitmap());
+            }
+
+        }
+        holder.tvName.setText(datas.get(position).getUserName());
+        holder.tvContent.setText(datas.get(position).getContent());
+        holder.tvCount.setText("得票："+datas.get(position).getVoteNum());
+        Glide.with(mContext).
+                load(datas.get(position).getHeadImg()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
+                .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
+                .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
+                .into(holder.ivHead);//在RequestBuilder 中使用自定义的ImageViewTarge
+
+
     }
 
     @Override
@@ -68,20 +150,22 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         private TextView tvCount;
         private TextView tvContent;
         private RecyclerView recyclerView;
-
-
+        private ImageView btnVideo;
+        private RelativeLayout rlVideo;
 
 
 
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
             super(itemView);
-
+            btnVideo = (ImageView) itemView.findViewById(R.id.btnVideo);
             ivHead = (CircularImageView) itemView.findViewById(R.id.iv_head);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
             tvSend = (TextView) itemView.findViewById(R.id.tv_send);
             tvCount = (TextView) itemView.findViewById(R.id.tv_count);
             tvContent = (TextView) itemView.findViewById(R.id.tv_content);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView);
+
+            rlVideo = (RelativeLayout) itemView.findViewById(R.id.rl_video);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
