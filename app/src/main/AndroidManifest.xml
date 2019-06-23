@@ -195,6 +195,7 @@
         <activity android:name=".ui.MyActivityActivity"/>
         <activity android:name=".ui.PublishWorksActivity"/>
         <activity android:name=".ui.my.AboutActivity"/>
+        <activity android:name=".ui.VideoPlayerActivity"/>
         <!-- 兼容7.0 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

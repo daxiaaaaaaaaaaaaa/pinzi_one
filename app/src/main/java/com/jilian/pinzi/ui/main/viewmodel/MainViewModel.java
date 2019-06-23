@@ -1010,7 +1010,7 @@ public class MainViewModel extends ViewModel {
      * @param apId
      * @param type
      */
-    public void voteActivityProduct(String uId, String apId, String type) {
+    public void voteActivityProduct(String uId, String apId, int type) {
         mainRepository = new MainRepositoryImpl();
         ProductVo vo = new ProductVo();
         vo.setuId(uId);

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 活动列表
  */
-public class MyActivityActivity extends BaseActivity implements CustomItemClickListener, AllWorkAdapter.ClickVideoListener {
+public class MyActivityActivity extends BaseActivity implements CustomItemClickListener, AllWorkAdapter.ClickListener {
     private TextView tvOne;
     private TextView tvTwo;
     private View vOne;
@@ -124,6 +124,11 @@ public class MyActivityActivity extends BaseActivity implements CustomItemClickL
 
     @Override
     public void clickVideo(int position) {
+
+    }
+
+    @Override
+    public void vote(int position) {
 
     }
 

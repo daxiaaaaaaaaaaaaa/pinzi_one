@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Handler;
@@ -21,32 +20,23 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.AllWorkAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.common.UserViewInfo;
 import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
-import com.jilian.pinzi.common.dto.BannerDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
-import com.jilian.pinzi.ui.user.UserFragment;
-import com.jilian.pinzi.ui.user.VideoPlayerDetailedActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
-import com.previewlibrary.GPreviewBuilder;
-import com.previewlibrary.loader.VideoClickListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.jzvd.JzvdStd;
-
-public class AllWorksActivity extends BaseActivity implements CustomItemClickListener, AllWorkAdapter.ClickVideoListener {
+public class AllWorksActivity extends BaseActivity implements CustomItemClickListener, AllWorkAdapter.ClickListener {
     private SmartRefreshLayout srHasData;
     private RecyclerView recyclerView;
     private SmartRefreshLayout srNoData;
@@ -55,7 +45,6 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
     private List<ActivityProductDto> datas;
     private ActivityDto data;//活动
     private MainViewModel viewModel;
-    private ArrayList<UserViewInfo> mThumbViewInfoList = new ArrayList<>();
 
     @Override
     protected void createViewModel() {
@@ -122,8 +111,11 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
             @Override
             public void onChanged(@Nullable BaseDto<List<ActivityProductDto>> listBaseDto) {
                 hideLoadingDialog();
+                srHasData.finishRefresh();
+                srNoData.finishRefresh();
                 if (listBaseDto.isSuccess()) {
                     if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
+                        datas.clear();
                         datas.addAll(listBaseDto.getData());
                         datas.get(0).setVideo("http://lmp4.vjshi.com/2017-09-13/f55a900d89679ac1c9837d5b5aaf632a.mp4");
                         allWorkAdapter.notifyDataSetChanged();
@@ -201,12 +193,31 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
     @Override
     public void clickVideo(int position) {
 
-        Intent intent = new Intent(this, VideoPlayerDetailedActivity.class);
+        Intent intent = new Intent(this, VideoPlayerActivity.class);
         intent.putExtra("url", datas.get(position).getVideo());
         Bitmap bitmap = datas.get(position).getBitmap();
         intent.putExtra("bitmap", bitmap);
 
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AllWorksActivity.this).toBundle());
+
+    }
+
+    @Override
+    public void vote(int position) {
+        showLoadingDialog();
+        viewModel.voteActivityProduct(getLoginDto().getId(), datas.get(position).getId(), datas.get(position).getIsVote() == 0 ? 1 : 2);
+        viewModel.getVoteData().observe(this, new Observer<BaseDto>() {
+            @Override
+            public void onChanged(@Nullable BaseDto baseDto) {
+                hideLoadingDialog();
+                if (baseDto.isSuccess()) {
+                    ToastUitl.showImageToastSuccess("操作成功");
+                    getActivityProductList(getLoginDto().getId(), data.getId());
+                } else {
+                    ToastUitl.showImageToastFail(baseDto.getMsg());
+                }
+            }
+        });
 
     }
 

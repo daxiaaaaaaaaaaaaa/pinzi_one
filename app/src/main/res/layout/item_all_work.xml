@@ -38,9 +38,13 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
                 android:id="@+id/tv_send"
-                android:layout_width="@dimen/widget_size_50"
-                android:layout_height="@dimen/widget_size_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/shape_input_one_bg"
                 android:gravity="center"
@@ -101,8 +105,8 @@
 
         <ImageView
             android:id="@+id/iv_start"
-            android:layout_width="40dp"
-            android:layout_height="@dimen/widget_size_40"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:src="@drawable/image_video_start"

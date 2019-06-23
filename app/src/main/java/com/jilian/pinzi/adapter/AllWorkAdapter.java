@@ -36,9 +36,9 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
     private Activity mContext;
     private List<ActivityProductDto> datas;
     private CustomItemClickListener listener;
-    private ClickVideoListener clickVideoListener;
+    private ClickListener clickVideoListener;
 
-    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickVideoListener clickVideoListener) {
+    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickListener clickVideoListener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -53,14 +53,14 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         intent.putExtra("position", position);
         mContext.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mContext).toBundle());
     }
+
     private String getUrl(List<String> datas) {
         String url = "";
         if (EmptyUtils.isNotEmpty(datas)) {
             for (int i = 0; i < datas.size(); i++) {
                 if (i != datas.size() - 1) {
                     url += datas.get(i) + ",";
-                }
-                else{
+                } else {
                     url += datas.get(i) + "";
                 }
             }
@@ -68,10 +68,21 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         return url;
 
     }
-    public interface ClickVideoListener {
+
+    public interface ClickListener {
+        /**
+         * 点击视频
+         *
+         * @param position
+         */
         void clickVideo(int position);
 
-
+        /**
+         * 投票
+         *
+         * @param position
+         */
+        void vote(int position);
     }
 
 
@@ -123,12 +134,19 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         }
         holder.tvName.setText(datas.get(position).getUserName());
         holder.tvContent.setText(datas.get(position).getContent());
-        holder.tvCount.setText("得票："+datas.get(position).getVoteNum());
+        holder.tvCount.setText("得票：" + datas.get(position).getVoteNum());
         Glide.with(mContext).
                 load(datas.get(position).getHeadImg()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
                 .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
                 .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
                 .into(holder.ivHead);//在RequestBuilder 中使用自定义的ImageViewTarge
+        holder.tvSend.setText(datas.get(position).getIsVote() == 0 ? "投票" : "取消投票");
+        holder.tvSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickVideoListener.vote(position);
+            }
+        });
 
 
     }
@@ -152,7 +170,6 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         private RecyclerView recyclerView;
         private ImageView btnVideo;
         private RelativeLayout rlVideo;
-
 
 
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
