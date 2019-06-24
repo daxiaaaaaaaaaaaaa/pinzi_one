@@ -5,22 +5,16 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
-import com.jilian.pinzi.adapter.QuestionnaireSurveyDetaiItemlAdapter;
+import com.jilian.pinzi.adapter.QuestionnaireSurveyDetaiFinishlAdapter;
 import com.jilian.pinzi.adapter.QuestionnaireSurveyDetailAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
-import com.jilian.pinzi.common.dto.QuestionItemDto;
-import com.jilian.pinzi.common.msg.FriendMsg;
-import com.jilian.pinzi.common.msg.QuestionMsg;
-import com.jilian.pinzi.common.msg.RxBus;
-import com.jilian.pinzi.common.vo.CommitQuestionItemVo;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -32,11 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class QuestionnaireSurveyDetailActivity extends BaseActivity implements CustomItemClickListener {
+public class QuestionnaireSurveyDetailFinishActivity extends BaseActivity implements CustomItemClickListener {
 
     private RecyclerView recyclerView;
-    private TextView tvOk;
-    private QuestionnaireSurveyDetailAdapter adapter;
+
+    private QuestionnaireSurveyDetaiFinishlAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<QuestionDetailDto> list;
     private MainViewModel viewModel;
@@ -48,14 +42,14 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
 
     @Override
     public int intiLayout() {
-        return R.layout.activity_questionnairesurveydetail;
+        return R.layout.activity_questionnairesurveydetail_finish;
     }
 
     @Override
     public void initView() {
         setNormalTitle("问卷调查详情", v -> finish());
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        tvOk = (TextView) findViewById(R.id.tv_ok);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         //咨询列表
         linearLayoutManager = new LinearLayoutManager(this);
@@ -65,7 +59,7 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
 
         recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(map));
         list = new ArrayList<>();
-        adapter = new QuestionnaireSurveyDetailAdapter(this, list, this);
+        adapter = new QuestionnaireSurveyDetaiFinishlAdapter(this, list, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -90,7 +84,6 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
                         list.clear();
                         list.addAll(listBaseDto.getData());
                         adapter.notifyDataSetChanged();
-
                     }
                 } else {
                     ToastUitl.showImageToastFail(listBaseDto.getMsg());
@@ -101,75 +94,7 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
 
     @Override
     public void initListener() {
-        tvOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commitQuestion();
-            }
-        });
 
-    }
-
-    /**
-     * 提交答案
-     */
-    private void commitQuestion() {
-        showLoadingDialog();
-        viewModel.commitQuestion(getUserId(), questionDto.getId(), getResults());
-        viewModel.getCommiteData().observe(this, new Observer<BaseDto>() {
-            @Override
-            public void onChanged(@Nullable BaseDto baseDto) {
-                hideLoadingDialog();
-                if (baseDto.isSuccess()) {
-                    ToastUitl.showImageToastSuccess("提交成功");
-                    finish();
-                    QuestionMsg eventMsg = new QuestionMsg();
-                    eventMsg.setCode(200);
-                    RxBus.getInstance().post(eventMsg);
-                    finish();
-                } else {
-                    ToastUitl.showImageToastFail(baseDto.getMsg());
-                }
-            }
-        });
-
-    }
-
-    /**
-     * 获取选中的题目答案
-     *
-     * @return
-     */
-    private List<CommitQuestionItemVo> getResults() {
-        List<CommitQuestionItemVo> results = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            CommitQuestionItemVo vo = new CommitQuestionItemVo();
-            vo.setTopicId(list.get(i).getId());
-            vo.setOptionId(getOptionId(i));
-            results.add(vo);
-        }
-        return results;
-
-    }
-
-    /**
-     * 拼接选中的ID
-     *
-     * @param index
-     * @return
-     */
-    private String getOptionId(int index) {
-        QuestionnaireSurveyDetaiItemlAdapter detaiItemlAdapter = adapter.getAdapterList().get(index);
-        List<QuestionItemDto> itemList = detaiItemlAdapter.getDatas();
-        String idStr = "";
-        for (int i = 0; i < itemList.size(); i++) {
-            if (TextUtils.isEmpty(idStr)) {
-                idStr = itemList.get(i).getId();
-            } else {
-                idStr = idStr + "," + itemList.get(i).getId();
-            }
-        }
-        return TextUtils.isEmpty(idStr) ? null : idStr;
     }
 
     @Override

@@ -24,6 +24,8 @@ import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
+import com.jilian.pinzi.common.dto.QuestionDetailDto;
+import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
@@ -35,6 +37,7 @@ import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
 import com.jilian.pinzi.common.vo.CommentInformationVo;
+import com.jilian.pinzi.common.vo.CommitQuestionVo;
 import com.jilian.pinzi.common.vo.DiscountConpouVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
@@ -47,6 +50,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
@@ -508,4 +512,41 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto> voteActivityProduct(ProductVo vo) {
         return request(Api.voteActivityProduct(vo)).send().get();
     }
+
+    /**
+     * 问卷列表
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<QuestionDto>>> getQuestionList(QuestionVo vo) {
+        return request(Api.getQuestionList(vo)).send().get();
+    }
+
+    /**
+     * 提交问题答案
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<QuestionDetailDto>>> getQuestionDetail(QuestionVo vo) {
+        return request(Api.getQuestionDetail(vo)).send().get();
+    }
+
+    /**
+     * 提交问题答案
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> commitQuestion(CommitQuestionVo vo) {
+        return request(Api.commitQuestion(vo)).send().get();
+    }
+
+
+
+
+
+
+
 }

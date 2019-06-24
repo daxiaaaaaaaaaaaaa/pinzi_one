@@ -42,6 +42,8 @@ import com.jilian.pinzi.common.dto.MyTntegralDetailDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.common.dto.OrderTrackDto;
 import com.jilian.pinzi.common.dto.PersonalDto;
+import com.jilian.pinzi.common.dto.QuestionDetailDto;
+import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.RefundReasonDto;
 import com.jilian.pinzi.common.dto.RegisterDto;
 import com.jilian.pinzi.common.dto.SaleRecordDetailDto;
@@ -71,6 +73,7 @@ import com.jilian.pinzi.common.vo.CollectionFootVo;
 import com.jilian.pinzi.common.vo.CommentGoodVo;
 import com.jilian.pinzi.common.vo.CommentInformationVo;
 import com.jilian.pinzi.common.vo.CommentReplyAddVo;
+import com.jilian.pinzi.common.vo.CommitQuestionVo;
 import com.jilian.pinzi.common.vo.DeleteAdressVo;
 import com.jilian.pinzi.common.vo.DeleteFootVo;
 import com.jilian.pinzi.common.vo.DeleteGoodsVo;
@@ -106,6 +109,7 @@ import com.jilian.pinzi.common.vo.PayOrderVo;
 import com.jilian.pinzi.common.vo.PerfectInformationVo;
 import com.jilian.pinzi.common.vo.PhotoImgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.RegisterVo;
 import com.jilian.pinzi.common.vo.ResetPwdVo;
@@ -1155,4 +1159,33 @@ public class Api {
     public static Flowable<BaseDto> voteActivityProduct(ProductVo vo) {
         return RequetRetrofit.getInstance().voteActivityProduct(HttpUtil.convertVo2Params(vo));
     }
+
+    /**
+     * 问卷列表
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<QuestionDto>>> getQuestionList(QuestionVo vo) {
+        return RequetRetrofit.getInstance().getQuestionList(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 问卷详情
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<QuestionDetailDto>>> getQuestionDetail(QuestionVo vo) {
+        return RequetRetrofit.getInstance().getQuestionDetail(HttpUtil.convertVo2Params(vo));
+    }
+
+    public static Flowable<BaseDto> commitQuestion(CommitQuestionVo vo) {
+        return RequetRetrofit.getInstance().commitQuestion(vo);
+    }
+
+
+
+
+
+
+
 }

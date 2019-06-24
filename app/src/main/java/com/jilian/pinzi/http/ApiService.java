@@ -42,6 +42,8 @@ import com.jilian.pinzi.common.dto.MyTntegralDetailDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.common.dto.OrderTrackDto;
 import com.jilian.pinzi.common.dto.PersonalDto;
+import com.jilian.pinzi.common.dto.QuestionDetailDto;
+import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.RefundReasonDto;
 import com.jilian.pinzi.common.dto.RegisterDto;
 import com.jilian.pinzi.common.dto.SaleRecordDetailDto;
@@ -62,6 +64,7 @@ import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.ApplyRefundVo;
 import com.jilian.pinzi.common.vo.CommentGoodVo;
+import com.jilian.pinzi.common.vo.CommitQuestionVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.EditAdressVo;
 import com.jilian.pinzi.common.vo.GetWithdrawDepositVo;
@@ -1002,6 +1005,28 @@ public interface ApiService {
      */
     @GET("activity/voteActivityProduct")
     Flowable<BaseDto> voteActivityProduct(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 问卷列表
+     * @param map
+     * @return
+     */
+    @GET("question/getQuestionList")
+    Flowable<BaseDto<List<QuestionDto>>> getQuestionList(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 问卷详情
+     * @param map
+     * @return
+     */
+    @GET("question/getQuestionDetail")
+    Flowable<BaseDto<List<QuestionDetailDto>>> getQuestionDetail(@QueryMap Map<String, String> map);
+
+
+    @POST("question/commitQuestion")
+    Flowable<BaseDto> commitQuestion(@Body CommitQuestionVo vo);
 }
 
 

@@ -26,6 +26,8 @@ import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.common.dto.InformationtTypeDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
+import com.jilian.pinzi.common.dto.QuestionDetailDto;
+import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
@@ -37,6 +39,8 @@ import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
 import com.jilian.pinzi.common.vo.CommentInformationVo;
+import com.jilian.pinzi.common.vo.CommitQuestionItemVo;
+import com.jilian.pinzi.common.vo.CommitQuestionVo;
 import com.jilian.pinzi.common.vo.DiscountConpouVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
@@ -49,6 +53,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
@@ -150,6 +155,24 @@ public class MainViewModel extends ViewModel {
 
 
     private LiveData<BaseDto> voteData;// 投票或取消投票
+
+    private LiveData<BaseDto<List<QuestionDto>>> questionListData;// //问卷列表
+
+    private LiveData<BaseDto<List<QuestionDetailDto>>> questionDetailData;// //问卷详情
+
+    private LiveData<BaseDto> commiteData;// 提交问题
+
+    public LiveData<BaseDto> getCommiteData() {
+        return commiteData;
+    }
+
+    public LiveData<BaseDto<List<QuestionDetailDto>>> getQuestionDetailData() {
+        return questionDetailData;
+    }
+
+    public LiveData<BaseDto<List<QuestionDto>>> getQuestionListData() {
+        return questionListData;
+    }
 
     public LiveData<BaseDto<List<ActivityDto>>> getActivityListData() {
         return activityListData;
@@ -1018,5 +1041,56 @@ public class MainViewModel extends ViewModel {
         vo.setType(type);
         voteData = mainRepository.voteActivityProduct(vo);
     }
+
+    /**
+     * 问卷列表
+     * @param uId
+     * @param type
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getQuestionList(String uId, int type,Integer pageNo,Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        QuestionVo vo = new QuestionVo();
+        vo.setuId(uId);
+        vo.setType(type);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        questionListData = mainRepository.getQuestionList(vo);
+    }
+
+    /**
+     *
+     * @param uId
+     * @param qId 问卷Id
+     */
+    public void getQuestionDetail(String uId, String qId) {
+        mainRepository = new MainRepositoryImpl();
+        QuestionVo vo = new QuestionVo();
+        vo.setuId(uId);
+        vo.setqId(qId);
+        questionDetailData = mainRepository.getQuestionDetail(vo);
+    }
+
+    /**
+     * 提交问题
+     * @param uId
+     * @param questionId
+     * @param results
+     */
+    public void commitQuestion(String uId, String questionId,List<CommitQuestionItemVo> results) {
+        mainRepository = new MainRepositoryImpl();
+        CommitQuestionVo vo = new CommitQuestionVo();
+        vo.setuId(uId);
+        vo.setQuestionId(questionId);
+        vo.setResults(results);
+        commiteData = mainRepository.commitQuestion(vo);
+    }
+
+
+
+
+
+
 
 }

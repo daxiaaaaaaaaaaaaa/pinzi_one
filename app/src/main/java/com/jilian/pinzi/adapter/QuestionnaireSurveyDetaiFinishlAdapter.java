@@ -14,32 +14,19 @@ import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionItemDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.rong.imageloader.utils.L;
 
-
-public class QuestionnaireSurveyDetailAdapter extends RecyclerView.Adapter<QuestionnaireSurveyDetailAdapter.ViewHolder> implements CustomItemClickListener {
+public class QuestionnaireSurveyDetaiFinishlAdapter extends RecyclerView.Adapter<QuestionnaireSurveyDetaiFinishlAdapter.ViewHolder> implements CustomItemClickListener {
     private Activity mContext;
     private List<QuestionDetailDto> datas;
     private CustomItemClickListener listener;
-    private List<QuestionnaireSurveyDetaiItemlAdapter> adapterList;
 
-    public List<QuestionnaireSurveyDetaiItemlAdapter> getAdapterList() {
-        return adapterList;
-    }
-
-    public void setAdapterList(List<QuestionnaireSurveyDetaiItemlAdapter> adapterList) {
-        this.adapterList = adapterList;
-    }
-
-    public QuestionnaireSurveyDetailAdapter(Activity context, List<QuestionDetailDto> datas, CustomItemClickListener listener) {
+    public QuestionnaireSurveyDetaiFinishlAdapter(Activity context, List<QuestionDetailDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
-        adapterList = new ArrayList<>();
     }
 
     @Override
@@ -49,8 +36,6 @@ public class QuestionnaireSurveyDetailAdapter extends RecyclerView.Adapter<Quest
         return viewHolder;
     }
 
-
-
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvName.setText(datas.get(position).getTitle());
@@ -59,9 +44,7 @@ public class QuestionnaireSurveyDetailAdapter extends RecyclerView.Adapter<Quest
         //设置选中 和 不选中
         initSelect(datas.get(position).getOptions(), datas.get(position).getAnswerOption());
         //设置适配器
-        QuestionnaireSurveyDetaiItemlAdapter adapter = new QuestionnaireSurveyDetaiItemlAdapter(mContext, position, datas.get(position).getOptions(), datas.get(position).getAnswerOption(), datas.get(position).getIsRadio());
-        adapterList.add(adapter);
-        holder.recyclerView.setAdapter(adapter);
+        holder.recyclerView.setAdapter(new QuestionnaireSurveyDetaiItemFinishAdapter(mContext, datas.get(position).getOptions(),  datas.get(position).getAnswerOption()));
     }
 
     /**

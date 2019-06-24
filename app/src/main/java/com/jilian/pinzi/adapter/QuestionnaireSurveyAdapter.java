@@ -9,17 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.utils.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 
 
 public class QuestionnaireSurveyAdapter extends RecyclerView.Adapter<QuestionnaireSurveyAdapter.ViewHolder> {
     private Activity mContext;
-    private List<String> datas;
+    private List<QuestionDto> datas;
     private CustomItemClickListener listener;
 
-    public QuestionnaireSurveyAdapter(Activity context, List<String> datas, CustomItemClickListener listener) {
+    public QuestionnaireSurveyAdapter(Activity context, List<QuestionDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -34,7 +37,8 @@ public class QuestionnaireSurveyAdapter extends RecyclerView.Adapter<Questionnai
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
+            holder.tvContent.setText(datas.get(position).getTitle());
+            holder.tvDate.setText(DateUtil.dateToString(DateUtil.DATE_FORMAT_,new Date(datas.get(position).getCreateDate())));
     }
 
     @Override
