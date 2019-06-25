@@ -4,9 +4,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +29,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.FriendsCircleAdapter;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
+import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.FriendCircleDto;
 import com.jilian.pinzi.common.dto.FriendCircleListDetailDto;
 import com.jilian.pinzi.common.dto.FriendCircleListDto;
@@ -45,6 +49,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
@@ -58,10 +63,11 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     private FriendViewModel viewModel;
     private SmartRefreshLayout srHasData;
     private SmartRefreshLayout srNoData;
-    public int  height = 0;
+    public int height = 0;
     private int previousKeyboardHeight = -1;
 
     public LinearLayout llBottom;
+
     @Override
     protected void loadData() {
 
@@ -87,8 +93,8 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         setNormalTitle("朋友圈", R.drawable.icon_friends_camera, v -> {
-            if(PinziApplication.getInstance().getLoginDto()==null){
-                Intent intent = new Intent(getActivity(),LoginActivity.class);
+            if (PinziApplication.getInstance().getLoginDto() == null) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 return;
             }
@@ -101,33 +107,34 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     private void initRecyclerView() {
         list = new ArrayList<>();
         list.add(null);
-        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this);
+        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this,getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setAdapter(friendsCircleAdapter);
         friendsCircleAdapter.setOnItemClickListener(new FriendsCircleAdapter.OnItemClickListener() {
             @Override
             public void onHeadClick(View view, int position) {
                 // TODO 进入我的朋友圈界面
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
                     getActivity().startActivity(intent);
                     return;
                 }
-               toMineFriend(PinziApplication.getInstance().getLoginDto().getName(),PinziApplication.getInstance().getLoginDto().getHeadImg(),PinziApplication.getInstance().getLoginDto().getId());
+                toMineFriend(PinziApplication.getInstance().getLoginDto().getName(), PinziApplication.getInstance().getLoginDto().getHeadImg(), PinziApplication.getInstance().getLoginDto().getId());
             }
         });
     }
 
     /**
      * 去我的朋友圈
+     *
      * @param id
      */
     @Override
-    public void toMineFriend(String name,String url,String id) {
+    public void toMineFriend(String name, String url, String id) {
         Intent intent = new Intent(new Intent(mActivity, MyFriendsCircleActivity.class));
-        intent.putExtra("uId",id);
-        intent.putExtra("url",url);
-        intent.putExtra("name",name);
+        intent.putExtra("uId", id);
+        intent.putExtra("url", url);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
@@ -136,11 +143,10 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     protected void initData() {
         getData();
         //根據類型  顯示界面
-        if(getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2){
+        if (getActivity().getIntent().getStringExtra("uId") != null && getActivity().getIntent().getIntExtra("back", 1) == 2) {
             setleftImage(R.drawable.image_back, true, null);
             llBottom.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             llBottom.setVisibility(View.VISIBLE);
 
         }
@@ -154,7 +160,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             @Override
             public void accept(FriendMsg eventMsg) throws Exception {
                 if (eventMsg != null) {
-                    if(eventMsg.getCode()==200||eventMsg.getCode()==300){
+                    if (eventMsg.getCode() == 200 || eventMsg.getCode() == 300) {
                         getData();
                     }
                 }
@@ -166,14 +172,13 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      * 获取数据
      */
     private void getData() {
-        pageNo =1;
+        pageNo = 1;
         //采購中心進來的
         //根據類型 判斷 獲取數據 接口
-        if(getActivity().getIntent().getIntExtra("type",0)!=1&&getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2){
+        if (getActivity().getIntent().getIntExtra("type", 0) != 1 && getActivity().getIntent().getStringExtra("uId") != null && getActivity().getIntent().getIntExtra("back", 1) == 2) {
             //獲取類型朋友圈接口
             getUserTypeFriendCircleList();
-        }
-        else{
+        } else {
             //獲取普通朋友圈
             getFriendList();
         }
@@ -189,7 +194,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      * 用戶類型朋友圈
      */
     private void getUserTypeFriendCircleList() {
-        viewModel.UserTypeFriendCircleList(pageNo,pageSize,getActivity().getIntent().getStringExtra("uId"),getActivity().getIntent().getIntExtra("type",0));
+        viewModel.UserTypeFriendCircleList(pageNo, pageSize, getActivity().getIntent().getStringExtra("uId"), getActivity().getIntent().getIntExtra("type", 0));
         viewModel.getUserTypeFriendCircleList().observe(this, new Observer<BaseDto<List<FriendCircleDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<FriendCircleDto>> listBaseDto) {
@@ -198,11 +203,9 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                 getLoadingDialog().dismiss();
                 if (listBaseDto.isSuccess()
                         && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getList()))
-                {
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getList())) {
                     //有数据
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0)))
-                    {
+                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))) {
                         if (pageNo == 1) {
                             list.clear();
                             list.add(null); // 添加头布局
@@ -219,10 +222,25 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                         }
                     }
                     friendsCircleAdapter.notifyDataSetChanged();
+                    //开启子线程
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            //对视频封面处理 耗时操作
+                            for (int i = 0; i < list.size(); i++) {
+                                //视频地址不为空
+                                if (EmptyUtils.isNotEmpty(list.get(i).getImgUrl()) && list.get(i).getImgUrl().contains("mp4")) {
+                                    list.get(i).setBitmap(getNetVideoBitmap(list.get(i).getImgUrl()));
+                                }
+                            }
+                            friendsCircleAdapter.notifyDataSetChanged();
+
+                        }
+                    }.start();
 
 
-                }
-                else{
+                } else {
                     //说明是上拉加载
                     if (pageNo > 1) {
                         pageNo--;
@@ -235,6 +253,24 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 
             }
         });
+    }
+
+    public Bitmap getNetVideoBitmap(String videoUrl) {
+        Bitmap bitmap = null;
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            retriever.release();
+        }
+
+        return bitmap;
     }
 
     /**
@@ -252,11 +288,9 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                 srHasData.finishLoadMore();
                 if (listBaseDto.isSuccess()
                         && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getList()))
-                {
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getList())) {
                     //有数据
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0)))
-                    {
+                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))) {
                         if (pageNo == 1) {
                             list.clear();
                             list.add(null); // 添加头布局
@@ -275,8 +309,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                     friendsCircleAdapter.notifyDataSetChanged();
 
 
-                }
-                else{
+                } else {
                     //说明是上拉加载
                     if (pageNo > 1) {
                         pageNo--;
@@ -297,11 +330,10 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         srHasData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                if(getActivity().getIntent().getStringExtra("uId")!=null){
+                if (getActivity().getIntent().getStringExtra("uId") != null) {
                     pageNo = 1;
                     getUserTypeFriendCircleList();
-                }
-                else{
+                } else {
                     pageNo = 1;
                     getFriendList();
                 }
@@ -312,11 +344,10 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
-                if(getActivity().getIntent().getStringExtra("uId")!=null){
+                if (getActivity().getIntent().getStringExtra("uId") != null) {
                     pageNo++;
                     getUserTypeFriendCircleList();
-                }
-                else{
+                } else {
                     pageNo++;
                     getFriendList();
                 }
@@ -342,21 +373,23 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         //评论
         showPopupWindow(view, position, null);
     }
+
     /**
      * 对话框弹出
+     *
      * @param view
      * @param position
      * @param id
      */
     private void showPopupWindow(View view, int position, String id) {
         // 一个自定义的布局，作为显示的内容
-        MyPinziDialogUtils dialog =  MyPinziDialogUtils.getDialog(getActivity(),R.layout.dialog_input_comment);
-        dialog.show() ;
+        MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(getActivity(), R.layout.dialog_input_comment);
+        dialog.show();
         dialog.setCanceledOnTouchOutside(true);
         EditText etComment = (EditText) dialog.findViewById(R.id.et_comment);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
         LinearLayout linearLayout = dialog.findViewById(R.id.ll_fragment_three_comment);
-        ScrollView layout  = dialog.findViewById(R.id.scrollView);
+        ScrollView layout = dialog.findViewById(R.id.scrollView);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -365,7 +398,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         });
         if (id == null) {
             //评论
-           etComment.setHint("评论");
+            etComment.setHint("评论");
         } else {
             //回复
             etComment.setHint("回复");
@@ -396,7 +429,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                 // 对话框中的输入框Y的位置
                 int dialogY = getY(linearLayout);
                 if (position == list.size() - 1) {
-                    list.add(list.get(list.size()-1));
+                    list.add(list.get(list.size() - 1));
                     friendsCircleAdapter.notifyDataSetChanged();
                 }
 
@@ -419,19 +452,18 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                             boolean hide = (double) displayHeight / height > 0.8;
                             if (hide) {
                                 try {
-                                    if (list.get(list.size() - 1).getId() .equals(list.get(list.size() - 2).getId() ) ) {
+                                    if (list.get(list.size() - 1).getId().equals(list.get(list.size() - 2).getId())) {
                                         list.remove(list.size() - 1);
                                         friendsCircleAdapter.notifyDataSetChanged();
                                     }
-                                }
-                                catch (Exception e){
+                                } catch (Exception e) {
                                 }
 
                                 dialog.dismiss();
                             }
                         }
                     }
-                },200);
+                }, 200);
 
 
             }
@@ -446,8 +478,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     }
 
 
-
-    private int getY( View view ) {
+    private int getY(View view) {
         int[] rect = new int[2];
         view.getLocationOnScreen(rect);
         return rect[1];
@@ -571,14 +602,13 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      * @param id 评论ID
      */
     private void FriendCircleCommentDelete(String id) {
-      //  getLoadingDialog().showDialog();
+        //  getLoadingDialog().showDialog();
         viewModel.FriendCircleCommentDelete(id);
         viewModel.getCommentDelete().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 getLoadingDialog().dismiss();
-                if (stringBaseDto.isSuccess())
-                {
+                if (stringBaseDto.isSuccess()) {
                     //根据回复 获取 评论ID
                     for (int i = 1; i < list.size(); i++) {
                         List<FriendTblCommentDto> commentList = list.get(i).getTblCommentList();
@@ -679,20 +709,20 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //            getUserTypeFriendCircleList();
 //        }
 //        else {
-            viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
-            viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
-                    if (listBaseDto.isSuccess()
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
-                        //需要刷新的該條朋友圈
-                        FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
-                        list.set(position, friendCircleListDto);
-                        friendsCircleAdapter.notifyDataSetChanged();
-                    }
+        viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
+        viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
+                if (listBaseDto.isSuccess()
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
+                    //需要刷新的該條朋友圈
+                    FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
+                    list.set(position, friendCircleListDto);
+                    friendsCircleAdapter.notifyDataSetChanged();
                 }
-            });
+            }
+        });
 
 //            //除法 10
 //            int page = (position - 1) / pageSize + 1;
@@ -715,7 +745,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //                }
 //            });
 //        }
-       // }
+        // }
 
 
     }
@@ -755,21 +785,21 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //                    }
 //                }
 //            });
-            viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
-            viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
-                    if (listBaseDto.isSuccess()
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
-                        //需要刷新的該條朋友圈
-                        FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
-                        list.set(position, friendCircleListDto);
-                        friendsCircleAdapter.notifyDataSetChanged();
-                    }
+        viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
+        viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
+                if (listBaseDto.isSuccess()
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
+                    //需要刷新的該條朋友圈
+                    FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
+                    list.set(position, friendCircleListDto);
+                    friendsCircleAdapter.notifyDataSetChanged();
                 }
-            });
-        }
+            }
+        });
+    }
 
     //}
 
@@ -785,7 +815,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //            getUserTypeFriendCircleList();
 //        }
 //        else{
-            //除法 10
+        //除法 10
 //            int page = (position - 1) / pageSize + 1;
 //            //求余
 //            int size = (position - 1) % pageSize + 1;
@@ -804,24 +834,25 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //                    }
 //                }
 //            });
-            viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
-            viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
-                    if (listBaseDto.isSuccess()
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
-                        //需要刷新的該條朋友圈
-                        FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
-                        list.set(position, friendCircleListDto);
-                        friendsCircleAdapter.notifyDataSetChanged();
-                    }
+        viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
+        viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
+                if (listBaseDto.isSuccess()
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
+                    //需要刷新的該條朋友圈
+                    FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
+                    list.set(position, friendCircleListDto);
+                    friendsCircleAdapter.notifyDataSetChanged();
                 }
-            });
+            }
+        });
 
-     //   }
+        //   }
 
     }
+
     /**
      * 局部刷新 回复信息
      * 计算当前位置 属于第几页 第几条
@@ -852,21 +883,21 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 //                    }
 //                }
 //            });
-            viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
-            viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
-                    if (listBaseDto.isSuccess()
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
-                            && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
-                        //需要刷新的該條朋友圈
-                        FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
-                        list.set(position, friendCircleListDto);
-                        friendsCircleAdapter.notifyDataSetChanged();
-                    }
+        viewModel.SingleFriendCircle(list.get(position).getId(), list.get(position).getuId());
+        viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
+                if (listBaseDto.isSuccess()
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0))
+                        && EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getFriendCircle())) {
+                    //需要刷新的該條朋友圈
+                    FriendCircleListDto friendCircleListDto = listBaseDto.getData().get(0).getFriendCircle();
+                    list.set(position, friendCircleListDto);
+                    friendsCircleAdapter.notifyDataSetChanged();
                 }
-            });
-        }
+            }
+        });
+    }
 
-   // }
+    // }
 }

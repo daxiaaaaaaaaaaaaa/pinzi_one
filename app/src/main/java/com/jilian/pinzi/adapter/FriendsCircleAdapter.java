@@ -1,8 +1,13 @@
 package com.jilian.pinzi.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,7 +44,9 @@ import com.jilian.pinzi.adapter.common.CommonViewHolder;
 import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.common.dto.FriendTblCommentDto;
 import com.jilian.pinzi.common.dto.FriendlLikeDto;
+import com.jilian.pinzi.ui.AllWorksActivity;
 import com.jilian.pinzi.ui.LoginActivity;
+import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.friends.imagepager.ImagePagerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.DateUtil;
@@ -60,17 +67,21 @@ import java.util.Map;
  * description: 朋友圈 Adapter
  */
 public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public  int height = 0;
+    public int height = 0;
     private static final int HEADER_VIEW_TYPE = 200;
     private static final int BOTTOM_TYPE = 100;
     private static final int NORMAL_TYPE = 300;
     private final Context context;
+    private Activity activity;
+
     private final List<FriendCircleListDto> datas;
     private FriendListener listener;
-    public FriendsCircleAdapter(Context context, List<FriendCircleListDto> datas, FriendListener listener) {
+
+    public FriendsCircleAdapter(Context context, List<FriendCircleListDto> datas, FriendListener listener,Activity activity) {
         this.context = context;
         this.datas = datas;
         this.listener = listener;
+        this.activity = activity;
     }
 
     public interface FriendListener {
@@ -84,41 +95,46 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         /**
          * 回复评论ID
+         *
          * @param id
          */
-        void awnser(String id,View view);
+        void awnser(String id, View view);
 
         /**
          * 回复评论ID
+         *
          * @param id
          */
-        void delete(String id,View view);
+        void delete(String id, View view);
 
         /**
          * 去我的朋友圈
+         *
          * @param id
          */
-        void toMineFriend(String name,String url,String id);
+        void toMineFriend(String name, String url, String id);
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == HEADER_VIEW_TYPE) {
             View inflate = inflater.inflate(R.layout.item_header_friends_circle, parent, false);
             return new HeaderViewHolder(inflate);
-        }  else if(viewType == NORMAL_TYPE) {
+        } else if (viewType == NORMAL_TYPE) {
             View inflate = inflater.inflate(R.layout.item_list_friends_circle, parent, false);
             return new ListViewHolder(inflate);
-        }
-        else{
+        } else {
             //設置高度
             View inflate = inflater.inflate(R.layout.item_list_friends_circle_bottom, parent, false);
             inflate.getLayoutParams().height = height;
             return new BottomViewHolder(inflate);
         }
     }
+
     private List<FriendTblCommentDto> replyList;
-    private  ReplyAdapter replyAdapter;
+    private ReplyAdapter replyAdapter;
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //头部
@@ -127,14 +143,14 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             RoundImageView ivHead = viewHolder.getView(R.id.iv_item_header_friends_circle_head);
             TextView tvName = viewHolder.getView(R.id.tv_name);
             ivHead.setOnClickListener(v -> {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(context,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
                     return;
                 }
                 if (onItemClickListener != null) onItemClickListener.onHeadClick(v, position);
             });
-            if(PinziApplication.getInstance().getLoginDto()!=null){
+            if (PinziApplication.getInstance().getLoginDto() != null) {
                 Glide
                         .with(context)
                         .load(PinziApplication.getInstance().getLoginDto().getHeadImg())
@@ -144,19 +160,24 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
         //列表
-        else
-            if(holder instanceof ListViewHolder){
+        else if (holder instanceof ListViewHolder) {
             ListViewHolder viewHolder = (ListViewHolder) holder;
             ImageView ivHead = viewHolder.getView(R.id.iv_head);
             TextView tvName = viewHolder.getView(R.id.tv_name);
             TextView tvContent = viewHolder.getView(R.id.tv_content);
-            TextView tv_del =viewHolder.getView(R.id.tv_item_list_friends_del);
+            TextView tv_del = viewHolder.getView(R.id.tv_item_list_friends_del);
             RecyclerView rvLike = viewHolder.getView(R.id.rv_item_list_friends_like);
             RecyclerView rvReply = viewHolder.getView(R.id.rv_item_list_friends_replay);
-            if(PinziApplication.getInstance().getLoginDto().getId()==null||!PinziApplication.getInstance().getLoginDto().getId().equals(datas.get(position).getuId())){
+            RecyclerView recyclerView = viewHolder.getView(R.id.rv_item_list_friends_images);
+
+            RelativeLayout rlVideo = viewHolder.getView(R.id.rl_video);
+            ImageView btnVideo = viewHolder.getView(R.id.btnVideo);
+            ImageView ivStart = viewHolder.getView(R.id.iv_start);
+
+
+            if (PinziApplication.getInstance().getLoginDto().getId() == null || !PinziApplication.getInstance().getLoginDto().getId().equals(datas.get(position).getuId())) {
                 tv_del.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 tv_del.setVisibility(View.VISIBLE);
             }
             RelativeLayout rlCommentLike = viewHolder.getView(R.id.rl_comment_like);
@@ -172,8 +193,30 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             // 朋友圈发布的图片
             // TODO 模拟一些图片数据: 最多添加9张图片
-            List<String> images = getImageUrls(friend.getImgUrl());
-            viewHolder.initImagesRecyclerView(R.id.rv_item_list_friends_images, images, position);
+            String url = friend.getImgUrl();
+            if (!TextUtils.isEmpty(url) && url.contains("mp4")) {
+                recyclerView.setVisibility(View.GONE);
+                rlVideo.setVisibility(View.VISIBLE);
+                btnVideo.setImageBitmap(friend.getBitmap());
+
+            } else {
+                List<String> images = getImageUrls(friend.getImgUrl());
+                viewHolder.initImagesRecyclerView(R.id.rv_item_list_friends_images, images, position);
+                recyclerView.setVisibility(View.VISIBLE);
+                rlVideo.setVisibility(View.GONE);
+            }
+            rlVideo.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, VideoPlayerActivity.class);
+                    intent.putExtra("url", datas.get(position).getImgUrl());
+                    Bitmap bitmap = datas.get(position).getBitmap();
+                    intent.putExtra("bitmap", bitmap);
+                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+                }
+            });
+
 
             // 设置发布时间
             TextView releaseTime = viewHolder.getView(R.id.tv_item_list_friends_minute);
@@ -181,8 +224,8 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             // 删除该朋友圈
             viewHolder.getView(R.id.tv_item_list_friends_del).setOnClickListener(v -> {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(context,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
                     return;
                 }
@@ -210,19 +253,19 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             ivHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(PinziApplication.getInstance().getLoginDto()==null){
-                        Intent intent = new Intent(context,LoginActivity.class);
+                    if (PinziApplication.getInstance().getLoginDto() == null) {
+                        Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                         return;
                     }
-                    listener.toMineFriend(datas.get(position).getName(),datas.get(position).getHeadImg(),datas.get(position).getuId());
+                    listener.toMineFriend(datas.get(position).getName(), datas.get(position).getHeadImg(), datas.get(position).getuId());
 
                 }
             });
             // 弹出点赞和评论 PopupWindow.
             rlCommentLike.setOnClickListener(v -> {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(context,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
                     return;
                 }
@@ -233,32 +276,31 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                 popupWindow.setFocusable(true);
                 int[] location = new int[2];
                 content.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                int  mShowMorePopupWindowWidth = -content.getMeasuredWidth();
-                int  mShowMorePopupWindowHeight = -content.getMeasuredHeight();
-                popupWindow.showAsDropDown(rlCommentLike,-500,mShowMorePopupWindowHeight);
+                int mShowMorePopupWindowWidth = -content.getMeasuredWidth();
+                int mShowMorePopupWindowHeight = -content.getMeasuredHeight();
+                popupWindow.showAsDropDown(rlCommentLike, -500, mShowMorePopupWindowHeight);
 
-                LinearLayout ll_like =  content.findViewById(R.id.ll_popup_friends_msg_like);
-                LinearLayout ll_comment = content.findViewById( R.id.ll_popup_friends_msg_comment);
-                TextView tv_left =    content.findViewById(R.id.tv_left);
+                LinearLayout ll_like = content.findViewById(R.id.ll_popup_friends_msg_like);
+                LinearLayout ll_comment = content.findViewById(R.id.ll_popup_friends_msg_comment);
+                TextView tv_left = content.findViewById(R.id.tv_left);
                 //获取点赞列表
-                List<FriendlLikeDto> likeList =  datas.get(position).getTblLikeList();
+                List<FriendlLikeDto> likeList = datas.get(position).getTblLikeList();
                 //判断有么有已经点赞过
-               if(EmptyUtils.isNotEmpty(likeList)){
-                   for (int i = 0; i <likeList.size() ; i++) {
-                        if(PinziApplication.getInstance().getLoginDto().getId().equals(likeList.get(i).getuId())){
+                if (EmptyUtils.isNotEmpty(likeList)) {
+                    for (int i = 0; i < likeList.size(); i++) {
+                        if (PinziApplication.getInstance().getLoginDto().getId().equals(likeList.get(i).getuId())) {
                             tv_left.setText("取消");
                             break;
-                        }else{
+                        } else {
                             tv_left.setText("点赞");
                         }
-                   }
-               }
+                    }
+                }
                 ll_like.setOnClickListener(v1 -> {
                     popupWindow.dismiss();
-                    if(tv_left.getText().toString().equals("取消")){
+                    if (tv_left.getText().toString().equals("取消")) {
                         listener.cancel(position);
-                    }
-                    else{
+                    } else {
                         listener.like(position);
                     }
 
@@ -268,14 +310,12 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                     // TODO 评论
                     popupWindow.dismiss();
                     //
-                    if(datas.get(position).getTblCommentList()!=null&&datas.get(position).getTblCommentList().size()>0){
-                        listener.comment(position,rvReply );
-                    }
-                    else if(datas.get(position).getTblLikeList()!=null&&datas.get(position).getTblLikeList().size()>0){
-                        listener.comment(position,rvLike );
-                    }
-                     else{
-                        listener.comment(position,rlCommentLike );
+                    if (datas.get(position).getTblCommentList() != null && datas.get(position).getTblCommentList().size() > 0) {
+                        listener.comment(position, rvReply);
+                    } else if (datas.get(position).getTblLikeList() != null && datas.get(position).getTblLikeList().size() > 0) {
+                        listener.comment(position, rvLike);
+                    } else {
+                        listener.comment(position, rlCommentLike);
                     }
 
                 });
@@ -353,11 +393,9 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
     public int getItemViewType(int position) {
         if (position == 0) {
             return HEADER_VIEW_TYPE;
-        }
-        else if(datas.get(position).getId()!=null){
+        } else if (datas.get(position).getId() != null) {
             return NORMAL_TYPE;
-        }
-        else {
+        } else {
             return BOTTOM_TYPE;
         }
     }
@@ -488,12 +526,11 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             tvContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(PinziApplication.getInstance().getLoginDto()==null){
-                        Intent intent = new Intent(context,LoginActivity.class);
+                    if (PinziApplication.getInstance().getLoginDto() == null) {
+                        Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                         return;
-                    }
-                    else if(comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())){
+                    } else if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())) {
                         Dialog dialog = new Dialog(context, R.style.dialogFullscreen);
                         dialog.setContentView(R.layout.dialog_bottom_layout);
                         Window window = dialog.getWindow();
@@ -508,28 +545,27 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                         dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
                             // TODO 删除
                             dialog.dismiss();
-                            listener.delete(comment.getId(),tvContent);
+                            listener.delete(comment.getId(), tvContent);
                         });
                         dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
                             dialog.dismiss();
 
                         });
 
-                    }
-                   else{
-                        listener.awnser(comment.getId(),tvContent);
+                    } else {
+                        listener.awnser(comment.getId(), tvContent);
                     }
                 }
             });
             tvContent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if(PinziApplication.getInstance().getLoginDto()==null){
-                        Intent intent = new Intent(context,LoginActivity.class);
+                    if (PinziApplication.getInstance().getLoginDto() == null) {
+                        Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                         return false;
                     }
-                    if(comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())){
+                    if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())) {
                         Dialog dialog = new Dialog(context, R.style.dialogFullscreen);
                         dialog.setContentView(R.layout.dialog_bottom_layout);
                         Window window = dialog.getWindow();
@@ -544,7 +580,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                         dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
                             // TODO 删除
                             dialog.dismiss();
-                            listener.delete(comment.getId(),tvContent);
+                            listener.delete(comment.getId(), tvContent);
                         });
                         dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
                             dialog.dismiss();
@@ -556,7 +592,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
 //            String type = comment.getType();
-            if (comment.getParentId()==null||comment.getParentId().equals("0")) {
+            if (comment.getParentId() == null || comment.getParentId().equals("0")) {
 
 
                 // 评论好友的朋友圈
@@ -603,12 +639,14 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(itemView);
         }
     }
+
     class BottomViewHolder extends BaseViewHolder {
 
         public BottomViewHolder(View itemView) {
             super(itemView);
         }
     }
+
     class ListViewHolder extends BaseViewHolder {
 
         private RecyclerView rvImages;
@@ -636,6 +674,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             imagesAdapter = new ImagesAdapter(itemView.getContext(), R.layout.item_friends_images, images);
             rvImages.setAdapter(imagesAdapter);
             imagesAdapter.setOnItemClickListener(new BaseMultiItemAdapter.OnItemClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     // TODO 点击查看图片
@@ -648,7 +687,11 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     intent.putExtra("url", datas.get(friendCirclePosition).getImgUrl());
                     intent.putExtra("position", position);
-                    view.getContext().startActivity(intent);
+
+                    view.getContext().startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+
+
+
                 }
 
                 @Override
@@ -701,12 +744,11 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    private  ArrayList<String> getUrls(String imgUrl) {
+    private ArrayList<String> getUrls(String imgUrl) {
         ArrayList<String> urls;
-        if(imgUrl.contains(",")){
+        if (imgUrl.contains(",")) {
             urls = new ArrayList<>(Arrays.asList(imgUrl.split(",")));
-        }
-        else{
+        } else {
             urls = new ArrayList<>();
             urls.add(imgUrl);
         }

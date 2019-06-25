@@ -1,5 +1,7 @@
 package com.jilian.pinzi.common.dto;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,6 +21,19 @@ public class FriendCircleListDto implements Serializable {
     private List<FriendlLikeDto> tblLikeList;// true array[object];//  点赞信息
     private List<FriendTblCommentDto>  tblCommentList;// true array[object]朋友圈评论
 //    private JSONArray tblCommentList;
+    private Bitmap bitmap;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public boolean isFlag() {
         return flag;
