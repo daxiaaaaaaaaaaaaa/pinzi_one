@@ -455,6 +455,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 活动列表
+     *
      * @param vo
      * @return
      */
@@ -465,6 +466,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 活动详情
+     *
      * @param vo
      * @return
      */
@@ -475,6 +477,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 报名
+     *
      * @param vo
      * @return
      */
@@ -485,6 +488,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 取消报名
+     *
      * @param vo
      * @return
      */
@@ -495,6 +499,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 查看作品
+     *
      * @param vo
      * @return
      */
@@ -505,6 +510,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 投票或取消投票
+     *
      * @param vo
      * @return
      */
@@ -515,6 +521,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 问卷列表
+     *
      * @param vo
      * @return
      */
@@ -525,6 +532,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 提交问题答案
+     *
      * @param vo
      * @return
      */
@@ -535,6 +543,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
 
     /**
      * 提交问题答案
+     *
      * @param vo
      * @return
      */
@@ -544,8 +553,37 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     }
 
 
+    /**
+     * 我的活动列表
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<ActivityDto>>> getMyActivityList(ActivityVo vo) {
+        return request(Api.getMyActivityList(vo)).send().get();
+    }
 
+    /**
+     * 我的作品列表
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<ActivityProductDto>>> getMyProduct(ProductVo vo) {
+        return request(Api.getMyProduct(vo)).send().get();
+    }
 
+    /**
+     * 上传作品
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> addProduct(ProductVo vo) {
+        return request(Api.addProduct(vo)).send().get();
+    }
 
 
 

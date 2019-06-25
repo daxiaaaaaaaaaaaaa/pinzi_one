@@ -14,7 +14,16 @@ public class ActivityDto implements Serializable {
    private int isVote;//  true     number     是否可以投票（0.是 1.否）
    private String descs;//    true     string     详情
    private long createDate;//      true     number      创建时间
-   private int applyActivityId;// true  number     =0未报名 >0报名Id
+   private int applyActivityId;// true  number     =0未报名 >0报名
+   private String acitvityId;//活动ID
+
+    public String getAcitvityId() {
+        return acitvityId;
+    }
+
+    public void setAcitvityId(String acitvityId) {
+        this.acitvityId = acitvityId;
+    }
 
     public int getIsVote() {
         return isVote;

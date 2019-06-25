@@ -17,7 +17,6 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.QuestionItemDto;
-import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.QuestionMsg;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.common.vo.CommitQuestionItemVo;
@@ -123,10 +122,6 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
                 if (baseDto.isSuccess()) {
                     ToastUitl.showImageToastSuccess("提交成功");
                     finish();
-                    QuestionMsg eventMsg = new QuestionMsg();
-                    eventMsg.setCode(200);
-                    RxBus.getInstance().post(eventMsg);
-                    finish();
                 } else {
                     ToastUitl.showImageToastFail(baseDto.getMsg());
                 }
@@ -141,12 +136,19 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
      * @return
      */
     private List<CommitQuestionItemVo> getResults() {
+        //遍历适配器，
+        List<QuestionnaireSurveyDetaiItemlAdapter> adapterList = adapter.getAdapterList();
+
         List<CommitQuestionItemVo> results = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            CommitQuestionItemVo vo = new CommitQuestionItemVo();
-            vo.setTopicId(list.get(i).getId());
-            vo.setOptionId(getOptionId(i));
-            results.add(vo);
+
+        if (EmptyUtils.isNotEmpty(adapterList)) {
+            for (int i = 0; i < adapterList.size(); i++) {
+                CommitQuestionItemVo vo = new CommitQuestionItemVo();
+                vo.setTopicId(list.get(i).getId());
+                vo.setOptionId(getOptionId(i));
+                results.add(vo);
+            }
+
         }
         return results;
 
@@ -163,11 +165,14 @@ public class QuestionnaireSurveyDetailActivity extends BaseActivity implements C
         List<QuestionItemDto> itemList = detaiItemlAdapter.getDatas();
         String idStr = "";
         for (int i = 0; i < itemList.size(); i++) {
-            if (TextUtils.isEmpty(idStr)) {
-                idStr = itemList.get(i).getId();
-            } else {
-                idStr = idStr + "," + itemList.get(i).getId();
+            if(itemList.get(i).isSelected()){
+                if (TextUtils.isEmpty(idStr)) {
+                    idStr = itemList.get(i).getId();
+                } else {
+                    idStr = idStr + "," + itemList.get(i).getId();
+                }
             }
+
         }
         return TextUtils.isEmpty(idStr) ? null : idStr;
     }

@@ -1,18 +1,34 @@
 package com.jilian.pinzi.ui;
 
 import android.Manifest;
+import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
@@ -28,6 +44,7 @@ import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
+import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -52,18 +69,25 @@ import static com.jilian.pinzi.Constant.FINALVALUE.FILE_PROVIDER;
  */
 public class PublishWorksActivity extends BaseActivity implements CustomItemClickListener, PublishPhotoAdapter.ClosePhotonListener {
 
-     private CustomerGridLayManager gridLayoutManager;
+    private CustomerGridLayManager gridLayoutManager;
     //相机
     private final int FROM_CAPTURE = 10001;
     //相册
     private final int FROM_ALBUM = 10002;
+
+    //视频
+    private final int FROM_VIDEO = 10003;
+
     private RecyclerView recyclerView;
     private List<String> datas;
     private UserViewModel userViewModel;
     private FriendViewModel viewModel;
     private EditText etPublishFriendsContent;
-     private PublishPhotoAdapter adapter;
+    private PublishPhotoAdapter adapter;
     private ImageView ivLeftText;
+    private MainViewModel mainViewModel;
+    private ImageView ivVideo;
+    private RelativeLayout rlVideo;
 
 
     @Override
@@ -82,6 +106,8 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
     protected void createViewModel() {
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         viewModel = ViewModelProviders.of(this).get(FriendViewModel.class);
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -92,11 +118,13 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
     @Override
     public void initView() {
         setNormalTitle("我的作品详情", v -> finish());
-
+        ivVideo = (ImageView) findViewById(R.id.iv_video);
         ivLeftText = (ImageView) findViewById(R.id.iv_left_text);
         ivLeftText.setVisibility(View.GONE);
         etPublishFriendsContent = (EditText) findViewById(R.id.et_publish_friends_content);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        rlVideo = (RelativeLayout) findViewById(R.id.rl_video);
         setleftTitle("取消", "#FFFFFF", true, v -> {
             InputBoardUtils.hideInputKeyBoard(etPublishFriendsContent);
             etPublishFriendsContent.postDelayed(this::finish, 200);
@@ -124,14 +152,18 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
         adapter = new PublishPhotoAdapter(this, datas, this, this);
         recyclerView.setAdapter(adapter);
 
-
     }
 
     private void publish() {
         //有图片
-        if (EmptyUtils.isNotEmpty(datas)&&datas.size()>1) {
+        if (EmptyUtils.isNotEmpty(datas) && datas.size() > 1) {
             showLoadingDialog();
-            uploadFile();
+            uploadFile(1);
+        }
+        //视频
+        else if(!TextUtils.isEmpty(videoPath)){
+            showLoadingDialog();
+            uploadFile(3);
         }
         //无图片
         else {
@@ -140,38 +172,25 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                 return;
             }
             showLoadingDialog();
-            FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), null, null);
+            mainViewModel.addProduct(getUserId(),getIntent().getStringExtra("activityId"),etPublishFriendsContent.getText().toString(),null,null);
+            mainViewModel.getAddProductData().observe(this, new Observer<BaseDto>() {
+                @Override
+                public void onChanged(@Nullable BaseDto baseDto) {
+                    hideLoadingDialog();
+                    if(baseDto.isSuccess()){
+                        ToastUitl.showImageToastSuccess("提交成功");
+                        finish();
+                    }
+                    else{
+                        ToastUitl.showImageToastFail(baseDto.getMsg());
+                    }
+                }
+            });
+
 
         }
     }
 
-    /**
-     * 发布朋友
-     *
-     * @param uId       用户ID
-     * @param content   内容
-     * @param imgUrl    图片
-     * @param photoSize 图片尺寸
-     */
-    public void FriendCircleIssue(String uId, String content, String imgUrl, String photoSize) {
-        viewModel.FriendCircleIssue(uId, content, imgUrl, photoSize);
-        viewModel.getPublish().observe(this, new Observer<BaseDto<String>>() {
-            @Override
-            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
-                hideLoadingDialog();
-                if (stringBaseDto.isSuccess()) {
-                    //通过事件总线 把 前面两个Activity的数据也刷新
-                    FriendMsg eventMsg = new FriendMsg();
-                    eventMsg.setCode(200);
-                    RxBus.getInstance().post(eventMsg);
-                    ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
-                    finish();
-                } else {
-                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
-                }
-            }
-        });
-    }
 
     @Override
     public void initData() {
@@ -180,7 +199,23 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
 
     @Override
     public void initListener() {
-
+        rlVideo.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PublishWorksActivity.this, VideoPlayerActivity.class);
+                intent.putExtra("url", videoPath);
+                intent.putExtra("bitmap", bitmap);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(PublishWorksActivity.this).toBundle());
+            }
+        });
+        rlVideo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDeleteDialog();
+                return false;
+            }
+        });
     }
 
 
@@ -199,45 +234,71 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             } else {
                 showSelectPhotoTypeDialog();
             }
-        }
-        else{
+        } else {
             String url = "";
-            for (int i = 0; i <datas.size()-1 ; i++) {
-                if(i==0){
+            for (int i = 0; i < datas.size() - 1; i++) {
+                if (i == 0) {
                     url += datas.get(i);
-                }
-                else{
-                    url+=","+datas.get(i);
+                } else {
+                    url += "," + datas.get(i);
                 }
             }
             Intent intent = new Intent(this, ViewPhotosActivity.class);
-            intent.putExtra("url",url);
-            intent.putExtra("position",position);
+            intent.putExtra("url", url);
+            intent.putExtra("position", position);
             startActivity(intent);
         }
     }
 
-    /**.
-     * 上传图片
+    /**
+     * 上传文件 类型 1图片 2GIF 3视屏
+     *
+     * @param type
      */
-    private void uploadFile() {
-        if (datas.size() == 1) {
-            ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
+    private void uploadFile(Integer type) {
+        if (type == null) {
             return;
         }
         List<File> fileList = new ArrayList<>();
-        for (int i = 0; i < datas.size() - 1; i++) {
-            fileList.add(new File(datas.get(i)));
+        if (type == 1) {
+            if (datas.size() == 1) {
+                ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
+                return;
+            }
+            for (int i = 0; i < datas.size() - 1; i++) {
+                fileList.add(new File(datas.get(i)));
+            }
+        } else {
+            if (TextUtils.isEmpty(videoPath)) {
+                ToastUitl.showImageToastFail("请选择视频上传");
+                return;
+            }
+            fileList.add(new File(videoPath));
         }
         getLoadingDialog().showDialog();
-        userViewModel.photoImg(1, fileList);
+        userViewModel.photoImg(type, fileList);
         userViewModel.getPhotoImageliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 getLoadingDialog().dismiss();
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    //完善信息
-                    FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), stringBaseDto.getData(), null);
+                    //上传作品
+                    showLoadingDialog();
+                    mainViewModel.addProduct(getUserId(),getIntent().getStringExtra("activityId"),type==1?etPublishFriendsContent.getText().toString():null,type==2?stringBaseDto.getData():"",stringBaseDto.getData());
+                    mainViewModel.getAddProductData().observe(PublishWorksActivity.this, new Observer<BaseDto>() {
+                        @Override
+                        public void onChanged(@Nullable BaseDto baseDto) {
+                            hideLoadingDialog();
+                            if(baseDto.isSuccess()){
+                                ToastUitl.showImageToastSuccess("提交成功");
+                                finish();
+                            }
+                            else{
+                                ToastUitl.showImageToastFail(baseDto.getMsg());
+                            }
+                        }
+                    });
+
                 } else {
                     ToastUitl.showImageToastFail(stringBaseDto.getMsg());
                 }
@@ -250,7 +311,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
      */
     private void showSelectPhotoTypeDialog() {
         NiceDialog.init()
-                .setLayoutId(R.layout.dialog_photo_select)
+                .setLayoutId(R.layout.dialog_photo_video_select)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
@@ -258,6 +319,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                         Button btnTakingPictures = (Button) holder.getView(R.id.btn_taking_pictures);
                         Button btnPhotoAlbum = (Button) holder.getView(R.id.btn_photo_album);
                         Button btnCancel = (Button) holder.getView(R.id.btn_cancel);
+                        Button btnVideoAlbum = (Button) holder.getView(R.id.btn_video_album);
                         btnCancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -269,6 +331,8 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
+                                recyclerView.setVisibility(View.VISIBLE);
+                                rlVideo.setVisibility(View.GONE);
                                 RxPermissions.getInstance(PublishWorksActivity.this).request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new PermissionsObserver() {
                                     @Override
                                     protected void onGetPermissionsSuccess() {
@@ -283,12 +347,14 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
 
                             }
                         });
+
                         //相册
                         btnPhotoAlbum.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-
+                                recyclerView.setVisibility(View.VISIBLE);
+                                rlVideo.setVisibility(View.GONE);
                                 RxPermissions.getInstance(PublishWorksActivity.this).request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new PermissionsObserver() {
                                     @Override
                                     protected void onGetPermissionsSuccess() {
@@ -304,6 +370,15 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             }
 
                         });
+                        //视频
+                        btnVideoAlbum.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, FROM_VIDEO);
+                            }
+                        });
 
                     }
                 })
@@ -312,6 +387,8 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
     }
 
     private String path;
+    private String videoPath;
+    private Bitmap bitmap;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -333,9 +410,87 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                     datas.add(0, path);
                     adapter.notifyDataSetChanged();
                     break;
+
+                //相机
+                case FROM_VIDEO:
+
+                    Uri uri = data.getData();
+                    ContentResolver cr = this.getContentResolver();
+                    /** 数据库查询操作。
+                     * 第一个参数 uri：为要查询的数据库+表的名称。
+                     * 第二个参数 projection ： 要查询的列。
+                     * 第三个参数 selection ： 查询的条件，相当于SQL where。
+                     * 第三个参数 selectionArgs ： 查询条件的参数，相当于 ？。
+                     * 第四个参数 sortOrder ： 结果排序。
+                     */
+                    Cursor cursor = cr.query(uri, null, null, null, null);
+                    if (cursor != null) {
+                        if (cursor.moveToFirst()) {
+                            // 视频ID:MediaStore.Audio.Media._ID
+                            int videoId = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+                            // 视频名称：MediaStore.Audio.Media.TITLE
+                            String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+                            // 视频路径：MediaStore.Audio.Media.DATA
+                            videoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+                            // 视频时长：MediaStore.Audio.Media.DURATION
+                            int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                            // 视频大小：MediaStore.Audio.Media.SIZE
+                            long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));
+
+                            // 视频缩略图路径：MediaStore.Images.Media.DATA
+                            String imagePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                            // 缩略图ID:MediaStore.Audio.Media._ID
+                            int imageId = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                            // 方法一 Thumbnails 利用createVideoThumbnail 通过路径得到缩略图，保持为视频的默认比例
+                            // 第一个参数为 ContentResolver，第二个参数为视频缩略图ID， 第三个参数kind有两种为：MICRO_KIND和MINI_KIND 字面意思理解为微型和迷你两种缩略模式，前者分辨率更低一些。
+                            bitmap = MediaStore.Video.Thumbnails.getThumbnail(cr, imageId, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+
+                            // 方法二 ThumbnailUtils 利用createVideoThumbnail 通过路径得到缩略图，保持为视频的默认比例
+                            // 第一个参数为 视频/缩略图的位置，第二个依旧是分辨率相关的kind
+                            Bitmap bitmap2 = ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND);
+                            // 如果追求更好的话可以利用 ThumbnailUtils.extractThumbnail 把缩略图转化为的制定大小
+//                        ThumbnailUtils.extractThumbnail(bitmap, width,height ,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+                            recyclerView.setVisibility(View.GONE);
+                            rlVideo.setVisibility(View.VISIBLE);
+                            ivVideo.setImageBitmap(bitmap);
+
+                        }
+                        cursor.close();
+                    }
+                    break;
+
             }
 
         }
+    }
+
+    /**
+     * 删除视频
+     */
+    public void showDeleteDialog() {
+        Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
+        dialog.setContentView(R.layout.dialog_bottom_layout);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.5f;
+        window.setGravity(Gravity.BOTTOM);
+        window.setAttributes(layoutParams);
+
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
+            // TODO 删除
+            dialog.dismiss();
+            recyclerView.setVisibility(View.VISIBLE);
+            rlVideo.setVisibility(View.GONE);
+            ivVideo.setImageBitmap(null);
+            videoPath = null;
+        });
+        dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
+            dialog.dismiss();
+
+        });
     }
 
 }

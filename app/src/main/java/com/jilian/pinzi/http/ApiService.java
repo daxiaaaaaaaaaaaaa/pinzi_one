@@ -1024,9 +1024,40 @@ public interface ApiService {
     @GET("question/getQuestionDetail")
     Flowable<BaseDto<List<QuestionDetailDto>>> getQuestionDetail(@QueryMap Map<String, String> map);
 
-
+    /**
+     * 提交问卷
+     * @param vo
+     * @return
+     */
     @POST("question/commitQuestion")
     Flowable<BaseDto> commitQuestion(@Body CommitQuestionVo vo);
+
+    /**
+     * 我参与的活动列表
+     * @param map
+     * @return
+     */
+    @GET("activity/getMyActivityList")
+    Flowable<BaseDto<List<ActivityDto>>> getMyActivityList(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 我的作品
+     * @param map
+     * @return
+     */
+    @GET("activity/getMyProduct")
+    Flowable<BaseDto<List<ActivityProductDto>>> getMyProduct(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 上传作品
+     * @param
+     * @return
+     */
+    @POST("activity/addProduct")
+    Flowable<BaseDto> addProduct(@QueryMap Map<String, String> map);
+
 }
 
 

@@ -56,6 +56,7 @@ import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
 import com.jilian.pinzi.common.vo.SeckillPrefectureVo;
 import com.jilian.pinzi.common.vo.ShipperVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
+import com.jilian.pinzi.http.Api;
 
 import java.util.List;
 
@@ -400,6 +401,7 @@ public interface MainRepository {
 
     /**
      * 问卷列表
+     *
      * @param vo
      * @return
      */
@@ -407,6 +409,7 @@ public interface MainRepository {
 
     /**
      * 问卷详情
+     *
      * @param vo
      * @return
      */
@@ -414,8 +417,34 @@ public interface MainRepository {
 
     /**
      * 提交问题
+     *
      * @param vo
      * @return
      */
     LiveData<BaseDto> commitQuestion(CommitQuestionVo vo);
+
+
+    /**
+     * 我的活动列表
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<List<ActivityDto>>> getMyActivityList(ActivityVo vo);
+
+    /**
+     * 我的作品列表
+     *
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<List<ActivityProductDto>>> getMyProduct(ProductVo vo);
+
+    /**
+     * 上传作品
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> addProduct(ProductVo vo);
+
 }

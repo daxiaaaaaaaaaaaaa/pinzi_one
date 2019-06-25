@@ -19,6 +19,33 @@ public class ActivityProductDto implements Serializable {
     private long createDate;//      true     string    创建时间
     private String video;//     true  string     视频路径
     private Bitmap bitmap;
+    private String uId;//用户 Id
+    private String activityId;//活动ID
+    private int isCheck;//是否通过审核
+
+    public int getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(int isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
 
     public Bitmap getBitmap() {
         return bitmap;

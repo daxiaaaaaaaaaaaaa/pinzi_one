@@ -1178,14 +1178,41 @@ public class Api {
         return RequetRetrofit.getInstance().getQuestionDetail(HttpUtil.convertVo2Params(vo));
     }
 
+    /**
+     * 提交问卷
+     * @param vo
+     * @return
+     */
     public static Flowable<BaseDto> commitQuestion(CommitQuestionVo vo) {
         return RequetRetrofit.getInstance().commitQuestion(vo);
     }
 
+    /**
+     * 我参与的活动列表
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<ActivityDto>>> getMyActivityList(ActivityVo vo) {
+        return RequetRetrofit.getInstance().getMyActivityList(HttpUtil.convertVo2Params(vo));
+    }
 
+    /**
+     * 我的作品
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<ActivityProductDto>>> getMyProduct(ProductVo vo) {
+        return RequetRetrofit.getInstance().getMyProduct(HttpUtil.convertVo2Params(vo));
+    }
 
-
-
+    /**
+     * 上传作品
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> addProduct(ProductVo vo) {
+        return RequetRetrofit.getInstance().addProduct(HttpUtil.convertVo2Params(vo));
+    }
 
 
 }

@@ -78,7 +78,7 @@ public class QuestionnaireSurveyDetailAdapter extends RecyclerView.Adapter<Quest
             String array[] = answerOption.split(",");
             List<String> list = Arrays.asList(array);
             for (int i = 0; i < options.size(); i++) {
-                if (list.contains(options.get(i))) {
+                if (list.contains(options.get(i).getId())) {
                     options.get(i).setSelected(true);
                 } else {
                     options.get(i).setSelected(false);

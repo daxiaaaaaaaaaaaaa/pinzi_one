@@ -67,19 +67,11 @@
             />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="@dimen/widget_size_10"
-        android:id="@+id/rv_one"
+    <com.jilian.pinzi.views.NoScrollViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_size_10">
 
-    </android.support.v7.widget.RecyclerView>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="@dimen/widget_size_10"
-        android:id="@+id/rv_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
+    </com.jilian.pinzi.views.NoScrollViewPager>
 </LinearLayout>

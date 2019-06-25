@@ -51,7 +51,10 @@ public class MainActivityDetailActivity extends BaseActivity {
             setrightTitle("上传作品", "#FFFFFF", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class));
+                    Intent intent = new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class);
+                    intent.putExtra("activityId",mData.getId());
+
+                    startActivity(intent);
                 }
             });
 

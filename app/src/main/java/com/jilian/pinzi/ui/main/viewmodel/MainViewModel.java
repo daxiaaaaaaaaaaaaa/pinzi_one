@@ -162,6 +162,24 @@ public class MainViewModel extends ViewModel {
 
     private LiveData<BaseDto> commiteData;// 提交问题
 
+    private LiveData<BaseDto<List<ActivityDto>>> myActivityListData;//活动列表
+
+    private LiveData<BaseDto<List<ActivityProductDto>>> myProductData;//查看作品
+
+    private LiveData<BaseDto> addProductData;//查看作品
+
+    public LiveData<BaseDto> getAddProductData() {
+        return addProductData;
+    }
+
+    public LiveData<BaseDto<List<ActivityDto>>> getMyActivityListData() {
+        return myActivityListData;
+    }
+
+    public LiveData<BaseDto<List<ActivityProductDto>>> getMyProductData() {
+        return myProductData;
+    }
+
     public LiveData<BaseDto> getCommiteData() {
         return commiteData;
     }
@@ -1044,12 +1062,13 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 问卷列表
+     *
      * @param uId
      * @param type
      * @param pageNo
      * @param pageSize
      */
-    public void getQuestionList(String uId, int type,Integer pageNo,Integer pageSize) {
+    public void getQuestionList(String uId, int type, Integer pageNo, Integer pageSize) {
         mainRepository = new MainRepositoryImpl();
         QuestionVo vo = new QuestionVo();
         vo.setuId(uId);
@@ -1060,7 +1079,6 @@ public class MainViewModel extends ViewModel {
     }
 
     /**
-     *
      * @param uId
      * @param qId 问卷Id
      */
@@ -1074,11 +1092,12 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 提交问题
+     *
      * @param uId
      * @param questionId
      * @param results
      */
-    public void commitQuestion(String uId, String questionId,List<CommitQuestionItemVo> results) {
+    public void commitQuestion(String uId, String questionId, List<CommitQuestionItemVo> results) {
         mainRepository = new MainRepositoryImpl();
         CommitQuestionVo vo = new CommitQuestionVo();
         vo.setuId(uId);
@@ -1087,10 +1106,56 @@ public class MainViewModel extends ViewModel {
         commiteData = mainRepository.commitQuestion(vo);
     }
 
+    /**
+     * 我的活动列表
+     *
+     * @param uId
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getMyActivityList(String uId, Integer pageNo, Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        ActivityVo vo = new ActivityVo();
+        vo.setuId(uId);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        myActivityListData = mainRepository.getMyActivityList(vo);
+    }
 
+    /**
+     * 我的作品
+     *
+     * @param uId
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getMyProduct(String uId, Integer pageNo, Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        ProductVo vo = new ProductVo();
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        vo.setuId(uId);
+        myProductData = mainRepository.getMyProduct(vo);
+    }
 
-
-
-
+    /**
+     * 上传作品
+     *
+     * @param uId
+     * @param activityId
+     * @param content
+     * @param pathUrl
+     * @param video
+     */
+    public void addProduct(String uId, String activityId, String content, String pathUrl, String video) {
+        mainRepository = new MainRepositoryImpl();
+        ProductVo vo = new ProductVo();
+        vo.setuId(uId);
+        vo.setActivityId(activityId);
+        vo.setContent(content);
+        vo.setPathUrl(pathUrl);
+        vo.setVideo(video);
+        addProductData = mainRepository.addProduct(vo);
+    }
 
 }

@@ -13,16 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.QuestionnaireSurveyAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
-import com.jilian.pinzi.common.msg.FriendMsg;
-import com.jilian.pinzi.common.msg.QuestionMsg;
-import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -37,12 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-
 
 /**
- * 活动列表
+ * 问卷调查列表
  */
 public class QuestionnaireSurveyActivity extends BaseActivity implements CustomItemClickListener {
     private TextView tvOne;
@@ -91,13 +83,20 @@ public class QuestionnaireSurveyActivity extends BaseActivity implements CustomI
 
     @Override
     public void initData() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         showLoadingDialog();
+        pageNo = 1;
         getQuestionList();
     }
 
     private int pageNo = 1;//
     private int pageSize = 20;//
-    private int type;// 1.未填写 2.已填写
+    private int type = 1;// 1.未填写 2.已填写
 
     private void getQuestionList() {
         viewModel.getQuestionList(getUserId(), type, pageNo, pageSize);
@@ -141,7 +140,7 @@ public class QuestionnaireSurveyActivity extends BaseActivity implements CustomI
                 vTwo.setVisibility(View.INVISIBLE);
                 tvOne.setTextColor(Color.parseColor("#c71233"));
                 tvTwo.setTextColor(Color.parseColor("#888888"));
-                type = 0;
+                type = 1;
                 pageNo = 1;
                 getQuestionList();
             }
@@ -153,7 +152,7 @@ public class QuestionnaireSurveyActivity extends BaseActivity implements CustomI
                 vTwo.setVisibility(View.VISIBLE);
                 tvOne.setTextColor(Color.parseColor("#888888"));
                 tvTwo.setTextColor(Color.parseColor("#c71233"));
-                type = 1;
+                type = 2;
                 pageNo = 1;
                 getQuestionList();
             }
@@ -180,29 +179,15 @@ public class QuestionnaireSurveyActivity extends BaseActivity implements CustomI
             }
         });
 
-        RxBus.getInstance().toObservable().map(new Function<Object, QuestionMsg>() {
-            @Override
-            public QuestionMsg apply(Object o) throws Exception {
-                return (QuestionMsg) o;
-            }
-        }).subscribe(new Consumer<QuestionMsg>() {
-            @Override
-            public void accept(QuestionMsg dto) throws Exception {
-                if (dto != null&&dto.getCode()==200) {
-                    pageNo = 1;
-                    getQuestionList();
-                }
-            }
-        });
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = null;
-        if (type == 0) {
+        if (type == 1) {
             intent = new Intent(this, QuestionnaireSurveyDetailActivity.class);
         }
-        if (type == 1) {
+        if (type == 2) {
             intent = new Intent(this, QuestionnaireSurveyDetailFinishActivity.class);
         }
         intent.putExtra("data", list.get(position));
