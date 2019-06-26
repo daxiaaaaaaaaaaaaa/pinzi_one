@@ -1,5 +1,6 @@
 package com.jilian.pinzi.ui.friends;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -64,6 +66,7 @@ import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.friends.imagepager.ImagePagerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -72,6 +75,7 @@ import com.jilian.pinzi.utils.ScreenUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -167,6 +171,7 @@ public class FriendDetailActivity extends CommonActivity {
                 if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                     //单条朋友圈详情
                     dto = listBaseDto.getData().get(0).getFriendCircle();
+
                     initDetailView(dto);
                     //通过事件总线 把 前面两个Activity的数据也刷新
                     FriendMsg eventMsg = new FriendMsg();
@@ -204,7 +209,9 @@ public class FriendDetailActivity extends CommonActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1000) {
+
                 Bitmap bitmap = (Bitmap) msg.obj;
+                friend.setBitmap(bitmap);
                 btnVideo.setImageBitmap(bitmap);
             }
         }
@@ -238,7 +245,7 @@ public class FriendDetailActivity extends CommonActivity {
                 @Override
                 public void run() {
                     super.run();
-                    Bitmap bitmap = getNetVideoBitmap(friend.getVideo());
+                    Bitmap bitmap = BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(friend.getVideo()));
                     Message message = Message.obtain();
                     message.obj = bitmap;
                     message.what = 1000;
@@ -542,11 +549,37 @@ public class FriendDetailActivity extends CommonActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(FriendDetailActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("url", friend.getVideo());
-               // Bitmap bitmap = friend.getBitmap();
-                // intent.putExtra("bitmap", bitmap);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FriendDetailActivity.this).toBundle());
+                Bitmap bitmap = friend.getBitmap();
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                byte [] bitmapByte =baos.toByteArray();
+                intent.putExtra("bitmap",bitmapByte);
+
+                // 添加跳转动画
+                startActivity(intent,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                FriendDetailActivity.this,
+                                btnVideo,
+                                FriendDetailActivity.this.getString(R.string.share_str))
+                                .toBundle());
+
+
+
+
+
+
+//
+//                Intent intent = new Intent(FriendDetailActivity.this, VideoPlayerActivity.class);
+//                intent.putExtra("url", friend.getVideo());
+//                Bitmap bitmap = BitmapUtils.getScanBitmap(friend.getBitmap());
+//                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+//                byte [] bitmapByte =baos.toByteArray();
+//                intent.putExtra("bitmap",bitmapByte);
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FriendDetailActivity.this).toBundle());
             }
         });
         tvOk.setOnClickListener(new View.OnClickListener() {

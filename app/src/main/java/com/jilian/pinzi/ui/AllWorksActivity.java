@@ -1,5 +1,6 @@
 package com.jilian.pinzi.ui;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -12,6 +13,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
@@ -32,6 +35,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +129,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                                 for (int i = 0; i < datas.size(); i++) {
                                     //视频地址不为空
                                     if (EmptyUtils.isNotEmpty(datas.get(i).getVideo())) {
-                                        datas.get(i).setBitmap(getNetVideoBitmap(datas.get(i).getVideo()));
+                                        datas.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(datas.get(i).getVideo())));
                                         Message msg = Message.obtain();
                                         msg.what = 1000;
                                         handler.sendMessage(msg);
@@ -146,23 +150,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
         });
     }
 
-    public Bitmap getNetVideoBitmap(String videoUrl) {
-        Bitmap bitmap = null;
 
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            //根据url获取缩略图
-            retriever.setDataSource(videoUrl, new HashMap());
-            //获得第一帧图片
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } finally {
-            retriever.release();
-        }
-
-        return bitmap;
-    }
 
     @Override
     public void initListener() {
@@ -190,12 +178,6 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
     @Override
     public void clickVideo(int position) {
 
-        Intent intent = new Intent(this, VideoPlayerActivity.class);
-        intent.putExtra("url", datas.get(position).getVideo());
-        Bitmap bitmap = datas.get(position).getBitmap();
-        intent.putExtra("bitmap", bitmap);
-
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AllWorksActivity.this).toBundle());
 
     }
 

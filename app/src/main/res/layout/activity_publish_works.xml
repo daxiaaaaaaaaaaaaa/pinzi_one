@@ -58,6 +58,7 @@
                 android:layout_height="160dp">
 
                 <ImageView
+                    android:transitionName="@string/share_str"
                     android:id="@+id/iv_video"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -3,8 +3,10 @@ package com.jilian.pinzi.adapter;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,12 +22,14 @@ import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.AllWorksActivity;
+import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.views.CircularImageView;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -131,7 +135,25 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         holder.rlVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickVideoListener.clickVideo(position);
+
+                Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+                intent.putExtra("url", datas.get(position).getVideo());
+                Bitmap bitmap = datas.get(position).getBitmap();
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                byte [] bitmapByte =baos.toByteArray();
+                intent.putExtra("bitmap",bitmapByte);
+
+                // 添加跳转动画
+                mContext.startActivity(intent,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) mContext,
+                                holder.btnVideo,
+                                mContext.getString(R.string.share_str))
+                                .toBundle());
+
+
+
             }
         });
         holder.tvName.setText(datas.get(position).getUserName());

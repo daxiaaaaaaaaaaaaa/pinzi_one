@@ -37,8 +37,6 @@ public class MyActivityActivity extends BaseActivity   {
 
 
 
-
-
     @Override
     protected void createViewModel() {
 
@@ -59,9 +57,6 @@ public class MyActivityActivity extends BaseActivity   {
         vOne = (View) findViewById(R.id.v_one);
         vTwo = (View) findViewById(R.id.v_two);
         viewPager = (NoScrollViewPager) findViewById(R.id.viewPager);
-
-
-
 
     }
 

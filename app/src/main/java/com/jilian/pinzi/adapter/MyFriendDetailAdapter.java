@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.utils.UrlUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -68,8 +70,19 @@ public class MyFriendDetailAdapter extends RecyclerView.Adapter<MyFriendDetailAd
                 Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                 intent.putExtra("url", datas.get(position).getVideo());
                 Bitmap bitmap = datas.get(position).getBitmap();
-                // intent.putExtra("bitmap", bitmap);
-                mContext.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                byte [] bitmapByte =baos.toByteArray();
+                intent.putExtra("bitmap",bitmapByte);
+
+                // 添加跳转动画
+                mContext.startActivity(intent,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                activity,
+                               holder.btnVideo,
+                                activity.getString(R.string.share_str))
+                                .toBundle());
+
             }
         });
         //视频 和 图片 都为空

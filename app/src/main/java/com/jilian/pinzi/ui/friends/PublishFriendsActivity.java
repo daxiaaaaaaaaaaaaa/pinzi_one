@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -46,6 +47,7 @@ import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.InputBoardUtils;
@@ -56,6 +58,7 @@ import com.jilian.pinzi.views.CustomerGridLayManager;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,9 +237,20 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
             public void onClick(View v) {
                 Intent intent = new Intent(PublishFriendsActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("url", videoPath);
-                intent.putExtra("bitmap", bitmap);
+                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                byte [] bitmapByte =baos.toByteArray();
+                intent.putExtra("bitmap",bitmapByte);
 
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(PublishFriendsActivity.this).toBundle());
+                // 添加跳转动画
+                startActivity(intent,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                PublishFriendsActivity.this,
+                                ivVideo,
+                                PublishFriendsActivity.this.getString(R.string.share_str))
+                                .toBundle());
+
+
             }
         });
         rlVideo.setOnLongClickListener(new View.OnLongClickListener() {
@@ -463,7 +477,7 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
                             int imageId = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
                             // 方法一 Thumbnails 利用createVideoThumbnail 通过路径得到缩略图，保持为视频的默认比例
                             // 第一个参数为 ContentResolver，第二个参数为视频缩略图ID， 第三个参数kind有两种为：MICRO_KIND和MINI_KIND 字面意思理解为微型和迷你两种缩略模式，前者分辨率更低一些。
-                            bitmap = MediaStore.Video.Thumbnails.getThumbnail(cr, imageId, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+                            bitmap = BitmapUtils.getScanBitmap( MediaStore.Video.Thumbnails.getThumbnail(cr, imageId, MediaStore.Video.Thumbnails.MICRO_KIND, null));
 
                             // 方法二 ThumbnailUtils 利用createVideoThumbnail 通过路径得到缩略图，保持为视频的默认比例
                             // 第一个参数为 视频/缩略图的位置，第二个依旧是分辨率相关的kind

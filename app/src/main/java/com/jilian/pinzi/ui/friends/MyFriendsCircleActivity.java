@@ -29,6 +29,7 @@ import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -114,23 +115,7 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
         }
     };
 
-    public Bitmap getNetVideoBitmap(String videoUrl) {
-        Bitmap bitmap = null;
 
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            //根据url获取缩略图
-            retriever.setDataSource(videoUrl, new HashMap());
-            //获得第一帧图片
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } finally {
-            retriever.release();
-        }
-
-        return bitmap;
-    }
 
     @Override
     public void initData() {
@@ -189,7 +174,7 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
                                 for (int j = 0; j < datas.get(i).getDatas().size(); j++) {
                                     //视频地址不为空
                                     if (EmptyUtils.isNotEmpty(datas.get(i).getDatas().get(j)) && EmptyUtils.isNotEmpty(datas.get(i).getDatas().get(j).getVideo())) {
-                                        datas.get(i).getDatas().get(j).setBitmap(getNetVideoBitmap(datas.get(i).getDatas().get(j).getVideo()));
+                                        datas.get(i).getDatas().get(j).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(datas.get(i).getDatas().get(j).getVideo())));
                                         handler.sendEmptyMessage(1000);
                                     }
                                 }

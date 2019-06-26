@@ -26,6 +26,7 @@ import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
@@ -34,6 +35,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +116,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
                             for (int i = 0; i < datas.size(); i++) {
                                 //视频地址不为空
                                 if (EmptyUtils.isNotEmpty(datas.get(i).getVideo())) {
-                                    datas.get(i).setBitmap(getNetVideoBitmap(datas.get(i).getVideo()));
+                                    datas.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(datas.get(i).getVideo())));
                                     Message msg = Message.obtain();
                                     msg.what = 1000;
                                     handler.sendMessage(msg);
@@ -147,23 +149,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
             }
         }
     };
-    public Bitmap getNetVideoBitmap(String videoUrl) {
-        Bitmap bitmap = null;
 
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            //根据url获取缩略图
-            retriever.setDataSource(videoUrl, new HashMap());
-            //获得第一帧图片
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } finally {
-            retriever.release();
-        }
-
-        return bitmap;
-    }
     @Override
     protected void initListener() {
         srHasData.setOnRefreshListener(new OnRefreshListener() {
@@ -198,12 +184,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void clickVideo(int position) {
-        Intent intent = new Intent(getActivity(),VideoPlayerActivity.class);
-        intent.putExtra("url", datas.get(position).getVideo());
-        Bitmap bitmap = datas.get(position).getBitmap();
-        //intent.putExtra("bitmap", bitmap);
 
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
     @Override

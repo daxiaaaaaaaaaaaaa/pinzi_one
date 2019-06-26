@@ -6,8 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,6 +57,7 @@ import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ScreenUtils;
 import com.jilian.pinzi.views.RoundImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -209,11 +213,23 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
+
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
                     intent.putExtra("url", datas.get(position).getVideo());
                     Bitmap bitmap = datas.get(position).getBitmap();
-                   // intent.putExtra("bitmap", bitmap);
-                    context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+                    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                    byte [] bitmapByte =baos.toByteArray();
+                    intent.putExtra("bitmap",bitmapByte);
+
+                        // 添加跳转动画
+                    context.startActivity(intent,
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    (Activity) context,
+                                    btnVideo,
+                                    context.getString(R.string.share_str))
+                                    .toBundle());
+
                 }
             });
 
@@ -684,6 +700,8 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 //                    intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, getUrls(datas.get(friendCirclePosition).getImgUrl()));
 //                    intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
 //                    view.getContext().startActivity(intent);
+
+
 
                     intent.putExtra("url", datas.get(friendCirclePosition).getImgUrl());
                     intent.putExtra("position", position);

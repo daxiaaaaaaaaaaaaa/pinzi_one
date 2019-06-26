@@ -197,7 +197,7 @@
         <activity android:name=".ui.MyActivityActivity"/>
         <activity android:name=".ui.PublishWorksActivity"/>
         <activity android:name=".ui.my.AboutActivity"/>
-        <activity android:name=".ui.VideoPlayerActivity"/>
+        <activity android:name=".ui.VideoPlayerActivity" android:theme="@style/BigImageTranslateTheme"/>
         <activity android:name=".ui.QuestionnaireSurveyDetailFinishActivity"/>
         <!-- 兼容7.0 -->
         <provider
