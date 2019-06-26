@@ -1,12 +1,17 @@
 package com.jilian.pinzi.ui.friends;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -55,6 +60,7 @@ import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.LoginActivity;
+import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.friends.imagepager.ImagePagerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
@@ -72,6 +78,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 public class FriendDetailActivity extends CommonActivity {
     private ImageView ivHead;
@@ -94,7 +102,9 @@ public class FriendDetailActivity extends CommonActivity {
     private LinearLayout llFragmentThreeComment;
     private EditText etComment;
     private TextView tvOk;
-
+    private RelativeLayout rlVideo;
+    private ImageView btnVideo;
+    private ImageView ivStart;
 
 
     @Override
@@ -106,14 +116,18 @@ public class FriendDetailActivity extends CommonActivity {
     public int intiLayout() {
         return R.layout.activity_friend_detail;
     }
+
     private NestedScrollView scrollView;
+
     @Override
     public void initView() {
         setNormalTitle("详情", v -> finish());
 
 
         scrollView = (NestedScrollView) findViewById(R.id.scrollView);
-
+        rlVideo = (RelativeLayout) findViewById(R.id.rl_video);
+        btnVideo = (ImageView) findViewById(R.id.btnVideo);
+        ivStart = (ImageView) findViewById(R.id.iv_start);
         ivHead = (ImageView) findViewById(R.id.iv_head);
         tvName = (TextView) findViewById(R.id.tv_name);
         tvContent = (TextView) findViewById(R.id.tv_content);
@@ -146,7 +160,7 @@ public class FriendDetailActivity extends CommonActivity {
     }
 
     private void getFriendDetai() {
-        viewModel.SingleFriendCircle( getIntent().getStringExtra("id"),getIntent().getStringExtra("uId"));
+        viewModel.SingleFriendCircle(getIntent().getStringExtra("id"), getIntent().getStringExtra("uId"));
         viewModel.getSingleFriendCircle().observe(this, new Observer<BaseDto<List<FriendCircleListDetailDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<FriendCircleListDetailDto>> listBaseDto) {
@@ -167,19 +181,47 @@ public class FriendDetailActivity extends CommonActivity {
         });
     }
 
+    public Bitmap getNetVideoBitmap(String videoUrl) {
+        Bitmap bitmap = null;
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            retriever.release();
+        }
+
+        return bitmap;
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1000) {
+                Bitmap bitmap = (Bitmap) msg.obj;
+                btnVideo.setImageBitmap(bitmap);
+            }
+        }
+    };
+
     /**
      * 展示UI
      *
      * @param dto
      */
     private void initDetailView(FriendCircleListDto dto) {
-        if(PinziApplication.getInstance().getLoginDto().getId().equals(dto.getuId())){
+        if (PinziApplication.getInstance().getLoginDto().getId().equals(dto.getuId())) {
             tvItemListFriendsDel.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             tvItemListFriendsDel.setVisibility(View.GONE);
         }
-        FriendCircleListDto friend = dto;
+        this.friend = dto;
         Glide
                 .with(this)
                 .load(friend.getHeadImg())
@@ -188,11 +230,35 @@ public class FriendDetailActivity extends CommonActivity {
         String releaseContent = friend.getContent();
         tvContent.setText(releaseContent);
         tvContent.setVisibility(TextUtils.isEmpty(releaseContent) ? View.GONE : View.VISIBLE);
-        // 朋友圈发布的图片
-        // TODO 模拟一些图片数据: 最多添加9张图片
-        List<String> images = getImageUrls(friend.getImgUrl());
-        // 显示图片
-        initImagesRecyclerView(images, friend);
+        if (!TextUtils.isEmpty(friend.getVideo())) {
+            rlVideo.setVisibility(View.VISIBLE);
+            rvItemListFriendsImages.setVisibility(View.GONE);
+            //开启子线程
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    Bitmap bitmap = getNetVideoBitmap(friend.getVideo());
+                    Message message = Message.obtain();
+                    message.obj = bitmap;
+                    message.what = 1000;
+                    handler.sendMessage(message);
+                }
+
+
+            }.start();
+
+
+        } else {
+            rlVideo.setVisibility(View.GONE);
+            rvItemListFriendsImages.setVisibility(View.VISIBLE);
+            // 朋友圈发布的图片
+            // TODO 模拟一些图片数据: 最多添加9张图片
+            List<String> images = getImageUrls(friend.getImgUrl());
+            // 显示图片
+            initImagesRecyclerView(images, friend);
+        }
+
         // 设置发布时间
         tvItemListFriendsMinute.setText(DateUtil.getTimeFormatText(new Date(Long.valueOf(friend.getCreateDate()))));
 
@@ -268,8 +334,7 @@ public class FriendDetailActivity extends CommonActivity {
                 popupWindow.dismiss();
                 //评论
 //                llFragmentThreeComment.setVisibility(View.VISIBLE);
-                showPopupWindow(mFriend.getId(),null);
-
+                showPopupWindow(friend.getId(), null);
 
 
             });
@@ -316,11 +381,10 @@ public class FriendDetailActivity extends CommonActivity {
     }
 
     /**
-     *
-     * @param fcId 朋友圈ID
+     * @param fcId     朋友圈ID
      * @param parentId 回復 評論 ID
      */
-    private void showPopupWindow( String fcId, String parentId) {
+    private void showPopupWindow(String fcId, String parentId) {
         // 一个自定义的布局，作为显示的内容
         MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(this, R.layout.dialog_input_comment);
         dialog.show();
@@ -351,10 +415,10 @@ public class FriendDetailActivity extends CommonActivity {
                 }
                 if (parentId == null) {
                     //评论
-                    FriendCircleComment( PinziApplication.getInstance().getLoginDto().getId(), comment, fcId);
+                    FriendCircleComment(PinziApplication.getInstance().getLoginDto().getId(), comment, fcId);
                 } else {
                     //回复
-                    CommentReplyAdd( PinziApplication.getInstance().getLoginDto().getId(), comment, fcId, parentId);
+                    CommentReplyAdd(PinziApplication.getInstance().getLoginDto().getId(), comment, fcId, parentId);
                 }
                 dialog.dismiss();
             }
@@ -378,13 +442,15 @@ public class FriendDetailActivity extends CommonActivity {
                             }
                         }
                     }
-                },200);
+                }, 200);
 
 
             }
         });
     }
+
     private int previousKeyboardHeight = -1;
+
     /**
      * 删除朋友圈
      *
@@ -412,12 +478,13 @@ public class FriendDetailActivity extends CommonActivity {
         });
 
     }
-    private FriendCircleListDto mFriend;
+
+    private FriendCircleListDto friend;
+
     /**
      * 初始化图片 RecyclerView
      */
     public void initImagesRecyclerView(List<String> images, FriendCircleListDto friend) {
-        this.mFriend = friend;
         rvItemListFriendsImages.setLayoutManager(new GridLayoutManager(this, 3));
         ImagesAdapter imagesAdapter = new ImagesAdapter(this, R.layout.item_friends_images, images);
         rvItemListFriendsImages.setAdapter(imagesAdapter);
@@ -471,13 +538,24 @@ public class FriendDetailActivity extends CommonActivity {
 
     @Override
     public void initListener() {
+        rlVideo.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FriendDetailActivity.this, VideoPlayerActivity.class);
+                intent.putExtra("url", friend.getVideo());
+               // Bitmap bitmap = friend.getBitmap();
+                // intent.putExtra("bitmap", bitmap);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FriendDetailActivity.this).toBundle());
+            }
+        });
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(etComment.getText().toString())){
+                if (TextUtils.isEmpty(etComment.getText().toString())) {
                     return;
                 }
-                FriendCircleComment(PinziApplication.getInstance().getLoginDto().getId(),mFriend.getId(),etComment.getText().toString());
+                FriendCircleComment(PinziApplication.getInstance().getLoginDto().getId(), friend.getId(), etComment.getText().toString());
             }
         });
         scrollView.setOnClickListener(new View.OnClickListener() {
@@ -702,13 +780,13 @@ public class FriendDetailActivity extends CommonActivity {
 
             ImageView ivHead = holder.getView(R.id.iv_head);
             TextView tvName = holder.getView(R.id.tv_name);
-            TextView  tvDate = holder.getView(R.id.tv_date);
+            TextView tvDate = holder.getView(R.id.tv_date);
             tvContent = holder.getView(R.id.tv_content);
 
             tvContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                     if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())) {
+                    if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())) {
                         Dialog dialog = new Dialog(FriendDetailActivity.this, R.style.dialogFullscreen);
                         dialog.setContentView(R.layout.dialog_bottom_layout);
                         Window window = dialog.getWindow();
@@ -739,8 +817,7 @@ public class FriendDetailActivity extends CommonActivity {
                 @Override
                 public boolean onLongClick(View view) {
                     //刪除評論
-                    if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId()))
-                    {
+                    if (comment.getuId().equals(PinziApplication.getInstance().getLoginDto().getId())) {
                         Dialog dialog = new Dialog(FriendDetailActivity.this, R.style.dialogFullscreen);
                         dialog.setContentView(R.layout.dialog_bottom_layout);
                         Window window = dialog.getWindow();
@@ -808,17 +885,17 @@ public class FriendDetailActivity extends CommonActivity {
                 ssb.append(ssText);
                 ssb.append(ssName2);
                 //
-                String ssbsStr =ssb.toString();
+                String ssbsStr = ssb.toString();
                 SpannableString ssbsStrSpan = new SpannableString(ssbsStr);
 
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_c71233)),
                         0, name1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_c71233)),
-                        name1.length()+2, name2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        name1.length() + 2, name2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_222222)),
-                        name1.length(), name1.length()+2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        name1.length(), name1.length() + 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
                 //姓名组合
@@ -845,6 +922,7 @@ public class FriendDetailActivity extends CommonActivity {
     }
 
     private String strText = "回复";
+
     /**
      * 朋友圈评论删除
      *
@@ -875,7 +953,7 @@ public class FriendDetailActivity extends CommonActivity {
      */
     public void awnser(String id) {
         //評論回復
-        showPopupWindow(mFriend.getId(),id);
+        showPopupWindow(friend.getId(), id);
 
     }
 
@@ -940,7 +1018,7 @@ public class FriendDetailActivity extends CommonActivity {
      * @param content string评论内容
      * @param fcId    string朋友圈ID
      */
-    private void FriendCircleComment( String uId, String content, String fcId) {
+    private void FriendCircleComment(String uId, String content, String fcId) {
         viewModel.FriendCircleComment(uId, content, fcId);
         viewModel.getComment().observe(this, new Observer<BaseDto<String>>() {
             @Override
@@ -955,6 +1033,7 @@ public class FriendDetailActivity extends CommonActivity {
             }
         });
     }
+
     /**
      * 朋友圈评论回复
      *
@@ -963,7 +1042,7 @@ public class FriendDetailActivity extends CommonActivity {
      * @param fcId     朋友圈 ID
      * @param parentId 回复评论ID
      */
-    private void CommentReplyAdd( String uId, String content, String fcId, String parentId) {
+    private void CommentReplyAdd(String uId, String content, String fcId, String parentId) {
         viewModel.CommentReplyAdd(uId, content, fcId, parentId);
         viewModel.getCommentAdd().observe(this, new Observer<BaseDto<String>>() {
             @Override

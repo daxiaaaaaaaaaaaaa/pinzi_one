@@ -22,6 +22,25 @@ public class StoreShowDto implements Serializable {
     private Integer status;// 2,状态（1.审核中 2.审核通过 3.审核不通过）
     private long createDate;// 1541660804000创建时间
 
+    private Double longitude;//true string 经度
+    private Double latitude;//true string 纬度
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
     public String getId() {
         return id;
     }

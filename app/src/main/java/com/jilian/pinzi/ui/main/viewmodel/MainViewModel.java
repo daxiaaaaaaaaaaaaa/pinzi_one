@@ -1,9 +1,10 @@
 package com.jilian.pinzi.ui.main.viewmodel;
 
-import android.app.Activity;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.ActivityDto;
@@ -62,11 +63,18 @@ import com.jilian.pinzi.common.vo.ShipperVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
 import com.jilian.pinzi.ui.main.repository.MainRepository;
 import com.jilian.pinzi.ui.main.repository.impl.MainRepositoryImpl;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.List;
 
 public class MainViewModel extends ViewModel {
 
+    private static final String TAG = "MainViewModel";
     private MainRepository mainRepository;
 
     private LiveData<BaseDto<List<MsgDto>>> msgliveData;//消息
@@ -167,6 +175,18 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto<List<ActivityProductDto>>> myProductData;//查看作品
 
     private LiveData<BaseDto> addProductData;//查看作品
+
+    private LiveData<BaseDto<String>> sevenTokenData;//七牛token
+
+    private MutableLiveData<String> uploadVideoData;//上传视频
+
+    public LiveData<String> getUploadVideoData() {
+        return uploadVideoData;
+    }
+
+    public LiveData<BaseDto<String>> getSevenTokenData() {
+        return sevenTokenData;
+    }
 
     public LiveData<BaseDto> getAddProductData() {
         return addProductData;
@@ -597,15 +617,31 @@ public class MainViewModel extends ViewModel {
     }
 
     /**
-     * 店铺展示
      *
-     * @return
+     * @param startNum 当前页数
+     * @param pageSize 每页条数
+     * @param content 搜索内容
+     * @param province 省
+     * @param city 市
+     * @param area 区
+     * @param lat 纬度（用户定位地址）
+     * @param lot 经度（用户定位地址）
+     * @param orderby 1.距离从近到远 2.距离从远到近
+     * @param scoreBy 1.好评优先
      */
-    public void StoreShow(int startNum, int pageSize) {
+    public void StoreShow(int startNum, int pageSize,String content,String  province,String city,String area,Double lat,Double lot,String orderby,String scoreBy) {
         mainRepository = new MainRepositoryImpl();
         StoreShowVo vo = new StoreShowVo();
         vo.setStartNum(startNum);
         vo.setPageSize(pageSize);
+        vo.setContent(content);
+        vo.setProvince(province);
+        vo.setCity(city);
+        vo.setArea(area);
+        vo.setLat(lat);
+        vo.setLot(lot);
+        vo.setOrderby(orderby);
+        vo.setScoreBy(scoreBy);
         storeShowliveData = mainRepository.StoreShow(vo);
 
     }
@@ -1157,5 +1193,51 @@ public class MainViewModel extends ViewModel {
         vo.setVideo(video);
         addProductData = mainRepository.addProduct(vo);
     }
+
+    /**
+     * 获取七牛云token
+     */
+    public void uptoken() {
+        mainRepository = new MainRepositoryImpl();
+        sevenTokenData = mainRepository.uptoken();
+    }
+
+    ///指定zone的具体区域
+    //FixedZone.zone0   华东机房
+    //FixedZone.zone1   华北机房
+    //FixedZone.zone2   华南机房
+    //FixedZone.zoneNa0 北美机房
+    //自动识别上传区域
+    //AutoZone.autoZone
+    //Configuration config = new Configuration.Builder()
+    //.zone(Zone.autoZone)
+    //.zone(FixedZone.zone0)
+    //.build();
+    //UploadManager uploadManager = new UploadManager(config);
+    //  data = <File对象、或 文件路径、或 字节数组>
+    //  String key = <指定七牛服务上的文件名，或 null >;
+    // String token = <从服务端SDK获取 >;
+    // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+    public void uploadVideoToSeven(File data, String key, String token) {
+        uploadVideoData = new MutableLiveData<String>();
+
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(data, key, token,
+                new UpCompletionHandler() {
+                    @Override
+                    public void complete(String key, ResponseInfo info, JSONObject res) {
+                        //res包含hash、key等信息，具体字段取决于上传策略的设置
+                        if (info.isOK()) {
+                            uploadVideoData.setValue(key);
+                            Log.e(TAG, "complete: qiniu Upload Success");
+                        } else {
+                            Log.i("qiniu", "Upload Fail");
+                            //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                        }
+                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                    }
+                }, null);
+    }
+
 
 }

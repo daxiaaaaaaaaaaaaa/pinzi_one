@@ -28,9 +28,10 @@ public class Constant {
         //二期
         public static String BASE_URL = "http://39.108.14.94:9010/donghui_app_test/";
 
-
-
         public static String FIRE_URL = "http://39.108.14.94:9088";
+
+
+        public final static String SEVEN_URL = "http://ptk6jx7j2.bkt.clouddn.com";
 
     }
 

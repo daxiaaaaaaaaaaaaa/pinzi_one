@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="3dp"
                 android:layout_toRightOf="@id/tv_shop_detail_address_label"
-                android:text="4.5分"
+                tools:text="4.5分"
                 android:textColor="@color/color_999999"
                 android:textSize="15sp"/>
 
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="8：00 ~ 20：00"
+                tools:text="8：00 ~ 20：00"
                 android:textColor="@color/color_999999"
                 android:textSize="15sp"/>
         </LinearLayout>
@@ -143,6 +143,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <cn.jzvd.JzvdStd
+        android:visibility="invisible"
         android:layout_marginBottom="@dimen/widget_size_20"
         android:id="@+id/iv_video"
         android:layout_width="match_parent"

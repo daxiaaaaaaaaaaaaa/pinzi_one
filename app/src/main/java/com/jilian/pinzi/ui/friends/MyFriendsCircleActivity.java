@@ -4,7 +4,11 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +40,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
@@ -80,13 +85,12 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
 
     @Override
     public void initView() {
-        if(PinziApplication.getInstance().getLoginDto().getId().equals(getIntent().getStringExtra("uId"))){
+        if (PinziApplication.getInstance().getLoginDto().getId().equals(getIntent().getStringExtra("uId"))) {
             setNormalTitle("朋友圈", v -> finish(), R.drawable.icon_friends_camera, v -> {
                 // 进入发布朋友圈界面
                 startActivity(new Intent(this, PublishFriendsActivity.class));
             });
-        }
-        else{
+        } else {
             setNormalTitle("朋友圈", v -> finish());
         }
 
@@ -97,9 +101,35 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
         rvMineFriendsCircle.setLayoutManager(linearLayoutManager);
         datas = new ArrayList<>();
         datas.add(new FriendCircleListDto());
-        adapter = new MyFriendsCircleAdapter(getIntent().getStringExtra("url"),getIntent().getStringExtra("name"),this, datas, this);
+        adapter = new MyFriendsCircleAdapter(getIntent().getStringExtra("url"), getIntent().getStringExtra("name"), this, datas, this, this);
         rvMineFriendsCircle.setAdapter(adapter);
         srHasData.setEnableLoadMore(false);
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            adapter.notifyDataSetChanged();
+        }
+    };
+
+    public Bitmap getNetVideoBitmap(String videoUrl) {
+        Bitmap bitmap = null;
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            retriever.release();
+        }
+
+        return bitmap;
     }
 
     @Override
@@ -115,7 +145,7 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
             @Override
             public void accept(FriendMsg eventMsg) throws Exception {
                 if (eventMsg != null) {
-                    if(eventMsg.getCode()==200){
+                    if (eventMsg.getCode() == 200) {
                         getData();
                     }
                 }
@@ -148,6 +178,28 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
                     datas.add(new FriendCircleListDto());
                     datas.addAll(groudByDay(list));
                     adapter.notifyDataSetChanged();
+                    //开启子线程
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            //对视频封面处理 耗时操作
+                            for (int i = 1; i < datas.size(); i++) {
+
+                                for (int j = 0; j < datas.get(i).getDatas().size(); j++) {
+                                    //视频地址不为空
+                                    if (EmptyUtils.isNotEmpty(datas.get(i).getDatas().get(j)) && EmptyUtils.isNotEmpty(datas.get(i).getDatas().get(j).getVideo())) {
+                                        datas.get(i).getDatas().get(j).setBitmap(getNetVideoBitmap(datas.get(i).getDatas().get(j).getVideo()));
+                                        handler.sendEmptyMessage(1000);
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }.start();
+
+
                 }
             }
         });
@@ -230,7 +282,7 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
 
                         for (int i = 1; i < datas.size(); i++) {
                             for (int j = 0; j < datas.get(i).getDatas().size(); j++) {
-                                if(id.equals(datas.get(i).getDatas().get(j).getId())){
+                                if (id.equals(datas.get(i).getDatas().get(j).getId())) {
                                     datas.get(i).getDatas().remove(j);
                                     adapter.notifyDataSetChanged();
                                     return;
@@ -258,9 +310,9 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
      */
     @Override
     public void clickCircle(String id) {
-        Intent intent = new Intent(this,FriendDetailActivity.class);
-        intent.putExtra("id",id);
-        intent.putExtra("uId",getIntent().getStringExtra("uId"));
+        Intent intent = new Intent(this, FriendDetailActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("uId", getIntent().getStringExtra("uId"));
         startActivity(intent);
     }
 }

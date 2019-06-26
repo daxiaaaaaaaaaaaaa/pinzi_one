@@ -187,9 +187,10 @@ public class FriendViewModel extends ViewModel {
      * @param imgUrl 图片
      * @param photoSize 图片尺寸
      */
-     public void FriendCircleIssue(String uId,String content,String imgUrl,String photoSize) {
+     public void FriendCircleIssue(String uId,String content,String imgUrl,String photoSize,String video) {
         friendRepository = new FriendRepositoryImpl();
         FriendCircleIssueVo vo = new FriendCircleIssueVo();
+        vo.setVideo(video);
         vo.setuId(uId);
         vo.setContent(content);
         vo.setImgUrl(imgUrl);

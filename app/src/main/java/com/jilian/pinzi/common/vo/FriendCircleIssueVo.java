@@ -7,6 +7,15 @@ public class  FriendCircleIssueVo extends BaseVo {
     private String content;//true string内容
     private String imgUrl;//内容true string  图片
     private String photoSize;// true string图片尺寸
+    private String video;//
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
 
     public String getuId() {
         return uId;

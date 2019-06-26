@@ -43,6 +43,7 @@ import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
+import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -85,6 +86,7 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
     private ImageView ivLeftText;
     private ImageView ivVideo;
     private RelativeLayout rlVideo;
+    private MainViewModel mainViewModel;
 
 
     @Override
@@ -103,7 +105,7 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
     protected void createViewModel() {
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         viewModel = ViewModelProviders.of(this).get(FriendViewModel.class);
-
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
         //视频
         else if (!TextUtils.isEmpty(videoPath)) {
             showLoadingDialog();
-            uploadFile(3);
+            uploadVideo(3,new File(videoPath));
         }
         //无图片
         else {
@@ -168,10 +170,54 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
                 return;
             }
             showLoadingDialog();
-            FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), null, null);
+            FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), null, null,null);
 
 
         }
+    }
+
+    /**
+     * 上传视频
+     * @param type
+     */
+    private void uploadVideo(int type,File file) {
+        showLoadingDialog();
+        //先获取token
+        mainViewModel.uptoken();
+        mainViewModel.getSevenTokenData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> baseDto) {
+                hideLoadingDialog();
+                if(baseDto.isSuccess()&&EmptyUtils.isNotEmpty(baseDto.getData())){
+                    uploadToSeven(baseDto.getData(),file);
+                }
+                else{
+                    ToastUitl.showImageToastFail(baseDto.getMsg());
+                }
+            }
+        });
+    }
+
+    /**
+     * 上传文件到七牛
+     *
+     * @param token
+     */
+    private void uploadToSeven(String token,File file) {
+        showLoadingDialog();
+        mainViewModel.uploadVideoToSeven(file,file.getName(),token);
+        mainViewModel.getUploadVideoData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String key) {
+                hideLoadingDialog();
+                if(!TextUtils.isEmpty(key)){
+                    FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(),null, null, Constant.Server.SEVEN_URL+"/"+key);
+                }
+                else{
+                    ToastUitl.showImageToastFail("上传视频到七牛异常");
+                }
+            }
+        });
     }
 
 
@@ -268,8 +314,8 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 getLoadingDialog().dismiss();
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    //完善信息
-                    FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), stringBaseDto.getData(), null);
+                    //发到朋友圈
+                    FriendCircleIssue(PinziApplication.getInstance().getLoginDto().getId(), etPublishFriendsContent.getText().toString(), stringBaseDto.getData(), null,null);
                 } else {
                     ToastUitl.showImageToastFail(stringBaseDto.getMsg());
                 }
@@ -475,8 +521,8 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
      * @param imgUrl    图片
      * @param photoSize 图片尺寸
      */
-    public void FriendCircleIssue(String uId, String content, String imgUrl, String photoSize) {
-        viewModel.FriendCircleIssue(uId, content, imgUrl, photoSize);
+    public void FriendCircleIssue(String uId, String content, String imgUrl, String photoSize,String video) {
+        viewModel.FriendCircleIssue(uId, content, imgUrl, photoSize,video);
         viewModel.getPublish().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {

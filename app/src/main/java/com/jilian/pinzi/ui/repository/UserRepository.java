@@ -61,4 +61,7 @@ public interface UserRepository {
      * @return
      */
     LiveData<BaseDto<RegisterDto>> register(RegisterVo vo);
+
+
+
 }

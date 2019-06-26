@@ -102,7 +102,6 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
                     if (pageNo == 1) {
                         datas.clear();
                     }
-                    datas.get(0).setVideo("http://lmp4.vjshi.com/2017-09-13/f55a900d89679ac1c9837d5b5aaf632a.mp4");
                     datas.addAll(listBaseDto.getData());
                     adapter.notifyDataSetChanged();
                     //开启子线程
@@ -205,7 +204,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         Intent intent = new Intent(getActivity(),VideoPlayerActivity.class);
         intent.putExtra("url", datas.get(position).getVideo());
         Bitmap bitmap = datas.get(position).getBitmap();
-        intent.putExtra("bitmap", bitmap);
+        //intent.putExtra("bitmap", bitmap);
 
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }

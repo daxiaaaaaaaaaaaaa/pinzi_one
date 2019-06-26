@@ -193,8 +193,8 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             // 朋友圈发布的图片
             // TODO 模拟一些图片数据: 最多添加9张图片
-            String url = friend.getImgUrl();
-            if (!TextUtils.isEmpty(url) && url.contains("mp4")) {
+            String url = friend.getVideo();
+            if (!TextUtils.isEmpty(url)) {
                 recyclerView.setVisibility(View.GONE);
                 rlVideo.setVisibility(View.VISIBLE);
                 btnVideo.setImageBitmap(friend.getBitmap());
@@ -210,9 +210,9 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
-                    intent.putExtra("url", datas.get(position).getImgUrl());
+                    intent.putExtra("url", datas.get(position).getVideo());
                     Bitmap bitmap = datas.get(position).getBitmap();
-                    intent.putExtra("bitmap", bitmap);
+                   // intent.putExtra("bitmap", bitmap);
                     context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
                 }
             });

@@ -22,6 +22,15 @@ public class FriendCircleListDto implements Serializable {
     private List<FriendTblCommentDto>  tblCommentList;// true array[object]朋友圈评论
 //    private JSONArray tblCommentList;
     private Bitmap bitmap;
+    private String video;//視頻地址
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

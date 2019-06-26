@@ -187,7 +187,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      * 获取店铺展示的数据
      */
     private void getStoreShowData() {
-        viewModel.StoreShow(1, 6);
+        viewModel.StoreShow(1, 6,null,null,null,null,null,null,null,null);
         viewModel.getStoreShowliveData().observe(this, new Observer<BaseDto<List<StoreShowDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<StoreShowDto>> listBaseDto) {

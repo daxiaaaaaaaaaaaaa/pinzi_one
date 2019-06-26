@@ -161,9 +161,9 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             uploadFile(1);
         }
         //视频
-        else if(!TextUtils.isEmpty(videoPath)){
+        else if (!TextUtils.isEmpty(videoPath)) {
             showLoadingDialog();
-            uploadFile(3);
+            uploadVideo(3, new File(videoPath));
         }
         //无图片
         else {
@@ -172,16 +172,15 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                 return;
             }
             showLoadingDialog();
-            mainViewModel.addProduct(getUserId(),getIntent().getStringExtra("activityId"),etPublishFriendsContent.getText().toString(),null,null);
+            mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), null, null);
             mainViewModel.getAddProductData().observe(this, new Observer<BaseDto>() {
                 @Override
                 public void onChanged(@Nullable BaseDto baseDto) {
                     hideLoadingDialog();
-                    if(baseDto.isSuccess()){
+                    if (baseDto.isSuccess()) {
                         ToastUitl.showImageToastSuccess("提交成功");
                         finish();
-                    }
-                    else{
+                    } else {
                         ToastUitl.showImageToastFail(baseDto.getMsg());
                     }
                 }
@@ -191,6 +190,62 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
         }
     }
 
+    /**
+     * 上传视频
+     *
+     * @param type
+     */
+    private void uploadVideo(int type, File file) {
+        showLoadingDialog();
+        //先获取token
+        mainViewModel.uptoken();
+        mainViewModel.getSevenTokenData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> baseDto) {
+                hideLoadingDialog();
+                if (baseDto.isSuccess() && EmptyUtils.isNotEmpty(baseDto.getData())) {
+                    uploadToSeven(baseDto.getData(), file);
+                } else {
+                    ToastUitl.showImageToastFail(baseDto.getMsg());
+                }
+            }
+        });
+    }
+
+    /**
+     * 上传文件到七牛
+     *
+     * @param token
+     */
+    private void uploadToSeven(String token, File file) {
+        showLoadingDialog();
+        mainViewModel.uploadVideoToSeven(file, file.getName(), token);
+        mainViewModel.getUploadVideoData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String key) {
+                hideLoadingDialog();
+                if (!TextUtils.isEmpty(key)) {
+                    //上传作品
+                    showLoadingDialog();
+                    mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), null, Constant.Server.SEVEN_URL + "/" + key);
+                    mainViewModel.getAddProductData().observe(PublishWorksActivity.this, new Observer<BaseDto>() {
+                        @Override
+                        public void onChanged(@Nullable BaseDto baseDto) {
+                            hideLoadingDialog();
+                            if (baseDto.isSuccess()) {
+                                ToastUitl.showImageToastSuccess("提交成功");
+                                finish();
+                            } else {
+                                ToastUitl.showImageToastFail(baseDto.getMsg());
+                            }
+                        }
+                    });
+                } else {
+                    ToastUitl.showImageToastFail("上传视频到七牛异常");
+                }
+            }
+        });
+    }
 
     @Override
     public void initData() {
@@ -284,16 +339,15 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     //上传作品
                     showLoadingDialog();
-                    mainViewModel.addProduct(getUserId(),getIntent().getStringExtra("activityId"),type==1?etPublishFriendsContent.getText().toString():null,type==2?stringBaseDto.getData():"",stringBaseDto.getData());
+                    mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), stringBaseDto.getData(), null);
                     mainViewModel.getAddProductData().observe(PublishWorksActivity.this, new Observer<BaseDto>() {
                         @Override
                         public void onChanged(@Nullable BaseDto baseDto) {
                             hideLoadingDialog();
-                            if(baseDto.isSuccess()){
+                            if (baseDto.isSuccess()) {
                                 ToastUitl.showImageToastSuccess("提交成功");
                                 finish();
-                            }
-                            else{
+                            } else {
                                 ToastUitl.showImageToastFail(baseDto.getMsg());
                             }
                         }
@@ -433,7 +487,14 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             // 视频路径：MediaStore.Audio.Media.DATA
                             videoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
                             // 视频时长：MediaStore.Audio.Media.DURATION
-                            int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                            try {
+                                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                            } catch (Exception e) {
+                                ToastUitl.showImageToastFail("请选择视频");
+                                return;
+
+                            }
+
                             // 视频大小：MediaStore.Audio.Media.SIZE
                             long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));
 

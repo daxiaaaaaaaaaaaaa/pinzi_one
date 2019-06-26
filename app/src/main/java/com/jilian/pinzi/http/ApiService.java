@@ -73,6 +73,7 @@ import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.LoginVo;
 import com.jilian.pinzi.common.vo.PayOrderVo;
+import com.jilian.pinzi.common.vo.ProductVo;
 
 import java.util.List;
 import java.util.Map;
@@ -1055,8 +1056,17 @@ public interface ApiService {
      * @param
      * @return
      */
+
     @POST("activity/addProduct")
-    Flowable<BaseDto> addProduct(@QueryMap Map<String, String> map);
+    Flowable<BaseDto> addProduct(@Body ProductVo vo);
+
+    /**
+     * 获取七牛云token
+     * @param
+     * @return
+     */
+    @GET("qiniu/uptoken")
+    Flowable<BaseDto<String>> uptoken();
 
 }
 

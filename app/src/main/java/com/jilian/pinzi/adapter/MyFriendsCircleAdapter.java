@@ -1,5 +1,6 @@
 package com.jilian.pinzi.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,12 +36,14 @@ public class MyFriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private MyFriendDetailAdapter.FriendListener friendListener;
     private String mUrl;
     private String name;
-    public MyFriendsCircleAdapter(String url,String name,Context context, List<FriendCircleListDto> datas,MyFriendDetailAdapter.FriendListener friendListener) {
+    private Activity activity;
+    public MyFriendsCircleAdapter(String url, String name, Context context, List<FriendCircleListDto> datas, MyFriendDetailAdapter.FriendListener friendListener, Activity activity) {
         this.context = context;
         this.datas = datas;
         this.friendListener = friendListener;
         this.name = name;
         this.mUrl = url;
+        this.activity =activity;
     }
 
     @Override
@@ -87,7 +90,7 @@ public class MyFriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 tvTwoDay.setText(month);
             }
             RecyclerView recyclerView = viewHolder.getView(R.id.recyclerView);
-            MyFriendDetailAdapter detailAdapter  = new MyFriendDetailAdapter(context,datas.get(position).getDatas(),friendListener);
+            MyFriendDetailAdapter detailAdapter  = new MyFriendDetailAdapter(context,datas.get(position).getDatas(),friendListener,activity);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(detailAdapter);
         }

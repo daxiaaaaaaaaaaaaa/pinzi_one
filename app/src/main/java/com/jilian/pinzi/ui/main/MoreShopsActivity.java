@@ -4,14 +4,20 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -25,6 +31,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.CommonPagerAdapter;
@@ -44,7 +51,13 @@ import com.jilian.pinzi.ui.MainActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -54,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.NonNull;
 
@@ -74,6 +88,12 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     private MapView mapView;
     //地图对象
     private BaiduMap baiduMap;
+    private RelativeLayout rlArea;
+    private RelativeLayout rlDistance;
+    private RelativeLayout rlScore;
+    private EditText etSearch;
+    private ImageView ivDistance;
+    private TextView tvArea;
 
 
     @Override
@@ -101,13 +121,18 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     @Override
     public void initView() {
         setNormalTitle("更多店铺", v -> finish());
-
+        tvArea = (TextView) findViewById(R.id.tv_area);
+        etSearch = (EditText) findViewById(R.id.et_search);
         llNormal = (LinearLayout) findViewById(R.id.ll_normal);
         llMap = (LinearLayout) findViewById(R.id.ll_map);
         mapView = (MapView) findViewById(R.id.mapView);
         baiduMap = mapView.getMap();
         srHasData = (SmartRefreshLayout) findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) findViewById(R.id.sr_no_data);
+        rlArea = (RelativeLayout) findViewById(R.id.rl_area);
+        rlDistance = (RelativeLayout) findViewById(R.id.rl_distance);
+        rlScore = (RelativeLayout) findViewById(R.id.rl_score);
+        ivDistance = (ImageView) findViewById(R.id.iv_distance);
         setrightImageTwo(R.drawable.image_shop, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,12 +150,11 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
         setrightImageOne(R.drawable.image_shop_map, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(llNormal.getVisibility()  == View.VISIBLE){
+                if (llNormal.getVisibility() == View.VISIBLE) {
                     llNormal.setVisibility(View.GONE);
                     llMap.setVisibility(View.VISIBLE);
                     iv_right_one.setImageResource(R.drawable.image_shop_text);
-                }
-                else{
+                } else {
                     llNormal.setVisibility(View.VISIBLE);
                     llMap.setVisibility(View.GONE);
                     iv_right_one.setImageResource(R.drawable.image_shop_map);
@@ -146,7 +170,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(this, 15));//右间距
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(this, 15));//下间距
         recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
-        srNoData.setEnableRefresh(false);
         srNoData.setEnableLoadMore(false);
         adapter = new MoreShopsAdapter(this, datas, this);
         recyclerView.setAdapter(adapter);
@@ -157,20 +180,10 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void initData() {
-        //获取店铺展示的数据
-        getStoreShowData();
+
 
         //定位
         startLocationCilent();
-        //113.979419,22.539444 世界之窗
-        mPointList.add(new LatLng(2.539444,113.979419));
-        //113.830228,22.638482 宝安机场
-        mPointList.add(new LatLng(22.638482,113.830228));
-        //113.944349,22.534905 深圳大学
-        mPointList.add(new LatLng(22.534905,113.944349));
-        //114.003709,22.528495 深圳湾公园
-        mPointList.add(new LatLng(22.528495,114.003709));
-        showPointsInBaiduMap(mPointList);
 
     }
 
@@ -187,7 +200,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     private int pageSize = 20;//
 
     private void getStoreShowData() {
-        viewModel.StoreShow(pageNo, pageSize);
+        viewModel.StoreShow(pageNo, pageSize, content, province, city, area, lat, lot, orderby, scoreBy);
         viewModel.getStoreShowliveData().observe(this, new Observer<BaseDto<List<StoreShowDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<StoreShowDto>> dto) {
@@ -198,12 +211,13 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                 //有数据
                 if (EmptyUtils.isNotEmpty(dto.getData())) {
                     srNoData.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+                    srHasData.setVisibility(View.VISIBLE);
                     if (pageNo == 1) {
                         datas.clear();
                     }
                     datas.addAll(dto.getData());
                     adapter.notifyDataSetChanged();
+                    initMapPointView(dto.getData());
                 } else {
                     //说明是上拉加载
                     if (pageNo > 1) {
@@ -211,7 +225,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                     } else {
                         //第一次就没数据
                         srNoData.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
+                        srHasData.setVisibility(View.GONE);
                     }
                 }
             }
@@ -219,9 +233,45 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     }
 
+    private void initMapPointView(List<StoreShowDto> data) {
+        for (int i = 0; i <data.size() ; i++) {
+            mPointList.add(new LatLng(data.get(i).getLatitude(), data.get(i).getLongitude()));
+        }
+        showPointsInBaiduMap(mPointList);
+
+    }
+
     @Override
     public void initListener() {
+        //RxJava过滤操作符的应用-实时搜索功能
+        RxTextView.textChanges(etSearch)
+                //监听输入完200毫秒之后发送事件
+                .debounce(200, TimeUnit.MILLISECONDS)
+                //跳过输入框EditText 初始化的的时候产生的事件。
+                .skip(1)
+                //把观察者切换到UI线程
+                .observeOn(rx.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(new rx.Observer<CharSequence>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.toString());
+                    }
+
+                    @Override
+                    public void onNext(CharSequence charSequence) {
+                        Log.e(TAG, "onNext: " + charSequence.toString());
+                        content = etSearch.getText().toString();
+                        pageNo = 1;
+                        getStoreShowData();
+
+
+                    }
+                });
         srHasData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -234,6 +284,47 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageNo++;
                 getStoreShowData();
+            }
+        });
+        rlScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scoreBy = "1";
+                pageNo = 1;
+                showLoadingDialog();
+                getStoreShowData();
+            }
+        });
+        rlDistance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("1".equals(orderby)) {
+                    orderby = "2";
+                    ivDistance.setImageResource(R.drawable.image_dis_bottom);
+                } else {
+                    orderby = "1";
+                    ivDistance.setImageResource(R.drawable.image_dis_top);
+                }
+                pageNo = 1;
+                showLoadingDialog();
+                getStoreShowData();
+            }
+        });
+        rlArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLoadingDialog().showDialog();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        CityPickerView pickerView = getPickerInstance();
+
+                        Message message = Message.obtain();
+                        message.obj = pickerView;
+                        message.what = 1001;
+                        handler.sendMessage(message);
+                    }
+                }.start();
             }
         });
     }
@@ -251,10 +342,68 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         initMapLocation(bdLocation.getLatitude(), bdLocation.getLongitude());
+        this.lat = bdLocation.getLatitude();
+        this.lot = bdLocation.getLongitude();
         PinziApplication.getInstance().mLocationClient.stop();
+        //获取店铺展示的数据
+        showLoadingDialog();
+        getStoreShowData();
     }
 
     List<LatLng> mPointList = new ArrayList<>();
+    private double lat;//false string  纬度（用户定位地址）
+    private double lot;// false string 经度（用户定位地址）
+    private String content;//    false string 搜索内容
+    private String province;//   false string 省
+    private String city;//false string 市
+    private String area;//false string 区
+    private String orderby = "1";//false string 1.距离从近到远 2.距离从远到近
+    private String scoreBy;//true string 1.好评优先
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1001:
+                    getLoadingDialog().dismiss();
+                    CityPickerView pickerView = (CityPickerView) msg.obj;
+                    pickerView.showCityPicker();
+                    //监听选择点击事件及返回结果
+                    pickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
+                        @Override
+                        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+
+                            //省份
+                            if (province != null) {
+                                MoreShopsActivity.this.province = province.getName();
+                            }
+
+                            //城市
+                            if (city != null) {
+                                MoreShopsActivity.this.city = city.getName();
+                            }
+
+                            //地区
+                            if (district != null) {
+                                MoreShopsActivity.this.area = district.getName();
+                            }
+                            tvArea.setText(province.getName() + city.getName() + district.getName());
+                            pageNo = 1;
+                            showLoadingDialog();
+                            getStoreShowData();
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            ToastUitl.showImageToastFail("已取消");
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     /**
      * 在地图上展示各个点

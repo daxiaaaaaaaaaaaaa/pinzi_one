@@ -42,10 +42,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/ll_normal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,21 +55,28 @@
             android:layout_marginRight="@dimen/widget_size_15">
 
             <RelativeLayout
+                android:id="@+id/rl_area"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/shape_item_4round_left">
+                android:background="@drawable/shape_item_4round_left"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
 
                 <TextView
+
+                    android:id="@+id/tv_area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:singleLine="true"
                     android:text="地区"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_size_14"/>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_distance"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -90,6 +97,7 @@
                         android:textSize="@dimen/font_size_14"/>
 
                     <ImageView
+                        android:id="@+id/iv_distance"
                         android:layout_width="8dp"
                         android:layout_height="14dp"
                         android:layout_marginLeft="@dimen/widget_size_5"
@@ -101,6 +109,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_score"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -121,20 +130,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/widget_size_10"
-            app:srlEnableAutoLoadMore="false"
-            app:srlEnableLoadMore="true"
             app:srlPrimaryColor="@color/color_main_title">
-
             <com.scwang.smartrefresh.header.WaterDropHeader
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
@@ -145,29 +144,28 @@
 
                 </android.support.v7.widget.RecyclerView>
 
-                <include
-                    layout="@layout/layout_no_data"
-                    />
-            </LinearLayout>
-
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+        <include
+            layout="@layout/layout_no_data"
+            />
     </LinearLayout>
+
     <LinearLayout
-        android:visibility="gone"
-        android:orientation="vertical"
         android:id="@+id/ll_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <com.baidu.mapapi.map.MapView
-            android:layout_marginTop="@dimen/widget_size_10"
             android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/widget_size_10">
 
         </com.baidu.mapapi.map.MapView>
     </LinearLayout>

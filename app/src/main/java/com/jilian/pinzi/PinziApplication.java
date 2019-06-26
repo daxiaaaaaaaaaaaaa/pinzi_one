@@ -2,6 +2,9 @@ package com.jilian.pinzi;
 
 import android.app.Activity;
 import android.content.Context;
+
+//import android.content.res.Configuration;
+//import android.content.res.Configuration;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.StrictMode;
@@ -17,6 +20,8 @@ import com.jilian.pinzi.ssl.SslContextFactory;
 import com.jilian.pinzi.utils.SPUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.qiniu.android.common.FixedZone;
+import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -69,7 +74,11 @@ public class PinziApplication extends MultiDexApplication {
         // 初始化融云
         RongIM.init(this);
         initWxPay();
+
     }
+
+
+
     public LocationClient mLocationClient = null;
 
     public LocationClient getmLocationClient() {

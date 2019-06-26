@@ -1211,8 +1211,19 @@ public class Api {
      * @return
      */
     public static Flowable<BaseDto> addProduct(ProductVo vo) {
-        return RequetRetrofit.getInstance().addProduct(HttpUtil.convertVo2Params(vo));
+        return RequetRetrofit.getInstance().addProduct(vo);
     }
+
+
+    /**
+     * 获取七牛云token
+     * @return
+     */
+    public static Flowable<BaseDto<String>> uptoken() {
+        return RequetRetrofit.getInstance().uptoken();
+    }
+
+
 
 
 }

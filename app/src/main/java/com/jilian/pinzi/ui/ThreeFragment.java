@@ -230,11 +230,11 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                             //对视频封面处理 耗时操作
                             for (int i = 0; i < list.size(); i++) {
                                 //视频地址不为空
-                                if (EmptyUtils.isNotEmpty(list.get(i).getImgUrl()) && list.get(i).getImgUrl().contains("mp4")) {
-                                    list.get(i).setBitmap(getNetVideoBitmap(list.get(i).getImgUrl()));
+                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
+                                    list.get(i).setBitmap(getNetVideoBitmap(list.get(i).getVideo()));
                                 }
                             }
-                            friendsCircleAdapter.notifyDataSetChanged();
+                            handler.sendEmptyMessage(1000);
 
                         }
                     }.start();
@@ -254,6 +254,13 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             }
         });
     }
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            friendsCircleAdapter.notifyDataSetChanged();
+        }
+    };
 
     public Bitmap getNetVideoBitmap(String videoUrl) {
         Bitmap bitmap = null;
@@ -307,6 +314,23 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                         }
                     }
                     friendsCircleAdapter.notifyDataSetChanged();
+                    //开启子线程
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            //对视频封面处理 耗时操作
+                            for (int i = 0; i < list.size(); i++) {
+                                //视频地址不为空
+                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
+                                    list.get(i).setBitmap(getNetVideoBitmap(list.get(i).getVideo()));
+                                    handler.sendEmptyMessage(1000);
+                                }
+                            }
+
+
+                        }
+                    }.start();
 
 
                 } else {

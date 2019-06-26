@@ -218,4 +218,7 @@ dependencies {
 
     //
     implementation 'com.ycjiang:VideoPlayModule-Lite:2.+'
+
+
+    implementation 'com.qiniu:qiniu-android-sdk:7.3.15'
 }

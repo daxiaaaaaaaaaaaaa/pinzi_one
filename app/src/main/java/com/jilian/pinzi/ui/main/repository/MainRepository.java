@@ -447,4 +447,10 @@ public interface MainRepository {
      */
     LiveData<BaseDto> addProduct(ProductVo vo);
 
+    /**
+     * 获取七牛云token
+     * @return
+     */
+    LiveData<BaseDto<String>> uptoken();
+
 }

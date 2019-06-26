@@ -26,6 +26,30 @@ public class ShopDetailDto implements Serializable {
 
     private String storeName;
 
+    private String pathUrl;//     true   string   图片地址
+
+    private String videoUrl;//true    string  视频地址
+
+    public void setStoreGrade(float storeGrade) {
+        this.storeGrade = storeGrade;
+    }
+
+    public String getPathUrl() {
+        return pathUrl;
+    }
+
+    public void setPathUrl(String pathUrl) {
+        this.pathUrl = pathUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     public void setArea(String area) {
         this.area = area;
     }

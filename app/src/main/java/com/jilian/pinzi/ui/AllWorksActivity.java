@@ -117,7 +117,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                     if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                         datas.clear();
                         datas.addAll(listBaseDto.getData());
-                        datas.get(0).setVideo("http://lmp4.vjshi.com/2017-09-13/f55a900d89679ac1c9837d5b5aaf632a.mp4");
+                        //datas.get(0).setVideo("http://lmp4.vjshi.com/2017-09-13/f55a900d89679ac1c9837d5b5aaf632a.mp4");
                         allWorkAdapter.notifyDataSetChanged();
                         //开启子线程
                         new Thread() {
@@ -129,12 +129,13 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                                     //视频地址不为空
                                     if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(i).getVideo())) {
                                         listBaseDto.getData().get(i).setBitmap(getNetVideoBitmap(listBaseDto.getData().get(i).getVideo()));
+                                        Message msg = Message.obtain();
+                                        msg.what = 1000;
+                                        msg.obj = listBaseDto.getData();
+                                        handler.sendMessage(msg);
                                     }
                                 }
-                                Message msg = Message.obtain();
-                                msg.what = 1000;
-                                msg.obj = listBaseDto.getData();
-                                handler.sendMessage(msg);
+
 
                             }
                         }.start();

@@ -14,9 +14,11 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_photo"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/ll_image_one"
@@ -26,45 +28,78 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:id="@+id/iv_one"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"/>
 
                 <ImageView
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="1dp"
                     android:id="@+id/iv_three"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginLeft="1dp"
                 android:id="@+id/ll_image_two"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <ImageView
 
-                    android:scaleType="centerCrop"
                     android:id="@+id/iv_two"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"/>
 
                 <ImageView
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="1dp"
                     android:id="@+id/iv_four"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"/>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_video"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rl_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/widget_size_10"
+                android:layout_marginBottom="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/btnVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_start"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_video_start"
+                    />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -76,9 +111,9 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="8"
                 android:maxLines="2"
                 android:paddingRight="4dp"
@@ -135,8 +170,8 @@
                 android:id="@+id/tv_content_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginBottom="4dp"
                 android:maxLines="2"
                 android:paddingRight="4dp"
                 android:text="蜗牛纯手工柠檬膏，保证不加一滴水！蜗牛纯手工柠檬膏，保证不加一滴水！"

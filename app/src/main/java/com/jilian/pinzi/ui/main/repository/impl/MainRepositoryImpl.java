@@ -585,6 +585,19 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
         return request(Api.addProduct(vo)).send().get();
     }
 
+    /**
+     * 获取七牛云token
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<String>> uptoken() {
+        return request(Api.uptoken()).send().get();
+    }
+
+
+
+
+
 
 
 }
