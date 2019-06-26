@@ -100,7 +100,6 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         if (EmptyUtils.isNotEmpty(datas.get(position).getPathUrl())) {
             holder.recyclerView.setVisibility(View.VISIBLE);
             holder.rlVideo.setVisibility(View.GONE);
-
             GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3);
             holder.recyclerView.setLayoutManager(gridLayoutManager);
             HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
@@ -118,20 +117,23 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
             }
             holder.recyclerView.setAdapter(new AllWorkPhotoAdapter(mContext, urlList, this));
         }
-        if (EmptyUtils.isNotEmpty(datas.get(position).getVideo())) {
+        else if (EmptyUtils.isNotEmpty(datas.get(position).getVideo())) {
             holder.recyclerView.setVisibility(View.GONE);
             holder.rlVideo.setVisibility(View.VISIBLE);
-            holder.rlVideo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickVideoListener.clickVideo(position);
-                }
-            });
-            if (EmptyUtils.isNotEmpty(datas.get(position).getBitmap())) {
-                holder.btnVideo.setImageBitmap(datas.get(position).getBitmap());
-            }
+            holder.btnVideo.setImageBitmap(datas.get(position).getBitmap());
+
 
         }
+        else{
+            holder.recyclerView.setVisibility(View.GONE);
+            holder.rlVideo.setVisibility(View.GONE);
+        }
+        holder.rlVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickVideoListener.clickVideo(position);
+            }
+        });
         holder.tvName.setText(datas.get(position).getUserName());
         holder.tvContent.setText(datas.get(position).getContent());
         holder.tvCount.setText("得票：" + datas.get(position).getVoteNum());

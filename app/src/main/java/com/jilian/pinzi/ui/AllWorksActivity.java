@@ -89,9 +89,6 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
             super.handleMessage(msg);
             getLoadingDialog().dismiss();
             if (msg.what == 1000) {
-                List<ActivityProductDto> list = (List<ActivityProductDto>) msg.obj;
-                datas.clear();
-                datas.addAll(list);
                 allWorkAdapter.notifyDataSetChanged();
 
             }
@@ -125,13 +122,12 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                             public void run() {
                                 super.run();
                                 //对视频封面处理 耗时操作
-                                for (int i = 0; i < listBaseDto.getData().size(); i++) {
+                                for (int i = 0; i < datas.size(); i++) {
                                     //视频地址不为空
-                                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(i).getVideo())) {
-                                        listBaseDto.getData().get(i).setBitmap(getNetVideoBitmap(listBaseDto.getData().get(i).getVideo()));
+                                    if (EmptyUtils.isNotEmpty(datas.get(i).getVideo())) {
+                                        datas.get(i).setBitmap(getNetVideoBitmap(datas.get(i).getVideo()));
                                         Message msg = Message.obtain();
                                         msg.what = 1000;
-                                        msg.obj = listBaseDto.getData();
                                         handler.sendMessage(msg);
                                     }
                                 }
