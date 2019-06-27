@@ -57,6 +57,7 @@ import com.jilian.pinzi.common.dto.ShopCartLisDto;
 import com.jilian.pinzi.common.dto.ShopDetailDto;
 import com.jilian.pinzi.common.dto.ShopGoodsDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
+import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
 import com.jilian.pinzi.common.vo.ActivityVo;
@@ -120,6 +121,7 @@ import com.jilian.pinzi.common.vo.ShipperVo;
 import com.jilian.pinzi.common.vo.ShopCartVo;
 import com.jilian.pinzi.common.vo.SingleFriendCircleVo;
 import com.jilian.pinzi.common.vo.SmsVo;
+import com.jilian.pinzi.common.vo.StoreCouponVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
 import com.jilian.pinzi.common.vo.UpdatePersonalVo;
 import com.jilian.pinzi.common.vo.UpdatePwdVo;
@@ -1222,6 +1224,17 @@ public class Api {
     public static Flowable<BaseDto<String>> uptoken() {
         return RequetRetrofit.getInstance().uptoken();
     }
+
+
+    /**
+     * 店铺优惠
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<List<StoreCouponDto>>> getStoreCoupon(StoreCouponVo vo) {
+        return RequetRetrofit.getInstance().getStoreCoupon(HttpUtil.convertVo2Params(vo));
+    }
+
 
 
 

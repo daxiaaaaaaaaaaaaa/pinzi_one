@@ -30,6 +30,7 @@ import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
+import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
@@ -56,6 +57,7 @@ import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
 import com.jilian.pinzi.common.vo.SeckillPrefectureVo;
 import com.jilian.pinzi.common.vo.ShipperVo;
+import com.jilian.pinzi.common.vo.StoreCouponVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
 import com.jilian.pinzi.http.Api;
 import com.jilian.pinzi.ui.main.repository.MainRepository;
@@ -594,9 +596,15 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
         return request(Api.uptoken()).send().get();
     }
 
-
-
-
+    /**
+     * 店铺优惠
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<List<StoreCouponDto>>> getStoreCoupon(StoreCouponVo vo) {
+        return request(Api.getStoreCoupon(vo)).send().get();
+    }
 
 
 

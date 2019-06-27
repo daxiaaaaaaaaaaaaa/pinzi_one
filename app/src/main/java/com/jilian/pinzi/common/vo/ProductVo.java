@@ -10,7 +10,7 @@ public class ProductVo extends BaseVo {
 
     private String uId;//    true     string       用户Id
     private String aId;//     true     string 活动Id
-    private int type;//    true     string     1.投票 2，取消投票
+    private Integer type;//    true     string     1.投票 2，取消投票
     private String apId;//  作品Id
     private Integer pageNo;//
     private Integer pageSize;//
@@ -91,11 +91,11 @@ public class ProductVo extends BaseVo {
         this.aId = aId;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 }

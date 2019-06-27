@@ -83,6 +83,9 @@ public class MyCarddetailActivity extends BaseActivity {
         } else if("NoUserFragment".equals(param)){
             tvOk.setText("立即使用");
         }
+        else if(){
+
+        }
 
         id = getIntent().getStringExtra("id");
         viewModel.CouponDetails(id);

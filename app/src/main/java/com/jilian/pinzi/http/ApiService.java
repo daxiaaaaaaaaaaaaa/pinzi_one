@@ -57,6 +57,7 @@ import com.jilian.pinzi.common.dto.ShopCartLisDto;
 import com.jilian.pinzi.common.dto.ShopDetailDto;
 import com.jilian.pinzi.common.dto.ShopGoodsDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
+import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
 import com.jilian.pinzi.common.vo.AddAdressVo;
@@ -1067,6 +1068,10 @@ public interface ApiService {
      */
     @GET("qiniu/uptoken")
     Flowable<BaseDto<String>> uptoken();
+
+
+    @GET("goods/getStoreCoupon")
+    Flowable<BaseDto<List<StoreCouponDto>>> getStoreCoupon(@QueryMap Map<String, String> map);
 
 }
 

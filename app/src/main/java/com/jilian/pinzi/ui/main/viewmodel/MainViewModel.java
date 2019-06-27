@@ -33,6 +33,7 @@ import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
+import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
@@ -60,6 +61,7 @@ import com.jilian.pinzi.common.vo.ReturnCommissionVo;
 import com.jilian.pinzi.common.vo.ScoreBuyGoodsVo;
 import com.jilian.pinzi.common.vo.SeckillPrefectureVo;
 import com.jilian.pinzi.common.vo.ShipperVo;
+import com.jilian.pinzi.common.vo.StoreCouponVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
 import com.jilian.pinzi.ui.main.repository.MainRepository;
 import com.jilian.pinzi.ui.main.repository.impl.MainRepositoryImpl;
@@ -174,11 +176,18 @@ public class MainViewModel extends ViewModel {
 
     private LiveData<BaseDto<List<ActivityProductDto>>> myProductData;//查看作品
 
+    private LiveData<BaseDto<List<StoreCouponDto>>> storeCouponData;//店铺优惠券
+
+
     private LiveData<BaseDto> addProductData;//查看作品
 
     private LiveData<BaseDto<String>> sevenTokenData;//七牛token
 
     private MutableLiveData<String> uploadVideoData;//上传视频
+
+    public LiveData<BaseDto<List<StoreCouponDto>>> getStoreCouponData() {
+        return storeCouponData;
+    }
 
     public LiveData<String> getUploadVideoData() {
         return uploadVideoData;
@@ -1237,6 +1246,24 @@ public class MainViewModel extends ViewModel {
                         Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                     }
                 }, null);
+    }
+
+
+    /**
+     * 店铺优惠
+     * @param storeId
+     * @param uId
+     * @param pageNo
+     * @param pageSize
+     */
+    public void getStoreCoupon(String storeId, String uId, Integer pageNo, Integer pageSize) {
+        mainRepository = new MainRepositoryImpl();
+        StoreCouponVo vo = new StoreCouponVo();
+        vo.setStoreId(storeId);
+        vo.setuId(uId);
+        vo.setPageNo(pageNo);
+        vo.setPageSize(pageSize);
+        storeCouponData = mainRepository.getStoreCoupon(vo);
     }
 
 
