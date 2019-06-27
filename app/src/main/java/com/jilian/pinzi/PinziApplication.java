@@ -56,6 +56,15 @@ public class PinziApplication extends MultiDexApplication {
         return context;
     }
 
+    private Integer wxPayType;//微信支付 类型 1.商品 2.优惠券
+
+    public Integer getWxPayType() {
+        return wxPayType;
+    }
+
+    public void setWxPayType(Integer wxPayType) {
+        this.wxPayType = wxPayType;
+    }
 
     @Override
     public void onCreate() {
