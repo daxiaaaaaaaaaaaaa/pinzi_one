@@ -14,6 +14,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
+import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.ui.MainActivity;
 import com.jilian.pinzi.ui.main.IntegralMallActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
@@ -40,6 +41,7 @@ public class MyCarddetailActivity extends BaseActivity {
     private TextView tvUserConditions;
     private String id;
     private String param;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class MyCarddetailActivity extends BaseActivity {
         super.onDestroy();
         PinziApplication.removeActivity(this);
     }
+
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -80,11 +83,47 @@ public class MyCarddetailActivity extends BaseActivity {
         param = getIntent().getStringExtra(Constant.PARAM);
         if ("GetCardCenterActivity".equals(param)) {
             tvOk.setText("立即领取");
-        } else if("NoUserFragment".equals(param)){
+        } else if ("NoUserFragment".equals(param)) {
             tvOk.setText("立即使用");
-        }
-        else if(){
+        } else if ("ShopDetailRightFragment".equals(param)) {
+            StoreCouponDto dto = (StoreCouponDto) getIntent().getSerializableExtra("data");
+            //先判断价格
+            //免费的
+            if (dto.getPrice() <= 0) {
+                //判断是否已经领取
+                //未领取
+                if (dto.getIsGet() <= 0) {
 
+
+                    tvOk.setText("领取");
+
+                }
+                //已领取
+                else {
+                    tvOk.setBackgroundResource(R.drawable.shape_btn_login_dark);
+                    tvOk.setEnabled(false);
+                    tvOk.setText("已领取");
+
+
+                }
+            }
+            //需要购买的
+            else {
+                //未购买
+                if (dto.getIsGet() <= 0) {
+
+                    tvOk.setText("购买");
+
+                }
+                //已购买
+                else {
+                    tvOk.setBackgroundResource(R.drawable.shape_btn_login_dark);
+                    tvOk.setEnabled(false);
+                    tvOk.setText("已购买");
+
+
+                }
+            }
         }
 
         id = getIntent().getStringExtra("id");
@@ -131,15 +170,14 @@ public class MyCarddetailActivity extends BaseActivity {
 
                 tvName.setText(data.getName());
                 tvUserPlatform.setText("适用平台：" + data.getStoreName());
-                tvDay.setText("有效期限：" +data.getValidityDate());
+                tvDay.setText("有效期限：" + data.getValidityDate());
 
                 //优惠券详情 ：1—全场通用，不限制体条件，  其他——部分商品可用  这个 优惠券 详情 这样显示吗？
 
-                if(data.getUseType()==1){
-                    tvDetail.setText("详细说明：全场通用，不限条件" );
-                }
-                else{
-                    tvDetail.setText("详细说明：部分商品可用" );
+                if (data.getUseType() == 1) {
+                    tvDetail.setText("详细说明：全场通用，不限条件");
+                } else {
+                    tvDetail.setText("详细说明：部分商品可用");
                 }
 
             }
@@ -155,13 +193,28 @@ public class MyCarddetailActivity extends BaseActivity {
 
                 if ("GetCardCenterActivity".equals(param)) {
                     toReceive(id);
-                }
-                else{
+                } else if("NoUserFragment".equals(param)){
                     toUse();
+                }
+                else if("ShopDetailRightFragment".equals(param)){
+                    if(tvOk.getText().toString().equals("领取")){
+                        toReceive(id);
+                    }
+                    if(tvOk.getText().toString().equals("购买")){
+                        toBuy(id);
+                    }
+
                 }
 
             }
         });
+    }
+
+    /**
+     * 购买优惠券
+     * @param id
+     */
+    private void toBuy(String id) {
     }
 
     /**
@@ -176,7 +229,7 @@ public class MyCarddetailActivity extends BaseActivity {
     }
 
     /**
-     * 领券优惠券
+     * 领取优惠券
      *
      * @param id
      */

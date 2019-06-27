@@ -33,6 +33,7 @@ import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
+import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
@@ -461,5 +462,12 @@ public interface MainRepository {
      * @return
      */
     LiveData<BaseDto<List<StoreCouponDto>>> getStoreCoupon(StoreCouponVo vo);
+
+    /**
+     * 购买优惠券
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<String>> buyCoupon(BuyCouponVo vo);
 
 }

@@ -69,6 +69,7 @@ public class PayOrderActivity extends BaseActivity {
         super.onDestroy();
         PinziApplication.removeActivity(this);
         MainRxTimerUtil.cancel();
+
     }
     @Override
     protected void createViewModel() {
@@ -193,7 +194,9 @@ public class PayOrderActivity extends BaseActivity {
             @Override
             public void accept(FriendMsg eventMsg) throws Exception {
                 if (eventMsg != null) {
-                    
+                    if(eventMsg.getCode()==500){
+                        toPaySuccess();
+                    }
                 }
             }
         });
@@ -297,14 +300,14 @@ public class PayOrderActivity extends BaseActivity {
                     }
                     //钱包支付
                     else{
-                toPaySuccess();
-            }
+                        toPaySuccess();
+                    }
 
-        }
+                }
                 else{
-            ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
-        }
-    }
+                    ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
+                }
+            }
         });
     }
 
@@ -395,7 +398,7 @@ public class PayOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-               finish();
+                finish();
             }
         });
         tvNo.setOnClickListener(new View.OnClickListener() {

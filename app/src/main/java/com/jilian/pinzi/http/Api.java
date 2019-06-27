@@ -67,6 +67,7 @@ import com.jilian.pinzi.common.vo.AddMySuperiorVo;
 import com.jilian.pinzi.common.vo.AddOrReduceGoodsVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.ApplyRefundVo;
+import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
@@ -1234,6 +1235,17 @@ public class Api {
     public static Flowable<BaseDto<List<StoreCouponDto>>> getStoreCoupon(StoreCouponVo vo) {
         return RequetRetrofit.getInstance().getStoreCoupon(HttpUtil.convertVo2Params(vo));
     }
+
+    /**
+     * 购买优惠券
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<String>> buyCoupon(BuyCouponVo vo) {
+        return RequetRetrofit.getInstance().buyCoupon(vo);
+    }
+
+
 
 
 

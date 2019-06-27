@@ -37,6 +37,7 @@ import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
+import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.common.vo.BuyerCenterGoodsVo;
 import com.jilian.pinzi.common.vo.CancelCollectVo;
 import com.jilian.pinzi.common.vo.CollectGoodsOrStoreVo;
@@ -184,6 +185,15 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto<String>> sevenTokenData;//七牛token
 
     private MutableLiveData<String> uploadVideoData;//上传视频
+
+
+
+    private LiveData<BaseDto<String>> payCardliveData;//支付优惠券
+
+
+    public LiveData<BaseDto<String>> getPayCardliveData() {
+        return payCardliveData;
+    }
 
     public LiveData<BaseDto<List<StoreCouponDto>>> getStoreCouponData() {
         return storeCouponData;
@@ -1265,6 +1275,18 @@ public class MainViewModel extends ViewModel {
         vo.setPageSize(pageSize);
         storeCouponData = mainRepository.getStoreCoupon(vo);
     }
+
+    /**
+     * 购买优惠券支付
+     * @param
+     */
+    public void buyCoupon(BuyCouponVo vo ) {
+        mainRepository = new MainRepositoryImpl();
+        payCardliveData = mainRepository.buyCoupon(vo);
+    }
+
+
+
 
 
 }

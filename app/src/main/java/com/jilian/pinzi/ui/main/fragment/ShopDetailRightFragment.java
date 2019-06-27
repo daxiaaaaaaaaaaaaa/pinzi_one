@@ -13,18 +13,17 @@ import android.view.View;
 import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
-import com.jilian.pinzi.adapter.GetCardCShopAdapter;
 import com.jilian.pinzi.adapter.ShopCardCShopAdapter;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
-import com.jilian.pinzi.common.dto.ActivityDto;
-import com.jilian.pinzi.common.dto.CouponCentreDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.main.BuyCardActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.MyCarddetailActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.CustomerItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -77,10 +76,16 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        pageNo = 1;//
+        getStoreCoupon();
+    }
 
     @Override
     protected void initData() {
-        getStoreCoupon();
+
     }
 
     private int pageNo = 1;//
@@ -170,12 +175,39 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
     }
 
     /**
-     * 领券优惠券
+     * 领取优惠券
      *
      * @param position
      */
     @Override
     public void toReceive(int position) {
+        getLoadingDialog().showDialog();
+        viewModel.GetCoupon(datas.get(position).getId(), PinziApplication.getInstance().getLoginDto().getId());
+        viewModel.getStringliveData().observe(this, new Observer<BaseDto<String>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
+                getLoadingDialog().dismiss();
+                if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
+                    ToastUitl.showImageToastSuccess("领取成功");
+                    pageNo = 1;
+                    getStoreCoupon();
 
+                } else {
+                    ToastUitl.showImageToastFail(stringBaseDto.getMsg());
+                }
+            }
+        });
+    }
+
+    /**
+     * 购买优惠券
+     *
+     * @param position
+     */
+    @Override
+    public void toBuy(int position) {
+        Intent intent = new Intent(getActivity(), BuyCardActivity.class);
+        intent.putExtra("data", datas.get(position));
+        startActivity(intent);
     }
 }

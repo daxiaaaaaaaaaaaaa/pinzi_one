@@ -44,7 +44,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == 0) {
-                Toast.makeText(this, "支付成功", Toast.LENGTH_LONG).show();
+                ToastUitl.showImageToastSuccess("支付成功");
                 FriendMsg eventMsg = new FriendMsg();
                 eventMsg.setCode(500);
                 RxBus.getInstance().post(eventMsg);
@@ -52,7 +52,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
             } else {
                 Log.e("java", "onResp: " + resp.errCode);
-                ToastUitl.showImageToastFail("支付失败");
+
+                ToastUitl.showImageToastSuccess("支付失败");
                 finish();
             }
 

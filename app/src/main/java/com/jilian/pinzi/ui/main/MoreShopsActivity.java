@@ -181,7 +181,8 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     @Override
     public void initData() {
 
-
+        //获取店铺展示的数据
+        showLoadingDialog();
         //定位
         startLocationCilent();
 
@@ -345,8 +346,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
         this.lat = bdLocation.getLatitude();
         this.lot = bdLocation.getLongitude();
         PinziApplication.getInstance().mLocationClient.stop();
-        //获取店铺展示的数据
-        showLoadingDialog();
         getStoreShowData();
     }
 

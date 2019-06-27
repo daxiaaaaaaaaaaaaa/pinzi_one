@@ -64,6 +64,7 @@ import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.ApplyRefundVo;
+import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.common.vo.CommentGoodVo;
 import com.jilian.pinzi.common.vo.CommitQuestionVo;
 import com.jilian.pinzi.common.vo.DiscountMoneyVo;
@@ -1072,6 +1073,14 @@ public interface ApiService {
 
     @GET("goods/getStoreCoupon")
     Flowable<BaseDto<List<StoreCouponDto>>> getStoreCoupon(@QueryMap Map<String, String> map);
+
+    /**
+     * 购买优惠券
+     * @param vo
+     * @return
+     */
+    @POST("buyGoods/buyCoupon")
+    Flowable<BaseDto<String>> buyCoupon(@Body BuyCouponVo vo);
 
 }
 

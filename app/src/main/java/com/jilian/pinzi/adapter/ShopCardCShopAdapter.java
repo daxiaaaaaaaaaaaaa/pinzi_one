@@ -25,6 +25,8 @@ public class ShopCardCShopAdapter extends RecyclerView.Adapter<ShopCardCShopAdap
 
     public interface ToReceiveListener {
         void toReceive(int position);
+
+        void toBuy(int position);
     }
 
     public ShopCardCShopAdapter(Activity context, List<StoreCouponDto> datas, CustomItemClickListener listener, ToReceiveListener toReceiveListener) {
@@ -92,7 +94,19 @@ public class ShopCardCShopAdapter extends RecyclerView.Adapter<ShopCardCShopAdap
 
             }
         }
-
+        holder.tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (holder.tvOk.getText().toString()){
+                    case "购买":
+                        toReceiveListener.toBuy(position);
+                        break;
+                    case "领取":
+                        toReceiveListener.toReceive(position);
+                        break;
+                }
+            }
+        });
 
         //先 判断是代金券 还是 优惠券
         //优惠券类型（1.折扣劵 2.代金券）
