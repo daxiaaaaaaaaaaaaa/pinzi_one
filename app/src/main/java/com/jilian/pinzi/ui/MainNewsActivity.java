@@ -31,7 +31,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainNewsActivity extends BaseActivity implements NewsTypeAdapter.TypeTopListener, CustomItemClickListener {
+public class MainNewsActivity extends BaseActivity implements NewsTypeAdapter.TypeTopListener, MainNewsAdapter.ClickNewsListener {
     private List<InformationtTypeDto> typeDtos;
     private RecyclerView rvTop;
     private SmartRefreshLayout srHasData;
@@ -209,10 +209,12 @@ public class MainNewsActivity extends BaseActivity implements NewsTypeAdapter.Ty
         });
     }
 
+
+
     @Override
-    public void onItemClick(View view, int position) {
+    public void clickNews(InformationtDto dto) {
         Intent intent = new Intent(this, MainNewsDetailActivity.class);
-        intent.putExtra("id",list.get(position).getId());
+        intent.putExtra("id",dto.getId());
         startActivity(intent);
     }
 }

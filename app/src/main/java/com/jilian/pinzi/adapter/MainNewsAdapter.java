@@ -21,18 +21,23 @@ import java.util.List;
 public class MainNewsAdapter extends RecyclerView.Adapter<MainNewsAdapter.ViewHolder> {
     private Activity mContext;
     private List<InformationtDto> datas;
-    private CustomItemClickListener listener;
 
-    public MainNewsAdapter(Activity context, List<InformationtDto> datas, CustomItemClickListener listener) {
+    private ClickNewsListener clickNewsListener;
+
+    public MainNewsAdapter(Activity context, List<InformationtDto> datas, ClickNewsListener clickNewsListener) {
         mContext = context;
         this.datas = datas;
-        this.listener = listener;
+        this.clickNewsListener = clickNewsListener;
+    }
+
+    public interface ClickNewsListener {
+        void clickNews(InformationtDto dto);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_main_news, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view, listener);
+        ViewHolder viewHolder = new ViewHolder(view, clickNewsListener);
         return viewHolder;
     }
 
@@ -64,7 +69,7 @@ public class MainNewsAdapter extends RecyclerView.Adapter<MainNewsAdapter.ViewHo
         private View vLine;
 
 
-        public ViewHolder(final View itemView, final CustomItemClickListener listener) {
+        public ViewHolder(final View itemView, final ClickNewsListener listener) {
             super(itemView);
 
 
@@ -75,7 +80,7 @@ public class MainNewsAdapter extends RecyclerView.Adapter<MainNewsAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(itemView, getAdapterPosition());
+                    listener.clickNews(datas.get(getAdapterPosition()));
                 }
             });
         }

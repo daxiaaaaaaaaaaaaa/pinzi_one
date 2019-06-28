@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
+import com.jilian.pinzi.common.dto.CollectionFootDto;
 import com.jilian.pinzi.common.dto.InformationtDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.MainNewsDetailActivity;
@@ -19,17 +20,12 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import java.util.List;
 
 
-public class MyNewsCollectAdapter extends RecyclerView.Adapter<MyNewsCollectAdapter.ViewHolder> implements CustomItemClickListener {
+public class MyNewsCollectAdapter extends RecyclerView.Adapter<MyNewsCollectAdapter.ViewHolder> implements MainNewsAdapter.ClickNewsListener {
     private Activity mContext;
-    private List<InformationtDto> datas;
+    private List<CollectionFootDto> datas;
     private CustomItemClickListener listener;
 
-    @Override
-    public void onItemClick(View view, int position) {
-        mContext.startActivity(new Intent(mContext, MainNewsDetailActivity.class));
-    }
-
-    public MyNewsCollectAdapter(Activity context, List<InformationtDto> datas, CustomItemClickListener listener) {
+    public MyNewsCollectAdapter(Activity context, List<CollectionFootDto> datas, CustomItemClickListener listener) {
 
         mContext = context;
         this.datas = datas;
@@ -46,20 +42,25 @@ public class MyNewsCollectAdapter extends RecyclerView.Adapter<MyNewsCollectAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        //holder.tvDay.setText(datas.get(position).getCreateDate());
+        holder.tvDay.setText(datas.get(position).getCreateDate());
         holder.recyclerView.addItemDecoration(new CustomerItemDecoration(1));
-
-
         CustomerLinearLayoutManager linearLayoutManager = new CustomerLinearLayoutManager(mContext);
         linearLayoutManager.setCanScrollVertically(false);
         holder.recyclerView.setLayoutManager(linearLayoutManager);
-        MainNewsAdapter goodsDetailAdapter = new MainNewsAdapter(mContext, datas, this);
+        MainNewsAdapter goodsDetailAdapter = new MainNewsAdapter(mContext, datas.get(position).getInformationList(), this);
         holder.recyclerView.setAdapter(goodsDetailAdapter);
     }
 
     @Override
     public int getItemCount() {
         return datas == null ? 0 : datas.size();
+    }
+
+    @Override
+    public void clickNews(InformationtDto dto) {
+        Intent intent = new Intent(mContext, MainNewsDetailActivity.class);
+        intent.putExtra("id",dto.getId());
+        mContext.startActivity(intent);
     }
 
 

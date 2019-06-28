@@ -6,6 +6,17 @@ import java.util.List;
 public class CollectionFootDto implements Serializable {
     private List<GoodlistDto > goodlist ;//商品
     private List<BusinesslistDto > Businesslist ;//店铺
+
+    private List<InformationtDto > informationList ;//店铺
+
+    public List<InformationtDto> getInformationList() {
+        return informationList;
+    }
+
+    public void setInformationList(List<InformationtDto> informationList) {
+        this.informationList = informationList;
+    }
+
     private String  createDate;//
 
     public String getCreateDate() {

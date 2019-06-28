@@ -71,7 +71,7 @@ public class MyFootActivity extends BaseActivity {
 
     @Override
     public int intiLayout() {
-        return R.layout.activity_mycollection;
+        return R.layout.activity_myfoot;
     }
 
     @Override
