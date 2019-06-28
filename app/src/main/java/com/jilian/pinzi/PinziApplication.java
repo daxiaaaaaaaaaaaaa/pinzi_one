@@ -66,6 +66,26 @@ public class PinziApplication extends MultiDexApplication {
         this.wxPayType = wxPayType;
     }
 
+
+
+    // IWXAPI 是第三方app和微信通信的openApi接口
+    private IWXAPI api;
+
+    public IWXAPI getApi() {
+        return api;
+    }
+
+    public void setApi(IWXAPI api) {
+        this.api = api;
+    }
+    private void regToWx() {
+        // 通过WXAPIFactory工厂，获取IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, true);
+
+        // 将应用的appId注册到微信
+        api.registerApp(Constant.APP_ID);
+
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -83,6 +103,7 @@ public class PinziApplication extends MultiDexApplication {
         // 初始化融云
         RongIM.init(this);
         initWxPay();
+        regToWx();
 
     }
 

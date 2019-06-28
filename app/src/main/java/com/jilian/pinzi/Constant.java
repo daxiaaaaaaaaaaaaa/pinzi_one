@@ -10,6 +10,9 @@ package com.jilian.pinzi;
 public class Constant {
 
     public final static String PARAM = "param";
+
+    public final static String APP_ID = "wxc0869ae09394b840";
+
     /**
      * 请求后台的所有API接口都在这里配置;统一管理
      */

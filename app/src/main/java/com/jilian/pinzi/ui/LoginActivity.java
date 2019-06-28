@@ -31,6 +31,7 @@ import com.jilian.pinzi.utils.PermissionsObserver;
 import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -130,7 +131,14 @@ public class LoginActivity extends BaseActivity {
         ivWeixin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+
+                SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                req.state = "wechat_sdk_bind";
+                PinziApplication.getInstance().getApi().sendReq(req);
+
+
+              //  startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
             }
         });
 
