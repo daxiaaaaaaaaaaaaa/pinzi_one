@@ -194,7 +194,7 @@ public class PayOrderActivity extends BaseActivity {
             @Override
             public void accept(FriendMsg eventMsg) throws Exception {
                 if (eventMsg != null) {
-                    if(eventMsg.getCode()==500){
+                    if(eventMsg.getCode()==500&&PinziApplication.getInstance().getWxPayType()==1){
                         toPaySuccess();
                     }
                 }
@@ -316,8 +316,8 @@ public class PayOrderActivity extends BaseActivity {
      * @param info
      */
     private void wxPay(String info) {
+        PinziApplication.getInstance().setWxPayType(1);
         JSONObject jsonObject = JSONObject.parseObject(info);
-
         String packages = jsonObject.getString("package");
         String appid = jsonObject.getString("appid");
         String sign = jsonObject.getString("sign");
