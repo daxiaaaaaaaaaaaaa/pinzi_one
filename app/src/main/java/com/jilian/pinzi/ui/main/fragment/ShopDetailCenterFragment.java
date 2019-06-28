@@ -152,17 +152,17 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
         tvShopDetailAddress = (TextView) view.findViewById(R.id.tv_shop_detail_address);
         tvShopDetailPhone = (TextView) view.findViewById(R.id.tv_shop_detail_phone);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         //调整RecyclerView的排列方向
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.LEFT_DECORATION, DisplayUtil.dip2px(getActivity(), 15));//左间距
+        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.LEFT_DECORATION, DisplayUtil.dip2px(getmActivity(), 15));//左间距
         recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
 
         datas = new ArrayList<>();
-        adapter = new ShopPhotpAdapter(getActivity(), datas, this);
+        adapter = new ShopPhotpAdapter(getmActivity(), datas, this);
         recyclerView.setAdapter(adapter);
 
     }

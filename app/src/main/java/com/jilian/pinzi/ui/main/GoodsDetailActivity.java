@@ -84,8 +84,6 @@ public class GoodsDetailActivity extends BaseActivity {
     private LinearLayout llCutomer;
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,14 +149,14 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     private void getGoodDetail() {
         showLoadingDialog();
-        viewModel.getGoodsDetail(getIntent().getIntExtra("type", 1), getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null:PinziApplication.getInstance().getLoginDto().getId());
+        viewModel.getGoodsDetail(getIntent().getIntExtra("type", 1), getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto() == null ? null : PinziApplication.getInstance().getLoginDto().getId());
         viewModel.getGoodsDetailliveData().observe(this, new Observer<BaseDto<GoodsDetailDto>>() {
             @Override
             public void onChanged(@Nullable BaseDto<GoodsDetailDto> dto) {
                 RxTimerUtil.timer(1200, new RxTimerUtil.IRxNext() {
                     @Override
                     public void doNext() {
-                       hideLoadingDialog();
+                        hideLoadingDialog();
                     }
                 });
                 //商品详情
@@ -236,7 +234,9 @@ public class GoodsDetailActivity extends BaseActivity {
             }
         });
     }
-    protected void onPause() {        super.onPause();   //     Jzvd.clearSavedProgress(this, null);
+
+    protected void onPause() {
+        super.onPause();   //     Jzvd.clearSavedProgress(this, null);
         //home back
         JzvdStd.goOnPlayOnPause();
     }
@@ -312,8 +312,8 @@ public class GoodsDetailActivity extends BaseActivity {
         tvIntergal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(GoodsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -323,15 +323,15 @@ public class GoodsDetailActivity extends BaseActivity {
         tvBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(GoodsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (!EmptyUtils.isNotEmpty(mData)) {
                     return;
                 }
-                if(leftFragment.tvPrice.getText().toString().substring(1,leftFragment.tvPrice.getText().toString().length()).equals("0.00")){
+                if (leftFragment.tvPrice.getText().toString().substring(1, leftFragment.tvPrice.getText().toString().length()).equals("0.00")) {
                     ToastUitl.showImageToastFail("该商品已售罄");
                     return;
                 }
@@ -342,8 +342,8 @@ public class GoodsDetailActivity extends BaseActivity {
         llShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(GoodsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -356,8 +356,8 @@ public class GoodsDetailActivity extends BaseActivity {
         tvJoinShopCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(GoodsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -384,8 +384,8 @@ public class GoodsDetailActivity extends BaseActivity {
         ivCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(GoodsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -469,21 +469,20 @@ public class GoodsDetailActivity extends BaseActivity {
                 dto.setScore(mData.getScore());
                 Integer type = PinziApplication.getInstance().getLoginDto().getType();
                 //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
-                if(getIntent().getIntExtra("classes", 1) == 2){
-                    if (type==1) {
+                if (getIntent().getIntExtra("classes", 1) == 2) {
+                    if (type == 1) {
                         dto.setPrice(mData.getPersonBuy());
                     }
-                    if (type==2) {
+                    if (type == 2) {
                         dto.setPrice(mData.getTerminalBuy());
                     }
-                    if (type==3) {
+                    if (type == 3) {
                         dto.setPrice(mData.getChannelBuy());
                     }
-                    if (type==4) {
+                    if (type == 4) {
                         dto.setPrice(mData.getFranchiseeBuy());
                     }
-                }
-                else{
+                } else {
                     dto.setPrice(mData.getPersonBuy());
                 }
 
@@ -536,10 +535,9 @@ public class GoodsDetailActivity extends BaseActivity {
                         //秒杀商品
                         if (getIntent().getIntExtra("type", 1) == 2) {
                             tvPrice.setText(NumberUtils.forMatNumber(mData.getSeckillPrice()));
-                        }
-                        else{
+                        } else {
                             //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
-                            if(getIntent().getIntExtra("classes", 1) == 2){
+                            if (getIntent().getIntExtra("classes", 1) == 2) {
                                 if (dto.getType() == 1) {
                                     tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
                                 }
@@ -552,8 +550,7 @@ public class GoodsDetailActivity extends BaseActivity {
                                 if (dto.getType() == 4) {
                                     tvPrice.setText(NumberUtils.forMatNumber(mData.getFranchiseeBuy()));
                                 }
-                            }
-                            else{
+                            } else {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
                             }
                         }
@@ -592,7 +589,8 @@ public class GoodsDetailActivity extends BaseActivity {
                                 dto.setId(mData.getId());
                                 dto.setFile(mData.getFile());
                                 dto.setName(mData.getName());
-                                dto.setClasses(getIntent().getIntExtra("classes",1));
+                               // dto.setEarnest(leftFragment.getEarnest());
+                                dto.setClasses(getIntent().getIntExtra("classes", 1));
                                 List<OrderGoodsDto> dtoList = new ArrayList<>();
                                 dtoList.add(dto);
                                 intent.putExtra("dtoList", JSONObject.toJSONString(dtoList));
@@ -606,7 +604,7 @@ public class GoodsDetailActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
-                                joinShopCart(getIntent().getIntExtra("classes",1),getUserId(), mData.getId(), Integer.parseInt(tvCount.getText().toString()));
+                                joinShopCart(getIntent().getIntExtra("classes", 1), getUserId(), mData.getId(), Integer.parseInt(tvCount.getText().toString()));
                             }
                         });
 
@@ -624,9 +622,9 @@ public class GoodsDetailActivity extends BaseActivity {
      * @param quantity
      * @param classes
      */
-    private void joinShopCart(Integer classes,String userId, String id, Integer quantity) {
+    private void joinShopCart(Integer classes, String userId, String id, Integer quantity) {
         showLoadingDialog();
-        viewModel.joinShopCart(classes,userId, id, String.valueOf(quantity));
+        viewModel.joinShopCart(classes, userId, id, String.valueOf(quantity));
         viewModel.getJoinShopCartliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {

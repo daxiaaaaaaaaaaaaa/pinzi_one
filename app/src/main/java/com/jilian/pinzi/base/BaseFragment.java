@@ -33,7 +33,13 @@ public abstract class BaseFragment extends Fragment {
     protected Activity mActivity;
     protected final String TAG = this.getClass().getSimpleName();
 
+    public Activity getmActivity() {
+        return mActivity;
+    }
 
+    public void setmActivity(Activity mActivity) {
+        this.mActivity = mActivity;
+    }
 
     public LoginDto getLoginDto(){
         return SPUtil.getData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,LoginDto.class,null);
@@ -45,7 +51,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     /**
-     * 获得全局的，防止使用getActivity()为空
+     * 获得全局的，防止使用getmActivity()为空
      *
      * @param context
      */
@@ -232,7 +238,7 @@ public abstract class BaseFragment extends Fragment {
 
     public LoadingDialog getLoadingDialog() {
         if (null == loadingDialog) {
-            loadingDialog = new LoadingDialog(getActivity());
+            loadingDialog = new LoadingDialog(getmActivity());
             //点击空白处Dialog不消失
             loadingDialog.setCanceledOnTouchOutside(false);
         }

@@ -75,12 +75,12 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         srNoData.setEnableLoadMore(false);
         datas = new ArrayList<>();
-        orderAdapter = new MyOrderAdapter(getActivity(), datas, this, this);
+        orderAdapter = new MyOrderAdapter(getmActivity(), datas, this, this);
         recyclerView.setAdapter(orderAdapter);
 
     }
@@ -237,41 +237,41 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
         switch (type) {
             case 1:
                 //待付款
-                 intent =  new Intent(getActivity(), MyOrderWaitePayDetailActivity.class);
+                 intent =  new Intent(getmActivity(), MyOrderWaitePayDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 startActivity(intent);
                 break;
             case 2:
                 //待收货 未发货
-                intent =  new Intent(getActivity(), MyOrderWaiteGetGoodDetailActivity.class);
+                intent =  new Intent(getmActivity(), MyOrderWaiteGetGoodDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 intent.putExtra("type",1);
                 startActivity(intent);
                 break;
             case 3:
                 // 待收货  已发货
-                intent =  new Intent(getActivity(), MyOrderWaiteGetGoodDetailActivity.class);
+                intent =  new Intent(getmActivity(), MyOrderWaiteGetGoodDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 intent.putExtra("type",2);
                 startActivity(intent);
                 break;
             case 5:
                 //已完成 已评价
-                intent =  new Intent(getActivity(), MyOrderFinishNoCommentDetailActivity.class);
+                intent =  new Intent(getmActivity(), MyOrderFinishNoCommentDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 intent.putExtra("type",2);
                 startActivity(intent);
                 break;
             case 4:
                 //已完成 未评价
-                intent =  new Intent(getActivity(), MyOrderFinishNoCommentDetailActivity.class);
+                intent =  new Intent(getmActivity(), MyOrderFinishNoCommentDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 intent.putExtra("type",1);
                 startActivity(intent);
                 break;
             case 6:
                 //已取消
-                intent =  new Intent(getActivity(), MyOrderCancelDetailActivity.class);
+                intent =  new Intent(getmActivity(), MyOrderCancelDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 startActivity(intent);
                 break;
@@ -414,7 +414,7 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
      */
     @Override
     public void showConfirmGoodsTipsDialog(MyOrderDto dto) {
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_confirm_order_tips);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_confirm_order_tips);
       /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
@@ -443,7 +443,7 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
     public void showDeleteOrderDialog(MyOrderDto dto)
 
     {
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_delete_order_tips);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_delete_order_tips);
       /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);

@@ -55,7 +55,7 @@ public class EnableCardFragment extends BaseFragment implements CustomItemClickL
     public void getData( List<SelectCardDto> usableList ) {
         if(EmptyUtils.isNotEmpty(usableList)){
             datas.clear();
-            String couponId = getActivity().getIntent().getStringExtra("couponId");
+            String couponId = getmActivity().getIntent().getStringExtra("couponId");
             datas.addAll(usableList);
             for (int i = 0; i <datas.size() ; i++) {
                 if(datas.get(i).getId().equals(couponId)){
@@ -90,11 +90,11 @@ public class EnableCardFragment extends BaseFragment implements CustomItemClickL
     protected void initView(View view, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         srNoData = (SmartRefreshLayout)view. findViewById(R.id.sr_no_data);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         datas = new ArrayList<>();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new EnableAdapter(getActivity(), datas, this,this);
+        adapter = new EnableAdapter(getmActivity(), datas, this,this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableRefresh(false);
         srNoData.setEnableLoadMore(false);
@@ -112,7 +112,7 @@ public class EnableCardFragment extends BaseFragment implements CustomItemClickL
 
     @Override
     public void onItemClick(View view, int position) {
-        //startActivity(new Intent(getActivity(), MyCarddetailActivity.class));
+        //startActivity(new Intent(getmActivity(), MyCarddetailActivity.class));
     }
 
     @Override

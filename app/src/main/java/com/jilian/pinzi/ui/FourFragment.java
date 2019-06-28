@@ -133,7 +133,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
     protected void initView(View view, Bundle savedInstanceState) {
 
         setCenterTitle("购物车", "#FFFFFF");
-        if (getActivity().getIntent().getIntExtra("back", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("back", 1) == 2) {
             setleftImage(R.drawable.image_back, true, null);
         }
 
@@ -168,10 +168,10 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
         ivCheck = (ImageView) view.findViewById(R.id.iv_check);
         recyclerView.setFocusable(false);
         recyclerView.addItemDecoration(new CustomerItemDecoration(1));
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         datas = new ArrayList<>();
-        shopBusAdapter = new ShopBusAdapter(getActivity(), datas, this, this);
+        shopBusAdapter = new ShopBusAdapter(getmActivity(), datas, this, this);
         recyclerView.setAdapter(shopBusAdapter);
 
     }
@@ -201,7 +201,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
      * 是否确认删除
      */
     private void showDeleteOrderDialog() {
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_delete_tips);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_delete_tips);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 
@@ -298,7 +298,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
                     return;
 
                 }
-                Intent intent = new Intent(getActivity(), FillOrderActivity.class);
+                Intent intent = new Intent(getmActivity(), FillOrderActivity.class);
                 intent.putExtra("dtoList", JSONObject.toJSONString(dtoList));
                 //购物车
                 intent.putExtra("type", "1");
@@ -372,7 +372,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
     @Override
 
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", datas.get(position).getGoodsId());
         intent.putExtra("classes", datas.get(position).getClasses());
         if(datas.get(position).getSeckillPrice()>0){

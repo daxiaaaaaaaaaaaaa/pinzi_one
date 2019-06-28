@@ -108,11 +108,11 @@ public class NoUserFragment extends BaseFragment implements CustomItemClickListe
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         datas = new ArrayList<>();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        noUserAdapter = new NoUserAdapter(getActivity(), datas, this, STATUS);
+        noUserAdapter = new NoUserAdapter(getmActivity(), datas, this, STATUS);
         recyclerView.setAdapter(noUserAdapter);
         srNoData.setEnableAutoLoadMore(false);
     }
@@ -152,7 +152,7 @@ public class NoUserFragment extends BaseFragment implements CustomItemClickListe
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), MyCarddetailActivity.class);
+        Intent intent = new Intent(getmActivity(), MyCarddetailActivity.class);
         intent.putExtra("id", datas.get(position).getId());
         intent.putExtra(Constant.PARAM,"NoUserFragment");
         startActivity(intent);

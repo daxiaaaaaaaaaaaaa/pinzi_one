@@ -244,6 +244,11 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
         });
     }
 
+    private String imgUrl;//    true     file   图片地址（营业执照）
+    private String storeImg;//true     string   门店照片
+
+
+
     /**
      * 上传营业执照
      */
@@ -317,6 +322,7 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
 //                    startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
+                    ToastUitl.showImageToastSuccess("提交成功");
                     startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
                     finish();
                 } else {

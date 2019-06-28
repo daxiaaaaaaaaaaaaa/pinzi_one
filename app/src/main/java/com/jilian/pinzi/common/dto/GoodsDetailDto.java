@@ -37,7 +37,31 @@ public class GoodsDetailDto implements Serializable {
     private String parameterContent;//参数内容
     private double storeGrade;//店铺评分
 
+    private int isEarnest;//    true     string  是否需要定金（0.否 1.是）
 
+    private double earnestRate;//     true     string    定金比例（单位%）
+
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getIsEarnest() {
+        return isEarnest;
+    }
+
+    public void setIsEarnest(int isEarnest) {
+        this.isEarnest = isEarnest;
+    }
+
+    public double getEarnestRate() {
+        return earnestRate;
+    }
+
+    public void setEarnestRate(double earnestRate) {
+        this.earnestRate = earnestRate;
+    }
 
     public String getParameterContent() {
         return parameterContent;

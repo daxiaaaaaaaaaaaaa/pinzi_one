@@ -69,12 +69,12 @@ public class TwoFragment extends BaseFragment implements CustomItemClickListener
         srHasData = (SmartRefreshLayout)view. findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        gridLayoutManager = new GridLayoutManager(getActivity(), 4);
+        gridLayoutManager = new GridLayoutManager(getmActivity(), 4);
         datas = new ArrayList<>();
-        allGoodTypeAdapter = new AllGoodTypeAdapter(getActivity(), datas, this);
+        allGoodTypeAdapter = new AllGoodTypeAdapter(getmActivity(), datas, this);
         recyclerView.setLayoutManager(gridLayoutManager);
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.TOP_DECORATION, DisplayUtil.dip2px(getActivity(), 15));//下间距
+        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.TOP_DECORATION, DisplayUtil.dip2px(getmActivity(), 15));//下间距
         recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         recyclerView.setAdapter(allGoodTypeAdapter);
         srNoData.setEnableLoadMore(false);
@@ -124,7 +124,7 @@ public class TwoFragment extends BaseFragment implements CustomItemClickListener
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), BuyCenterActivity.class);
+        Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
         intent.putExtra("classes", 1);
         intent.putExtra("flag", true);
         intent.putExtra("position",position+1);

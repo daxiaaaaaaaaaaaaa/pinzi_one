@@ -359,8 +359,8 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 advertiseViews.clear();
                 if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                     list = listBaseDto.getData();
-                    viewPager.addOnPageChangeListener(new ViewPagerIndicator(getActivity(), viewPager, llIndcator, list.size()));
-                    commonPagerAdapter = new MainPagerAdapter(list, OneFragment.this, getActivity());
+                    viewPager.addOnPageChangeListener(new ViewPagerIndicator(getmActivity(), viewPager, llIndcator, list.size()));
+                    commonPagerAdapter = new MainPagerAdapter(list, OneFragment.this, getmActivity());
                     viewPager.setAdapter(commonPagerAdapter);
                     startTimeTaskForBanner();
                 }
@@ -497,32 +497,32 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         advertiseViews = new ArrayList<>();
         //
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getActivity(), 15));//右间距
+        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getmActivity(), 15));//右间距
 
         //
 
-        lm_one = new LinearLayoutManager(getActivity());
+        lm_one = new LinearLayoutManager(getmActivity());
         lm_one.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
         rvOne.setLayoutManager(lm_one);
         rvOne.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         //
-        lm_two = new LinearLayoutManager(getActivity());
+        lm_two = new LinearLayoutManager(getmActivity());
         lm_two.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
         rvTwo.setLayoutManager(lm_two);
         rvTwo.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         //
-        lm_three = new LinearLayoutManager(getActivity());
+        lm_three = new LinearLayoutManager(getmActivity());
         lm_three.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
         rvThree.setLayoutManager(lm_three);
         rvThree.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         //
-        lm_four = new LinearLayoutManager(getActivity());
+        lm_four = new LinearLayoutManager(getmActivity());
         lm_four.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
         rvFour.setLayoutManager(lm_four);
         rvFour.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
 
 
-        lm_five = new LinearLayoutManager(getActivity());
+        lm_five = new LinearLayoutManager(getmActivity());
         lm_five.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
         rvFive.setLayoutManager(lm_five);
         rvFive.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
@@ -532,11 +532,11 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         personData = new ArrayList<>();//人气推荐
         newsData = new ArrayList<>();//新品推荐
         returnData = new ArrayList<>();//佣金反渠
-        oneAdapter = new OneAdapter(getActivity(), timeKillGoods, this,1);
-        twoAdapter = new TwoAdapter(getActivity(), returnData, this);
-        threeAdapter = new ThreeAdapter(getActivity(), storeShows, this);
-        fourAdapter = new FourAdapter(getActivity(), newsData, this);
-        fiveAdapter = new FiveAdapter(getActivity(), personData, this);
+        oneAdapter = new OneAdapter(getmActivity(), timeKillGoods, this,1);
+        twoAdapter = new TwoAdapter(getmActivity(), returnData, this);
+        threeAdapter = new ThreeAdapter(getmActivity(), storeShows, this);
+        fourAdapter = new FourAdapter(getmActivity(), newsData, this);
+        fiveAdapter = new FiveAdapter(getmActivity(), personData, this);
 
         rvOne.setAdapter(oneAdapter);
         rvTwo.setAdapter(twoAdapter);
@@ -569,7 +569,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getActivity(),MainActivityActivity.class));
+                startActivity(new Intent(getmActivity(),MainActivityActivity.class));
 
 
             }
@@ -580,7 +580,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         llNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),MainNewsActivity.class));
+                startActivity(new Intent(getmActivity(),MainNewsActivity.class));
             }
         });
         /**
@@ -589,7 +589,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvOneMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SecondsKillZoneActivity.class);
+                Intent intent = new Intent(getmActivity(), SecondsKillZoneActivity.class);
                 startActivity(intent);
             }
         });
@@ -599,7 +599,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvTwoMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MoreGoodsActivity.class);
+                Intent intent = new Intent(getmActivity(), MoreGoodsActivity.class);
                 intent.putExtra("return", 2);
                 startActivity(intent);
             }
@@ -610,7 +610,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvThreeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MoreShopsActivity.class);
+                Intent intent = new Intent(getmActivity(), MoreShopsActivity.class);
                 startActivity(intent);
             }
         });
@@ -620,7 +620,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvFourMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MoreNewGoodsActivity.class);
+                Intent intent = new Intent(getmActivity(), MoreNewGoodsActivity.class);
                 startActivity(intent);
             }
         });
@@ -630,7 +630,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvFiveMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SentimentRecommendedActivity.class);
+                Intent intent = new Intent(getmActivity(), SentimentRecommendedActivity.class);
                 startActivity(intent);
             }
         });
@@ -662,7 +662,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -690,12 +690,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (PinziApplication.getInstance().getLoginDto().getType() == 4) {
-                    Intent intent = new Intent(getActivity(), BuyCenterActivity.class);
+                    Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
                     intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
@@ -708,12 +708,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (PinziApplication.getInstance().getLoginDto().getType() == 3) {
-                    Intent intent = new Intent(getActivity(), BuyCenterActivity.class);
+                    Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
                     intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
@@ -726,12 +726,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (PinziApplication.getInstance().getLoginDto().getType() == 2) {
-                    Intent intent = new Intent(getActivity(), BuyCenterActivity.class);
+                    Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
                     intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
@@ -744,12 +744,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (PinziApplication.getInstance().getLoginDto().getType() == 1) {
-                    Intent intent = new Intent(getActivity(), BuyCenterActivity.class);
+                    Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
                     intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
@@ -762,58 +762,58 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         llIntegralMall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), IntegralMallActivity.class));
+                startActivity(new Intent(getmActivity(), IntegralMallActivity.class));
             }
         });
         llLotteryCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
-                startActivity(new Intent(getActivity(), LotteryCenterActivity.class));
+                startActivity(new Intent(getmActivity(), LotteryCenterActivity.class));
             }
         });
         llGetcardCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
-                startActivity(new Intent(getActivity(), GetCardCenterActivity.class));
+                startActivity(new Intent(getmActivity(), GetCardCenterActivity.class));
             }
         });
         ivSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                startActivity(new Intent(getmActivity(), SearchActivity.class));
             }
         });
         ivShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
-                ((NoScrollViewPager) (getActivity()).findViewById(R.id.viewPager)).setCurrentItem(3);
+                ((NoScrollViewPager) (getmActivity()).findViewById(R.id.viewPager)).setCurrentItem(3);
             }
         });
         ivMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SystemMsgActivity.class));
+                startActivity(new Intent(getmActivity(), SystemMsgActivity.class));
             }
         });
         rlNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), NewsNoticeActivity.class));
+                startActivity(new Intent(getmActivity(), NewsNoticeActivity.class));
             }
         });
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -857,7 +857,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      * 签到成功提示框
      */
     private void showSignSuccessDialog() {
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_showsignsuccess);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_showsignsuccess);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 
         dialog.show();
@@ -877,7 +877,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      */
     @Override
     public void onItemFiveClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", personData.get(position).getId());
         startActivity(intent);
 
@@ -892,7 +892,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      */
     @Override
     public void onItemFourClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", newsData.get(position).getId());
         startActivity(intent);
 
@@ -908,7 +908,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     public void onItemOneClick(View view, int position) {
 
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", timeKillGoods.get(position).getId());
         intent.putExtra("type", 2);
         startActivity(intent);
@@ -938,7 +938,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     public void onItemTwoClick(View view, int position) {
 
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", returnData.get(position).getId());
         intent.putExtra("return", 2);
         startActivity(intent);
@@ -967,12 +967,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         });
         if (list.get(position).getJumpType() == 1) {
             String linkUrl = list.get(position).getLinkUrl();
-            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            Intent intent = new Intent(getmActivity(), WebViewActivity.class);
             intent.putExtra("linkUrl", linkUrl);
             startActivity(intent);
         }
         if (list.get(position).getJumpType() == 2) {
-            Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+            Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
             intent.putExtra("goodsId", list.get(position).getGoodId());
             startActivity(intent);
 

@@ -97,7 +97,7 @@ public class SelectPhotoUtils {
     public static void fromCapture(BaseActivity activity, BaseFragment fragment, String authorities, int requestCode) {
         mMediaStoreCompat = new ExMediaStoreCompat(activity, fragment);
         mMediaStoreCompat.setCaptureStrategy(new CaptureStrategy(true, authorities));
-        mMediaStoreCompat.dispatchCaptureIntent(fragment.getActivity(), requestCode);
+        mMediaStoreCompat.dispatchCaptureIntent(fragment.getmActivity(), requestCode);
     }
     
     /**

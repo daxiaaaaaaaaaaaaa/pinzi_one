@@ -111,8 +111,7 @@ public class GoodsDetailLeftFragment
     private WebView webview;
     private RelativeLayout rlReturn;
     private TextView tvFreight;
-
-
+    private TextView tvEarnest;
 
 
     @Override
@@ -139,13 +138,13 @@ public class GoodsDetailLeftFragment
     protected void initView(View view, Bundle savedInstanceState) {
         tvFreight = (TextView) view.findViewById(R.id.tv_freight);
         HashMap<String, Integer> hashMap = new HashMap<>();
-        hashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getActivity(), 15));//右间距
+        hashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getmActivity(), 15));//右间距
         tvPoint = (TextView) view.findViewById(R.id.tv_point);
         tvHour = (TextView) view.findViewById(R.id.tv_hour);
         tvMin = (TextView) view.findViewById(R.id.tv_min);
         tvSecond = (TextView) view.findViewById(R.id.tv_second);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-
+        tvEarnest = (TextView) view.findViewById(R.id.tv_earnest);
         llIndcator = (LinearLayout) view.findViewById(R.id.ll_indcator);
         tvStoreName = (TextView) view.findViewById(R.id.tv_storeName);
         llShop = (LinearLayout) view.findViewById(R.id.ll_shop);
@@ -161,24 +160,24 @@ public class GoodsDetailLeftFragment
         rlSeeParam = (RelativeLayout) view.findViewById(R.id.rl_see_param);
         tvIntrouce = (TextView) view.findViewById(R.id.tv_introuce);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(getmActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getActivity(), -30));//右间距
+        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getmActivity(), -30));//右间距
         recyclerView.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         rlKillGood = (RelativeLayout) view.findViewById(R.id.rl_kill_good);
         tvName = (TextView) view.findViewById(R.id.tv_name);
         tvPrice = (TextView) view.findViewById(R.id.tv_price);
         recyclerView.setFocusable(false);
         datas = new ArrayList<>();
-        headAdapter = new CommentHeadAdapter(getActivity(), datas, this);
+        headAdapter = new CommentHeadAdapter(getmActivity(), datas, this);
         recyclerView.setAdapter(headAdapter);
         rvGood = (RecyclerView) view.findViewById(R.id.rv_good);
         rvGood.addItemDecoration(new RecyclerViewSpacesItemDecoration(hashMap));
-        lm_good = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        lm_good = new LinearLayoutManager(getmActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvGood.setLayoutManager(lm_good);
         goods = new ArrayList<>();
-        goodAdapter = new CommentGoodAdapter(getActivity(), goods, this, getActivity().getIntent().getIntExtra("classes", 1));
+        goodAdapter = new CommentGoodAdapter(getmActivity(), goods, this, getmActivity().getIntent().getIntExtra("classes", 1));
         rvGood.setAdapter(goodAdapter);
         // tvBuy = (TextView) view.findViewById(R.id.tv_buy);
         tvPerPrice = (TextView) view.findViewById(R.id.tv_per_price);
@@ -189,7 +188,7 @@ public class GoodsDetailLeftFragment
         rlReturn = (RelativeLayout) view.findViewById(R.id.rl_return);
         tvGoodsStandard = (TextView) view.findViewById(R.id.tv_goodsStandard);
         //返佣金
-        if (getActivity().getIntent().getIntExtra("return", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("return", 1) == 2) {
             rlReturn.setVisibility(View.VISIBLE);
         } else {
             rlReturn.setVisibility(View.INVISIBLE);
@@ -240,7 +239,7 @@ public class GoodsDetailLeftFragment
             return;
         }
         this.mData = data;
-        tvFreight.setText("邮费：¥"+(data.getFreight()==null?"0.00":NumberUtils.forMatNumber(Double.parseDouble(data.getFreight()))));
+        tvFreight.setText("邮费：¥" + (data.getFreight() == null ? "0.00" : NumberUtils.forMatNumber(Double.parseDouble(data.getFreight()))));
         tvGoodsStandard.setText(data.getGoodsStandard());
         //初始化viewpager
         initLogoPager();
@@ -251,6 +250,11 @@ public class GoodsDetailLeftFragment
             tvIntrouce.setText(data.getIntroduce());
         } else {
             tvIntrouce.setVisibility(View.GONE);
+        }
+        if (data.getIsEarnest() == 1) {
+            tvEarnest.setVisibility(View.VISIBLE);
+        } else {
+            tvEarnest.setVisibility(View.GONE);
         }
         initShopType();
         //倒计时视图
@@ -290,7 +294,7 @@ public class GoodsDetailLeftFragment
      */
     private void initShopType() {
         //积分商城
-        if (getActivity().getIntent().getIntExtra("shopType", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("shopType", 1) == 2) {
             tvPoint.setVisibility(View.VISIBLE);
             tvPrice.setVisibility(View.VISIBLE);
             tvPrice.getPaint().setAntiAlias(true);//抗锯齿
@@ -310,9 +314,9 @@ public class GoodsDetailLeftFragment
         LoginDto dto = PinziApplication.getInstance().getLoginDto();
 
         //从采购中心进来
-        if (getActivity().getIntent().getIntExtra("classes", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("classes", 1) == 2) {
             //秒杀商品
-            if (getActivity().getIntent().getIntExtra("type", 1) == 2) {
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
                 tvPerPrice.setVisibility(View.VISIBLE);
                 //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
                 if (dto.getType() == 1) {
@@ -328,46 +332,73 @@ public class GoodsDetailLeftFragment
                     tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
                 }
                 tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
 
             } else {
                 tvPerPrice.setVisibility(View.GONE);
                 if (dto.getType() == 1) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
+
+                    tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getPersonBuy() * data.getEarnestRate() * 0.01));
+
+
                 }
                 if (dto.getType() == 2) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getTerminalBuy()));
+
+                    tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getTerminalBuy() * data.getEarnestRate() * 0.01));
+
+
                 }
                 if (dto.getType() == 3) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getChannelBuy()));
+
+
+                    tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getChannelBuy() * data.getEarnestRate() * 0.01));
                 }
                 if (dto.getType() == 4) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
+
+                    tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
                 }
             }
         }
         //不是从采购中心进来
         else {
             //秒杀商品
-            if (getActivity().getIntent().getIntExtra("type", 1) == 2) {
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
                 tvPerPrice.setVisibility(View.VISIBLE);
                 tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
                 tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
 
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
+
             } else {
                 tvPerPrice.setVisibility(View.GONE);
                 tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
+
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getPersonBuy() * data.getEarnestRate() * 0.01));
             }
         }
 
 
     }
 
+    private String earnest;//    定金 金额
+
+    public String getEarnest() {
+        if (mData.getIsEarnest() == 1) {
+            earnest = tvEarnest.getText().toString().replace("定金：¥", "");
+            return earnest;
+        }
+        return null;
+    }
 
     /**
      * 倒计时视图
      */
     private void initTimeTaskView() {
-        if (getActivity().getIntent().getIntExtra("type", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
             rlKillGood.setVisibility(View.VISIBLE);
             //显示秒杀价格
             long endTime = 0;
@@ -414,21 +445,22 @@ public class GoodsDetailLeftFragment
     private List<String> files;
     private BannerAdapter bannerAdapter;
     private List<BannerDto> bannerDtoList;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             getLoadingDialog().dismiss();
-            if(msg.what==1000){
+            if (msg.what == 1000) {
                 List<BannerDto> list = (List<BannerDto>) msg.obj;
                 viewPager.setOffscreenPageLimit(list.size());
-                viewPager.addOnPageChangeListener(new ViewPagerIndicator(getActivity(), viewPager, llIndcator, list.size()));
-                bannerAdapter = new BannerAdapter(getActivity());
+                viewPager.addOnPageChangeListener(new ViewPagerIndicator(getmActivity(), viewPager, llIndcator, list.size()));
+                bannerAdapter = new BannerAdapter(getmActivity());
                 bannerAdapter.update(list);
                 viewPager.setAdapter(bannerAdapter);
             }
         }
     };
+
     /**
      * 初始化logo图片
      */
@@ -437,7 +469,7 @@ public class GoodsDetailLeftFragment
         String fileStr = mData.getFile();
         bannerDtoList = new ArrayList<>();
         if (EmptyUtils.isNotEmpty(fileStr)) {
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     super.run();
@@ -451,7 +483,7 @@ public class GoodsDetailLeftFragment
                     for (int i = 0; i < files.size(); i++) {
                         BannerDto dto = new BannerDto();
                         dto.setPath(files.get(i));
-                        if(files.get(i).contains("mp4")){
+                        if (files.get(i).contains("mp4")) {
                             dto.setBitmap(getNetVideoBitmap(files.get(i)));
                         }
                         bannerDtoList.add(dto);
@@ -498,7 +530,7 @@ public class GoodsDetailLeftFragment
             llShop.setVisibility(View.VISIBLE);
             tvShopName.setText(mData.getStoreName());
             Glide
-                    .with(getActivity())
+                    .with(getmActivity())
                     .load(UrlUtils.getUrl(mData.getStoreLogo()))
                     .into(ivShopHead);
             tvShopGrade.setText("综合评分" + NumberUtils.forMatOneNumber(mData.getStoreGrade()) + "分");
@@ -569,25 +601,25 @@ public class GoodsDetailLeftFragment
                 String[] dates = evaluateImg.split(",");
                 if (dates.length == 3) {
                     Glide
-                            .with(getActivity())
+                            .with(getmActivity())
                             .load(UrlUtils.getUrl(dates[0]))
                             .into(ivOne);
                     Glide
-                            .with(getActivity())
+                            .with(getmActivity())
                             .load(UrlUtils.getUrl(dates[1]))
                             .into(ivTwo);
                     Glide
-                            .with(getActivity())
+                            .with(getmActivity())
                             .load(UrlUtils.getUrl(dates[2]))
                             .into(ivThree);
                 }
                 if (dates.length == 2) {
                     Glide
-                            .with(getActivity())
+                            .with(getmActivity())
                             .load(UrlUtils.getUrl(dates[0]))
                             .into(ivOne);
                     Glide
-                            .with(getActivity())
+                            .with(getmActivity())
                             .load(UrlUtils.getUrl(dates[1]))
                             .into(ivTwo);
                 }
@@ -595,7 +627,7 @@ public class GoodsDetailLeftFragment
 
             } else {
                 Glide
-                        .with(getActivity())
+                        .with(getmActivity())
                         .load(UrlUtils.getUrl(evaluateImg))
                         .into(ivOne);
             }
@@ -638,25 +670,25 @@ public class GoodsDetailLeftFragment
             public void onStateChanged(SlideSeeMoreLayout.Status status) {
                 if (status == SlideSeeMoreLayout.Status.OPEN) {
                     //当前为查看更多页
-                    ((GoodsDetailActivity) getActivity()).rlCenter.setVisibility(View.VISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvCenter.setTextColor(Color.parseColor("#c71233"));
+                    ((GoodsDetailActivity) getmActivity()).rlCenter.setVisibility(View.VISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvCenter.setTextColor(Color.parseColor("#c71233"));
 
-                    ((GoodsDetailActivity) getActivity()).rlLeft.setVisibility(View.INVISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvLeft.setTextColor(Color.parseColor("#222222"));
+                    ((GoodsDetailActivity) getmActivity()).rlLeft.setVisibility(View.INVISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvLeft.setTextColor(Color.parseColor("#222222"));
 
-                    ((GoodsDetailActivity) getActivity()).rlRight.setVisibility(View.INVISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvRight.setTextColor(Color.parseColor("#222222"));
+                    ((GoodsDetailActivity) getmActivity()).rlRight.setVisibility(View.INVISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvRight.setTextColor(Color.parseColor("#222222"));
 
                 } else {
                     //当前为商品页
-                    ((GoodsDetailActivity) getActivity()).rlLeft.setVisibility(View.VISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvLeft.setTextColor(Color.parseColor("#c71233"));
+                    ((GoodsDetailActivity) getmActivity()).rlLeft.setVisibility(View.VISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvLeft.setTextColor(Color.parseColor("#c71233"));
 
-                    ((GoodsDetailActivity) getActivity()).rlCenter.setVisibility(View.INVISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvCenter.setTextColor(Color.parseColor("#222222"));
+                    ((GoodsDetailActivity) getmActivity()).rlCenter.setVisibility(View.INVISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvCenter.setTextColor(Color.parseColor("#222222"));
 
-                    ((GoodsDetailActivity) getActivity()).rlRight.setVisibility(View.INVISIBLE);
-                    ((GoodsDetailActivity) getActivity()).tvRight.setTextColor(Color.parseColor("#222222"));
+                    ((GoodsDetailActivity) getmActivity()).rlRight.setVisibility(View.INVISIBLE);
+                    ((GoodsDetailActivity) getmActivity()).tvRight.setTextColor(Color.parseColor("#222222"));
                 }
             }
         });
@@ -700,7 +732,7 @@ public class GoodsDetailLeftFragment
                     @Override
                     public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
                         dialog.setOutCancel(false);
-                        lm_see_param = new LinearLayoutManager(getActivity());
+                        lm_see_param = new LinearLayoutManager(getmActivity());
                         ImageView ivClose = holder.getView(R.id.iv_close);
                         RecyclerView recyclerView = holder.getView(R.id.recyclerView);
                         ivClose.setOnClickListener(new View.OnClickListener() {
@@ -710,7 +742,7 @@ public class GoodsDetailLeftFragment
                             }
                         });
                         recyclerView.setLayoutManager(lm_see_param);
-                        GoodParamAdapter adapter = new GoodParamAdapter(getActivity(), parameterDtoList);
+                        GoodParamAdapter adapter = new GoodParamAdapter(getmActivity(), parameterDtoList);
                         recyclerView.setAdapter(adapter);
 
                     }
@@ -723,11 +755,11 @@ public class GoodsDetailLeftFragment
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
         intent.putExtra("goodsId", goods.get(position).getId());
-        intent.putExtra("classes", getActivity().getIntent().getIntExtra("classes", 1));
+        intent.putExtra("classes", getmActivity().getIntent().getIntExtra("classes", 1));
         startActivity(intent);
-        // getActivity().finish();
+        // getmActivity().finish();
 
     }
 
@@ -739,14 +771,14 @@ public class GoodsDetailLeftFragment
 
     @Override
     public void clickCommentHead(View view, int position) {
-        NoScrollViewPager viewPager = (NoScrollViewPager) (((GoodsDetailActivity) getActivity()).findViewById(R.id.customScrollViewPager));
+        NoScrollViewPager viewPager = (NoScrollViewPager) (((GoodsDetailActivity) getmActivity()).findViewById(R.id.customScrollViewPager));
         viewPager.setCurrentItem(2);
-        ((GoodsDetailActivity) getActivity()).rlRight.setVisibility(View.VISIBLE);
-        ((GoodsDetailActivity) getActivity()).tvRight.setTextColor(Color.parseColor("#c71233"));
-        ((GoodsDetailActivity) getActivity()).rlLeft.setVisibility(View.INVISIBLE);
-        ((GoodsDetailActivity) getActivity()).tvLeft.setTextColor(Color.parseColor("#222222"));
-        ((GoodsDetailActivity) getActivity()).rlCenter.setVisibility(View.INVISIBLE);
-        ((GoodsDetailActivity) getActivity()).tvCenter.setTextColor(Color.parseColor("#222222"));
+        ((GoodsDetailActivity) getmActivity()).rlRight.setVisibility(View.VISIBLE);
+        ((GoodsDetailActivity) getmActivity()).tvRight.setTextColor(Color.parseColor("#c71233"));
+        ((GoodsDetailActivity) getmActivity()).rlLeft.setVisibility(View.INVISIBLE);
+        ((GoodsDetailActivity) getmActivity()).tvLeft.setTextColor(Color.parseColor("#222222"));
+        ((GoodsDetailActivity) getmActivity()).rlCenter.setVisibility(View.INVISIBLE);
+        ((GoodsDetailActivity) getmActivity()).tvCenter.setTextColor(Color.parseColor("#222222"));
 
     }
 

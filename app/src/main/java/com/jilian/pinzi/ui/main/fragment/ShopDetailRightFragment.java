@@ -66,11 +66,11 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         datas = new ArrayList<>();
-        adapter = new ShopCardCShopAdapter(getActivity(), datas, this, this);
+        adapter = new ShopCardCShopAdapter(getmActivity(), datas, this, this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
 
@@ -129,7 +129,7 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
      * @return
      */
     private String getStoreId() {
-        return getActivity().getIntent().getStringExtra("shopId");
+        return getmActivity().getIntent().getStringExtra("shopId");
     }
 
     @Override
@@ -167,7 +167,7 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
      */
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), MyCarddetailActivity.class);
+        Intent intent = new Intent(getmActivity(), MyCarddetailActivity.class);
         intent.putExtra("id", datas.get(position).getId());
         intent.putExtra(Constant.PARAM, "ShopDetailRightFragment");
         intent.putExtra("data", datas.get(position));
@@ -206,7 +206,7 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
      */
     @Override
     public void toBuy(int position) {
-        Intent intent = new Intent(getActivity(), BuyCardActivity.class);
+        Intent intent = new Intent(getmActivity(), BuyCardActivity.class);
         intent.putExtra("data", datas.get(position));
         startActivity(intent);
     }

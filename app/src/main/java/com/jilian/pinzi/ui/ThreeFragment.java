@@ -89,13 +89,13 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        llBottom = (LinearLayout) getActivity().findViewById(R.id.ll_bottom);
+        llBottom = (LinearLayout) getmActivity().findViewById(R.id.ll_bottom);
         recyclerView = view.findViewById(R.id.rv_three);
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         setNormalTitle("朋友圈", R.drawable.icon_friends_camera, v -> {
             if (PinziApplication.getInstance().getLoginDto() == null) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getmActivity(), LoginActivity.class);
                 startActivity(intent);
                 return;
             }
@@ -108,7 +108,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     private void initRecyclerView() {
         list = new ArrayList<>();
         list.add(null);
-        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this,getActivity());
+        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this,getmActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setAdapter(friendsCircleAdapter);
         friendsCircleAdapter.setOnItemClickListener(new FriendsCircleAdapter.OnItemClickListener() {
@@ -116,8 +116,8 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             public void onHeadClick(View view, int position) {
                 // TODO 进入我的朋友圈界面
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                    getActivity().startActivity(intent);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
+                    getmActivity().startActivity(intent);
                     return;
                 }
                 toMineFriend(PinziApplication.getInstance().getLoginDto().getName(), PinziApplication.getInstance().getLoginDto().getHeadImg(), PinziApplication.getInstance().getLoginDto().getId());
@@ -144,7 +144,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     protected void initData() {
         getData();
         //根據類型  顯示界面
-        if (getActivity().getIntent().getStringExtra("uId") != null && getActivity().getIntent().getIntExtra("back", 1) == 2) {
+        if (getmActivity().getIntent().getStringExtra("uId") != null && getmActivity().getIntent().getIntExtra("back", 1) == 2) {
             setleftImage(R.drawable.image_back, true, null);
             llBottom.setVisibility(View.GONE);
         } else {
@@ -176,7 +176,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         pageNo = 1;
         //采購中心進來的
         //根據類型 判斷 獲取數據 接口
-        if (getActivity().getIntent().getIntExtra("type", 0) != 1 && getActivity().getIntent().getStringExtra("uId") != null && getActivity().getIntent().getIntExtra("back", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("type", 0) != 1 && getmActivity().getIntent().getStringExtra("uId") != null && getmActivity().getIntent().getIntExtra("back", 1) == 2) {
             //獲取類型朋友圈接口
             getUserTypeFriendCircleList();
         } else {
@@ -195,7 +195,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      * 用戶類型朋友圈
      */
     private void getUserTypeFriendCircleList() {
-        viewModel.UserTypeFriendCircleList(pageNo, pageSize, getActivity().getIntent().getStringExtra("uId"), getActivity().getIntent().getIntExtra("type", 0));
+        viewModel.UserTypeFriendCircleList(pageNo, pageSize, getmActivity().getIntent().getStringExtra("uId"), getmActivity().getIntent().getIntExtra("type", 0));
         viewModel.getUserTypeFriendCircleList().observe(this, new Observer<BaseDto<List<FriendCircleDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<FriendCircleDto>> listBaseDto) {
@@ -340,7 +340,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         srHasData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                if (getActivity().getIntent().getStringExtra("uId") != null) {
+                if (getmActivity().getIntent().getStringExtra("uId") != null) {
                     pageNo = 1;
                     getUserTypeFriendCircleList();
                 } else {
@@ -354,7 +354,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
-                if (getActivity().getIntent().getStringExtra("uId") != null) {
+                if (getmActivity().getIntent().getStringExtra("uId") != null) {
                     pageNo++;
                     getUserTypeFriendCircleList();
                 } else {
@@ -393,7 +393,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void showPopupWindow(View view, int position, String id) {
         // 一个自定义的布局，作为显示的内容
-        MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(getActivity(), R.layout.dialog_input_comment);
+        MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(getmActivity(), R.layout.dialog_input_comment);
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
         EditText etComment = (EditText) dialog.findViewById(R.id.et_comment);
@@ -447,16 +447,16 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             }
         }, 400);
 
-        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        getmActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Rect rect = new Rect();
-                        getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                        getmActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
                         int displayHeight = rect.bottom - rect.top;
-                        int height = getActivity().getWindow().getDecorView().getHeight();
+                        int height = getmActivity().getWindow().getDecorView().getHeight();
                         int keyboardHeight = height - displayHeight;
                         if (previousKeyboardHeight != keyboardHeight) {
                             boolean hide = (double) displayHeight / height > 0.8;
@@ -715,7 +715,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void getPageAndPageSizeLike(int position) {
 
-//        if(getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2){
+//        if(getmActivity().getIntent().getStringExtra("uId")!=null&&getmActivity().getIntent().getIntExtra("back", 1) == 2){
 //            getUserTypeFriendCircleList();
 //        }
 //        else {
@@ -768,7 +768,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void getPageAndPageSizeCancel(int position) {
 
-//        if(getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2){
+//        if(getmActivity().getIntent().getStringExtra("uId")!=null&&getmActivity().getIntent().getIntExtra("back", 1) == 2){
 //            getUserTypeFriendCircleList();
 //        }
 //        else{
@@ -821,7 +821,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void getPageAndPageSizeComment(int position) {
 
-//        if(getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2){
+//        if(getmActivity().getIntent().getStringExtra("uId")!=null&&getmActivity().getIntent().getIntExtra("back", 1) == 2){
 //            getUserTypeFriendCircleList();
 //        }
 //        else{
@@ -871,7 +871,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void getPageAndPageSizeAwnser(int position) {
 
-//        if(getActivity().getIntent().getStringExtra("uId")!=null&&getActivity().getIntent().getIntExtra("back", 1) == 2) {
+//        if(getmActivity().getIntent().getStringExtra("uId")!=null&&getmActivity().getIntent().getIntExtra("back", 1) == 2) {
 //            getUserTypeFriendCircleList();
 //        }
 //        else{

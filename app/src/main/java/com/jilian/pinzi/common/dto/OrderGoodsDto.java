@@ -14,6 +14,15 @@ public class OrderGoodsDto implements Serializable {
     private String score;//积分
     private int classes;//商品类型
     private double topScore;// true string 最高抵扣积分
+    private String earnest;//    定金 金额
+
+    public String getEarnest() {
+        return earnest;
+    }
+
+    public void setEarnest(String earnest) {
+        this.earnest = earnest;
+    }
 
     public double getTopScore() {
         return topScore;

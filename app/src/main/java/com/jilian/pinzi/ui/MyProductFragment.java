@@ -69,13 +69,13 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerview.setLayoutManager(linearLayoutManager);
         HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(getActivity(), 10));//下间距
+        stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(getmActivity(), 10));//下间距
         recyclerview.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         datas = new ArrayList<>();
-        adapter = new AllWorkAdapter(getActivity(), datas, this, this);
+        adapter = new AllWorkAdapter(getmActivity(), datas, this, this);
         recyclerview.setAdapter(adapter);
     }
 

@@ -66,13 +66,13 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
         rvShopDetail = (RecyclerView) view.findViewById(R.id.rv_shop_detail);
         tvJoinShopCart = (TextView) view.findViewById(R.id.tv_join_shopCart);
         rlShopDetailEmpty = (RelativeLayout)view. findViewById(R.id.rl_shop_detail_empty);
-        etSearch = getActivity().findViewById (R.id.et_shop_detail_search_name);
+        etSearch = getmActivity().findViewById (R.id.et_shop_detail_search_name);
         initRecyclerView();
 
     }
     private void initRecyclerView() {
-        mGoodsAdapter = new ShopGoodsAdapter(getActivity(), R.layout.item_my_goods_detail, mGoodsList, this);
-        rvShopDetail.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mGoodsAdapter = new ShopGoodsAdapter(getmActivity(), R.layout.item_my_goods_detail, mGoodsList, this);
+        rvShopDetail.setLayoutManager(new LinearLayoutManager(getmActivity()));
         rvShopDetail.setAdapter(mGoodsAdapter);
     }
 
@@ -95,7 +95,7 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
             @Override
             public void onClick(View v) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -104,13 +104,13 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
                     ToastUitl.showImageToastFail("请先选择商品数量");
                     return;
                 }
-                joinShopCart(getActivity().getIntent().getIntExtra("classes", 1), PinziApplication.getInstance().getLoginDto().getId(), getIdStr(), getCount());
+                joinShopCart(getmActivity().getIntent().getIntExtra("classes", 1), PinziApplication.getInstance().getLoginDto().getId(), getIdStr(), getCount());
             }
         });
         mGoodsAdapter.setOnItemClickListener(new BaseMultiItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(getActivity(), GoodsDetailActivity.class);
+                Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
                 intent.putExtra("goodsId", String.valueOf(mGoodsList.get(position).getId()));
                 startActivity(intent);
             }
@@ -214,7 +214,7 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
      */
     private void getStoreGoodsByName(String goodsName) {
 
-        shopViewModel.getStoreGoods(PinziApplication.getInstance().getLoginDto() == null ? 0 : PinziApplication.getInstance().getLoginDto().getType(), getActivity().getIntent().getStringExtra("shopId"), goodsName, String.valueOf(getActivity().getIntent().getIntExtra("entrance",1)));
+        shopViewModel.getStoreGoods(PinziApplication.getInstance().getLoginDto() == null ? 0 : PinziApplication.getInstance().getLoginDto().getType(), getmActivity().getIntent().getStringExtra("shopId"), goodsName, String.valueOf(getmActivity().getIntent().getIntExtra("entrance",1)));
         shopViewModel.getShopGoodsLiveData().observe(this, shopGoodsBaseDto -> {
             if (shopGoodsBaseDto == null) return;
             if (shopGoodsBaseDto.isSuccess()) {

@@ -212,7 +212,7 @@ public class ImageDetailFragment extends Fragment {
 //							message = "未知的错误";
 //							break;
 //						}
-//						Toast.makeText(getActivity(), message,
+//						Toast.makeText(getmActivity(), message,
 //								Toast.LENGTH_SHORT).show();
 //						if (progressDialog != null) {
 //							progressDialog.setVisibility(View.GONE);

@@ -56,10 +56,10 @@ public class MyActivityFragment extends BaseFragment implements CustomItemClickL
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerview.setLayoutManager(linearLayoutManager);
         datas = new ArrayList<>();
-        adapter = new MainActivityAdapter(getActivity(), datas, this);
+        adapter = new MainActivityAdapter(getmActivity(), datas, this);
         recyclerview.setAdapter(adapter);
     }
 
@@ -131,7 +131,7 @@ public class MyActivityFragment extends BaseFragment implements CustomItemClickL
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getActivity(), MainActivityDetailActivity.class);
+        Intent intent = new Intent(getmActivity(), MainActivityDetailActivity.class);
         //我的活动详情
         intent.putExtra("index", 2);
         intent.putExtra("id", datas.get(position).getAcitvityId());

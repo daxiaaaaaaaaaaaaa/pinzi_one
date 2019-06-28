@@ -67,9 +67,9 @@ public class GoodsDetailRightFragment extends BaseFragment implements CustomItem
     protected void initView(View view, Bundle savedInstanceState) {
         rvTop = (RecyclerView) view.findViewById(R.id.rv_top);
         rvBottom = (RecyclerView) view.findViewById(R.id.rv_bottom);
-        rvBottom.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
-        gm_top = new GridLayoutManager(getActivity(), 5);
-        lm_bottom = new LinearLayoutManager(getActivity());
+        rvBottom.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
+        gm_top = new GridLayoutManager(getmActivity(), 5);
+        lm_bottom = new LinearLayoutManager(getmActivity());
         rvTop.setLayoutManager(gm_top);
         rvBottom.setLayoutManager(lm_bottom);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
@@ -79,12 +79,12 @@ public class GoodsDetailRightFragment extends BaseFragment implements CustomItem
 
         //top
         mCommentTitleDtoList = new ArrayList<>();
-        topAdapter = new TopAdapter(getActivity(), mCommentTitleDtoList, this);
+        topAdapter = new TopAdapter(getmActivity(), mCommentTitleDtoList, this);
         rvTop.setAdapter(topAdapter);
 
         //bottom
         datas = new ArrayList<>();
-        bottomAdapter = new BottomAdapter(getActivity(),datas,this);
+        bottomAdapter = new BottomAdapter(getmActivity(),datas,this);
         rvBottom.setAdapter(bottomAdapter);
     }
 
@@ -153,7 +153,7 @@ public class GoodsDetailRightFragment extends BaseFragment implements CustomItem
     @Override
     protected void initData() {
         pageNo = 1;
-        getGoodsEvaluate(true, getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null:PinziApplication.getInstance().getLoginDto().getId());
+        getGoodsEvaluate(true, getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null:PinziApplication.getInstance().getLoginDto().getId());
     }
 
     @Override
@@ -162,21 +162,21 @@ public class GoodsDetailRightFragment extends BaseFragment implements CustomItem
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageNo = 1;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
             }
         });
         srHasData.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageNo++;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
             }
         });
         srNoData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageNo = 1;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
             }
         });
     }
@@ -205,35 +205,35 @@ public class GoodsDetailRightFragment extends BaseFragment implements CustomItem
                 getLoadingDialog().showDialog();
                 pageNo = 1;
                 type = 0;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
                 break;
             case 1:
                 //好评
                 getLoadingDialog().showDialog();
                 pageNo = 1;
                 type = 3;
-                getGoodsEvaluate(false, getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false, getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
                 break;
             case 2:
                 //中评
                 getLoadingDialog().showDialog();
                 pageNo = 1;
                 type = 2;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
                 break;
             case 3:
                 //差评
                 getLoadingDialog().showDialog();
                 pageNo = 1;
                 type = 1;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
                 break;
             case 4:
                 //有图
                 getLoadingDialog().showDialog();
                 pageNo = 1;
                 type = 4;
-                getGoodsEvaluate(false,  getActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
+                getGoodsEvaluate(false,  getmActivity().getIntent().getStringExtra("goodsId"), PinziApplication.getInstance().getLoginDto()==null?null: PinziApplication.getInstance().getLoginDto().getId());
                 break;
         }
 

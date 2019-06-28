@@ -72,11 +72,11 @@ public class DisableCardFragment extends BaseFragment implements CustomItemClick
     protected void initView(View view, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         srNoData = (SmartRefreshLayout)view. findViewById(R.id.sr_no_data);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         datas = new ArrayList<>();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new DisableAdapter(getActivity(), datas, this,this);
+        adapter = new DisableAdapter(getmActivity(), datas, this,this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableRefresh(false);
         srNoData.setEnableLoadMore(false);

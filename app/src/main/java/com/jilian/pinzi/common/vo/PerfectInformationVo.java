@@ -18,7 +18,17 @@ public class PerfectInformationVo extends BaseVo {
 
     private String id;//true ID
 
-    private String imgUrl;// File  图片地址
+    private String imgUrl;// File  图片地址（营业执照）
+
+    private String storeImg;//门店地址
+
+    public String getStoreImg() {
+        return storeImg;
+    }
+
+    public void setStoreImg(String storeImg) {
+        this.storeImg = storeImg;
+    }
 
     public String getProvince() {
         return province;

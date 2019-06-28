@@ -68,7 +68,7 @@ public class ShopFragment extends BaseFragment implements CustomItemClickListene
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         datas = new ArrayList<>();
-        linearLayoutManager = new CustomerLinearLayoutManager(getActivity());
+        linearLayoutManager = new CustomerLinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         srNoData.setEnableLoadMore(false);
     }
@@ -76,11 +76,11 @@ public class ShopFragment extends BaseFragment implements CustomItemClickListene
     @Override
     protected void initData() {
         //获取类型
-        if (getActivity() instanceof MyCollectionActivity) {
-            classify = ((MyCollectionActivity) getActivity()).getClassify();
+        if (getmActivity() instanceof MyCollectionActivity) {
+            classify = ((MyCollectionActivity) getmActivity()).getClassify();
         }
-        if (getActivity() instanceof MyFootActivity) {
-            classify = ((MyFootActivity) getActivity()).getClassify();
+        if (getmActivity() instanceof MyFootActivity) {
+            classify = ((MyFootActivity) getmActivity()).getClassify();
         }
 
     }
@@ -115,7 +115,7 @@ public class ShopFragment extends BaseFragment implements CustomItemClickListene
                         datas.clear();
                     }
                     datas.addAll(listBaseDto.getData());
-                    shopsAdapter = new MyShopsAdapter(getActivity(), datas, ShopFragment.this,ShopFragment.this,classify);
+                    shopsAdapter = new MyShopsAdapter(getmActivity(), datas, ShopFragment.this,ShopFragment.this,classify);
                     recyclerView.setAdapter(shopsAdapter);
 
                 } else {
@@ -188,7 +188,7 @@ public class ShopFragment extends BaseFragment implements CustomItemClickListene
     }
     @Override
     public void delete(String collectId) {
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_delete_order_tips);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_delete_order_tips);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
         TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);

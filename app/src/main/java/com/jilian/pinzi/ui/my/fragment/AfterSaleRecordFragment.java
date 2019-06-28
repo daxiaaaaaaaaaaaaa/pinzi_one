@@ -72,10 +72,10 @@ public class AfterSaleRecordFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        mAdapter = new SaleRecordAdapter(getActivity(), R.layout.item_sale_record, mDataList);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        mAdapter = new SaleRecordAdapter(getmActivity(), R.layout.item_sale_record, mDataList);
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         recyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseMultiItemAdapter.OnItemClickListener() {
             @Override

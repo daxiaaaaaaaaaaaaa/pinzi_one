@@ -57,13 +57,13 @@ public class NewsFragment extends BaseFragment implements CustomItemClickListene
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         //咨询列表
-        linearLayoutManager = new CustomerLinearLayoutManager(getActivity());
+        linearLayoutManager = new CustomerLinearLayoutManager(getmActivity());
         linearLayoutManager.setCanScrollVertically(false);
         recyclerView .setLayoutManager(linearLayoutManager);
         srNoData.setEnableLoadMore(false);
         list = new ArrayList<>();
 
-        mainNewsAdapter = new MyNewsCollectAdapter(getActivity(), list, this);
+        mainNewsAdapter = new MyNewsCollectAdapter(getmActivity(), list, this);
         recyclerView.setAdapter(mainNewsAdapter);
     }
 

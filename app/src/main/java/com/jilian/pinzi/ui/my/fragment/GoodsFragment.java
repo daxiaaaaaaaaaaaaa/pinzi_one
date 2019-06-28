@@ -72,7 +72,7 @@ public class GoodsFragment extends BaseFragment implements CustomItemClickListen
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
         datas = new ArrayList<>();
-        linearLayoutManager = new CustomerLinearLayoutManager(getActivity());
+        linearLayoutManager = new CustomerLinearLayoutManager(getmActivity());
         linearLayoutManager.setCanScrollVertically(false);
         recyclerView .setLayoutManager(linearLayoutManager);
         srNoData.setEnableLoadMore(false);
@@ -107,11 +107,11 @@ public class GoodsFragment extends BaseFragment implements CustomItemClickListen
     @Override
     protected void initData() {
         //获取类型
-        if (getActivity() instanceof MyCollectionActivity) {
-            classify = ((MyCollectionActivity) getActivity()).getClassify();
+        if (getmActivity() instanceof MyCollectionActivity) {
+            classify = ((MyCollectionActivity) getmActivity()).getClassify();
         }
-        if (getActivity() instanceof MyFootActivity) {
-            classify = ((MyFootActivity) getActivity()).getClassify();
+        if (getmActivity() instanceof MyFootActivity) {
+            classify = ((MyFootActivity) getmActivity()).getClassify();
         }
 
     }
@@ -143,7 +143,7 @@ public class GoodsFragment extends BaseFragment implements CustomItemClickListen
                         datas.clear();
                     }
                     datas.addAll(listBaseDto.getData());
-                    goodsAdapter = new MyGoodsAdapter(getActivity(), datas, GoodsFragment.this, GoodsFragment.this,classify);
+                    goodsAdapter = new MyGoodsAdapter(getmActivity(), datas, GoodsFragment.this, GoodsFragment.this,classify);
                     recyclerView.setAdapter(goodsAdapter);
                 } else {
                     //说明是上拉加载
@@ -193,7 +193,7 @@ public class GoodsFragment extends BaseFragment implements CustomItemClickListen
     @Override
     public void delete(String collectId) {
 
-        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getActivity(), R.layout.dialog_delete_order_tips);
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_delete_order_tips);
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
         TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);

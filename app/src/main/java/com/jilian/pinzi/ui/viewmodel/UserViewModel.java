@@ -24,7 +24,6 @@ public class UserViewModel extends ViewModel {
     private UserRepository userRepository;
 
 
-
     private LiveData<BaseDto<LoginDto>> loginliveData;//登陆
     private LiveData<BaseDto<RegisterDto>> registerliveData;//注册
     private LiveData<BaseDto<String>> smsliveData;//发送短信
@@ -123,10 +122,10 @@ public class UserViewModel extends ViewModel {
      * @param contact   联系人
      * @param linkPhone 联系电话
      * @param id        ID
-     * @param oneUrl    营业执照图片地址
-     * @param twoUrl    门店图片地址
+     * @param imgUrl    营业执照图片地址
+     * @param storeImg  门店图片地址
      */
-    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String oneUrl,String twoUrl) {
+    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String imgUrl, String storeImg) {
         userRepository = new UserRepositoryImpl();
         PerfectInformationVo vo = new PerfectInformationVo();
         vo.setProvince(province);
@@ -136,7 +135,8 @@ public class UserViewModel extends ViewModel {
         vo.setContact(contact);
         vo.setLinkPhone(linkPhone);
         vo.setId(id);
-        vo.setImgUrl(oneUrl);
+        vo.setImgUrl(imgUrl);
+        vo.setStoreImg(storeImg);
         perfectInformationliveData = userRepository.perfectInformation(vo);
     }
 

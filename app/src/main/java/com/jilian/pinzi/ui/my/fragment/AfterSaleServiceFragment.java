@@ -64,12 +64,12 @@ public class AfterSaleServiceFragment extends BaseFragment implements CustomItem
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getmActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(getmActivity(), 10)));
         srNoData.setEnableLoadMore(false);
         datas = new ArrayList<>();
-        adapter = new MyApplyServiceAdapter(getActivity(), datas, this,this);
+        adapter = new MyApplyServiceAdapter(getmActivity(), datas, this,this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
 
@@ -173,7 +173,7 @@ public class AfterSaleServiceFragment extends BaseFragment implements CustomItem
     @Override
     public void clickGoods(MyOrderDto dto) {
 
-        Intent intent = new Intent(getActivity(),MyOrderFinishNoCommentDetailActivity.class);
+        Intent intent = new Intent(getmActivity(),MyOrderFinishNoCommentDetailActivity.class);
         intent.putExtra("orderId",dto.getId());
         if(dto.getPayStatus()==4){
             intent.putExtra("type",1);
@@ -181,7 +181,7 @@ public class AfterSaleServiceFragment extends BaseFragment implements CustomItem
         if(dto.getPayStatus()==5){
 
         }
-        getActivity().startActivity(intent);
+        getmActivity().startActivity(intent);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class AfterSaleServiceFragment extends BaseFragment implements CustomItem
         if(dto.getIsApply()==1){
             return;
         }
-        Intent intent = new Intent(getActivity(),ApplyServiceActivity.class);
+        Intent intent = new Intent(getmActivity(),ApplyServiceActivity.class);
         intent.putExtra("dto",dto);
         startActivity(intent);
 

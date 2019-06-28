@@ -47,6 +47,7 @@ import com.jilian.pinzi.adapter.common.CommonViewHolder;
 import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.common.dto.FriendTblCommentDto;
 import com.jilian.pinzi.common.dto.FriendlLikeDto;
+import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.ui.AllWorksActivity;
 import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.VideoPlayerActivity;
@@ -178,12 +179,18 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             ImageView btnVideo = viewHolder.getView(R.id.btnVideo);
             ImageView ivStart = viewHolder.getView(R.id.iv_start);
 
+            LoginDto loginDto = PinziApplication.getInstance().getLoginDto();
 
-            if (PinziApplication.getInstance().getLoginDto().getId() == null || !PinziApplication.getInstance().getLoginDto().getId().equals(datas.get(position).getuId())) {
-                tv_del.setVisibility(View.GONE);
-            } else {
+            if(!EmptyUtils.isNotEmpty(loginDto)||
+                !EmptyUtils.isNotEmpty(loginDto.getId())
+                    ||(!loginDto.getId().equals(datas.get(position).getuId())))
+            tv_del.setVisibility(View.GONE);
+
+            {
                 tv_del.setVisibility(View.VISIBLE);
             }
+
+
             RelativeLayout rlCommentLike = viewHolder.getView(R.id.rl_comment_like);
             FriendCircleListDto friend = datas.get(position);
             Glide

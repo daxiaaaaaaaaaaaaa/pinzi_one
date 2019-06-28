@@ -96,6 +96,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     private RelativeLayout rlOne;
     private RelativeLayout rlCard;
     private RelativeLayout rlScore;
+    private TextView tvPreMoney;//定金
+
+
 
 
 
@@ -181,6 +184,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     @Override
     public void initView() {
         setNormalTitle("填写订单", v -> finish());
+        tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
         rlCard = (RelativeLayout) findViewById(R.id.rl_card);
         rlScore = (RelativeLayout) findViewById(R.id.rl_score);
         rlOne = (RelativeLayout) findViewById(R.id.rl_one);
@@ -279,7 +283,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                             String goodIds[] = dto.getData().getGoodsId().split(",");
                             for (int i = 0; i < dtoList.size(); i++) {
                                 for (int j = 0; j < prices.length; j++) {
-                                    if (dtoList.get(i).getId().equals(goodIds[j])) {
+                                        if (dtoList.get(i).getId().equals(goodIds[j])) {
                                         dtoList.get(i).setPrice(Double.parseDouble(prices[j]));
                                     }
                                 }

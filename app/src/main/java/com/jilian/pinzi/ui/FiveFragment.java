@@ -215,13 +215,13 @@ public class FiveFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        LoginDto dto = ((MainActivity)getActivity()).getLoginDto();
+        LoginDto dto = ((MainActivity)getmActivity()).getLoginDto();
         if(EmptyUtils.isNotEmpty(dto)){
             Glide
-                    .with(getActivity())
-                    .load(((MainActivity)getActivity()).getLoginDto().getHeadImg())
+                    .with(getmActivity())
+                    .load(((MainActivity)getmActivity()).getLoginDto().getHeadImg())
                     .into(ivHead);
-            tvName.setText(((MainActivity)getActivity()).getLoginDto().getName());
+            tvName.setText(((MainActivity)getmActivity()).getLoginDto().getName());
             tvIniviteCode.setText("我的邀请码："+dto.getInvitationCode());
 
         }
@@ -235,86 +235,86 @@ public class FiveFragment extends BaseFragment {
         llActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MyActivityActivity.class));
+                startActivity(new Intent(getmActivity(), MyActivityActivity.class));
             }
         });
 
         llQuestionnaireSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), QuestionnaireSurveyActivity.class));
+                startActivity(new Intent(getmActivity(), QuestionnaireSurveyActivity.class));
             }
         });
         rlFiveQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), QrCodeActivity.class));
+                startActivity(new Intent(getmActivity(), QrCodeActivity.class));
             }
         });
         ivSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                startActivity(new Intent(getmActivity(), SettingActivity.class));
             }
         });
         rlOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyOrderActivity.class));
+                startActivity(new Intent(getmActivity(), MyOrderActivity.class));
             }
         });
         rlMyShipment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyShipmentActivity.class));
+                startActivity(new Intent(getmActivity(), MyShipmentActivity.class));
             }
         });
         tvMember.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MemberActivity.class));
+                startActivity(new Intent(getmActivity(), MemberActivity.class));
             }
         });
         ivShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                    Intent intent = new Intent(getmActivity(),LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
-                ((NoScrollViewPager) (getActivity()).findViewById(R.id.viewPager)).setCurrentItem(3);
+                ((NoScrollViewPager) (getmActivity()).findViewById(R.id.viewPager)).setCurrentItem(3);
             }
         });
         ivSystemMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SystemMsgActivity.class));
+                startActivity(new Intent(getmActivity(), SystemMsgActivity.class));
             }
         });
         ivHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCenterActivity.class));
+                startActivity(new Intent(getmActivity(), MyCenterActivity.class));
             }
         });
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCenterActivity.class));
+                startActivity(new Intent(getmActivity(), MyCenterActivity.class));
             }
         });
         rlShopAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ShopAtActivity.class));
+                startActivity(new Intent(getmActivity(), ShopAtActivity.class));
             }
         });
         rlMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MemberActivity.class));
+                startActivity(new Intent(getmActivity(), MemberActivity.class));
             }
         });
         rlAddressManager.setOnClickListener(v -> startActivity(new Intent(mActivity, AddressManagerActivity.class)));
@@ -322,43 +322,43 @@ public class FiveFragment extends BaseFragment {
         llWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), WalletActivity.class));
+                startActivity(new Intent(getmActivity(), WalletActivity.class));
             }
         });
         llPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyTntegralActivity.class));
+                startActivity(new Intent(getmActivity(), MyTntegralActivity.class));
             }
         });
         llMycoupons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCouponsActivity.class));
+                startActivity(new Intent(getmActivity(), MyCouponsActivity.class));
             }
         });
         llMyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCardActivity.class));
+                startActivity(new Intent(getmActivity(), MyCardActivity.class));
             }
         });
         rlMycollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCollectionActivity.class));
+                startActivity(new Intent(getmActivity(), MyCollectionActivity.class));
             }
         });
         rlFoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyFootActivity.class));
+                startActivity(new Intent(getmActivity(), MyFootActivity.class));
             }
         });
         rlAfterSalesService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ServiceCenterActivity.class));
+                startActivity(new Intent(getmActivity(), ServiceCenterActivity.class));
             }
         });
 
