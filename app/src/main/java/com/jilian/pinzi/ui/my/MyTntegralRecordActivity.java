@@ -39,7 +39,7 @@ public class MyTntegralRecordActivity extends BaseActivity implements CustomItem
     private MyTntegralRecordAdapter adapter;
     private LotteryViewModel lotteryViewModel;
     private int pageNo = 1;//
-    private int pageSize = 50;//
+    private int pageSize = 2000;//
     private SmartRefreshLayout srHasData;
     private SmartRefreshLayout srNoData;
 

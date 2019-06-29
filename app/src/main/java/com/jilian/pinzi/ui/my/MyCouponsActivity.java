@@ -10,7 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +44,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCouponsActivity extends BaseActivity implements CustomItemClickListener {
+public class MyCouponsActivity extends BaseActivity implements CustomItemClickListener, MyMyCouponsAdapter.DeleteRecordListener {
     private RecyclerView recyclerView;
     private MyMyCouponsAdapter pointAdapter;
     private List<MyRecordDto> datas;
@@ -55,6 +59,7 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
     private SmartRefreshLayout srNoData;
     private MyViewModel viewModel;
     private TextView tvShopDat;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -63,6 +68,7 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
         //结算
         getMyScoreOrCommission();
     }
+
     //结算
     private void getMyScoreOrCommission() {
         viewModel.getMyScoreOrCommission(getUserId());
@@ -110,6 +116,7 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
             }
         });
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,11 +154,11 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
             @Override
             public void onClick(View view) {
                 Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(MyCouponsActivity.this, R.layout.dialog_giving_commission);
-                ImageView ivCancel = (ImageView)dialog. findViewById(R.id.iv_cancel);
+                ImageView ivCancel = (ImageView) dialog.findViewById(R.id.iv_cancel);
                 EditText etPhone = (EditText) dialog.findViewById(R.id.et_phone);
                 EditText etCount = (EditText) dialog.findViewById(R.id.et_count);
-                TextView tvCancel = (TextView)dialog. findViewById(R.id.tv_cancel);
-                TextView  tvOk = (TextView)dialog. findViewById(R.id.tv_ok);
+                TextView tvCancel = (TextView) dialog.findViewById(R.id.tv_cancel);
+                TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 
                 ivCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -168,32 +175,31 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
                 tvOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(TextUtils.isEmpty(etCount.getText().toString())
-                                ||TextUtils.isEmpty(etPhone.getText().toString())){
+                        if (TextUtils.isEmpty(etCount.getText().toString())
+                                || TextUtils.isEmpty(etPhone.getText().toString())) {
                             return;
                         }
-                        if(!PhoneUtils.checkPhoneNo(etPhone.getText().toString())){
+                        if (!PhoneUtils.checkPhoneNo(etPhone.getText().toString())) {
                             ToastUitl.showImageToastFail("请输入正确的手机号码");
                         }
-                        if(Double.parseDouble(etCount.getText().toString())==0){
+                        if (Double.parseDouble(etCount.getText().toString()) == 0) {
                             ToastUitl.showImageToastFail("数量要大于0");
                             return;
                         }
                         getLoadingDialog().showDialog();
-                        viewModel.giveCommission(getLoginDto().getId(),etPhone.getText().toString(),etCount.getText().toString());
+                        viewModel.giveCommission(getLoginDto().getId(), etPhone.getText().toString(), etCount.getText().toString());
                         viewModel.getCommissionnListliveData().observe(MyCouponsActivity.this, new Observer<BaseDto<String>>() {
                             @Override
                             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                                 getLoadingDialog().dismiss();
-                                if(stringBaseDto.getCode()==Constant.Server.SUCCESS_CODE){
+                                if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                                     ToastUitl.showImageToastSuccess("赠送成功");
                                     dialog.dismiss();
                                     //记录
                                     getMyRecord();
                                     //结算
                                     getMyScoreOrCommission();
-                                }
-                                else{
+                                } else {
                                     ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
                                 }
                             }
@@ -208,7 +214,7 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
         datas = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        pointAdapter = new MyMyCouponsAdapter(this, datas, this);
+        pointAdapter = new MyMyCouponsAdapter(this, datas, this, this);
         recyclerView.setAdapter(pointAdapter);
         srNoData.setEnableLoadMore(false);
     }
@@ -224,9 +230,9 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
         tvShopDat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUitl.showImageToastSuccess("该功能将即刻开通");
-                return;
-               // startActivity(new Intent(MyCouponsActivity.this, TopUpActivity.class));
+//                ToastUitl.showImageToastSuccess("该功能将即刻开通");
+//                return;
+                startActivity(new Intent(MyCouponsActivity.this, TopUpActivity.class));
             }
         });
         srHasData.setOnRefreshListener(new OnRefreshListener() {
@@ -256,11 +262,9 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
         tvWithdrawal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUitl.showImageToastSuccess("该功能将即刻开通");
-                return;
-//                Intent intent = new Intent(MyCouponsActivity.this, WithdrawalActivity.class);
-//                intent.putExtra("type",2);
-//                startActivity(intent);
+                Intent intent = new Intent(MyCouponsActivity.this, WithdrawalActivity.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
             }
         });
         tvMore.setOnClickListener(new View.OnClickListener() {
@@ -274,5 +278,37 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
     @Override
     public void onItemClick(View view, int position) {
 
+    }
+
+    @Override
+    public void deleteRecord(int pisition) {
+        Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
+        dialog.setContentView(R.layout.dialog_bottom_layout);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.5f;
+        window.setGravity(Gravity.BOTTOM);
+        window.setAttributes(layoutParams);
+
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
+            // TODO 删除
+            dialog.dismiss();
+            delete(datas.get(pisition).getId());
+        });
+        dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
+            dialog.dismiss();
+
+        });
+    }
+
+    /**
+     * 删除记录
+     *
+     * @param id
+     */
+    private void delete(String id) {
     }
 }

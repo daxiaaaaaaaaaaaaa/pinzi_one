@@ -56,6 +56,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.PvOrUvVo;
 import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
@@ -187,9 +188,20 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<String> uploadVideoData;//上传视频
 
 
-
     private LiveData<BaseDto<String>> payCardliveData;//支付优惠券
 
+    private LiveData<BaseDto<String>> rechargeCommsionData;//充值佣金
+
+
+    private LiveData<BaseDto> updatePvData;//浏览记录统计(查看商品详情时调用)
+
+    public LiveData<BaseDto<String>> getRechargeCommsionData() {
+        return rechargeCommsionData;
+    }
+
+    public LiveData<BaseDto> getUpdatePvData() {
+        return updatePvData;
+    }
 
     public LiveData<BaseDto<String>> getPayCardliveData() {
         return payCardliveData;
@@ -636,19 +648,18 @@ public class MainViewModel extends ViewModel {
     }
 
     /**
-     *
      * @param startNum 当前页数
      * @param pageSize 每页条数
-     * @param content 搜索内容
+     * @param content  搜索内容
      * @param province 省
-     * @param city 市
-     * @param area 区
-     * @param lat 纬度（用户定位地址）
-     * @param lot 经度（用户定位地址）
-     * @param orderby 1.距离从近到远 2.距离从远到近
-     * @param scoreBy 1.好评优先
+     * @param city     市
+     * @param area     区
+     * @param lat      纬度（用户定位地址）
+     * @param lot      经度（用户定位地址）
+     * @param orderby  1.距离从近到远 2.距离从远到近
+     * @param scoreBy  1.好评优先
      */
-    public void StoreShow(int startNum, int pageSize,String content,String  province,String city,String area,Double lat,Double lot,String orderby,String scoreBy) {
+    public void StoreShow(int startNum, int pageSize, String content, String province, String city, String area, Double lat, Double lot, String orderby, String scoreBy) {
         mainRepository = new MainRepositoryImpl();
         StoreShowVo vo = new StoreShowVo();
         vo.setStartNum(startNum);
@@ -1261,6 +1272,7 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 店铺优惠
+     *
      * @param storeId
      * @param uId
      * @param pageNo
@@ -1278,15 +1290,42 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 购买优惠券支付
+     *
      * @param
      */
-    public void buyCoupon(BuyCouponVo vo ) {
+    public void buyCoupon(BuyCouponVo vo) {
         mainRepository = new MainRepositoryImpl();
         payCardliveData = mainRepository.buyCoupon(vo);
     }
 
+    /**
+     * 浏览记录统计(查看商品详情时调用)
+     * @param mac
+     * @param goodsId
+     */
+    public void updatePvOrUv(String mac, String goodsId) {
+        PvOrUvVo vo = new PvOrUvVo();
+        vo.setMac(mac);
+        vo.setGoodsId(goodsId);
+        mainRepository = new MainRepositoryImpl();
+        updatePvData = mainRepository.updatePvOrUv(vo);
+    }
 
-
-
+    /**
+     * 充值金额
+     * @param uId
+     * @param money
+     * @param type
+     * @param platform
+     */
+    public void rechargeCommsion(String uId,String  money,String type,String platform) {
+        mainRepository = new MainRepositoryImpl();
+        BuyCouponVo vo = new BuyCouponVo();
+        vo.setuId(uId);
+        vo.setMoney(money);
+        vo.setType(type);
+        vo.setPlatform(platform);
+        rechargeCommsionData = mainRepository.rechargeCommsion(vo);
+    }
 
 }

@@ -1070,7 +1070,11 @@ public interface ApiService {
     @GET("qiniu/uptoken")
     Flowable<BaseDto<String>> uptoken();
 
-
+    /**
+     * 店铺优惠
+     * @param map
+     * @return
+     */
     @GET("goods/getStoreCoupon")
     Flowable<BaseDto<List<StoreCouponDto>>> getStoreCoupon(@QueryMap Map<String, String> map);
 
@@ -1081,6 +1085,21 @@ public interface ApiService {
      */
     @POST("buyGoods/buyCoupon")
     Flowable<BaseDto<String>> buyCoupon(@Body BuyCouponVo vo);
+
+
+    /**
+     * 览记录统计(查看商品详情时调用)
+     * @param map
+     * @return
+     */
+    @GET("goods/updatePvOrUv")
+    Flowable<BaseDto> updatePvOrUv(@QueryMap Map<String, String> map);
+
+
+    @POST("buyGoods/rechargeCommsion")
+    Flowable<BaseDto<String>> rechargeCommsion(@Body BuyCouponVo vo);
+
+
 
 }
 

@@ -41,6 +41,7 @@ import com.jilian.pinzi.ui.my.AfterSalesServiceActivity;
 import com.jilian.pinzi.ui.shopcard.FillOrderActivity;
 import com.jilian.pinzi.ui.shopcard.IntegralFillOrderActivity;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.MobileInfoUtil;
 import com.jilian.pinzi.utils.NumberUtils;
 import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.utils.RxTimerUtil;
@@ -254,6 +255,17 @@ public class GoodsDetailActivity extends BaseActivity {
         adapter = new CommonViewPagerAdapter(getSupportFragmentManager(), mFragmentList);
         customScrollViewPager.setAdapter(adapter);
         getGoodDetail();
+        updatePvOrUv();
+    }
+
+    /**
+     * 浏览记录统计(查看商品详情时调用)
+     */
+    private void updatePvOrUv() {
+        String mac = MobileInfoUtil.getIMEI(this);
+        String goodsId =  getIntent().getStringExtra("goodsId");
+        //浏览记录统计(查看商品详情时调用)
+        viewModel.updatePvOrUv(mac,goodsId);
     }
 
     @Override

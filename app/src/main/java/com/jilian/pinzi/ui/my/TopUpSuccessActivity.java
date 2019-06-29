@@ -3,6 +3,7 @@ package com.jilian.pinzi.ui.my;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
@@ -12,6 +13,10 @@ import com.jilian.pinzi.base.BaseActivity;
  * 充值成功
  */
 public class TopUpSuccessActivity extends BaseActivity {
+    private TextView tvType;
+    private TextView tvMoney;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,10 +48,20 @@ public class TopUpSuccessActivity extends BaseActivity {
                 finish();
             }
         });
+        tvType = (TextView) findViewById(R.id.tv_type);
+        tvMoney = (TextView) findViewById(R.id.tv_money);
     }
 
     @Override
     public void initData() {
+        String type = getIntent().getStringExtra("type");
+        if("1".equals(type)){
+            tvType.setText("微信支付");
+        }
+        if("2".equals(type)){
+            tvType.setText("支付宝支付");
+        }
+        tvMoney.setText("¥"+getIntent().getStringExtra("money"));
 
     }
 

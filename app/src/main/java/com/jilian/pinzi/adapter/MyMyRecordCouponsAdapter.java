@@ -2,7 +2,6 @@ package com.jilian.pinzi.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,33 +14,32 @@ import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.NumberUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-public class MyMyCouponsAdapter extends RecyclerView.Adapter<MyMyCouponsAdapter.ViewHolder> {
+public class MyMyRecordCouponsAdapter extends RecyclerView.Adapter<MyMyRecordCouponsAdapter.ViewHolder> {
     private Activity mContext;
     private List<MyRecordDto> datas;
     private CustomItemClickListener listener;
     private DeleteRecordListener deleteRecordListener;
-
-    public MyMyCouponsAdapter(Activity context, List<MyRecordDto> datas, CustomItemClickListener listener, DeleteRecordListener deleteRecordListener) {
+    public MyMyRecordCouponsAdapter(Activity context, List<MyRecordDto> datas, CustomItemClickListener listener,DeleteRecordListener deleteRecordListener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
         this.deleteRecordListener = deleteRecordListener;
     }
-
     public interface DeleteRecordListener {
         void deleteRecord(int pisition);
     }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_mycoupons, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_mytntegral_record, parent, false);
         ViewHolder viewHolder = new ViewHolder(view, listener);
         return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
@@ -50,12 +48,18 @@ public class MyMyCouponsAdapter extends RecyclerView.Adapter<MyMyCouponsAdapter.
         } else {
             holder.vLine.setVisibility(View.VISIBLE);
         }
+        if (datas.get(position).isShowDay()) {
+            holder.rlDay.setVisibility(View.VISIBLE);
+            holder.tvDay.setText(datas.get(position).getDay());
+            holder.tvGetCount.setText(NumberUtils.forMatNumber(datas.get(position).getGetCount()));
+            holder.tvUseCount.setText(NumberUtils.forMatNumber(datas.get(position).getUseCount()));
+        } else {
+            holder.rlDay.setVisibility(View.GONE);
+        }
+
         holder.tvName.setText(datas.get(position).getTitle());
         holder.tvCount.setText((datas.get(position).getStatus() == 1 ? "+" : "-") + NumberUtils.forMatNumber(datas.get(position).getSource()));
         holder.tvDate.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(datas.get(position).getCreateDate())));
-        if (!TextUtils.isEmpty(datas.get(position).getBuyUserName())) {
-            holder.tvUser.setText("(购买人：" + datas.get(position).getBuyUserName() + ")");
-        }
         holder.rlItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -74,28 +78,36 @@ public class MyMyCouponsAdapter extends RecyclerView.Adapter<MyMyCouponsAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private View vLine;
+        private TextView tvDay;
+        private RelativeLayout rlDay;
         private TextView tvName;
         private TextView tvDate;
         private TextView tvCount;
-        private TextView tvUser;
+        private TextView tvGetCount;
+        private TextView tvUseCount;
         private RelativeLayout rlItem;
+
+
 
 
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
             super(itemView);
             vLine = (View) itemView.findViewById(R.id.v_line);
+            tvDay = (TextView) itemView.findViewById(R.id.tv_day);
+            rlDay = (RelativeLayout) itemView.findViewById(R.id.rl_day);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvCount = (TextView) itemView.findViewById(R.id.tv_count);
-            tvUser = (TextView) itemView.findViewById(R.id.tv_user);
+            tvGetCount = (TextView) itemView.findViewById(R.id.tv_getCount);
+            tvUseCount = (TextView) itemView.findViewById(R.id.tv_useCount);
             rlItem = (RelativeLayout) itemView.findViewById(R.id.rl_item);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(itemView, getAdapterPosition());
                 }
             });
+
         }
 
     }

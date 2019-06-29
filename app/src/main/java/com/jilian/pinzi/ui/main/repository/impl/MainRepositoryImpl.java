@@ -52,6 +52,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.PvOrUvVo;
 import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
@@ -616,6 +617,28 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto<String>> buyCoupon(BuyCouponVo vo) {
         return request(Api.buyCoupon(vo)).send().get();
     }
+
+    /**
+     * 浏览记录统计(查看商品详情时调用)
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> updatePvOrUv(PvOrUvVo vo) {
+        return request(Api.updatePvOrUv(vo)).send().get();
+    }
+
+    /**
+     * 充值佣金
+     * @param vo
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<String>> rechargeCommsion(BuyCouponVo vo) {
+        return request(Api.rechargeCommsion(vo)).send().get();
+    }
+
+
 
 
 

@@ -111,6 +111,7 @@ import com.jilian.pinzi.common.vo.PayOrderVo;
 import com.jilian.pinzi.common.vo.PerfectInformationVo;
 import com.jilian.pinzi.common.vo.PhotoImgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.PvOrUvVo;
 import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.RegisterVo;
@@ -1244,6 +1245,25 @@ public class Api {
     public static Flowable<BaseDto<String>> buyCoupon(BuyCouponVo vo) {
         return RequetRetrofit.getInstance().buyCoupon(vo);
     }
+
+    /**
+     * 浏览记录统计(查看商品详情时调用)
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto> updatePvOrUv(PvOrUvVo vo) {
+        return RequetRetrofit.getInstance().updatePvOrUv(HttpUtil.convertVo2Params(vo));
+    }
+
+    /**
+     * 佣金充值
+     * @param vo
+     * @return
+     */
+    public static Flowable<BaseDto<String>> rechargeCommsion(BuyCouponVo vo) {
+        return RequetRetrofit.getInstance().rechargeCommsion(vo);
+    }
+
 
 
 

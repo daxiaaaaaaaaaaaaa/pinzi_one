@@ -36,7 +36,10 @@ public class WelcomeActivity extends FragmentActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,//写权限
                 Manifest.permission.READ_EXTERNAL_STORAGE, //读权限
                 Manifest.permission.CAMERA,//相机权限
-                Manifest.permission.CALL_PHONE//拨打电话
+                Manifest.permission.CALL_PHONE,//拨打电话
+                Manifest.permission.READ_PHONE_STATE//拨打电话
+
+
 
 
 

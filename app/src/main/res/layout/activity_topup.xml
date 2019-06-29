@@ -32,13 +32,14 @@
             android:background="@color/color_line"/>
 
         <EditText
+            android:id="@+id/et_money"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginLeft="15dp"
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="请输入充值金额"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textColorHint="@color/color_text_dark"
             android:textSize="16sp"/>
     </LinearLayout>

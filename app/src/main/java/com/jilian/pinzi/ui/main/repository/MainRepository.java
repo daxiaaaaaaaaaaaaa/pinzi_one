@@ -51,6 +51,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.JoinShopCartVo;
 import com.jilian.pinzi.common.vo.MsgVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.PvOrUvVo;
 import com.jilian.pinzi.common.vo.QuestionVo;
 import com.jilian.pinzi.common.vo.RecommendVo;
 import com.jilian.pinzi.common.vo.ReturnCommissionVo;
@@ -469,5 +470,19 @@ public interface MainRepository {
      * @return
      */
     LiveData<BaseDto<String>> buyCoupon(BuyCouponVo vo);
+
+    /**
+     * 浏览记录统计(查看商品详情时调用)
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto> updatePvOrUv(PvOrUvVo vo);
+
+    /**
+     * 充值佣金
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<String>> rechargeCommsion(BuyCouponVo vo);
 
 }

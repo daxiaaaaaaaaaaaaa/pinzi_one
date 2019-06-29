@@ -1,5 +1,6 @@
 package com.jilian.pinzi.ui.my;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -7,11 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.MyMyCouponsAdapter;
+import com.jilian.pinzi.adapter.MyMyRecordCouponsAdapter;
 import com.jilian.pinzi.adapter.MyTntegralRecordAdapter;
 import com.jilian.pinzi.adapter.MycouponsRecordAdapter;
 import com.jilian.pinzi.base.BaseActivity;
@@ -35,14 +41,14 @@ import java.util.Map;
 /**
  * 佣金记录
  */
-public class MyCouponsRecordActivity extends BaseActivity implements CustomItemClickListener {
+public class MyCouponsRecordActivity extends BaseActivity implements CustomItemClickListener, MyMyRecordCouponsAdapter.DeleteRecordListener{
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<MyRecordDto> datas;
-    private MyMyCouponsAdapter adapter;
+    private MyMyRecordCouponsAdapter adapter;
     private LotteryViewModel lotteryViewModel;
     private int pageNo = 1;//
-    private int pageSize = 50;//
+    private int pageSize =2000;//
     private SmartRefreshLayout srHasData;
     private SmartRefreshLayout srNoData;
     @Override
@@ -151,6 +157,7 @@ public class MyCouponsRecordActivity extends BaseActivity implements CustomItemC
         }
         return -useCount;
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +188,7 @@ public class MyCouponsRecordActivity extends BaseActivity implements CustomItemC
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         datas = new ArrayList<>();
-        adapter = new MyMyCouponsAdapter(this, datas, this);
+        adapter = new MyMyRecordCouponsAdapter(this, datas, this,this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
     }
@@ -219,5 +226,36 @@ public class MyCouponsRecordActivity extends BaseActivity implements CustomItemC
     @Override
     public void onItemClick(View view, int position) {
 
+    }
+
+    @Override
+    public void deleteRecord(int position) {
+        Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
+        dialog.setContentView(R.layout.dialog_bottom_layout);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.5f;
+        window.setGravity(Gravity.BOTTOM);
+        window.setAttributes(layoutParams);
+
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
+            // TODO 删除
+            dialog.dismiss();
+            delete(datas.get(position).getId());
+        });
+        dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
+            dialog.dismiss();
+
+        });
+    }
+    /**
+     * 删除记录
+     *
+     * @param id
+     */
+    private void delete(String id) {
     }
 }
