@@ -137,7 +137,7 @@
         <activity android:name=".ui.my.ShopAtActivity"/>
         <activity android:name=".ui.my.ServiceCenterActivity"/>
         <activity android:name=".ui.my.TopUpActivity"/>
-        <activity android:name=".ui.my.TopUpSuccessActivity"/>
+        <activity android:name=".ui.my.TopUpSuccessActivity" />
         <activity android:name=".ui.my.WithdrawalActivity"/>
         <activity android:name=".ui.my.WithdrawalAuditActivity"/>
         <activity android:name=".ui.my.MyCouponsRecordActivity"/>

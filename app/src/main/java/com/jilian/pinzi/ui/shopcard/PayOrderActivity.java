@@ -26,8 +26,11 @@ import com.jilian.pinzi.common.dto.GoodByScoreDto;
 import com.jilian.pinzi.common.dto.MyOrderDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.my.MyOrderWaitePayDetailActivity;
+import com.jilian.pinzi.ui.my.TopUpActivity;
+import com.jilian.pinzi.ui.my.TopUpSuccessActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.AlipayUtil;
 import com.jilian.pinzi.utils.DateUtil;
@@ -38,10 +41,14 @@ import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.utils.WXPayUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Date;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.rong.eventbus.EventBus;
 
 public class PayOrderActivity extends BaseActivity {
     private RelativeLayout rlAlipay;
@@ -50,7 +57,7 @@ public class PayOrderActivity extends BaseActivity {
     private AddOrderDto addOrderDto;
     private MyOrderDto orderDto;
     private TextView tvTime;
-    private long fifityMin = 15*60*1000;//15分钟
+    private long fifityMin = 15 * 60 * 1000;//15分钟
     private TextView tvPayCount;
     private int shopType;
     private String orderNo;
@@ -58,10 +65,12 @@ public class PayOrderActivity extends BaseActivity {
     private MyViewModel viewModel;
     private OrderDetailDto orderDetailDto;
     private GoodByScoreDto goodByScoreDto;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PinziApplication.addActivity(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -69,8 +78,10 @@ public class PayOrderActivity extends BaseActivity {
         super.onDestroy();
         PinziApplication.removeActivity(this);
         MainRxTimerUtil.cancel();
+        EventBus.getDefault().unregister(this);
 
     }
+
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
@@ -105,61 +116,61 @@ public class PayOrderActivity extends BaseActivity {
     @Override
     public void initData() {
         //1 普通商城 2 积分兑换
-        shopType = getIntent().getIntExtra("shopType",1);
+        shopType = getIntent().getIntExtra("shopType", 1);
         addOrderDto = (AddOrderDto) getIntent().getSerializableExtra("addOrderDto");
         orderDto = (MyOrderDto) getIntent().getSerializableExtra("orderDto");
         orderDetailDto = (OrderDetailDto) getIntent().getSerializableExtra("orderDetailDto");
         goodByScoreDto = (GoodByScoreDto) getIntent().getSerializableExtra("goodByScoreDto");
 
-        if(EmptyUtils.isNotEmpty(goodByScoreDto)){
+        if (EmptyUtils.isNotEmpty(goodByScoreDto)) {
             orderId = goodByScoreDto.getOrderId();
             orderNo = goodByScoreDto.getOrderNo();
             long creatTime = goodByScoreDto.getCreateDate();
-            startTimeTask(creatTime+fifityMin);
-            tvPayCount.setText("支付金额："+ NumberUtils.forMatNumber(Double.parseDouble(goodByScoreDto.getPayMoney())));
+            startTimeTask(creatTime + fifityMin);
+            tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(goodByScoreDto.getPayMoney())));
         }
 
-        if(EmptyUtils.isNotEmpty(addOrderDto)){
+        if (EmptyUtils.isNotEmpty(addOrderDto)) {
             orderId = addOrderDto.getOrderId();
             orderNo = addOrderDto.getOrderNo();
             long creatTime = addOrderDto.getCreateDate();
-            startTimeTask(creatTime+fifityMin);
-            tvPayCount.setText("支付金额："+ NumberUtils.forMatNumber(Double.parseDouble(addOrderDto.getPayMoney())));
+            startTimeTask(creatTime + fifityMin);
+            tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(addOrderDto.getPayMoney())));
         }
-        if(EmptyUtils.isNotEmpty(orderDto)){
+        if (EmptyUtils.isNotEmpty(orderDto)) {
             orderNo = orderDto.getOrderNo();
             orderId = orderDto.getId();
             long creatTime = orderDto.getCreateDate();
-            startTimeTask(creatTime+fifityMin);
-            tvPayCount.setText("支付金额："+ NumberUtils.forMatNumber(Double.parseDouble(orderDto.getPayMoney())));
-            if(orderDto.getPayWay()==3){
+            startTimeTask(creatTime + fifityMin);
+            tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(orderDto.getPayMoney())));
+            if (orderDto.getPayWay() == 3) {
                 shopType = 2;
             }
         }
-        if(EmptyUtils.isNotEmpty(orderDetailDto)){
+        if (EmptyUtils.isNotEmpty(orderDetailDto)) {
             orderNo = orderDetailDto.getOrderNo();
-            orderId  = orderDetailDto.getOrderId();
+            orderId = orderDetailDto.getOrderId();
             //积分兑换
-            if(orderDetailDto.getPayWay()==3){
+            if (orderDetailDto.getPayWay() == 3) {
                 shopType = 2;
             }
 
             long creatTime = orderDetailDto.getCreateDate();
-            startTimeTask(creatTime+fifityMin);
-            tvPayCount.setText("支付金额："+ NumberUtils.forMatNumber(orderDetailDto.getPayMoney()));
+            startTimeTask(creatTime + fifityMin);
+            tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDetailDto.getPayMoney()));
         }
 
-        if(shopType==1){
+        if (shopType == 1) {
             rlGoods.setVisibility(View.VISIBLE);
         }
-        if(shopType==2){
+        if (shopType == 2) {
             rlGoods.setVisibility(View.GONE);
         }
     }
 
     /**
-     *
      * 开启倒计时
+     *
      * @param endTime
      */
     private void startTimeTask(long endTime) {
@@ -169,142 +180,142 @@ public class PayOrderActivity extends BaseActivity {
                 long nowTime = new Date().getTime();
                 //单位 s
                 long delTime = endTime - nowTime;
-                if(delTime>0){
-                    String str  = DateUtil.timeToHms(delTime);
-                    tvTime.setText("请在"+str.split(":")[0]+":"+str.split(":")[1]+":"+str.split(":")[2]+"内完成支付");
-                }
-                else{
+                if (delTime > 0) {
+                    String str = DateUtil.timeToHms(delTime);
+                    tvTime.setText("请在" + str.split(":")[0] + ":" + str.split(":")[1] + ":" + str.split(":")[2] + "内完成支付");
+                } else {
                     finish();
                 }
 
             }
         });
     }
+
+    /**
+     * //监听外来是否要去成功的界面
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getWxPayMessage())
+                && event.getWxPayMessage().getPayCode() == 200
+                && PinziApplication.getInstance().getWxPayType() == 1) {
+            toPaySuccess();
+        }
+    }
+
     private int type;//支付方式 1.微信支付 2.支付宝支付 3.积分兑换 4.货到付款
     private int payfright;
+
     @Override
     public void initListener() {
-        //监听外来是否要去成功的界面
-        RxBus.getInstance().toObservable().map(new Function<Object, FriendMsg>() {
-            @Override
-            public FriendMsg apply(Object o) throws Exception {
-                return (FriendMsg) o;
-            }
-        }).subscribe(new Consumer<FriendMsg>() {
-            @Override
-            public void accept(FriendMsg eventMsg) throws Exception {
-                if (eventMsg != null) {
-                    if(eventMsg.getCode()==500&&PinziApplication.getInstance().getWxPayType()==1){
-                        toPaySuccess();
-                    }
-                }
-            }
-        });
         rlAlipay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(shopType==1){
+                if (shopType == 1) {
                     type = 2;
                 }
-                if(shopType==2){
-                    type=4;
-                    payfright= 2;
+                if (shopType == 2) {
+                    type = 4;
+                    payfright = 2;
                 }
                 //去支付
-                pay(orderNo,type,payfright);
+                pay(orderNo, type, payfright);
             }
         });
         rlWechat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(shopType==1){
+                if (shopType == 1) {
                     type = 1;
                 }
-                if(shopType==2){
-                    type=4;
-                    payfright= 1;
+                if (shopType == 2) {
+                    type = 4;
+                    payfright = 1;
                 }
                 //去支付
-                pay(orderNo,type,payfright);
+                pay(orderNo, type, payfright);
 
             }
         });
         rlGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(shopType==1){
+                if (shopType == 1) {
                     type = 4;
                 }
                 //去支付
-                pay(orderNo,type,payfright);
+                pay(orderNo, type, payfright);
             }
         });
     }
-    private  Intent intent;
+
+    private Intent intent;
+
     /**
      * 去支付
      */
     private void pay(String orderNo, int type, int payfright) {
         showLoadingDialog();
-        viewModel.payOrder(orderNo,type,payfright,"1");
+        viewModel.payOrder(orderNo, type, payfright, "1");
         viewModel.getPay().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 hideLoadingDialog();
-                if(stringBaseDto.isSuccess()){
-                    intent = new Intent(PayOrderActivity.this,PaySuccessActivity.class);
-                    if(shopType==1){
+                if (stringBaseDto.isSuccess()) {
+                    intent = new Intent(PayOrderActivity.this, PaySuccessActivity.class);
+                    if (shopType == 1) {
                         //支付方式 1.微信支付 2.支付宝支付 3.积分兑换 4.货到付款
-                        switch (type){
+                        switch (type) {
                             case 1:
-                                intent.putExtra("payType","微信支付");
+                                intent.putExtra("payType", "微信支付");
                                 break;
                             case 2:
-                                intent.putExtra("payType","支付宝支付");
+                                intent.putExtra("payType", "支付宝支付");
                                 break;
                             case 4:
-                                intent.putExtra("payType","货到付款");
+                                intent.putExtra("payType", "货到付款");
                                 break;
                         }
 
                     }
-                    if(shopType==2){
-                        switch (payfright){
+                    if (shopType == 2) {
+                        switch (payfright) {
                             case 1:
-                                intent.putExtra("payType","微信支付");
+                                intent.putExtra("payType", "微信支付");
                                 break;
                             case 2:
-                                intent.putExtra("payType","支付宝支付");
+                                intent.putExtra("payType", "支付宝支付");
                                 break;
                         }
                     }
                     //微信支付
-                    if(type==1){
-                        if(tvPayCount.getText().toString().substring(5).equals("0.00")){
+                    if (type == 1) {
+                        if (tvPayCount.getText().toString().substring(5).equals("0.00")) {
                             toPaySuccess();
-                        }
-                        else{
+                        } else {
                             wxPay(stringBaseDto.getData());
                         }
 
                     }
                     //支付宝支付
-                    else if(type==2){
-                        if(tvPayCount.getText().toString().substring(5).equals("0.00")){
+                    else if (type == 2) {
+                        if (tvPayCount.getText().toString().substring(5).equals("0.00")) {
                             toPaySuccess();
-                        }
-                        else{
+                        } else {
                             aliPay(stringBaseDto.getData());
                         }
 
                     }
                     //钱包支付
-                    else{
+                    else {
                         toPaySuccess();
                     }
 
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastSuccess(stringBaseDto.getMsg());
                 }
             }
@@ -313,6 +324,7 @@ public class PayOrderActivity extends BaseActivity {
 
     /**
      * 微信支付
+     *
      * @param info
      */
     private void wxPay(String info) {
@@ -342,17 +354,17 @@ public class PayOrderActivity extends BaseActivity {
 
     /**
      * 支付宝支付
+     *
      * @param info 订单信息
      */
-    private void  aliPay(String info){
+    private void aliPay(String info) {
         AlipayUtil.getInstance().pay(this, info, true, new AlipayUtil.AlipayCallBack() {
             @Override
             public void callBack(String resultSet) {
-                if(!TextUtils.isEmpty(resultSet)&&resultSet.contains("9000")){
+                if (!TextUtils.isEmpty(resultSet) && resultSet.contains("9000")) {
                     toPaySuccess();
                     finish();
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastFail(resultSet);
                 }
 
@@ -364,9 +376,9 @@ public class PayOrderActivity extends BaseActivity {
      * 跳转到支付成功的界面
      */
     private void toPaySuccess() {
-        intent.putExtra("payCount","¥ "+tvPayCount.getText().toString().substring(5));
-        intent.putExtra("orderNo",orderNo);
-        intent.putExtra("orderId",orderId);
+        intent.putExtra("payCount", "¥ " + tvPayCount.getText().toString().substring(5));
+        intent.putExtra("orderNo", orderNo);
+        intent.putExtra("orderId", orderId);
         startActivity(intent);
         finish();
         PinziApplication.clearSpecifyActivities(new Class[]{MyOrderWaitePayDetailActivity.class});
@@ -384,12 +396,10 @@ public class PayOrderActivity extends BaseActivity {
     /**
      * 返回
      */
-    public void showBackDialog()
-
-    {
+    public void showBackDialog() {
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_delete_order_tips);
         //TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
-        TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);
+        TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
         tvContent.setText("确定要离开订单支付吗？");
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);

@@ -22,6 +22,7 @@ import com.jilian.pinzi.common.dto.GoodByScoreDto;
 import com.jilian.pinzi.common.dto.MyOrderDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.ui.main.BuyCardActivity;
@@ -37,10 +38,14 @@ import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.utils.WXPayUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Date;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.rong.eventbus.EventBus;
 
 /**
  * 支付优惠券
@@ -59,6 +64,7 @@ public class PayCardActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PinziApplication.addActivity(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -66,6 +72,7 @@ public class PayCardActivity extends BaseActivity {
         super.onDestroy();
         PinziApplication.removeActivity(this);
         MainRxTimerUtil.cancel();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -106,28 +113,29 @@ public class PayCardActivity extends BaseActivity {
     }
 
 
+    /**
+     * //监听外来是否要去成功的界面
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getWxPayMessage())
+                && event.getWxPayMessage().getPayCode() == 200
+                && PinziApplication.getInstance().getWxPayType() == 2) {
+            finish();
+            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
+        }
+    }
+
+
     private int type;//支付方式 1.微信支付 2.支付宝支付 3.积分兑换 4.货到付款
 
 
     @Override
     public void initListener() {
-        //监听外来是否要去成功的界面
-        RxBus.getInstance().toObservable().map(new Function<Object, FriendMsg>() {
-            @Override
-            public FriendMsg apply(Object o) throws Exception {
-                return (FriendMsg) o;
-            }
-        }).subscribe(new Consumer<FriendMsg>() {
-            @Override
-            public void accept(FriendMsg eventMsg) throws Exception {
-                if (eventMsg != null) {
-                    if (eventMsg.getCode() == 500&&PinziApplication.getInstance().getWxPayType()==2) {
-                        finish();
-                        PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
-                    }
-                }
-            }
-        });
         rlAlipay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

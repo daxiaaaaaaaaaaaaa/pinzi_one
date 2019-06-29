@@ -26,6 +26,8 @@ import com.jilian.pinzi.views.LoadingDialog;
 import com.lljjcoder.citywheel.CityConfig;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 
+import io.rong.eventbus.EventBus;
+
 /**
  * Activity 基类3
  *
@@ -77,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     }
+
     public LoginDto getLoginDto(){
         return SPUtil.getData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,LoginDto.class,null);
     }
@@ -194,6 +197,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
 
     }
 

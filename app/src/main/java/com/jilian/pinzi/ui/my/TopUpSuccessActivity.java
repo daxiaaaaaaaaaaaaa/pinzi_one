@@ -1,5 +1,6 @@
 package com.jilian.pinzi.ui.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -62,6 +63,12 @@ public class TopUpSuccessActivity extends BaseActivity {
             tvType.setText("支付宝支付");
         }
         tvMoney.setText("¥"+getIntent().getStringExtra("money"));
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
     }
 

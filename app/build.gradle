@@ -221,4 +221,6 @@ dependencies {
 
 
     implementation 'com.qiniu:qiniu-android-sdk:7.3.15'
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

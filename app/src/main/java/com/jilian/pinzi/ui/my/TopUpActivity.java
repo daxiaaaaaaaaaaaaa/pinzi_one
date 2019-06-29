@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -16,15 +17,21 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.main.BuyCardActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.AlipayUtil;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.utils.WXPayUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.rong.eventbus.EventBus;
 
 /**
  * 充值
@@ -40,12 +47,14 @@ public class TopUpActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PinziApplication.addActivity(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         PinziApplication.removeActivity(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -71,28 +80,28 @@ public class TopUpActivity extends BaseActivity {
 
     }
     private String type;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if(EmptyUtils.isNotEmpty(event)
+                &&EmptyUtils.isNotEmpty(event.getWxPayMessage())
+                &&event.getWxPayMessage().getPayCode()==200
+                && PinziApplication.getInstance().getWxPayType() == 3){
+            Log.e(TAG, "accept: ........" );
+            PinziApplication.clearSpecifyActivities(new Class[]{TopUpSuccessActivity.class});
+            Intent intent = new Intent(TopUpActivity.this, TopUpSuccessActivity.class);
+            intent.putExtra("type",type);
+            intent.putExtra("money",etMoney.getText().toString());
+            startActivity(intent);
+            finish();
+        }
+    }
+
+
     @Override
     public void initListener() {
-        //监听外来是否要去成功的界面
-        RxBus.getInstance().toObservable().map(new Function<Object, FriendMsg>() {
-            @Override
-            public FriendMsg apply(Object o) throws Exception {
-                return (FriendMsg) o;
-            }
-        }).subscribe(new Consumer<FriendMsg>() {
-            @Override
-            public void accept(FriendMsg eventMsg) throws Exception {
-                if (eventMsg != null) {
-                    if (eventMsg.getCode() == 500 && PinziApplication.getInstance().getWxPayType() == 3) {
-                        Intent intent = new Intent(TopUpActivity.this, TopUpSuccessActivity.class);
-                        intent.putExtra("type",type);
-                        intent.putExtra("money",etMoney.getText().toString());
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            }
-        });
+
         rlAlipay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
