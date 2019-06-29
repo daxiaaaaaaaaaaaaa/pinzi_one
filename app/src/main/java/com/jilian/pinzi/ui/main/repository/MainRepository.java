@@ -31,6 +31,7 @@ import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.AccesstokenVo;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyCouponVo;
@@ -484,5 +485,7 @@ public interface MainRepository {
      * @return
      */
     LiveData<BaseDto<String>> rechargeCommsion(BuyCouponVo vo);
+
+
 
 }

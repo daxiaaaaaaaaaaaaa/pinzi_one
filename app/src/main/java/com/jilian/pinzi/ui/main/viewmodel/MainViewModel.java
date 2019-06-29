@@ -35,6 +35,7 @@ import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.AccesstokenVo;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyCouponVo;
@@ -66,7 +67,9 @@ import com.jilian.pinzi.common.vo.ShipperVo;
 import com.jilian.pinzi.common.vo.StoreCouponVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
 import com.jilian.pinzi.ui.main.repository.MainRepository;
+import com.jilian.pinzi.ui.main.repository.NormalRepository;
 import com.jilian.pinzi.ui.main.repository.impl.MainRepositoryImpl;
+import com.jilian.pinzi.ui.main.repository.impl.NormalRepositoryImpl;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
@@ -80,7 +83,7 @@ public class MainViewModel extends ViewModel {
 
     private static final String TAG = "MainViewModel";
     private MainRepository mainRepository;
-
+    private NormalRepository normalRepository;
     private LiveData<BaseDto<List<MsgDto>>> msgliveData;//消息
 
     private LiveData<BaseDto<MsgDto>> msgDetailliveData;//消息详情
@@ -194,6 +197,13 @@ public class MainViewModel extends ViewModel {
 
 
     private LiveData<BaseDto> updatePvData;//浏览记录统计(查看商品详情时调用)
+
+
+    private LiveData<String> access_tokenData;//充值佣金
+
+    public LiveData<String> getAccess_tokenData() {
+        return access_tokenData;
+    }
 
     public LiveData<BaseDto<String>> getRechargeCommsionData() {
         return rechargeCommsionData;
@@ -1300,6 +1310,7 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 浏览记录统计(查看商品详情时调用)
+     *
      * @param mac
      * @param goodsId
      */
@@ -1313,12 +1324,13 @@ public class MainViewModel extends ViewModel {
 
     /**
      * 充值金额
+     *
      * @param uId
      * @param money
      * @param type
      * @param platform
      */
-    public void rechargeCommsion(String uId,String  money,String type,String platform) {
+    public void rechargeCommsion(String uId, String money, String type, String platform) {
         mainRepository = new MainRepositoryImpl();
         BuyCouponVo vo = new BuyCouponVo();
         vo.setuId(uId);
@@ -1327,5 +1339,22 @@ public class MainViewModel extends ViewModel {
         vo.setPlatform(platform);
         rechargeCommsionData = mainRepository.rechargeCommsion(vo);
     }
+
+    /**
+     * @param appid      是	应用唯一标识，在微信开放平台提交应用审核通过后获得
+     * @param secret     是	应用密钥AppSecret，在微信开放平台提交应用审核通过后获得
+     * @param code       是	填写第一步获取的code参数
+     * @param grant_type 是	填authorization_code
+     */
+    public void access_token(String appid, String secret, String code, String grant_type) {
+        normalRepository = new NormalRepositoryImpl();
+        AccesstokenVo vo = new AccesstokenVo();
+        vo.setAppid(appid);
+        vo.setSecret(secret);
+        vo.setCode(code);
+        vo.setGrant_type(grant_type);
+        access_tokenData = normalRepository.access_token(vo);
+    }
+
 
 }

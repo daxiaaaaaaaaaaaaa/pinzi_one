@@ -60,6 +60,7 @@ import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.vo.AccesstokenVo;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
@@ -1264,6 +1265,14 @@ public class Api {
         return RequetRetrofit.getInstance().rechargeCommsion(vo);
     }
 
+    /**
+     * 获取第一步的code后，请求以下链接获取access_token：
+     * @param vo
+     * @return
+     */
+    public static Flowable<String> access_token(AccesstokenVo vo) {
+        return WxRequetRetrofit.getInstance().access_token(HttpUtil.convertVo2Params(vo));
+    }
 
 
 

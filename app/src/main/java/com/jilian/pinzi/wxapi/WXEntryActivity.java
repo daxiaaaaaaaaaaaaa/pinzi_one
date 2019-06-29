@@ -1,12 +1,21 @@
 package com.jilian.pinzi.wxapi;
 
 
-import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
+import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.AccessTokenDto;
+import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -14,13 +23,14 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 
-public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
+public class WXEntryActivity extends FragmentActivity implements IWXAPIEventHandler {
 
 
-    private static final String TAG ="WXEntryActivity" ;
+    private static final String TAG = "WXEntryActivity";
 
     private static final int RETURN_MSG_TYPE_LOGIN = 1;
     private static final int RETURN_MSG_TYPE_SHARE = 2;
+    private MainViewModel viewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +50,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
         Log.d("WXEntryActivity", "错误码 : " + resp.errCode + "");
-        finish();
+        //finish();
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -66,7 +76,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                             /*
                              * 绑定微信
                              * */
-                            ToastUitl.showImageToastFail("绑定微信："+code);
+                            //ToastUitl.showImageToastFail("绑定微信：" + code);
+                            getAccessToken(code);
                             finish();
                             //doBindWxHttp(code);
 
@@ -74,8 +85,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                             /*
                              * 微信登录 获取用户信息
                              **/
-                            //getAccessToken(code);
-                            ToastUitl.showImageToastSuccess("微信登录 获取用户信息："+code);
+                            getAccessToken(code);
+                            //ToastUitl.showImageToastSuccess("微信登录 获取用户信息："+code);
                             finish();
                         }
                         break;
@@ -89,10 +100,30 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         }
     }
 
+    /**
+     * 获取第一步的code后，请求以下链接获取access_token
+     *
+     * @param code
+     */
+    private void getAccessToken(String code) {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.access_token(Constant.APP_ID,"secret",code,"authorization_code");
+        viewModel.getAccess_tokenData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String stringBaseDto) {
+                if(TextUtils.isEmpty(stringBaseDto)){
+                    AccessTokenDto  accessTokenDto = JSONObject.parseObject(stringBaseDto, AccessTokenDto.class);
+                }else{
+                    ToastUitl.showImageToastFail("获取access_token失败");
+                }
+            }
+        });
+
+    }
 
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Log.e(TAG, "onReq: "+ baseReq);
+        Log.e(TAG, "onReq: " + baseReq);
     }
 }

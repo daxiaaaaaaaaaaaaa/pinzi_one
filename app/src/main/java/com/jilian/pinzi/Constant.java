@@ -30,6 +30,9 @@ public class Constant {
 
         //二期
         public static String BASE_URL = "http://39.108.14.94:9010/donghui_app_test/";
+        //微信
+        public static String WX_URL = " https://api.weixin.qq.com/sns/oauth2/";
+
 
         public static String FIRE_URL = "http://39.108.14.94:9088";
 

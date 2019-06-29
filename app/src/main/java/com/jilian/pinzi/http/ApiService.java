@@ -1095,9 +1095,21 @@ public interface ApiService {
     @GET("goods/updatePvOrUv")
     Flowable<BaseDto> updatePvOrUv(@QueryMap Map<String, String> map);
 
-
+    /**
+     * 充值
+     * @param vo
+     * @return
+     */
     @POST("buyGoods/rechargeCommsion")
     Flowable<BaseDto<String>> rechargeCommsion(@Body BuyCouponVo vo);
+
+    /**
+     * 获取第一步的code后，请求以下链接获取access_token：
+     * @param map
+     * @return
+     */
+    @GET("sns/oauth2/access_token")
+    Flowable<String> access_token(@QueryMap Map<String, String> map);
 
 
 

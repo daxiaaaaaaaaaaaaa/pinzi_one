@@ -32,6 +32,7 @@ import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
+import com.jilian.pinzi.common.vo.AccesstokenVo;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
 import com.jilian.pinzi.common.vo.BuyCouponVo;
@@ -637,9 +638,6 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     public LiveData<BaseDto<String>> rechargeCommsion(BuyCouponVo vo) {
         return request(Api.rechargeCommsion(vo)).send().get();
     }
-
-
-
 
 
 
