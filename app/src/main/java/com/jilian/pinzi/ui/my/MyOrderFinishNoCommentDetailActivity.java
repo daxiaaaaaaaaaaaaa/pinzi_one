@@ -76,7 +76,7 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
     private LinearLayout llInvoice;
     private TextView tvShipperName;
     private TextView tvPreMoney;
-    private TextView tvActivityAccount;
+   // private TextView tvActivityAccount;
 
 
 
@@ -143,7 +143,7 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+       // tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
 
     @Override

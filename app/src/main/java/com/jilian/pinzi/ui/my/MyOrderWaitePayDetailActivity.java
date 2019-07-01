@@ -71,7 +71,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
     private TextView tvShipperName;
 
     private TextView tvPreMoney;
-    private TextView tvActivityAccount;
+   // private TextView tvActivityAccount;
 
 
     @Override
@@ -126,7 +126,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+        //tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
     /**
      * 显示 各个界面的数据

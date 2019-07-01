@@ -80,7 +80,7 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
     private TextView tvShipperName;
 
     private TextView tvPreMoney;
-    private TextView tvActivityAccount;
+  //  private TextView tvActivityAccount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,7 +143,7 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+      //  tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
     /**
      * 显示 各个界面的数据

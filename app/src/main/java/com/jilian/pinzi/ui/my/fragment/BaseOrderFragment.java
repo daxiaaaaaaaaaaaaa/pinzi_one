@@ -27,6 +27,7 @@ import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.MyOrderWaitePayAfterDetailActivity;
 import com.jilian.pinzi.ui.OrderTrackActivity;
 import com.jilian.pinzi.ui.my.MyOrderCancelDetailActivity;
 import com.jilian.pinzi.ui.my.MyOrderFinishNoCommentDetailActivity;
@@ -272,6 +273,13 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
             case 6:
                 //已取消
                 intent =  new Intent(getmActivity(), MyOrderCancelDetailActivity.class);
+                intent.putExtra("orderId",datas.get(position).getId());
+                startActivity(intent);
+                break;
+
+            case 7:
+                //待付尾款
+                intent =  new Intent(getmActivity(), MyOrderWaitePayAfterDetailActivity.class);
                 intent.putExtra("orderId",datas.get(position).getId());
                 startActivity(intent);
                 break;

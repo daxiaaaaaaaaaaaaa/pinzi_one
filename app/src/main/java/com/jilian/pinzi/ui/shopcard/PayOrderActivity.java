@@ -127,13 +127,7 @@ public class PayOrderActivity extends BaseActivity {
             orderNo = goodByScoreDto.getOrderNo();
             long creatTime = goodByScoreDto.getCreateDate();
             startTimeTask(creatTime + fifityMin);
-
-            if(goodByScoreDto.getPayFirstPrice()==0){
-                tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(goodByScoreDto.getPayMoney())));
-            }
-            else{
-                tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(goodByScoreDto.getPayFirstPrice()));
-            }
+            tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(goodByScoreDto.getPayMoney())));
         }
 
         if (EmptyUtils.isNotEmpty(addOrderDto)) {
@@ -142,13 +136,11 @@ public class PayOrderActivity extends BaseActivity {
             long creatTime = addOrderDto.getCreateDate();
             startTimeTask(creatTime + fifityMin);
 
-            if(addOrderDto.getPayFirstPrice()==0){
+            if (addOrderDto.getPayFirstPrice() == 0) {
                 tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(addOrderDto.getPayMoney())));
-            }
-            else{
+            } else {
                 tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(addOrderDto.getPayFirstPrice()));
             }
-
 
 
         }
@@ -156,16 +148,21 @@ public class PayOrderActivity extends BaseActivity {
             orderNo = orderDto.getOrderNo();
             orderId = orderDto.getId();
             long creatTime = orderDto.getCreateDate();
-            startTimeTask(creatTime + fifityMin);
 
 
-            if(orderDto.getPayFirstMoney()==0){
+
+            if (orderDto.getPayFirstMoney() == 0) {
+                startTimeTask(creatTime + fifityMin);
                 tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(orderDto.getPayMoney())));
-            }
-            else{
-                tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDto.getPayFirstMoney()));
-            }
+            } else {
+                if (orderDto.getPayStatus() == 7) {
+                    tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(orderDto.getPayMoney())));
+                } else {
+                    startTimeTask(creatTime + fifityMin);
+                    tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDto.getPayFirstMoney()));
+                }
 
+            }
 
 
             if (orderDto.getPayWay() == 3) {
@@ -183,13 +180,18 @@ public class PayOrderActivity extends BaseActivity {
             long creatTime = orderDetailDto.getCreateDate();
             startTimeTask(creatTime + fifityMin);
 
-            if(orderDetailDto.getPayFirstMoney()==0){
+            if (orderDetailDto.getPayFirstMoney() == 0) {
+                startTimeTask(creatTime + fifityMin);
                 tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDetailDto.getPayMoney()));
-            }
-            else{
-                tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDetailDto.getPayFirstMoney()));
-            }
+            } else {
+                if (orderDetailDto.getPayStatus() == 7) {
+                    tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDetailDto.getPayMoney()));
+                } else {
+                    startTimeTask(creatTime + fifityMin);
+                    tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(orderDetailDto.getPayFirstMoney()));
+                }
 
+            }
 
 
         }

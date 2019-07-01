@@ -30,9 +30,9 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     private Activity mContext;
     private List<MyOrderDto> datas;
     private CustomItemClickListener listener;
-    private String leftDatas[] = new String[]{"", "取消订单", "取消订单", "查看物流", "评价商品", "查看评价", "重新购买"};
-    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买","删除订单"};
-    private String status[] = new String[]{"", "等待付款", "等待发货","等待收货", "交易完成", "交易完成", "交易关闭"};
+    private String leftDatas[] = new String[]{"", "取消订单", "取消订单", "查看物流", "评价商品", "查看评价", "重新购买","取消订单"};
+    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买","删除订单","立即付款"};
+    private String status[] = new String[]{"", "等待付款", "等待发货","等待收货", "交易完成", "交易完成", "交易关闭","等待付款"};
     private OrderListener orderListener;
 
     public MyOrderAdapter(Activity context, List<MyOrderDto> datas, CustomItemClickListener listener, OrderListener orderListener) {
@@ -162,6 +162,10 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                         }
                         mContext.startActivity(intent);
                         break;
+                    case 7:
+                        //取消订单
+                        orderListener.showCancelOrderDialog(datas.get(position));
+                        break;
                 }
 
             }
@@ -220,6 +224,12 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                         case 6:
                             //删除订单
                             orderListener.showDeleteOrderDialog(datas.get(position));
+                            break;
+                        case 7:
+                            //立即付款
+                            intent = new Intent(mContext,PayOrderActivity.class);
+                            intent.putExtra("orderDto",datas.get(position));
+                            mContext.startActivity(intent);
                             break;
                     }
                 }

@@ -62,7 +62,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     private LinearLayout llInvoice;
     private TextView tvShipperName;
     private TextView tvPreMoney;
-    private TextView tvActivityAccount;
+   // private TextView tvActivityAccount;
 
 
 
@@ -126,7 +126,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+        //tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
 
     }
 

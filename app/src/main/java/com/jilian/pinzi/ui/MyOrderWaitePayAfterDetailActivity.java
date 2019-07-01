@@ -68,7 +68,7 @@ public class MyOrderWaitePayAfterDetailActivity extends BaseActivity implements 
     private TextView tvShipperName;
 
     private TextView tvPreMoney;
-    private TextView tvActivityAccount;
+   // private TextView tvActivityAccount;
 
 
     @Override
@@ -116,7 +116,6 @@ public class MyOrderWaitePayAfterDetailActivity extends BaseActivity implements 
         tvInvoiceHead = (TextView) findViewById(R.id.tv_invoice_head);
         tvInvoiceContent = (TextView) findViewById(R.id.tv_invoice_content);
         tvPayMoney = (TextView) findViewById(R.id.tv_pay_money);
-        tvPayMoney.setText("支付尾款");
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvPay = (TextView) findViewById(R.id.tv_pay);
         tvOrderNo = (TextView) findViewById(R.id.tv_order_no);
@@ -124,7 +123,8 @@ public class MyOrderWaitePayAfterDetailActivity extends BaseActivity implements 
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+       // tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+        tvPay.setText("支付尾款");
     }
     /**
      * 显示 各个界面的数据
