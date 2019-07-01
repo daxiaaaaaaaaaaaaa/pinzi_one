@@ -1,4 +1,4 @@
-package com.jilian.pinzi.ui.my;
+package com.jilian.pinzi.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,14 +19,11 @@ import com.jilian.pinzi.adapter.MyShipmentGoodAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.GoodsInfoDto;
-import com.jilian.pinzi.common.dto.MyOrderDto;
-import com.jilian.pinzi.common.dto.MyOrderGoodsInfoDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
-import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.ui.shopcard.PayOrderActivity;
@@ -41,9 +38,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 订单详情 待付款
+ * 订单详情 待付 尾款
  */
-public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShipmentGoodAdapter.GoodClickListener {
+public class MyOrderWaitePayAfterDetailActivity extends BaseActivity implements MyShipmentGoodAdapter.GoodClickListener {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<GoodsInfoDto> datas;
@@ -119,6 +116,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         tvInvoiceHead = (TextView) findViewById(R.id.tv_invoice_head);
         tvInvoiceContent = (TextView) findViewById(R.id.tv_invoice_content);
         tvPayMoney = (TextView) findViewById(R.id.tv_pay_money);
+        tvPayMoney.setText("支付尾款");
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvPay = (TextView) findViewById(R.id.tv_pay);
         tvOrderNo = (TextView) findViewById(R.id.tv_order_no);
@@ -144,9 +142,9 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
                 data.setGoodsInfo(goodsInfo);
             }
 
-        //1.倒计时
-        long creatTime = data.getCreateDate();
-        startTimeTask(creatTime+fifityMin);
+        //1. 倒计时 付尾款的订单 不用倒计时 也就是不能取消
+     //   long creatTime = data.getCreateDate();
+        //startTimeTask(creatTime+fifityMin);
         //2.姓名
         tvName.setText(data.getName());
         //3.电话
@@ -219,13 +217,13 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
 //                break;
 //        }
         //17.实付金额
-        if(data.getPayFirstMoney()>0){
-            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
-        }
-        else{
+//        if(data.getPayFirstMoney()>0){
+//            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+//        }
+//        else{
             tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
 
-        }
+        //}
 
 
         //18.付款时间
@@ -304,7 +302,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         tvPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyOrderWaitePayDetailActivity.this,PayOrderActivity.class);
+                Intent intent = new Intent(MyOrderWaitePayAfterDetailActivity.this,PayOrderActivity.class);
                 intent.putExtra("orderDetailDto",mData);
                 startActivity(intent);
             }

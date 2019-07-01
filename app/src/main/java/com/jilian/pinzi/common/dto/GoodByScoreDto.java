@@ -8,7 +8,15 @@ public class GoodByScoreDto implements Serializable {
     private String payMoney;//": 0.0,
     private String orderId;//": 325
     private long createDate;// 订单创建时间
+    private double payFirstPrice;//定金
 
+    public double getPayFirstPrice() {
+        return payFirstPrice;
+    }
+
+    public void setPayFirstPrice(double payFirstPrice) {
+        this.payFirstPrice = payFirstPrice;
+    }
     public long getCreateDate() {
         return createDate;
     }

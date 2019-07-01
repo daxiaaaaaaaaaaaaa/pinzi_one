@@ -201,6 +201,19 @@ public class MainViewModel extends ViewModel {
 
     private LiveData<String> access_tokenData;//充值佣金
 
+
+    private LiveData<BaseDto> deleteRechargeData;//删除充值记录
+
+    private LiveData<BaseDto> deleteByIdsData;//删除提现记录
+
+    public LiveData<BaseDto> getDeleteRechargeData() {
+        return deleteRechargeData;
+    }
+
+    public LiveData<BaseDto> getDeleteByIdsData() {
+        return deleteByIdsData;
+    }
+
     public LiveData<String> getAccess_tokenData() {
         return access_tokenData;
     }
@@ -1354,6 +1367,28 @@ public class MainViewModel extends ViewModel {
         vo.setCode(code);
         vo.setGrant_type(grant_type);
         access_tokenData = normalRepository.access_token(vo);
+    }
+
+
+    /**
+     * 删除充值记录
+     *
+     * @param ids
+     */
+    public void deleteRecharge(String ids) {
+        mainRepository = new MainRepositoryImpl();
+
+        deleteRechargeData = mainRepository.deleteRecharge(ids);
+    }
+
+    /**
+     * 删除提现记录
+     *
+     * @param ids
+     */
+    public void deleteByIds(String ids) {
+        mainRepository = new MainRepositoryImpl();
+        deleteByIdsData = mainRepository.deleteByIds(ids);
     }
 
 

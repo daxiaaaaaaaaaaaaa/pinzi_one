@@ -8,7 +8,7 @@ public class MyRecordDto implements Serializable {
     private String uId;//":1,
     private String title;//":"购买商品赠送积分",
     private Double source;//":15,
-    private int status;//":1,
+    private int status;//":1, 1.增 2.减
     private Integer type;//":1,
     private long createDate;//":1541504923000
     private boolean showDay;

@@ -99,9 +99,6 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     private TextView tvPreMoney;//定金
 
 
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -240,7 +237,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
             //初始化佣金
             getMyScoreOrCommission();
             tvFreight.setText("¥" + NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
-            tvPayCount.setText("¥ "+NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
+            tvPayCount.setText("¥ " + NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
 
         }
         //商品
@@ -257,7 +254,6 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         }
 
     }
-
 
 
     /**
@@ -283,7 +279,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                             String goodIds[] = dto.getData().getGoodsId().split(",");
                             for (int i = 0; i < dtoList.size(); i++) {
                                 for (int j = 0; j < prices.length; j++) {
-                                        if (dtoList.get(i).getId().equals(goodIds[j])) {
+                                    if (dtoList.get(i).getId().equals(goodIds[j])) {
                                         dtoList.get(i).setPrice(Double.parseDouble(prices[j]));
                                     }
                                 }
@@ -320,7 +316,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         //获取抵扣金额
         initDiscountMoney();
     }
+
     private double commisionNum = 0;//总佣金
+
     //佣金 积分 余额
     private void getMyScoreOrCommission() {
         tvOne.setText(getScrore());
@@ -349,17 +347,17 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
 
     /**
      * 获取抵消的积分
+     *
      * @return
      */
     private String getScrore() {
-        double scoreTop =0;
-        if(EmptyUtils.isNotEmpty(dtoList))
-        {
-            for (int i = 0; i <dtoList.size() ; i++) {
-                scoreTop+=dtoList.get(i).getTopScore();
+        double scoreTop = 0;
+        if (EmptyUtils.isNotEmpty(dtoList)) {
+            for (int i = 0; i < dtoList.size(); i++) {
+                scoreTop += dtoList.get(i).getTopScore();
             }
         }
-        return "使用"+NumberUtils.forMatZeroNumber(scoreTop)+"积分可抵扣¥"+NumberUtils.forMatNumber(scoreTop*0.1)+"金额";
+        return "使用" + NumberUtils.forMatZeroNumber(scoreTop) + "积分可抵扣¥" + NumberUtils.forMatNumber(scoreTop * 0.1) + "金额";
     }
 
     /**
@@ -385,10 +383,12 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                     tvCard.setText("¥" + NumberUtils.forMatNumber(dto.getData().getCouponRemission()));
                     tvDeductionMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getScoreRemission()));
                     tvCommisionNum.setText("¥" + NumberUtils.forMatNumber(dto.getData().getCommissionRemission()));
+                    tvPreMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getEarnest()));
                 } else {
                     tvCard.setText("¥0.00");
                     tvDeductionMoney.setText("¥0.00");
                     tvCommisionNum.setText("¥0.00");
+                    tvPreMoney.setText("¥0.00");
                 }
                 tvPayCount.setText("¥" + getPayCount());
             }
@@ -492,6 +492,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         ivOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(Double.parseDouble(tvPreMoney.getText().toString().substring(1))>0){
+                    ToastUitl.showImageToastSuccess("定金商品在结算尾款的时候抵扣积分");
+                }
                 one = !one;
                 if (one) {
                     ivOne.setImageResource(R.drawable.image_chat_open);
@@ -507,7 +510,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         ivTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(Double.parseDouble(tvPreMoney.getText().toString().substring(1))>0){
+                    ToastUitl.showImageToastSuccess("定金商品在结算尾款的时候抵扣佣金");
+                }
                 two = !two;
                 if (two) {
                     ivTwo.setImageResource(R.drawable.image_chat_open);
@@ -518,29 +523,28 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                     isUseCommisson = "0";
                 }
                 //奖品
-                if("2".equals(getIntent().getStringExtra("orderType"))){
-                    if(two){
-                        double payCount = Double.parseDouble(datas.get(0).getFreight())-commisionNum;
+                if ("2".equals(getIntent().getStringExtra("orderType"))) {
+                    if (two) {
+                        double payCount = Double.parseDouble(datas.get(0).getFreight()) - commisionNum;
                         //佣金抵消完
-                        if(payCount<=0){
-                            tvPayCount.setText("¥0.00" );
-                            tvCommisionNum.setText("¥"+NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
+                        if (payCount <= 0) {
+                            tvPayCount.setText("¥0.00");
+                            tvCommisionNum.setText("¥" + NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
                         }
                         //佣金抵消不完
-                        else{
-                            tvPayCount.setText("¥"+NumberUtils.forMatNumber(payCount));
-                            tvCommisionNum.setText("¥"+NumberUtils.forMatNumber(commisionNum));
+                        else {
+                            tvPayCount.setText("¥" + NumberUtils.forMatNumber(payCount));
+                            tvCommisionNum.setText("¥" + NumberUtils.forMatNumber(commisionNum));
                         }
-                    }
-                    else{
+                    } else {
                         tvCommisionNum.setText("¥0.00");
-                        tvPayCount.setText("¥ "+NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
+                        tvPayCount.setText("¥ " + NumberUtils.forMatNumber(Double.parseDouble(datas.get(0).getFreight())));
                     }
 
 
                 }
                 //商品
-                else{
+                else {
                     initDiscountMoney();
                 }
 
@@ -581,7 +585,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                 //选择优惠券
                 if (EmptyUtils.isNotEmpty(dtoList)) {
                     Intent intent = new Intent(FillOrderActivity.this, SelectCardActivity.class);
-                    intent.putExtra("couponId",couponId);
+                    intent.putExtra("couponId", couponId);
                     intent.putExtra("classes", getClasses());
                     intent.putExtra("goodsId", getGoodId());
                     intent.putExtra("quantity", getQuantity());
@@ -737,6 +741,11 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
      * @return
      */
     private String getPayCount() {
+        //如果有定金 那  直接需要支付的金额 是定金
+        double preMoney = Double.parseDouble(tvPreMoney.getText().toString().substring(1));
+        if (preMoney > 0) {
+            return NumberUtils.forMatNumber(preMoney);
+        }
         double payCount;
         //总额
         double allCount = Double.parseDouble(tvAllCount.getText().toString().substring(1));

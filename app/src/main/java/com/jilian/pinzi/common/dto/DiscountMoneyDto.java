@@ -7,6 +7,19 @@ public class DiscountMoneyDto implements Serializable {
     private double scoreRemission;//true number   积分抵扣金额
     private double couponRemission;// true number       优惠券抵扣金额
     private double commissionRemission;// true number   佣金抵扣金额
+    private double earnest;//总定金
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public double getEarnest() {
+        return earnest;
+    }
+
+    public void setEarnest(double earnest) {
+        this.earnest = earnest;
+    }
 
     public double getScoreRemission() {
         return scoreRemission;

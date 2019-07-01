@@ -30,6 +30,7 @@ import com.jilian.pinzi.common.dto.MyRecordDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.LotteryViewModel;
+import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.NumberUtils;
@@ -59,6 +60,8 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
     private SmartRefreshLayout srNoData;
     private MyViewModel viewModel;
     private TextView tvShopDat;
+
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onResume() {
@@ -133,6 +136,8 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
     protected void createViewModel() {
         lotteryViewModel = ViewModelProviders.of(this).get(LotteryViewModel.class);
         viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     @Override
@@ -296,7 +301,7 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
         dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
             // TODO 删除
             dialog.dismiss();
-            delete(datas.get(pisition).getId());
+            delete(datas.get(pisition).getId(),datas.get(pisition).getStatus());
         });
         dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
             dialog.dismiss();
@@ -305,10 +310,46 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
     }
 
     /**
-     * 删除记录
      *
-     * @param id
+     * @param id ID
+     * @param status 1.增 2.减
      */
-    private void delete(String id) {
+    private void delete(String id,int status) {
+        if(status==1){
+            showLoadingDialog();
+            mainViewModel.deleteRecharge(id);
+            mainViewModel.getDeleteRechargeData().observe(this, new Observer<BaseDto>() {
+                @Override
+                public void onChanged(@Nullable BaseDto baseDto) {
+                    hideLoadingDialog();
+                    if(baseDto.isSuccess()){
+                        ToastUitl.showImageToastSuccess("删除成功");
+                        pageNo = 1;
+                        getMyRecord();
+                    }
+                    else{
+                        ToastUitl.showImageToastFail(baseDto.getMsg());
+                    }
+                }
+            });
+        }
+        if(status==2){
+            showLoadingDialog();
+            mainViewModel.deleteByIds(id);
+            mainViewModel.getDeleteByIdsData().observe(this, new Observer<BaseDto>() {
+                @Override
+                public void onChanged(@Nullable BaseDto baseDto) {
+                    hideLoadingDialog();
+                    if(baseDto.isSuccess()){
+                        ToastUitl.showImageToastSuccess("删除成功");
+                        pageNo = 1;
+                        getMyRecord();
+                    }
+                    else{
+                        ToastUitl.showImageToastFail(baseDto.getMsg());
+                    }
+                }
+            });
+        }
     }
 }

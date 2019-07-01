@@ -11,6 +11,19 @@ public class GoodsInfoDto implements Serializable {
     private double goodsPrice;//": 商品单价20,
     private String name;//": 商品名称"牛栏山 二锅头"
     private double scoreBuy;//truenumber积分购买
+    private double earnest;//
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public double getEarnest() {
+        return earnest;
+    }
+
+    public void setEarnest(double earnest) {
+        this.earnest = earnest;
+    }
 
     public double getScoreBuy() {
         return scoreBuy;

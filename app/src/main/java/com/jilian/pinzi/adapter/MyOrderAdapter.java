@@ -98,7 +98,17 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         holder.tvRight.setText(rightDatas[datas.get(position).getPayStatus()]);
         holder.tvStatus.setText(status[datas.get(position).getPayStatus()]);
         holder.tvOrderNo.setText("订单编号："+datas.get(position).getOrderNo());
-        holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+
+        if(datas.get(position).getPayFirstMoney()<=0){
+            holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+
+        }
+        else{
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPayFirstMoney()));
+
+        }
+
+
         holder.tvDate.setText("提交时间："+DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_,new Date(datas.get(position).getCreateDate())));
         if(datas.get(position).getPayStatus()!=null&&datas.get(position).getPayStatus()==2){
             holder.tvLeft.setVisibility(View.GONE);

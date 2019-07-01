@@ -61,6 +61,9 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     private MyViewModel viewModel;
     private LinearLayout llInvoice;
     private TextView tvShipperName;
+    private TextView tvPreMoney;
+    private TextView tvActivityAccount;
+
 
 
 
@@ -122,6 +125,9 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
         tvPayType = (TextView) findViewById(R.id.tv_pay_type);
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
+        tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
+        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+
     }
 
     @Override
@@ -193,6 +199,10 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
 
         //9.佣金抵扣
         tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        //10.定金
+        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+
+
         //10.活动金额 ???
         //  tvActivityAccount.setText("¥"+NumberUtils.forMatNumber(data));
         //11.发票类型

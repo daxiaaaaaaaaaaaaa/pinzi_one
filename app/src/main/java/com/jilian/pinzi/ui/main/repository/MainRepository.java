@@ -486,6 +486,21 @@ public interface MainRepository {
      */
     LiveData<BaseDto<String>> rechargeCommsion(BuyCouponVo vo);
 
+    /**
+     * 删除充值记录
+     * @param ids
+     * @return
+     */
+    LiveData<BaseDto> deleteRecharge(String ids) ;
+
+    /**
+     * 提现批量删除
+     * @param ids
+     * @return
+     */
+    LiveData<BaseDto> deleteByIds(String ids);
+
+
 
 
 }

@@ -640,5 +640,26 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
     }
 
 
+    /**
+     * 删除充值记录
+     * @param ids
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> deleteRecharge(String ids) {
+        return request(Api.deleteRecharge(ids)).send().get();
+    }
+
+
+    /**
+     * 提现批量删除
+     * @param ids
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto> deleteByIds(String ids) {
+        return request(Api.deleteByIds(ids)).send().get();
+    }
+
 
 }

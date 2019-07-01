@@ -8,6 +8,15 @@ public class AddOrderDto implements Serializable {
     private String payMoney;//": 315,
     private String orderId;//": 6
     private long createDate;// 订单创建时间
+    private double payFirstPrice;//定金
+
+    public double getPayFirstPrice() {
+        return payFirstPrice;
+    }
+
+    public void setPayFirstPrice(double payFirstPrice) {
+        this.payFirstPrice = payFirstPrice;
+    }
 
     public long getCreateDate() {
         return createDate;

@@ -27,6 +27,22 @@ public class OrderDetailDto implements Serializable {
     private int orderType;// true number 1.商品 2.奖品
     private String awardName;//true string    奖品名称
     private String orderId;//订单id
+    private double payFirstMoney;//首付款
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+
+
+    public double getPayFirstMoney() {
+        return payFirstMoney;
+    }
+
+    public void setPayFirstMoney(double payFirstMoney) {
+        this.payFirstMoney = payFirstMoney;
+    }
 
     public String getOrderId() {
         return orderId;

@@ -1275,8 +1275,23 @@ public class Api {
     }
 
 
+    /**
+     *  删除充值记录
+     * @param ids
+     * @return
+     */
+    public static Flowable<BaseDto> deleteRecharge(String ids ) {
+        return RequetRetrofit.getInstance().deleteRecharge(ids);
+    }
 
-
+    /**
+     * 提现批量删除
+     * @param ids
+     * @return
+     */
+    public static Flowable<BaseDto> deleteByIds(String ids ) {
+        return RequetRetrofit.getInstance().deleteByIds(ids);
+    }
 
 
 

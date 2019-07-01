@@ -1111,7 +1111,21 @@ public interface ApiService {
     @GET("sns/oauth2/access_token")
     Flowable<String> access_token(@QueryMap Map<String, String> map);
 
+    /**
+     * 删除充值记录
+     * @param ids
+     * @return
+     */
+    @POST("user/deleteRecharge")
+    Flowable<BaseDto> deleteRecharge(@Query("ids") String ids);
 
+    /**
+     * 提现批量删除
+     * @param ids
+     * @return
+     */
+    @POST("withdrawDeposit/deleteByIds")
+    Flowable<BaseDto> deleteByIds(@Query("ids") String ids);
 
 }
 

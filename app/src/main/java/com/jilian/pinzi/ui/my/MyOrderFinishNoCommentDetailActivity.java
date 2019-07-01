@@ -75,7 +75,8 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
     private int type;
     private LinearLayout llInvoice;
     private TextView tvShipperName;
-
+    private TextView tvPreMoney;
+    private TextView tvActivityAccount;
 
 
 
@@ -140,7 +141,9 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         tvPhone = (TextView) findViewById(R.id.tv_phone);
         tvTest = (TextView) findViewById(R.id.tv_test);
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
-        tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);;
+        tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
+        tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
+        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
 
     @Override
@@ -224,6 +227,8 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         }
         //9.佣金抵扣
         tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        //10.定金
+        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
         //10.活动金额 ???
         //  tvActivityAccount.setText("¥"+NumberUtils.forMatNumber(data));
         //11.发票类型
@@ -264,7 +269,14 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
                 break;
         }
         //17.实付金额
-        tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+        if(data.getPayFirstMoney()>0){
+            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        }
+        else{
+            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+
+        }
+
         //18.付款时间
         tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getPayDate())));
 

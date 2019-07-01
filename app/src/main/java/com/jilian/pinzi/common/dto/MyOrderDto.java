@@ -16,6 +16,23 @@ public class MyOrderDto implements Serializable {
     private String awardName;// true string奖品名称
     private int payWay;//支付方式 1.微信 2.支付宝 3.积分 4.货到付款L
     private double freight;//运费
+    private double payFirstMoney;//首付款
+
+
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+
+    public double getPayFirstMoney() {
+        return payFirstMoney;
+    }
+
+    public void setPayFirstMoney(double payFirstMoney) {
+        this.payFirstMoney = payFirstMoney;
+    }
 
     public double getFreight() {
         return freight;

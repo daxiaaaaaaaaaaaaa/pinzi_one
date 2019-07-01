@@ -79,7 +79,8 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
     private LinearLayout llInvoice;
     private TextView tvShipperName;
 
-
+    private TextView tvPreMoney;
+    private TextView tvActivityAccount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +142,8 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         tvOk = (TextView) findViewById(R.id.tv_ok);
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
+        tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
+        tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
     /**
      * 显示 各个界面的数据
@@ -187,7 +190,8 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         }
         //9.佣金抵扣
         tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
-
+        //10.定金
+        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
         //11.发票类型
         if(data.getType()==1){
             tvInvoiceTye.setText("增值税专用发票");
@@ -226,7 +230,14 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
                 break;
         }
         //17.实付金额
-        tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+        if(data.getPayFirstMoney()>0){
+            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        }
+        else{
+            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+
+        }
+
         //18.付款时间
         tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getPayDate())));
 
