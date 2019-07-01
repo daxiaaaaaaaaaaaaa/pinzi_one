@@ -11,6 +11,7 @@ import com.jilian.pinzi.common.vo.PhotoImgVo;
 import com.jilian.pinzi.common.vo.RegisterVo;
 import com.jilian.pinzi.common.vo.ResetPwdVo;
 import com.jilian.pinzi.common.vo.SmsVo;
+import com.jilian.pinzi.common.vo.ThirdUserLoginVo;
 
 import java.io.File;
 import java.util.List;
@@ -22,6 +23,13 @@ public interface UserRepository {
      * @return
      */
     LiveData<BaseDto<LoginDto>> login(LoginVo vo);
+
+    /**
+     * 第三方登录
+     * @param vo
+     * @return
+     */
+    LiveData<BaseDto<LoginDto>> ThirdUserLogin(ThirdUserLoginVo vo);
     /**
      * 获取验证码
      *

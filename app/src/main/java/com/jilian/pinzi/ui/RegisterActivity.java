@@ -325,24 +325,73 @@ public class RegisterActivity extends BaseActivity {
      * 用户注册
      */
     private void register() {
+        if(TextUtils.isEmpty(getIntent().getStringExtra("loginId"))){
+            getLoadingDialog().showDialog();
+            //注册
+            RegisterVo vo = new RegisterVo();
+            vo.setType(type);
+            vo.setInvitationCode(etInviteCode.getText().toString());
+            vo.setMsgCode(etCode.getText().toString());
+            vo.setPassword(etPwd.getText().toString());
+            vo.setPhone(etPhone.getText().toString());
+            userViewModel.register(vo);
+            userViewModel.getRegisterliveData().observe(this, new Observer<BaseDto<RegisterDto>>() {
+                @Override
+                public void onChanged(@Nullable BaseDto<RegisterDto> registerDtoBaseDto) {
+                    getLoadingDialog().dismiss();
+                    if (registerDtoBaseDto.isSuccess()) {
+                        ToastUitl.showImageToastSuccess("注册成功");
+                        login();
+
+                    } else {
+                        ToastUitl.showImageToastFail(registerDtoBaseDto.getMsg());
+                    }
+                }
+            });
+        }
+        else{
+            threeLogin();
+        }
+
+
+
+    }
+
+    private void threeLogin() {
         getLoadingDialog().showDialog();
-        //注册
-        RegisterVo vo = new RegisterVo();
-        vo.setType(type);
-        vo.setInvitationCode(etInviteCode.getText().toString());
-        vo.setMsgCode(etCode.getText().toString());
-        vo.setPassword(etPwd.getText().toString());
-        vo.setPhone(etPhone.getText().toString());
-        userViewModel.register(vo);
-        userViewModel.getRegisterliveData().observe(this, new Observer<BaseDto<RegisterDto>>() {
+        userViewModel.ThirdUserLogin(getIntent().getStringExtra("loginId"),getIntent().getStringExtra("loginType"),getIntent().getStringExtra("headImg"),getIntent().getStringExtra("uName"),String.valueOf(type),etPhone.getText().toString(),etCode.getText().toString(),etInviteCode.getText().toString(),etPwd.getText().toString());
+        userViewModel.getThreeliveData().observe(RegisterActivity.this, new Observer<BaseDto<LoginDto>>() {
             @Override
-            public void onChanged(@Nullable BaseDto<RegisterDto> registerDtoBaseDto) {
-                getLoadingDialog().dismiss();
-                if (registerDtoBaseDto.isSuccess()) {
-                    ToastUitl.showImageToastSuccess("注册成功");
-                    login();
-                } else {
-                    ToastUitl.showImageToastFail(registerDtoBaseDto.getMsg());
+            public void onChanged(@Nullable BaseDto<LoginDto> loginDtoBaseDto) {
+                hideLoadingDialog();
+                if (loginDtoBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
+                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    ToastUitl.showImageToastSuccess(loginDtoBaseDto.getMsg());
+                    finish();
+                    PinziApplication.clearAllActivitys();
+                }
+
+                if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                    //按照 后台的人说 把 登录状态  保存到前端
+                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    startActivity(new Intent(RegisterActivity.this, PerfectInformationActivity.class));
+                    finish();
+                }
+                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
+                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
+                    finish();
+                }
+
+                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
+                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
+                    finish();
+                }
+
+                else {
+                    ToastUitl.showImageToastFail(loginDtoBaseDto.getMsg());
                 }
             }
         });

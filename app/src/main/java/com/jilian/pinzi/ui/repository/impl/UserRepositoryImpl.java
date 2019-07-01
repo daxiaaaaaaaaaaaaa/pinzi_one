@@ -12,6 +12,7 @@ import com.jilian.pinzi.common.vo.PhotoImgVo;
 import com.jilian.pinzi.common.vo.RegisterVo;
 import com.jilian.pinzi.common.vo.ResetPwdVo;
 import com.jilian.pinzi.common.vo.SmsVo;
+import com.jilian.pinzi.common.vo.ThirdUserLoginVo;
 import com.jilian.pinzi.http.Api;
 import com.jilian.pinzi.ui.repository.UserRepository;
 
@@ -29,6 +30,12 @@ public class UserRepositoryImpl extends CommonRepository implements UserReposito
     public LiveData<BaseDto<LoginDto>> login(LoginVo vo) {
         return request(Api.login(vo)).send().get();
     }
+
+    @Override
+    public LiveData<BaseDto<LoginDto>> ThirdUserLogin(ThirdUserLoginVo vo) {
+        return request(Api.ThirdUserLogin(vo)).send().get();
+    }
+
     /**
      * 获取验证码
      *

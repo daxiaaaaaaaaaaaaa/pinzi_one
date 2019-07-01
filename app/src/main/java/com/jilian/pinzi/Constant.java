@@ -13,11 +13,15 @@ public class Constant {
 
     public final static String APP_ID = "wxc0869ae09394b840";
 
+    public final static String WXAPP_SECRET = "3f507365ff972104eef2d35a6b425901";
+
+
     /**
      * 请求后台的所有API接口都在这里配置;统一管理
      */
     public static class Server {
         public final static int SUCCESS_CODE = 200;
+        public final static int REGISTER_CODE = 210;//未注册
         public final static int NOPERFORM_CODE = 202;//未完善资料
         public final static int CHECKING_CODE = 204;//用户审核中
         public final static int CHECKFAILUER_CODE = 206;// 用户未通过审核;

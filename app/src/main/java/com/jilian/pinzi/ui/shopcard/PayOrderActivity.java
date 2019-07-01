@@ -5,18 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.sdk.app.PayTask;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
@@ -25,12 +21,8 @@ import com.jilian.pinzi.common.dto.AddOrderDto;
 import com.jilian.pinzi.common.dto.GoodByScoreDto;
 import com.jilian.pinzi.common.dto.MyOrderDto;
 import com.jilian.pinzi.common.dto.OrderDetailDto;
-import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.MessageEvent;
-import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.my.MyOrderWaitePayDetailActivity;
-import com.jilian.pinzi.ui.my.TopUpActivity;
-import com.jilian.pinzi.ui.my.TopUpSuccessActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.AlipayUtil;
 import com.jilian.pinzi.utils.DateUtil;
@@ -46,8 +38,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.rong.eventbus.EventBus;
 
 public class PayOrderActivity extends BaseActivity {

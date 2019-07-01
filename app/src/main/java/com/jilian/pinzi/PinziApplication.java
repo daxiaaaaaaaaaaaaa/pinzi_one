@@ -2,12 +2,10 @@ package com.jilian.pinzi;
 
 import android.app.Activity;
 import android.content.Context;
-
-//import android.content.res.Configuration;
-//import android.content.res.Configuration;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -20,11 +18,11 @@ import com.jilian.pinzi.ssl.SslContextFactory;
 import com.jilian.pinzi.utils.SPUtil;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.qiniu.android.common.FixedZone;
-import com.qiniu.android.storage.UploadManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +31,9 @@ import java.util.List;
 import javax.net.ssl.SSLSocketFactory;
 
 import io.rong.imkit.RongIM;
+
+//import android.content.res.Configuration;
+//import android.content.res.Configuration;
 /**
  * 全局application
  *
@@ -89,7 +90,9 @@ public class PinziApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         instance = this;
+       initYOUMENG();
         initBaidu();
         context = getApplicationContext();
         // android 7.0系统解决拍照的问题
@@ -107,6 +110,23 @@ public class PinziApplication extends MultiDexApplication {
 
     }
 
+    private void initYOUMENG() {
+        /**
+         * 初始化common库
+         * 参数1:上下文，必须的参数，不能为空
+         * 参数2:友盟 app key，非必须参数，如果Manifest文件中已配置app key，该参数可以传空，则使用Manifest中配置的app key，否则该参数必须传入
+         * 参数3:友盟 channel，非必须参数，如果Manifest文件中已配置channel，该参数可以传空，则使用Manifest中配置的channel，否则该参数必须传入，channel命名请详见channel渠道命名规范
+         * 参数4:设备类型，必须参数，传参数为UMConfigure.DEVICE_TYPE_PHONE则表示手机；传参数为UMConfigure.DEVICE_TYPE_BOX则表示盒子；默认为手机
+         * 参数5:Push推送业务的secret，需要集成Push功能时必须传入Push的secret，否则传空
+         */
+        UMConfigure.init(this,"5d19bc014ca3574b380002bc","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        /**
+         * 友盟相关平台配置。注意友盟官方新文档中没有这项配置，但是如果不配置会吊不起来相关平台的授权界面
+         */
+        PlatformConfig.setWeixin(Constant.APP_ID, Constant.WXAPP_SECRET);//微信APPID和AppSecret
+        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
+        PlatformConfig.setSinaWeibo("你的微博APPID", "你的微博APPSecret","微博的后台配置回调地址");//微博
+    }
 
 
     public LocationClient mLocationClient = null;

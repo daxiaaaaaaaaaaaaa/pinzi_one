@@ -126,6 +126,7 @@ import com.jilian.pinzi.common.vo.SingleFriendCircleVo;
 import com.jilian.pinzi.common.vo.SmsVo;
 import com.jilian.pinzi.common.vo.StoreCouponVo;
 import com.jilian.pinzi.common.vo.StoreShowVo;
+import com.jilian.pinzi.common.vo.ThirdUserLoginVo;
 import com.jilian.pinzi.common.vo.UpdatePersonalVo;
 import com.jilian.pinzi.common.vo.UpdatePwdVo;
 import com.jilian.pinzi.common.vo.UserTypeFriendCircleListVo;
@@ -154,6 +155,20 @@ public class Api {
     public static Flowable<BaseDto<LoginDto>> login(LoginVo vo) {
         return RequetRetrofit.getInstance().login(vo);
     }
+
+
+    /**
+     * 第三方登录
+     *
+     * @param vo
+     * @return
+     */
+
+    public static Flowable<BaseDto<LoginDto>> ThirdUserLogin(ThirdUserLoginVo vo) {
+        return RequetRetrofit.getInstance().ThirdUserLogin(vo);
+    }
+
+
 
     /**
      * 注册接口
@@ -1292,6 +1307,8 @@ public class Api {
     public static Flowable<BaseDto> deleteByIds(String ids ) {
         return RequetRetrofit.getInstance().deleteByIds(ids);
     }
+
+
 
 
 

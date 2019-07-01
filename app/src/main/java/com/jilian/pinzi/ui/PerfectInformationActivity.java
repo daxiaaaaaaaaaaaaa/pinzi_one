@@ -122,7 +122,7 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
     protected void onDestroy() {
         super.onDestroy();
         PinziApplication.removeActivity(this);
-        SPUtil.clearData(Constant.SP_VALUE.SP);
+       // SPUtil.clearData(Constant.SP_VALUE.SP);
     }
 
     @Override

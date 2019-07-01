@@ -76,6 +76,7 @@ import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.LoginVo;
 import com.jilian.pinzi.common.vo.PayOrderVo;
 import com.jilian.pinzi.common.vo.ProductVo;
+import com.jilian.pinzi.common.vo.ThirdUserLoginVo;
 
 import java.util.List;
 import java.util.Map;
@@ -1126,6 +1127,10 @@ public interface ApiService {
      */
     @POST("withdrawDeposit/deleteByIds")
     Flowable<BaseDto> deleteByIds(@Query("ids") String ids);
+
+
+    @POST("user/ThirdUserLogin")
+    Flowable<BaseDto<LoginDto>> ThirdUserLogin(@Body ThirdUserLoginVo vo);
 
 }
 

@@ -10,6 +10,7 @@ import com.jilian.pinzi.common.vo.LoginVo;
 import com.jilian.pinzi.common.vo.PerfectInformationVo;
 import com.jilian.pinzi.common.vo.PhotoImgVo;
 import com.jilian.pinzi.common.vo.ResetPwdVo;
+import com.jilian.pinzi.common.vo.ThirdUserLoginVo;
 import com.jilian.pinzi.ui.repository.UserRepository;
 import com.jilian.pinzi.common.vo.RegisterVo;
 import com.jilian.pinzi.common.vo.SmsVo;
@@ -25,11 +26,18 @@ public class UserViewModel extends ViewModel {
 
 
     private LiveData<BaseDto<LoginDto>> loginliveData;//登陆
+
+    private LiveData<BaseDto<LoginDto>> threeliveData;//登陆
+
     private LiveData<BaseDto<RegisterDto>> registerliveData;//注册
     private LiveData<BaseDto<String>> smsliveData;//发送短信
     private LiveData<BaseDto<String>> resetPwdliveData;//重置密码
     private LiveData<BaseDto<String>> perfectInformationliveData;//完善信息
     private LiveData<BaseDto<String>> photoImageliveData;//完善信息
+
+    public LiveData<BaseDto<LoginDto>> getThreeliveData() {
+        return threeliveData;
+    }
 
     public LiveData<BaseDto<String>> getPerfectInformationliveData() {
         return perfectInformationliveData;
@@ -70,6 +78,34 @@ public class UserViewModel extends ViewModel {
         vo.setPassword(pwd);
         vo.setPhone(phone);
         loginliveData = userRepository.login(vo);
+
+    }
+
+    /**
+     * private String loginId;//true string    登录ID
+     * private String loginType;// false string 0微信 1QQ 2微博
+     * private String headImg;//false string 头像
+     * private String uName;//false string    名称
+     * private String type;// false number 0,用户首次调用三方登录接口，二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
+     * private String phone;// false number 电话号码
+     * private String msgCode;//false number     短信验证码
+     * private String InvitationCode;//false number    邀请码
+     * private String password;// false number  密码
+     */
+    public void ThirdUserLogin(String loginId, String loginType, String headImg, String uName, String type, String phone, String msgCode, String InvitationCode, String password) {
+        userRepository = new UserRepositoryImpl();
+        ThirdUserLoginVo vo = new ThirdUserLoginVo();
+        vo.setLoginId(loginId);
+        vo.setLoginType(loginType);
+        vo.setHeadImg(headImg);
+        vo.setuName(uName);
+        vo.setType(type);
+        vo.setPhone(phone);
+        vo.setMsgCode(msgCode);
+        vo.setInvitationCode(InvitationCode);
+        vo.setPassword(password);
+
+        threeliveData = userRepository.ThirdUserLogin(vo);
 
     }
 

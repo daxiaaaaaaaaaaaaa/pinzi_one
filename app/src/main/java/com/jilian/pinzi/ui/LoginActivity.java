@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,11 +29,13 @@ import com.jilian.pinzi.ui.viewmodel.UserViewModel;
 import com.jilian.pinzi.utils.PermissionsObserver;
 import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
+import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
+import java.util.Map;
 
 public class LoginActivity extends BaseActivity {
     private RelativeLayout rlCancel;
@@ -106,9 +107,89 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean mbDisplayFlg;
+    private UMShareAPI umShareAPI;
+    private UMAuthListener umAuthListener;
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+    private String loginType;
+    private String type = "0";// false number 0,用户首次调用三方登录接口，二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
+    @Override
     public void initListener() {
+        umAuthListener = new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA platform) {}
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+                 Logger.e("openid: " + data.get("uid"));
+                 Logger.e("昵称: " + data.get("name"));
+                 Logger.e("头像: " + data.get("iconurl"));
+                 Logger.e("性别: " + data.get("gender"));
+                 showLoadingDialog();
+                 userViewModel.ThirdUserLogin(data.get("uid"),loginType,data.get("iconurl"),data.get("name"),type,null,null,null,null);
+                userViewModel.getThreeliveData().observe(LoginActivity.this, new Observer<BaseDto<LoginDto>>() {
+                    @Override
+                    public void onChanged(@Nullable BaseDto<LoginDto> loginDtoBaseDto) {
+                        hideLoadingDialog();
+                        if (loginDtoBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
+                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            ToastUitl.showImageToastSuccess(loginDtoBaseDto.getMsg());
+                            finish();
+                            PinziApplication.clearAllActivitys();
+                        }
+                        //未注册
+                        if(loginDtoBaseDto.getCode() == Constant.Server.REGISTER_CODE){
+                            //按照 后台的人说 把 登录状态  保存到前端
+                           // SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                            Intent intent  = new Intent(LoginActivity.this, RegisterActivity.class);
+                            intent.putExtra("loginId",data.get("uid"));
+                            intent.putExtra("loginType",loginType);
+                            intent.putExtra("headImg",data.get("iconurl"));
+                            intent.putExtra("uName",data.get("name"));
+
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                            //按照 后台的人说 把 登录状态  保存到前端
+                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                            startActivity(new Intent(LoginActivity.this, PerfectInformationActivity.class));
+                            finish();
+                        }
+                        if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
+                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                            startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
+                            finish();
+                        }
+
+                        if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
+                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                            startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
+                            finish();
+                        }
+
+                        else {
+                            ToastUitl.showImageToastFail(loginDtoBaseDto.getMsg());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        };
         rlCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,23 +200,33 @@ public class LoginActivity extends BaseActivity {
         ivQq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                umShareAPI = UMShareAPI.get(LoginActivity.this);
+                umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//QQ登录
+                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销QQ授权
+
+
                 startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
             }
         });
         ivWeibo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+               // startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+                umShareAPI = UMShareAPI.get(LoginActivity.this);
+                umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, umAuthListener);//新浪登录
+                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销新浪授权
+
             }
         });
         ivWeixin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginType = "0";
+                umShareAPI = UMShareAPI.get(LoginActivity.this);
 
-                SendAuth.Req req = new SendAuth.Req();
-                req.scope = "snsapi_userinfo";
-                req.state = "wechat_sdk_bind";
-                PinziApplication.getInstance().getApi().sendReq(req);
+                umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);//微信登录
+                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销微信授权
 
 
               //  startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
