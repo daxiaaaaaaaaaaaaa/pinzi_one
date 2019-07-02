@@ -325,72 +325,74 @@ public class RegisterActivity extends BaseActivity {
      * 用户注册
      */
     private void register() {
-        if(TextUtils.isEmpty(getIntent().getStringExtra("loginId"))){
-            getLoadingDialog().showDialog();
-            //注册
-            RegisterVo vo = new RegisterVo();
-            vo.setType(type);
-            vo.setInvitationCode(etInviteCode.getText().toString());
-            vo.setMsgCode(etCode.getText().toString());
-            vo.setPassword(etPwd.getText().toString());
-            vo.setPhone(etPhone.getText().toString());
-            userViewModel.register(vo);
-            userViewModel.getRegisterliveData().observe(this, new Observer<BaseDto<RegisterDto>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<RegisterDto> registerDtoBaseDto) {
-                    getLoadingDialog().dismiss();
-                    if (registerDtoBaseDto.isSuccess()) {
-                        ToastUitl.showImageToastSuccess("注册成功");
+
+
+        getLoadingDialog().showDialog();
+        //注册
+        RegisterVo vo = new RegisterVo();
+        vo.setType(type);
+        vo.setInvitationCode(etInviteCode.getText().toString());
+        vo.setMsgCode(etCode.getText().toString());
+        vo.setPassword(etPwd.getText().toString());
+        vo.setPhone(etPhone.getText().toString());
+        userViewModel.register(vo);
+        userViewModel.getRegisterliveData().observe(this, new Observer<BaseDto<RegisterDto>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<RegisterDto> registerDtoBaseDto) {
+                getLoadingDialog().dismiss();
+                if (registerDtoBaseDto.isSuccess()) {
+                    ToastUitl.showImageToastSuccess("注册成功");
+                    //普通登录
+                    if (TextUtils.isEmpty(getIntent().getStringExtra("loginId"))) {
                         login();
-
                     } else {
-                        ToastUitl.showImageToastFail(registerDtoBaseDto.getMsg());
+                        //第三方登录
+                        threeLogin();
                     }
-                }
-            });
-        }
-        else{
-            threeLogin();
-        }
 
+                } else {
+                    ToastUitl.showImageToastFail(registerDtoBaseDto.getMsg());
+                }
+            }
+        });
 
 
     }
 
     private void threeLogin() {
         getLoadingDialog().showDialog();
-        userViewModel.ThirdUserLogin(getIntent().getStringExtra("loginId"),getIntent().getStringExtra("loginType"),getIntent().getStringExtra("headImg"),getIntent().getStringExtra("uName"),String.valueOf(type),etPhone.getText().toString(),etCode.getText().toString(),etInviteCode.getText().toString(),etPwd.getText().toString());
+        userViewModel.ThirdUserLogin(getIntent().getStringExtra("loginId"), getIntent().getStringExtra("loginType"), getIntent().getStringExtra("headImg"), getIntent().getStringExtra("uName"), String.valueOf(type), etPhone.getText().toString(), etCode.getText().toString(), etInviteCode.getText().toString(), etPwd.getText().toString());
         userViewModel.getThreeliveData().observe(RegisterActivity.this, new Observer<BaseDto<LoginDto>>() {
             @Override
             public void onChanged(@Nullable BaseDto<LoginDto> loginDtoBaseDto) {
                 hideLoadingDialog();
                 if (loginDtoBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                     ToastUitl.showImageToastSuccess(loginDtoBaseDto.getMsg());
                     finish();
                     PinziApplication.clearAllActivitys();
                 }
 
-                if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                    startActivity(new Intent(RegisterActivity.this, PerfectInformationActivity.class));
+                   // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                    Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
+                    intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                    startActivity(intent);
                     finish();
                 }
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
+                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
                 }
 
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
+                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
-                }
-
-                else {
+                } else {
                     ToastUitl.showImageToastFail(loginDtoBaseDto.getMsg());
                 }
             }
@@ -407,32 +409,36 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onChanged(@Nullable BaseDto<LoginDto> loginDtoBaseDto) {
                 getLoadingDialog().dismiss();
+                //登录成功
                 if (loginDtoBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                    SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                     ToastUitl.showImageToastSuccess(loginDtoBaseDto.getMsg());
                     finish();
                     PinziApplication.clearSpecifyActivities(new Class[]{LoginActivity.class});
                 }
-                if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                //完善资料
+                if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                    startActivity(new Intent(RegisterActivity.this, PerfectInformationActivity.class));
+                   // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+
+                    Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
+                    intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                    startActivity(intent);
 
                 }
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
+                //正在审核
+                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
+                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
 
                 }
+                //审核失败
+                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
+                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                    startActivity(new Intent(RegisterActivity.this, UserCheckFailuerActivity.class));
 
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                    startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
-
-                }
-
-                else {
+                } else {
                     ToastUitl.showImageToastFail(loginDtoBaseDto.getMsg());
                 }
 

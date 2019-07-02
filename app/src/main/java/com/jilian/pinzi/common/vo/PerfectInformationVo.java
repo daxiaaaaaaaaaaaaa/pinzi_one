@@ -22,6 +22,16 @@ public class PerfectInformationVo extends BaseVo {
 
     private String storeImg;//门店地址
 
+    private String address;///详细地址
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getStoreImg() {
         return storeImg;
     }

@@ -144,32 +144,28 @@ public class LoginActivity extends BaseActivity {
                         //未注册
                         if(loginDtoBaseDto.getCode() == Constant.Server.REGISTER_CODE){
                             //按照 后台的人说 把 登录状态  保存到前端
-                           // SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
                             Intent intent  = new Intent(LoginActivity.this, RegisterActivity.class);
                             intent.putExtra("loginId",data.get("uid"));
                             intent.putExtra("loginType",loginType);
                             intent.putExtra("headImg",data.get("iconurl"));
                             intent.putExtra("uName",data.get("name"));
-
                             startActivity(intent);
-                            finish();
-                        }
 
+                        }
+                        //完善信息
                         if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
                             //按照 后台的人说 把 登录状态  保存到前端
-                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                            startActivity(new Intent(LoginActivity.this, PerfectInformationActivity.class));
-                            finish();
+                            Intent intent = new Intent(LoginActivity.this, PerfectInformationActivity.class);
+                            intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                            startActivity(intent);
                         }
                         if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
-                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
                             startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                             finish();
                         }
 
                         if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
-                            SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                            startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
+                            startActivity(new Intent(LoginActivity.this, UserCheckFailuerActivity.class));
                             finish();
                         }
 
@@ -193,29 +189,26 @@ public class LoginActivity extends BaseActivity {
         rlCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                PinziApplication.clearAllActivitys();
                 finish();
             }
         });
         ivQq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                loginType = "2";
                 umShareAPI = UMShareAPI.get(LoginActivity.this);
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//QQ登录
-                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销QQ授权
 
-
-                startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
             }
         });
         ivWeibo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
+                loginType = "1";
+
                 umShareAPI = UMShareAPI.get(LoginActivity.this);
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, umAuthListener);//新浪登录
-                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销新浪授权
+
 
             }
         });
@@ -224,12 +217,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
                 loginType = "0";
                 umShareAPI = UMShareAPI.get(LoginActivity.this);
-
                 umShareAPI.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);//微信登录
-                //umShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);//撤销微信授权
-
-
-              //  startActivity(new Intent(LoginActivity.this, BindPhoneActivity.class));
             }
         });
 
@@ -333,18 +321,16 @@ public class LoginActivity extends BaseActivity {
                 }
                 if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
                     //按照 后台的人说 把 登录状态  保存到前端
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
-                    startActivity(new Intent(LoginActivity.this, PerfectInformationActivity.class));
-                    finish();
+                    Intent intent = new Intent(LoginActivity.this, PerfectInformationActivity.class);
+                    intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                    startActivity(intent);
                 }
                 if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
                     startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                     finish();
                 }
 
                 if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
-                    SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
                     startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                     finish();
                 }

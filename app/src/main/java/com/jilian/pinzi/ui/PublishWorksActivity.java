@@ -1,7 +1,6 @@
 package com.jilian.pinzi.ui;
 
 import android.Manifest;
-import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,7 +8,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
@@ -20,7 +18,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,19 +34,19 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.PublishPhotoAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.common.msg.FriendMsg;
-import com.jilian.pinzi.common.msg.RxBus;
+import com.jilian.pinzi.common.msg.MessageEvent;
+import com.jilian.pinzi.common.msg.ProductMessage;
+import com.jilian.pinzi.common.msg.WxPayMessage;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
-import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
-import com.jilian.pinzi.utils.BitmapUtils;
+import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.InputBoardUtils;
@@ -60,11 +57,16 @@ import com.jilian.pinzi.views.CustomerGridLayManager;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import io.rong.common.FileUtils;
 
 import static com.jilian.pinzi.Constant.FINALVALUE.FILE_PROVIDER;
 
@@ -156,18 +158,68 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
         adapter = new PublishPhotoAdapter(this, datas, this, this);
         recyclerView.setAdapter(adapter);
 
-    }
+        //图片
+        if (!TextUtils.isEmpty(getIntent().getStringExtra("url"))) {
+            recyclerView.setVisibility(View.VISIBLE);
+            rlVideo.setVisibility(View.GONE);
+            initPhoto(getIntent().getStringExtra("url"));
 
-    private void publish() {
-        //有图片
-        if (EmptyUtils.isNotEmpty(datas) && datas.size() > 1) {
-            showLoadingDialog();
-            uploadFile(1);
         }
         //视频
+        else if (!TextUtils.isEmpty(getIntent().getStringExtra("video"))) {
+            recyclerView.setVisibility(View.GONE);
+            rlVideo.setVisibility(View.VISIBLE);
+            initVideo(getIntent().getStringExtra("video"));
+        }
+        etPublishFriendsContent.setText(getIntent().getStringExtra("content"));
+        etPublishFriendsContent.setSelection(etPublishFriendsContent.getText().toString().length());//将光标移至文字末尾
+    }
+
+    /**
+     * 初始化传过来的视频
+     */
+    private void initVideo(String videoPath) {
+        this.videoPath = videoPath;
+        bitmap = getIntent().getParcelableExtra("bitmap");
+        ivVideo.setImageBitmap(bitmap);
+
+    }
+
+    /**
+     * 初始化传过来的照片
+     */
+    private void initPhoto(String imageUrl) {
+
+        if (imageUrl.contains(",")) {
+            String array[] = imageUrl.split(",");
+            for (int i = 0; i < array.length; i++) {
+                datas.add(0, array[i]);
+            }
+
+        } else {
+            datas.add(0, imageUrl);
+        }
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+    /**
+     * 发布作品
+     */
+    private void publish() {
+        //上传图片
+        if (EmptyUtils.isNotEmpty(datas) && datas.size() > 1) {
+            uploadFile(1);
+        }
+        //判断视频是网络视频  还是 本地视频 。如果是网络视频 直接修改 文字即可
         else if (!TextUtils.isEmpty(videoPath)) {
-            showLoadingDialog();
-            uploadVideo(3, new File(videoPath));
+            if (!videoPath.contains("http")) {
+                uploadVideo(new File(videoPath));
+            } else {
+                publisContent();
+            }
+
         }
         //无图片
         else {
@@ -175,31 +227,45 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             if (TextUtils.isEmpty(etPublishFriendsContent.getText().toString())) {
                 return;
             }
-            showLoadingDialog();
-            mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), null, null);
-            mainViewModel.getAddProductData().observe(this, new Observer<BaseDto>() {
-                @Override
-                public void onChanged(@Nullable BaseDto baseDto) {
-                    hideLoadingDialog();
-                    if (baseDto.isSuccess()) {
-                        ToastUitl.showImageToastSuccess("提交成功");
-                        finish();
-                    } else {
-                        ToastUitl.showImageToastFail(baseDto.getMsg());
-                    }
-                }
-            });
-
+            publisContent();
 
         }
     }
 
     /**
+     * 只发布内容
+     */
+    private void publisContent() {
+        showLoadingDialog();
+        mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), getUrls(""), videoPath);
+        mainViewModel.getAddProductData().observe(this, new Observer<BaseDto>() {
+            @Override
+            public void onChanged(@Nullable BaseDto baseDto) {
+                hideLoadingDialog();
+                if (baseDto.isSuccess()) {
+                    ToastUitl.showImageToastSuccess("提交成功");
+                    finish();
+                    MessageEvent messageEvent = new MessageEvent();
+                    ProductMessage productMessage = new ProductMessage();
+                    productMessage.setCode(200);
+                    messageEvent.setProductMessage(productMessage);
+                    EventBus.getDefault().post(messageEvent);
+
+                } else {
+                    ToastUitl.showImageToastFail(baseDto.getMsg());
+                }
+            }
+        });
+
+    }
+
+
+    /**
      * 上传视频
      *
-     * @param type
+     * @param
      */
-    private void uploadVideo(int type, File file) {
+    private void uploadVideo(File file) {
         showLoadingDialog();
         //先获取token
         mainViewModel.uptoken();
@@ -223,7 +289,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
      */
     private void uploadToSeven(String token, File file) {
         showLoadingDialog();
-        mainViewModel.uploadVideoToSeven(file, file.getName(), token);
+        mainViewModel.uploadVideoToSeven(file, DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER, new Date()), token);
         mainViewModel.getUploadVideoData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String key) {
@@ -239,6 +305,11 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             if (baseDto.isSuccess()) {
                                 ToastUitl.showImageToastSuccess("提交成功");
                                 finish();
+                                MessageEvent messageEvent = new MessageEvent();
+                                ProductMessage productMessage = new ProductMessage();
+                                productMessage.setCode(200);
+                                messageEvent.setProductMessage(productMessage);
+                                EventBus.getDefault().post(messageEvent);
                             } else {
                                 ToastUitl.showImageToastFail(baseDto.getMsg());
                             }
@@ -264,10 +335,10 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             public void onClick(View v) {
                 Intent intent = new Intent(PublishWorksActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("url", videoPath);
-                ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
-                byte [] bitmapByte =baos.toByteArray();
-                intent.putExtra("bitmap",bitmapByte);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] bitmapByte = baos.toByteArray();
+                intent.putExtra("bitmap", bitmapByte);
                 // 添加跳转动画
                 startActivity(intent,
                         ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -324,25 +395,36 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
      * @param type
      */
     private void uploadFile(Integer type) {
-        if (type == null) {
+        List<File> fileList = new ArrayList<>();
+        if (datas.size() == 1) {
+            ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
             return;
         }
-        List<File> fileList = new ArrayList<>();
-        if (type == 1) {
-            if (datas.size() == 1) {
-                ToastUitl.showImageToastFail("请拍照或者从相册中选择图片上传");
-                return;
-            }
-            for (int i = 0; i < datas.size() - 1; i++) {
+        for (int i = 0; i < datas.size() - 1; i++) {
+            //判断是网络视频 还是本地视频
+            //只上传本地视频
+            if (!datas.get(i).contains("http")) {
                 fileList.add(new File(datas.get(i)));
             }
-        } else {
-            if (TextUtils.isEmpty(videoPath)) {
-                ToastUitl.showImageToastFail("请选择视频上传");
-                return;
-            }
-            fileList.add(new File(videoPath));
+
         }
+
+        //如果文件是空，那就只发布内容
+        if (!EmptyUtils.isNotEmpty(fileList)) {
+            publisContent();
+        } else {
+            publisContentAndPhoto(type, fileList);
+        }
+
+    }
+
+    /**
+     * 发布内容 和 图片
+     *
+     * @param type
+     * @param fileList
+     */
+    private void publisContentAndPhoto(Integer type, List<File> fileList) {
         getLoadingDialog().showDialog();
         userViewModel.photoImg(type, fileList);
         userViewModel.getPhotoImageliveData().observe(this, new Observer<BaseDto<String>>() {
@@ -352,7 +434,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     //上传作品
                     showLoadingDialog();
-                    mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), stringBaseDto.getData(), null);
+                    mainViewModel.addProduct(getUserId(), getIntent().getStringExtra("activityId"), etPublishFriendsContent.getText().toString(), getUrls(stringBaseDto.getData()), null);
                     mainViewModel.getAddProductData().observe(PublishWorksActivity.this, new Observer<BaseDto>() {
                         @Override
                         public void onChanged(@Nullable BaseDto baseDto) {
@@ -360,6 +442,11 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             if (baseDto.isSuccess()) {
                                 ToastUitl.showImageToastSuccess("提交成功");
                                 finish();
+                                MessageEvent messageEvent = new MessageEvent();
+                                ProductMessage productMessage = new ProductMessage();
+                                productMessage.setCode(200);
+                                messageEvent.setProductMessage(productMessage);
+                                EventBus.getDefault().post(messageEvent);
                             } else {
                                 ToastUitl.showImageToastFail(baseDto.getMsg());
                             }
@@ -372,6 +459,32 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             }
         });
     }
+
+    /**
+     * 判断有没有网络图片
+     * 如果有网络图片 就加上网络图片
+     *
+     * @param data
+     * @return
+     */
+    private String getUrls(String data) {
+        if (!EmptyUtils.isNotEmpty(datas)) {
+            return data;
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).contains("http")) {
+                if(i==0){
+                    data =  datas.get(i);
+                }
+                else{
+                    data = data + "," + datas.get(i);
+                }
+
+            }
+        }
+        return data;
+    }
+
 
     /**
      * 选中照片
@@ -470,12 +583,14 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                         datas.add(0, path);
                     }
                     adapter.notifyDataSetChanged();
+                    videoPath = null;
                     break;
                 //相机
                 case FROM_CAPTURE:
                     path = SelectPhotoUtils.capturePathResult();
                     datas.add(0, path);
                     adapter.notifyDataSetChanged();
+                    videoPath = null;
                     break;
 
                 //相机
@@ -527,6 +642,10 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                             recyclerView.setVisibility(View.GONE);
                             rlVideo.setVisibility(View.VISIBLE);
                             ivVideo.setImageBitmap(bitmap);
+                            datas.clear();
+                            datas.add("");
+                            adapter.notifyDataSetChanged();
+
 
                         }
                         cursor.close();

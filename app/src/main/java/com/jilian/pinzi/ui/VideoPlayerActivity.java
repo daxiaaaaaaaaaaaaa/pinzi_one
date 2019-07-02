@@ -26,6 +26,7 @@ public class VideoPlayerActivity extends BaseActivity {
     protected void onPause() {        super.onPause();   //     Jzvd.clearSavedProgress(this, null);
         //home back
         JzvdStd.goOnPlayOnPause();
+        JzvdStd.releaseAllVideos();
     }
 
     @Override

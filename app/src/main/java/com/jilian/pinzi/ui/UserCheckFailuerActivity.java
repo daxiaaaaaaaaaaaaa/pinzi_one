@@ -72,6 +72,7 @@ public class UserCheckFailuerActivity extends BaseActivity {
             public void onClick(View view) {
                 // 继续完善信息
                 startActivity(new Intent(UserCheckFailuerActivity.this, PerfectInformationActivity.class));
+                finish();
             }
         });
     }

@@ -24,6 +24,7 @@ import com.jilian.pinzi.adapter.AllWorkAdapter;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
@@ -35,10 +36,16 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.rong.push.platform.hms.common.INoProguard;
 
 public class MyProductFragment extends BaseFragment implements CustomItemClickListener, AllWorkAdapter.ClickListener {
     private SmartRefreshLayout srHasData;
@@ -54,6 +61,12 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
@@ -64,8 +77,14 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
     }
 
     @Override
-    protected void initView(View view, Bundle savedInstanceState) {
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Override
+    protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
@@ -75,7 +94,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(getmActivity(), 10));//下间距
         recyclerview.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         datas = new ArrayList<>();
-        adapter = new AllWorkAdapter(getmActivity(), datas, this, this);
+        adapter = new AllWorkAdapter(getmActivity(), datas, this, this, 2);
         recyclerview.setAdapter(adapter);
     }
 
@@ -138,6 +157,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
             }
         });
     }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -187,23 +207,33 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
 
     }
 
+    /**
+     * //监听外来是否要去成功的界面
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getProductMessage())
+                && event.getProductMessage().getCode() == 200
+        ) {
+            getMyProduct();
+
+        }
+    }
+
+
     @Override
     public void vote(int position) {
-//        getLoadingDialog().show();
-//        viewModel.voteActivityProduct(getLoginDto().getId(), datas.get(position).getId(), datas.get(position).getIsVote() == 0 ? 1 : 2);
-//        viewModel.getVoteData().observe(this, new Observer<BaseDto>() {
-//            @Override
-//            public void onChanged(@Nullable BaseDto baseDto) {
-//             getLoadingDialog().dismiss();
-//                if (baseDto.isSuccess()) {
-//                    ToastUitl.showImageToastSuccess("操作成功");
-//                    pageNo = 1;
-//                    getMyProduct();
-//                } else {
-//                    ToastUitl.showImageToastFail(baseDto.getMsg());
-//                }
-//            }
-//        });
+        Intent intent = new Intent(getmActivity(), PublishWorksActivity.class);
+        intent.putExtra("url", datas.get(position).getPathUrl());
+        intent.putExtra("video", datas.get(position).getVideo());
+        intent.putExtra("bitmap", datas.get(position).getBitmap());
+        intent.putExtra("content", datas.get(position).getContent());
+        intent.putExtra("activityId", datas.get(position).getActivityId());
+        startActivity(intent);
 
     }
 }

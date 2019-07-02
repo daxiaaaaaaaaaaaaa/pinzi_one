@@ -41,12 +41,14 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
     private List<ActivityProductDto> datas;
     private CustomItemClickListener listener;
     private ClickListener clickVideoListener;
+    private int type;
 
-    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickListener clickVideoListener) {
+    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickListener clickVideoListener, int type) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
         this.clickVideoListener = clickVideoListener;
+        this.type = type;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -120,15 +122,13 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 urlList.add(imageUrl);
             }
             holder.recyclerView.setAdapter(new AllWorkPhotoAdapter(mContext, urlList, this));
-        }
-        else if (EmptyUtils.isNotEmpty(datas.get(position).getVideo())) {
+        } else if (EmptyUtils.isNotEmpty(datas.get(position).getVideo())) {
             holder.recyclerView.setVisibility(View.GONE);
             holder.rlVideo.setVisibility(View.VISIBLE);
             holder.btnVideo.setImageBitmap(datas.get(position).getBitmap());
 
 
-        }
-        else{
+        } else {
             holder.recyclerView.setVisibility(View.GONE);
             holder.rlVideo.setVisibility(View.GONE);
         }
@@ -139,10 +139,10 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                 intent.putExtra("url", datas.get(position).getVideo());
                 Bitmap bitmap = datas.get(position).getBitmap();
-                ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
-                byte [] bitmapByte =baos.toByteArray();
-                intent.putExtra("bitmap",bitmapByte);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] bitmapByte = baos.toByteArray();
+                intent.putExtra("bitmap", bitmapByte);
 
                 // 添加跳转动画
                 mContext.startActivity(intent,
@@ -151,7 +151,6 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                                 holder.btnVideo,
                                 mContext.getString(R.string.share_str))
                                 .toBundle());
-
 
 
             }
@@ -171,7 +170,16 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 clickVideoListener.vote(position);
             }
         });
-
+        //投票
+        if (type == 1) {
+            holder.tvSend.setText("投票");
+            holder.tvSend.setBackgroundResource(R.drawable.shape_input_one_bg);
+        }
+        //编辑
+        if (type == 2) {
+            holder.tvSend.setText("编辑");
+            holder.tvSend.setBackground(null);
+        }
 
     }
 

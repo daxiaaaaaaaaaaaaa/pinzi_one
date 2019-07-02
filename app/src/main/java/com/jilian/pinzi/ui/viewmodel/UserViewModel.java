@@ -161,7 +161,7 @@ public class UserViewModel extends ViewModel {
      * @param imgUrl    营业执照图片地址
      * @param storeImg  门店图片地址
      */
-    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String imgUrl, String storeImg) {
+    public void perfectInformation(String province, String city, String area, String name, String contact, String linkPhone, String id, String imgUrl, String storeImg,String address) {
         userRepository = new UserRepositoryImpl();
         PerfectInformationVo vo = new PerfectInformationVo();
         vo.setProvince(province);
@@ -173,6 +173,7 @@ public class UserViewModel extends ViewModel {
         vo.setId(id);
         vo.setImgUrl(imgUrl);
         vo.setStoreImg(storeImg);
+        vo.setAddress(address);
         perfectInformationliveData = userRepository.perfectInformation(vo);
     }
 

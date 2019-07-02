@@ -87,6 +87,9 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
     private RelativeLayout rlPerfectInfoBindPhone;
     private TextView tvLinkphone;
     private TextView tvOk;
+    private EditText tvAdress;
+
+
 
 
     private CustomerGridLayManager gridOne;
@@ -139,7 +142,7 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
     public void initView() {
         setCenterTitle("完善信息", "#FFFFFF");
         setleftImage(R.drawable.image_back, true, null);
-
+        tvAdress = (EditText) findViewById(R.id.tv_adress);
         rvOne = (RecyclerView) findViewById(R.id.rv_one);
         rvTwo = (RecyclerView) findViewById(R.id.rv_two);
         setTitleBg(R.color.color_black);
@@ -316,14 +319,14 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
      */
     private void perfectInformation(String oneUrl, String twoUrl) {
 
-        userViewModel.perfectInformation(province, city, area, tvName.getText().toString(), tvContact.getText().toString(), tvLinkphone.getText().toString(), getUserId(), oneUrl,twoUrl);
+        userViewModel.perfectInformation(province, city, area, tvName.getText().toString(), tvContact.getText().toString(), tvLinkphone.getText().toString(), getIntent().getStringExtra("userId"), oneUrl,twoUrl,tvAdress.getText().toString());
         userViewModel.getPerfectInformationliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-//                    startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
+                    startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
                     ToastUitl.showImageToastSuccess("提交成功");
-                    startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
+                   // startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
                     finish();
                 } else {
                     ToastUitl.showImageToastFail(stringBaseDto.getMsg());

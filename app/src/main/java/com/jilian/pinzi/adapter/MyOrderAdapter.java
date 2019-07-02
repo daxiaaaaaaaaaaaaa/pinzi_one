@@ -104,7 +104,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         }
         else{
-            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPayFirstMoney()));
+            if(datas.get(position).getPayStatus()==7){
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+            }
+            else{
+                holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPayFirstMoney()));
+            }
+
 
         }
 

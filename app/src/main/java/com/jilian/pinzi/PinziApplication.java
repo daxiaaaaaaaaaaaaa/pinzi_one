@@ -124,8 +124,10 @@ public class PinziApplication extends MultiDexApplication {
          * 友盟相关平台配置。注意友盟官方新文档中没有这项配置，但是如果不配置会吊不起来相关平台的授权界面
          */
         PlatformConfig.setWeixin(Constant.APP_ID, Constant.WXAPP_SECRET);//微信APPID和AppSecret
-        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("你的微博APPID", "你的微博APPSecret","微博的后台配置回调地址");//微博
+
+        PlatformConfig.setQQZone("1108073992", "CXQrzGQCK0EyCxHC");//QQAPPID和AppSecret
+
+        PlatformConfig.setSinaWeibo("1582232369", "74e0e851fe199ec2f32bac9b9dcb15d3","http://39.108.14.94:9010");//微博
     }
 
 

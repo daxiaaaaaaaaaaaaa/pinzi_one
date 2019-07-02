@@ -118,7 +118,7 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
 
     @Override
     public void initView() {
-        setNormalTitle("我的作品详情", v -> finish());
+        setNormalTitle("发布", v -> finish());
         ivVideo = (ImageView) findViewById(R.id.iv_video);
         ivLeftText = (ImageView) findViewById(R.id.iv_left_text);
         ivLeftText.setVisibility(View.GONE);
@@ -467,7 +467,13 @@ public class PublishFriendsActivity extends BaseActivity implements CustomItemCl
                             // 视频路径：MediaStore.Audio.Media.DATA
                             videoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
                             // 视频时长：MediaStore.Audio.Media.DURATION
-                            int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                            try {
+                                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                            } catch (Exception e) {
+                                ToastUitl.showImageToastFail("请选择视频");
+                                return;
+
+                            }
                             // 视频大小：MediaStore.Audio.Media.SIZE
                             long size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));
 
