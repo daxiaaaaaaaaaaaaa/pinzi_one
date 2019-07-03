@@ -8,6 +8,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
@@ -63,7 +64,7 @@ public class MainActivityDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        getActivityDetail(getIntent().getStringExtra("id"), getLoginDto().getId());
+        getActivityDetail(getIntent().getStringExtra("id"), getLoginDto()==null?null:getLoginDto().getId());
     }
 
     private ActivityDto mData;
@@ -133,9 +134,15 @@ public class MainActivityDetailActivity extends BaseActivity {
         tvGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(MainActivityDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
                 if (mData == null) {
                     return;
                 }
+
                 //未报名
                 if (mData.getApplyActivityId() == 0) {
                     applyActivity(mData.getId(), getLoginDto().getId());

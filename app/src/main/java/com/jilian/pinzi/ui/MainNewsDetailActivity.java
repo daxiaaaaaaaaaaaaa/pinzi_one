@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -88,7 +89,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
 
     @Override
     public void initData() {
-        getInformationDetail(getIntent().getStringExtra("id"), getLoginDto().getId());
+        getInformationDetail(getIntent().getStringExtra("id"), getLoginDto()==null?null:getLoginDto().getId());
     }
 
     @Override
@@ -114,6 +115,16 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
+
+                    if (PinziApplication.getInstance().getLoginDto() == null) {
+                        Intent intent = new Intent(MainNewsDetailActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        return false;
+                    }
+
+                    if(TextUtils.isEmpty(etContent.getText().toString())){
+                        return false;
+                    }
                     //在这里做请求操作
                     commentInformation(getIntent().getStringExtra("id"), getLoginDto().getId(), etContent.getText().toString());
                     return true;
@@ -132,6 +143,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
      * @param content 内容
      */
     private void commentInformation(String id, String uId, String content) {
+
         showLoadingDialog();
         viewModel.commentInformation(id, uId, content);
         viewModel.getCommentDetailData().observe(this, new Observer<BaseDto>() {

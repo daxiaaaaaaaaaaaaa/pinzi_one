@@ -18,6 +18,8 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.LoginActivity;
+import com.jilian.pinzi.ui.MainNewsDetailActivity;
 import com.jilian.pinzi.ui.main.BuyCardActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.MyCarddetailActivity;
@@ -92,7 +94,7 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
     private int pageSize = 20;//
 
     private void getStoreCoupon() {
-        viewModel.getStoreCoupon(getStoreId(), PinziApplication.getInstance().getLoginDto().getId(), pageNo, pageSize);
+        viewModel.getStoreCoupon(getStoreId(), PinziApplication.getInstance().getLoginDto()==null?null:PinziApplication.getInstance().getLoginDto().getId(), pageNo, pageSize);
         viewModel.getStoreCouponData().observe(this, new Observer<BaseDto<List<StoreCouponDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<StoreCouponDto>> listBaseDto) {
@@ -181,6 +183,14 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
      */
     @Override
     public void toReceive(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+
+
         getLoadingDialog().showDialog();
         viewModel.GetCoupon(datas.get(position).getId(), PinziApplication.getInstance().getLoginDto().getId());
         viewModel.getStringliveData().observe(this, new Observer<BaseDto<String>>() {
@@ -206,6 +216,12 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
      */
     @Override
     public void toBuy(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         Intent intent = new Intent(getmActivity(), BuyCardActivity.class);
         intent.putExtra("data", datas.get(position));
         startActivity(intent);

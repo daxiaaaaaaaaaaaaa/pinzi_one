@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.MainActivityAdapter;
 import com.jilian.pinzi.base.BaseActivity;
@@ -88,7 +89,7 @@ public class MainActivityActivity extends BaseActivity implements CustomItemClic
     private int type;// 0.进行中 1.已结束
 
     private void getActivityList() {
-        viewModel.getActivityList(String.valueOf(getLoginDto().getType()), type, pageNo, pageSize);
+        viewModel.getActivityList(String.valueOf(getLoginDto()==null?null:getLoginDto().getType()), type, pageNo, pageSize);
         viewModel.getActivityListData().observe(this, new Observer<BaseDto<List<ActivityDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<ActivityDto>> listBaseDto) {

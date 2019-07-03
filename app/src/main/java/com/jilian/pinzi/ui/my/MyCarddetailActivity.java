@@ -15,6 +15,7 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
+import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.MainActivity;
 import com.jilian.pinzi.ui.main.IntegralMallActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
@@ -190,6 +191,11 @@ public class MyCarddetailActivity extends BaseActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(MyCarddetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
 
                 if ("GetCardCenterActivity".equals(param)) {
                     toReceive(id);
