@@ -140,7 +140,6 @@ public class PayOrderActivity extends BaseActivity {
             long creatTime = orderDto.getCreateDate();
 
 
-
             if (orderDto.getPayFirstMoney() == 0) {
                 startTimeTask(creatTime + fifityMin);
                 tvPayCount.setText("支付金额：" + NumberUtils.forMatNumber(Double.parseDouble(orderDto.getPayMoney())));
@@ -168,7 +167,7 @@ public class PayOrderActivity extends BaseActivity {
             }
 
             long creatTime = orderDetailDto.getCreateDate();
-            startTimeTask(creatTime + fifityMin);
+
 
             if (orderDetailDto.getPayFirstMoney() == 0) {
                 startTimeTask(creatTime + fifityMin);
