@@ -269,13 +269,13 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
                 break;
         }
         //17.实付金额
-        if(data.getPayFirstMoney()>0){
-            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
-        }
-        else{
+//        if(data.getPayFirstMoney()>0){
+//            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+//        }
+//        else{
             tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
 
-        }
+       // }
 
         //18.付款时间
         tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getPayDate())));

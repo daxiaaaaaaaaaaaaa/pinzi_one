@@ -30,9 +30,9 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     private Activity mContext;
     private List<MyOrderDto> datas;
     private CustomItemClickListener listener;
-    private String leftDatas[] = new String[]{"", "取消订单", "取消订单", "查看物流", "评价商品", "查看评价", "重新购买","取消订单"};
-    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买","删除订单","立即付款"};
-    private String status[] = new String[]{"", "等待付款", "等待发货","等待收货", "交易完成", "交易完成", "交易关闭","等待付款"};
+    private String leftDatas[] = new String[]{"", "取消订单", "取消订单", "查看物流", "评价商品", "查看评价", "重新购买", "取消订单"};
+    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买", "删除订单", "立即付款"};
+    private String status[] = new String[]{"", "等待付款", "等待发货", "等待收货", "交易完成", "交易完成", "交易关闭", "等待付款"};
     private OrderListener orderListener;
 
     public MyOrderAdapter(Activity context, List<MyOrderDto> datas, CustomItemClickListener listener, OrderListener orderListener) {
@@ -46,8 +46,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
     @Override
     public void clickGoods(String goodId) {
-        Intent intent = new Intent(mContext,GoodsDetailActivity.class);
-        intent.putExtra("goodsId",goodId);
+        Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+        intent.putExtra("goodsId", goodId);
         mContext.startActivity(intent);
     }
 
@@ -57,24 +57,28 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     public interface OrderListener {
         /**
          * 取消
+         *
          * @param dto
          */
         void showCancelOrderDialog(MyOrderDto dto);
 
         /**
          * 确认
+         *
          * @param dto
          */
         void showConfirmGoodsTipsDialog(MyOrderDto dto);
 
         /**
          * 删除
+         *
          * @param dto
          */
         void showDeleteOrderDialog(MyOrderDto dto);
 
         /**
          * 查看物流
+         *
          * @param dto
          */
         void checkOgistics(MyOrderDto dto);
@@ -97,29 +101,55 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         holder.tvLeft.setText(leftDatas[datas.get(position).getPayStatus()]);
         holder.tvRight.setText(rightDatas[datas.get(position).getPayStatus()]);
         holder.tvStatus.setText(status[datas.get(position).getPayStatus()]);
-        holder.tvOrderNo.setText("订单编号："+datas.get(position).getOrderNo());
+        holder.tvOrderNo.setText("订单编号：" + datas.get(position).getOrderNo());
+        // private Integer payStatus;// true number    支付状态（1.待支付 2.已支付，待发货 3.已发货 4.已完成，待评价 5.已评价 6.已取消） 7 待付尾款
+        switch (datas.get(position).getPayStatus()) {
+            //待支付
+            case 1:
+                //不需要定金
+                if (datas.get(position).getPayFirstMoney() <= 0) {
+                    holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
 
-        if(datas.get(position).getPayFirstMoney()<=0){
-            holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+                }
+                //需要定金
+                else {
+                    holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPayFirstMoney()));
 
-        }
-        else{
-            if(datas.get(position).getPayStatus()==7){
+                }
+                break;
+            //已支付
+            case 2:
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
-            }
-            else{
-                holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPayFirstMoney()));
-            }
+                break;
+            //3.已发货
+            case 3:
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+                break;
+                //4.已完成，待评价
+            case 4:
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+
+                break;
+                //5.已评价
+            case 5:
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+                break;
+                //6.已取消
+            case 6:
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+                break;
+            case 7:
+                //7 待付尾款
+                holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
+                break;
 
 
         }
 
-
-        holder.tvDate.setText("提交时间："+DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_,new Date(datas.get(position).getCreateDate())));
-        if(datas.get(position).getPayStatus()!=null&&datas.get(position).getPayStatus()==2){
+        holder.tvDate.setText("提交时间：" + DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_, new Date(datas.get(position).getCreateDate())));
+        if (datas.get(position).getPayStatus() != null && datas.get(position).getPayStatus() == 2) {
             holder.tvLeft.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             holder.tvLeft.setVisibility(View.VISIBLE);
         }
         holder.tvLeft.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +157,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             public void onClick(View view) {
                 Integer type = datas.get(position).getPayStatus();
                 Intent intent = null;
-                if(type!=null) switch (type) {
+                if (type != null) switch (type) {
                     case 1:
                         //取消订单
                         orderListener.showCancelOrderDialog(datas.get(position));
@@ -181,12 +211,12 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             public void onClick(View view) {
                 Integer type = datas.get(position).getPayStatus();
                 Intent intent;
-                if(type!=null){
+                if (type != null) {
                     switch (type) {
                         case 1:
                             //立即付款
-                            intent = new Intent(mContext,PayOrderActivity.class);
-                            intent.putExtra("orderDto",datas.get(position));
+                            intent = new Intent(mContext, PayOrderActivity.class);
+                            intent.putExtra("orderDto", datas.get(position));
                             mContext.startActivity(intent);
                             break;
                         case 2:
@@ -204,12 +234,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                             //1个商品 跳到商品详情
                             //大于1个商品 跳到 首页
 
-                            if(datas.get(position).getGoodsInfo().size()==1){
-                                intent = new Intent(mContext,GoodsDetailActivity.class);
-                                intent.putExtra("goodsId",String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
-                            }
-                            else{
-                                intent = new Intent(mContext,MainActivity.class);
+                            if (datas.get(position).getGoodsInfo().size() == 1) {
+                                intent = new Intent(mContext, GoodsDetailActivity.class);
+                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                            } else {
+                                intent = new Intent(mContext, MainActivity.class);
                             }
                             mContext.startActivity(intent);
                             break;
@@ -218,12 +247,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                             //重新购买的时候  判断商品数量
                             //1个商品 跳到商品详情
                             //大于1个商品 跳到 首页
-                            if(datas.get(position).getGoodsInfo().size()==1){
-                                intent = new Intent(mContext,GoodsDetailActivity.class);
-                                intent.putExtra("goodsId",String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
-                            }
-                            else{
-                                intent = new Intent(mContext,MainActivity.class);
+                            if (datas.get(position).getGoodsInfo().size() == 1) {
+                                intent = new Intent(mContext, GoodsDetailActivity.class);
+                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                            } else {
+                                intent = new Intent(mContext, MainActivity.class);
                             }
                             mContext.startActivity(intent);
                             break;
@@ -233,8 +261,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                             break;
                         case 7:
                             //立即付款
-                            intent = new Intent(mContext,PayOrderActivity.class);
-                            intent.putExtra("orderDto",datas.get(position));
+                            intent = new Intent(mContext, PayOrderActivity.class);
+                            intent.putExtra("orderDto", datas.get(position));
                             mContext.startActivity(intent);
                             break;
                     }
@@ -257,7 +285,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private RecyclerView rvGoods;
 
@@ -270,13 +297,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         private TextView tvPrice;
 
 
-
-
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
             super(itemView);
             this.itemView = itemView;
             rvGoods = (RecyclerView) itemView.findViewById(R.id.rv_goods);
-            tvOrderNo = (TextView)itemView .findViewById(R.id.tv_order_no);
+            tvOrderNo = (TextView) itemView.findViewById(R.id.tv_order_no);
             tvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             tvLeft = (TextView) itemView.findViewById(R.id.tv_left);
             tvRight = (TextView) itemView.findViewById(R.id.tv_right);

@@ -13,6 +13,9 @@ public class BitmapUtils {
      * @return
      */
     public static Bitmap getScanBitmap(Bitmap bitmap){
+        if(bitmap==null){
+            return null;
+        }
         //压缩
         Matrix matrix = new Matrix();
         matrix.setScale(0.4f, 0.4f);

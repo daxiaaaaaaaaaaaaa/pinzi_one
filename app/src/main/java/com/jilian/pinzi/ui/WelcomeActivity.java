@@ -4,8 +4,10 @@ import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.alibaba.fastjson.JSONObject;
@@ -36,8 +38,8 @@ public class WelcomeActivity extends FragmentActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,//写权限
                 Manifest.permission.READ_EXTERNAL_STORAGE, //读权限
                 Manifest.permission.CAMERA,//相机权限
-                Manifest.permission.CALL_PHONE,//拨打电话
-                Manifest.permission.READ_PHONE_STATE//拨打电话
+                Manifest.permission.CALL_PHONE,//拨
+                Manifest.permission.READ_PHONE_STATE
 
 
 
