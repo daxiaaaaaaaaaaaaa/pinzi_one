@@ -163,7 +163,7 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
                 .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
                 .into(holder.ivHead);//在RequestBuilder 中使用自定义的ImageViewTarge
-        holder.tvSend.setText(datas.get(position).getIsVote() == 0 ? "投票" : "取消投票");
+
         holder.tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +172,7 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         });
         //投票
         if (type == 1) {
-            holder.tvSend.setText("投票");
+            holder.tvSend.setText(datas.get(position).getIsVote() == 0 ? "投票" : "取消投票");
             holder.tvSend.setBackgroundResource(R.drawable.shape_input_one_bg);
         }
         //编辑
