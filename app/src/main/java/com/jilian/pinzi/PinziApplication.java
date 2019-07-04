@@ -125,7 +125,7 @@ public class PinziApplication extends MultiDexApplication {
          */
         PlatformConfig.setWeixin(Constant.APP_ID, Constant.WXAPP_SECRET);//微信APPID和AppSecret
 
-        PlatformConfig.setQQZone("1108073992", "CXQrzGQCK0EyCxHC");//QQAPPID和AppSecret
+        PlatformConfig.setQQZone("1109240675", "GXQmVq9zyOPswdeC");//QQAPPID和AppSecret
 
         PlatformConfig.setSinaWeibo("1582232369", "74e0e851fe199ec2f32bac9b9dcb15d3","http://39.108.14.94:9010");//微博
     }

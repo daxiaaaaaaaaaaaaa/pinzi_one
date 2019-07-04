@@ -374,7 +374,7 @@ public class RegisterActivity extends BaseActivity {
                     PinziApplication.clearAllActivitys();
                 }
 
-                if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
+                else  if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
                    // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
@@ -382,13 +382,13 @@ public class RegisterActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 }
-                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
+                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
                     //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
                 }
 
-                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
+                else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
                     //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
@@ -418,7 +418,7 @@ public class RegisterActivity extends BaseActivity {
                     PinziApplication.clearSpecifyActivities(new Class[]{LoginActivity.class});
                 }
                 //完善资料
-                if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
+                else  if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
                    // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
 
@@ -428,13 +428,13 @@ public class RegisterActivity extends BaseActivity {
 
                 }
                 //正在审核
-                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
+                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
                     //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
 
                 }
                 //审核失败
-                if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
+                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
                     //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     startActivity(new Intent(RegisterActivity.this, UserCheckFailuerActivity.class));
 

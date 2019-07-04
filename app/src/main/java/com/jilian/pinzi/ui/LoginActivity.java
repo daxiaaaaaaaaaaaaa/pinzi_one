@@ -149,7 +149,7 @@ public class LoginActivity extends BaseActivity {
                             PinziApplication.clearAllActivitys();
                         }
                         //未注册
-                        if(loginDtoBaseDto.getCode() == Constant.Server.REGISTER_CODE){
+                        else if(loginDtoBaseDto.getCode() == Constant.Server.REGISTER_CODE){
                             //按照 后台的人说 把 登录状态  保存到前端
                             Intent intent  = new Intent(LoginActivity.this, RegisterActivity.class);
                             intent.putExtra("loginId",data.get("uid"));
@@ -160,18 +160,18 @@ public class LoginActivity extends BaseActivity {
 
                         }
                         //完善信息
-                        if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                        else  if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
                             //按照 后台的人说 把 登录状态  保存到前端
                             Intent intent = new Intent(LoginActivity.this, PerfectInformationActivity.class);
                             intent.putExtra("userId",loginDtoBaseDto.getData().getId());
                             startActivity(intent);
                         }
-                        if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
+                        else   if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
                             startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                             finish();
                         }
 
-                        if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
+                        else  if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
                             startActivity(new Intent(LoginActivity.this, UserCheckFailuerActivity.class));
                             finish();
                         }
@@ -326,18 +326,18 @@ public class LoginActivity extends BaseActivity {
                     finish();
                     PinziApplication.clearAllActivitys();
                 }
-                if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
+                else if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
                     //按照 后台的人说 把 登录状态  保存到前端
                     Intent intent = new Intent(LoginActivity.this, PerfectInformationActivity.class);
                     intent.putExtra("userId",loginDtoBaseDto.getData().getId());
                     startActivity(intent);
                 }
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
+                else  if(loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE){
                     startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                     finish();
                 }
 
-                if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
+                else   if(loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE){
                     startActivity(new Intent(LoginActivity.this, UserCheckActivity.class));
                     finish();
                 }
