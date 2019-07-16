@@ -66,7 +66,7 @@ public class DisableAdapter extends RecyclerView.Adapter<DisableAdapter.ViewHold
 
                 holder.tvName.setText(dto.getName());
                 holder.tvUserPlatform.setText("适用平台：" + dto.getStoreName());
-                holder.tvDay.setText("有效期限：" + dto.getValidityDate());
+                holder.tvDay.setText("有效期限：" + (dto.getValidityDate()==null?"":dto.getValidityDate()));
             }
         }
         holder.rlCheck.setOnClickListener(new View.OnClickListener() {

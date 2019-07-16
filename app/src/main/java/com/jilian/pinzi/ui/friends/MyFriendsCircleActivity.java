@@ -116,7 +116,6 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
     };
 
 
-
     @Override
     public void initData() {
         getData();
@@ -190,6 +189,8 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
         });
     }
 
+    private boolean isHas;//是否有同一天的
+
     /**
      * 数据按时间分组
      *
@@ -199,9 +200,11 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
     private List<FriendCircleListDto> groudByDay(List<FriendCircleListDto> list) {
         List<FriendCircleListDto> mList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
+            //当前这条说说的 年 月 日
             String day = DateUtil.dateToString(DateUtil.DATE_FORMAT, new Date(Long.parseLong(list.get(i).getCreateDate())));
             FriendCircleListDto dto = list.get(i);
             dto.setDay(day);
+
             if (mList.size() <= 0) {
                 List<FriendCircleListDto> data = new ArrayList<>();
                 data.add(list.get(i));
@@ -210,14 +213,18 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
 
             } else {
                 for (int j = 0; j < mList.size(); j++) {
+                    isHas = false;
                     if (mList.get(j).getDay().equals(day)) {
+                        isHas = true;
                         mList.get(j).getDatas().add(dto);
-                    } else {
+                    }
+                    if (!isHas && j == (mList.size() - 1)) {
                         List<FriendCircleListDto> data = new ArrayList<>();
                         data.add(list.get(i));
                         dto.setDatas(data);
                         mList.add(dto);
                     }
+
                 }
             }
         }

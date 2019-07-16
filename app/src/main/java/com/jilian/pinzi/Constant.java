@@ -43,6 +43,9 @@ public class Constant {
 
         public final static String SEVEN_URL = "http://ptk6jx7j2.bkt.clouddn.com";
 
+
+        public static String DOWN_URL = "http://39.108.14.94:9007/";
+
     }
 
 

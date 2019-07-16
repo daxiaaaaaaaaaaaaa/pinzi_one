@@ -22,6 +22,7 @@ import com.jilian.pinzi.common.dto.SaleRecordDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
 import com.jilian.pinzi.common.dto.ShippmentDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddMySuperiorVo;
@@ -291,5 +292,12 @@ public interface MyRepository {
      * @return
      */
     LiveData <BaseDto<MyTntegralDetailDto>>  getContent();
+
+
+    /**
+     * 版本更新
+     * @return
+     */
+    LiveData <BaseDto<VersionInfoDto>>  getVersionInfo();
 
 }

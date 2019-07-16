@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/rl_center"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="@dimen/widget_size_40"
+            android:layout_marginRight="@dimen/widget_size_40"
+            android:background="@drawable/shape_button_white"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_weight="3"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+            <TextView
+
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:lineSpacingExtra="4dp"
+                android:paddingLeft="@dimen/widget_size_15"
+                android:paddingRight="@dimen/widget_size_15"
+                android:textColor="#8D8D8D"
+                android:textSize="@dimen/font_size_15"
+                tools:text="1.修复了xxbug\n2.新增了活动详情页面\n3.新增了活动详情页面\n4.新增了活动详情页面"/>
+            </ScrollView>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/tv_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/widget_size_40"
+                    android:layout_marginLeft="@dimen/widget_size_30"
+                    android:layout_marginRight="@dimen/widget_size_30"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_button_select_bg"
+                    android:gravity="center"
+                    android:text="升级"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/font_size_14"
+                    />
+
+                <ProgressBar
+
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_weight="5"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/shape_progressbar"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_percent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="0%"
+                    android:textColor="#8D8D8D"
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_marginTop="-20dp"
+            android:id="@+id/iv_top"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/image_update_version"/>
+            <ImageView
+                android:id="@+id/iv_cancel"
+                android:layout_marginRight="@dimen/widget_size_42"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="82dp"
+                android:src="@drawable/image_login_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -23,6 +23,7 @@ import com.jilian.pinzi.common.dto.SaleRecordDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
 import com.jilian.pinzi.common.dto.ShippmentDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddMySuperiorVo;
@@ -111,6 +112,13 @@ public class MyViewModel extends ViewModel {
 
 
     private LiveData<BaseDto<MyTntegralDetailDto>> myTntegralDetailDtoLiveData; // 积分说明
+
+
+    private LiveData<BaseDto<VersionInfoDto>> updateLiveData; // 更新
+
+    public LiveData<BaseDto<VersionInfoDto>> getUpdateLiveData() {
+        return updateLiveData;
+    }
 
     public LiveData<BaseDto<MyTntegralDetailDto>> getMyTntegralDetailDtoLiveData() {
         return myTntegralDetailDtoLiveData;
@@ -739,5 +747,13 @@ public class MyViewModel extends ViewModel {
     public void getContent() {
         repository = new MyRepositoryImpl();
         myTntegralDetailDtoLiveData = repository.getContent();
+    }
+
+    /**
+     * 获取版本
+     */
+    public void getVersionInfo() {
+        repository = new MyRepositoryImpl();
+        updateLiveData = repository.getVersionInfo();
     }
 }

@@ -230,7 +230,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         Intent intent = new Intent(getmActivity(), PublishWorksActivity.class);
         intent.putExtra("url", datas.get(position).getPathUrl());
         intent.putExtra("video", datas.get(position).getVideo());
-        intent.putExtra("bitmap", datas.get(position).getBitmap());
+        intent.putExtra("bitmap", BitmapUtils.getScanBitmap(datas.get(position).getBitmap()));
         intent.putExtra("content", datas.get(position).getContent());
         intent.putExtra("activityId", datas.get(position).getActivityId());
         startActivity(intent);

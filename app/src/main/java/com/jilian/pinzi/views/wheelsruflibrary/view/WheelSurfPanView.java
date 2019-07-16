@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -235,11 +236,15 @@ public class WheelSurfPanView extends View {
                         //文字画笔
                         mTextPaint = new Paint();
                         //设置填充样式
-                        mTextPaint.setStyle(Paint.Style.STROKE);
+                        //  mTextPaint.setStyle(Paint.Style.FILL);
+                        //加粗
+                        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
+                        mTextPaint.setTypeface( font );
+
                         //设置抗锯齿
                         mTextPaint.setAntiAlias(true);
                         //设置边界模糊
-                        mTextPaint.setDither(true);
+                        // mTextPaint.setDither(true);
                         //设置画笔颜色
                         mTextPaint.setColor(mTextColor);
                         //设置字体大小
@@ -478,11 +483,11 @@ public class WheelSurfPanView extends View {
             //文字画笔
             mTextPaint = new Paint();
             //设置填充样式
-            mTextPaint.setStyle(Paint.Style.STROKE);
+            // mTextPaint.setStyle(Paint.Style.STROKE);
             //设置抗锯齿
             mTextPaint.setAntiAlias(true);
             //设置边界模糊
-            mTextPaint.setDither(true);
+            //  mTextPaint.setDither(true);
             //设置画笔颜色
             mTextPaint.setColor(mTextColor);
             //设置字体大小

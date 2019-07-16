@@ -60,6 +60,7 @@ import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddOrderVo;
@@ -82,14 +83,19 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * api接口
@@ -1131,6 +1137,25 @@ public interface ApiService {
 
     @POST("user/ThirdUserLogin")
     Flowable<BaseDto<LoginDto>> ThirdUserLogin(@Body ThirdUserLoginVo vo);
+
+
+    /**
+     * 版本更新
+     * @return
+     */
+    @GET("user/getVersionInfo")
+    Flowable<BaseDto<VersionInfoDto>> getVersionInfo();
+
+
+    /**
+     * 版本更新 下载apk 文件
+     * @param range
+     * @param url
+     * @return
+     */
+    @Streaming
+    @GET
+    Observable<ResponseBody> executeDownload(@Header("Range") String range, @Url() String url);
 
 }
 

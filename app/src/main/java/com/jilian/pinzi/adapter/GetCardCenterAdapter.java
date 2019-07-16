@@ -75,7 +75,7 @@ public class GetCardCenterAdapter extends RecyclerView.Adapter<GetCardCenterAdap
                     holder.tvUserPlatform.setText("适用平台：" + "指定店铺");
                 }
 
-                holder.tvDay.setText("有效期限：" + DateUtil.dateToString(DateUtil.DATE_FORMAT_, new Date(Long.parseLong(dto.getValidityDate()))));
+                holder.tvDay.setText("有效期限：" + dto.getValidityDate());
             }
 
             holder.tvOk.setOnClickListener(new View.OnClickListener() {

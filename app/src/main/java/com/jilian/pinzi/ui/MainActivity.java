@@ -1,11 +1,18 @@
 package com.jilian.pinzi.ui;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,12 +24,22 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
+import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
+import com.jilian.pinzi.dialog.BaseNiceDialog;
+import com.jilian.pinzi.dialog.NiceDialog;
+import com.jilian.pinzi.dialog.ViewConvertListener;
+import com.jilian.pinzi.dialog.ViewHolder;
+import com.jilian.pinzi.service.DownloadIntentService;
+import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.RxTimerUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.NoScrollViewPager;
@@ -32,7 +49,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DownloadIntentService.UpdateUi {
     private List<Fragment> mFragmentList;
     private OneFragment oneFragment;
     private TwoFragment twoFragment;
@@ -62,7 +79,6 @@ public class MainActivity extends BaseActivity {
     public LinearLayout llBottom;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,44 +90,45 @@ public class MainActivity extends BaseActivity {
      *
      */
     private void initBottomHeight() {
-        Log.e(TAG, "initBottomHeight: ...." );
-        if(isNavigationBarShow()){
+        Log.e(TAG, "initBottomHeight: ....");
+        if (isNavigationBarShow()) {
             int height = getNavigationBarHeight();
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(llBottom.getLayoutParams());
             lp.setMargins(0, 0, 0, height);
-            Log.e(TAG, "initBottomHeight: ...."+height );
+            Log.e(TAG, "initBottomHeight: ...." + height);
             llBottom.setLayoutParams(lp);
 
         }
     }
+
     //获取虚拟按键的高度
     public static int getNavigationBarHeight() {
         int result = 0;
-            Resources res = PinziApplication.getContext().getResources();
-            int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                result = res.getDimensionPixelSize(resourceId);
-            }
+        Resources res = PinziApplication.getContext().getResources();
+        int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = res.getDimensionPixelSize(resourceId);
+        }
 
         return result;
     }
 
 
-    public boolean isNavigationBarShow(){
+    public boolean isNavigationBarShow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             Point realSize = new Point();
             display.getSize(size);
             display.getRealSize(realSize);
-            boolean  result  = realSize.y!=size.y;
-            return realSize.y!=size.y;
-        }else {
+            boolean result = realSize.y != size.y;
+            return realSize.y != size.y;
+        } else {
             boolean menu = ViewConfiguration.get(this).hasPermanentMenuKey();
             boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-            if(menu || back) {
+            if (menu || back) {
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
@@ -137,7 +154,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void createViewModel() {
-
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
     }
 
     @Override
@@ -170,7 +187,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        PinziApplication.clearSpecifyActivities(new Class[]{WelcomeActivity.class,WelcomeActivity.class});
+        PinziApplication.clearSpecifyActivities(new Class[]{WelcomeActivity.class, WelcomeActivity.class});
         mFragmentList = new ArrayList<>();
         oneFragment = new OneFragment();
         twoFragment = new TwoFragment();
@@ -188,7 +205,6 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(mainTapPagerAdapter);
 
     }
-
 
 
     @Override
@@ -337,6 +353,7 @@ public class MainActivity extends BaseActivity {
         index = getIntent().getIntExtra("index", 0);
         viewPager.setCurrentItem(index);
     }
+
     /**
      * 菜单、返回键响应
      */
@@ -346,14 +363,14 @@ public class MainActivity extends BaseActivity {
             if (getIntent().getIntExtra("back", 1) != 2) {
                 exitBy2Click(); //调用双击退出函数
                 return false;
-            }
-            else{
+            } else {
                 finish();
                 return true;
             }
         }
         return true;
     }
+
     /**
      * 双击退出函数
      */
@@ -380,8 +397,149 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private MyViewModel myViewModel;
+
+    /**
+     * 获取版本
+     */
+    private void getVersionInfo() {
+        myViewModel.getVersionInfo();
+        myViewModel.getUpdateLiveData().observe(this, new Observer<BaseDto<VersionInfoDto>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<VersionInfoDto> versionInfoDtoBaseDto) {
+                String versionName = PackageUtils.getVersionName(MainActivity.this);
+                if (versionInfoDtoBaseDto.isSuccess()
+                        && EmptyUtils.isNotEmpty(versionInfoDtoBaseDto.getData())) {
+                    if (!versionName.equals(versionInfoDtoBaseDto.getData().getVersionNo())) {
+                        showUpdateDialog(versionInfoDtoBaseDto.getData());
+                    }
+
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * 弹出更新对话框
+     */
+    private ProgressBar progressBar;
+    private TextView tvPercent;
+    private TextView tvOk;
+
+    private void showUpdateDialog(VersionInfoDto data) {
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_update_show)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+                        dialog.setOutCancel(false);
+                        TextView tvContent = (TextView) holder.getView(R.id.tv_content);
+                        ImageView ivCancel = (ImageView) holder.getView(R.id.iv_cancel);
+                        tvOk = (TextView) holder.getView(R.id.tv_ok);
+                        tvContent.setText(data == null ? "" : data.getDescs());
+                        progressBar = (ProgressBar) holder.getView(R.id.progressBar);
+                        tvPercent = (TextView) holder.getView(R.id.tv_percent);
+                        progressBar.setMax(100);
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                        tvOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updateApk(data, dialog);
+                            }
+                        });
+                    }
+                })
+                .show(getSupportFragmentManager());
+    }
 
 
+    private static final int DOWNLOADAPK_ID = 10;
 
+    /**
+     * 更新版本
+     */
+    private void updateApk(VersionInfoDto dto, final BaseNiceDialog dialog) {
+        tvOk.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        tvPercent.setVisibility(View.VISIBLE);
+        DownloadIntentService.updateUi(this);
+        ToastUitl.showImageToastSuccess("开始下载...");
+        //dialog.dismiss();
+        if (isServiceRunning(DownloadIntentService.class.getName())) {
+            ToastUitl.showImageToastSuccess("正在下载...");
+            return;
+        }
+        Intent intent = new Intent(MainActivity.this, DownloadIntentService.class);
+        Bundle bundle = new Bundle();
+        http:
+//39.108.14.94:9007/donghui_oa/IMG/20190716105609.apk
+        bundle.putString("download_url", dto.getLinkUrl());
+        bundle.putInt("download_id", DOWNLOADAPK_ID);
+        //apk 的名字
+        bundle.putString("download_file", dto.getLinkUrl().substring(dto.getLinkUrl().lastIndexOf('/') + 1));
+        intent.putExtras(bundle);
+        startService(intent);
+    }
 
+    /**
+     * 实时更新下载安装包进度条
+     */
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int progress = msg.what;
+            //更新对话框的进度条
+            progressBar.setProgress(progress);
+            tvPercent.setText((progress == 101 ? 100 : progress) + "%");
+
+        }
+    };
+
+    @Override
+    public void update(int progress) {
+        Message msg = Message.obtain();
+        msg.what = progress;
+        handler.sendMessage(msg);
+    }
+
+    /**
+     * 用来判断服务是否运行.
+     *
+     * @param className 判断的服务名字
+     * @return true 在运行 false 不在运行
+     */
+    private boolean isServiceRunning(String className) {
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager) this
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager
+                .getRunningServices(Integer.MAX_VALUE);
+        if (!(serviceList.size() > 0)) {
+            return false;
+        }
+        for (int i = 0; i < serviceList.size(); i++) {
+            if (serviceList.get(i).service.getClassName().equals(className) == true) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
+    }
+
+    //不要删这行代码
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
+    }
 }
+

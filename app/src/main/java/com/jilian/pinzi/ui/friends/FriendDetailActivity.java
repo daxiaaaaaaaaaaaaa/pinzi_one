@@ -921,11 +921,13 @@ public class FriendDetailActivity extends CommonActivity {
                 String ssbsStr = ssb.toString();
                 SpannableString ssbsStrSpan = new SpannableString(ssbsStr);
 
+
+
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_c71233)),
                         0, name1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_c71233)),
-                        name1.length() + 2, name2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        name1.length() + 2,  name1.length() + 2+name2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 ssbsStrSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FriendDetailActivity.this, R.color.color_222222)),
                         name1.length(), name1.length() + 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

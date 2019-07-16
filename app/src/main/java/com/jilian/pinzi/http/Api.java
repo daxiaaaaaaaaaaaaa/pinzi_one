@@ -60,6 +60,7 @@ import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
 import com.jilian.pinzi.common.vo.AccesstokenVo;
 import com.jilian.pinzi.common.vo.ActivityVo;
 import com.jilian.pinzi.common.vo.AddAdressVo;
@@ -1309,6 +1310,13 @@ public class Api {
     }
 
 
+    /**
+     * 版本更新
+     * @return
+     */
+    public static  Flowable<BaseDto<VersionInfoDto>> getVersionInfo( ) {
+        return RequetRetrofit.getInstance().getVersionInfo();
+    }
 
 
 

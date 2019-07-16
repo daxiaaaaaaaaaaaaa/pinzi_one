@@ -23,6 +23,7 @@ import com.jilian.pinzi.common.dto.SaleRecordDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
 import com.jilian.pinzi.common.dto.ShippmentDto;
 import com.jilian.pinzi.common.dto.UpdatePersonInfoDto;
+import com.jilian.pinzi.common.dto.VersionInfoDto;
 import com.jilian.pinzi.common.vo.AddAdressVo;
 import com.jilian.pinzi.common.vo.AddCourierInfoVo;
 import com.jilian.pinzi.common.vo.AddMySuperiorVo;
@@ -377,5 +378,14 @@ public class MyRepositoryImpl extends CommonRepository implements MyRepository {
     @Override
     public LiveData<BaseDto<EmptyDto>> addCourierInfo(AddCourierInfoVo vo) {
         return request(Api.addCourierInfo(vo)).send().get();
+    }
+
+    /**
+     * 版本更新
+     * @return
+     */
+    @Override
+    public LiveData<BaseDto<VersionInfoDto>> getVersionInfo() {
+        return request(Api.getVersionInfo()).send().get();
     }
 }

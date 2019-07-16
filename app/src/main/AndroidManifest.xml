@@ -220,6 +220,10 @@
         <activity android:name=".ui.VideoPlayerActivity" android:theme="@style/BigImageTranslateTheme"/>
         <activity android:name=".ui.QuestionnaireSurveyDetailFinishActivity"/>
         <activity android:name=".ui.MyOrderWaitePayAfterDetailActivity"/>
+
+        <service android:name=".service.DownloadIntentService"/>
+        <activity android:name=".ui.AndroidOPermissionActivity"/>
+
         <!-- 兼容7.0 -->
         <provider
             android:name="android.support.v4.content.FileProvider"

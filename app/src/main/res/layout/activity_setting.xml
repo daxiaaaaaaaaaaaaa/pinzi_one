@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:background="@color/color_line"
                 android:orientation="vertical">
 
@@ -41,13 +42,49 @@
                 android:textSize="15sp"
                 android:textColor="@color/color_text"
                 android:layout_marginRight="40dp"
-                android:text="500KB"
+                tools:text="500KB"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginRight="13dp"
+            android:background="@color/color_line"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_update"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="检查版本"
+                android:textColor="@color/color_text"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/tv_version"
+                android:textSize="15sp"
+                android:textColor="@color/color_text"
+                android:layout_marginRight="40dp"
+                tools:text="500KB"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="13sp"
+                android:src="@drawable/image_right_back"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
