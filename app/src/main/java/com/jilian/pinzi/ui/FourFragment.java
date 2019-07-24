@@ -39,7 +39,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FourFragment extends BaseFragment implements CustomItemClickListener, ShopBusAdapter.AddOrDelListener {
     private RecyclerView recyclerView;
@@ -298,6 +300,11 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
                     return;
 
                 }
+                if (differTypeGood(datas)) {
+                    ToastUitl.showImageToastFail("定金商品和非定金商品不能同时购买");
+                    return;
+
+                }
                 Intent intent = new Intent(getmActivity(), FillOrderActivity.class);
                 intent.putExtra("dtoList", JSONObject.toJSONString(dtoList));
                 //购物车
@@ -307,7 +314,25 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
             }
         });
     }
+    /**
+     * 判断是否同时包含了定金 和 非定金商品
+     *
+     * @return
+     */
+    private boolean differTypeGood(List<ShopCartLisDto> datas) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).isChecked()) {
+                set.add(String.valueOf(datas.get(i).getIsEarnest()));
+            }
+        }
+        if (set.size() > 1) {
+            return true;
+        } else {
+            return false;
+        }
 
+    }
     /**
      * 选择全部 反选
      *

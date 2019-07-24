@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class ActivityDto implements Serializable {
 
    private String imgUrl;//    true     string      图标
-   private String endDate;//   true     string    活动结束时间
+   private long endDate;//   true     string    活动结束时间
    private String id;//     true     number   活动Id
    private int alreadyPeopleNum;//   true     number      已报名人数
    private String title;//     true     string  标题
    private int peopleNum;//     true     number     报名名额
-   private String startDate;//     true string   活动开始时间
+   private long startDate;//     true string   活动开始时间
    private int isVote;//  true     number     是否可以投票（0.是 1.否）
    private String descs;//    true     string     详情
    private long createDate;//      true     number      创建时间
@@ -101,19 +101,19 @@ public class ActivityDto implements Serializable {
         this.peopleNum = peopleNum;
     }
 
-    public String getEndDate() {
+    public long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(long endDate) {
         this.endDate = endDate;
     }
 
-    public String getStartDate() {
+    public long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
 }

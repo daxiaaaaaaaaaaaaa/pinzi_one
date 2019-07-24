@@ -50,13 +50,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "当前所在Activity: "+TAG );
+        Log.e(TAG, "当前所在Activity: " + TAG);
         //禁止横屏 竖屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-       // StatusBarUtil.setColor(this, getResources().getColor(R.color.color_black), 0);
+        // StatusBarUtil.setColor(this, getResources().getColor(R.color.color_black), 0);
 
         initStatus();
 
@@ -82,12 +83,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public LoginDto getLoginDto(){
-        return SPUtil.getData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,LoginDto.class,null);
+    public LoginDto getLoginDto() {
+        return SPUtil.getData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, LoginDto.class, null);
     }
-    public String getUserId(){
-        return SPUtil.getData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,LoginDto.class,null).getId();
+
+    public String getUserId() {
+        return SPUtil.getData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, LoginDto.class, null).getId();
     }
+
     //地址选择对象
     private CityPickerView mPicker;
 
@@ -164,8 +167,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mPicker;
 
     }
+
     private void initStatus() {
-        if("PerfectInformationActivity".equals(TAG)){
+        if ("PerfectInformationActivity".equals(TAG)) {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -320,6 +324,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 设置右边标题
+     **/
+    public void setNullrightTitle(String text, String color, View.OnClickListener listener) {
+        TextView textView = (TextView) findViewById(R.id.tv_right_text);
+        if (TextUtils.isEmpty(text)) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(color)) {
+                textView.setTextColor(Color.parseColor(color));
+            }
+            textView.setText(text);
+            textView.setOnClickListener(listener);
+
+        }
+
+
+    }
+
+
+    /**
      * 设置左边图片
      **/
     public void setleftImage(int resource, boolean isfinish, View.OnClickListener listener) {
@@ -346,10 +371,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         imageView.setVisibility(View.VISIBLE);
 
     }
+
     /**
      * 设置右边图片
      **/
-    public  ImageView iv_right_one;
+    public ImageView iv_right_one;
+
     public void setrightImageOne(int resource, View.OnClickListener listener) {
         iv_right_one = (ImageView) findViewById(R.id.iv_right_one);
         iv_right_one.setImageResource(resource);
@@ -357,6 +384,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         iv_right_one.setVisibility(View.VISIBLE);
 
     }
+
     /**
      * 设置右边图片
      **/
@@ -367,6 +395,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         imageView.setVisibility(View.VISIBLE);
 
     }
+
     /**
      * 设置背景图片
      **/
@@ -427,7 +456,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         getLoadingDialog().showDialog();
     }
 
-    public void hideLoadingDialog()  {
+    public void hideLoadingDialog() {
         getLoadingDialog().dismiss();
     }
 

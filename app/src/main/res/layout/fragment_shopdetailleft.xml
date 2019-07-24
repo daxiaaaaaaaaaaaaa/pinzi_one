@@ -16,29 +16,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="60dp"
-            android:visibility="visible"/>
+            android:layout_marginBottom="50dp"
+            />
 
-        <TextView
-            android:id="@+id/tv_join_shopCart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+
+        <LinearLayout
+            android:background="@color/white"
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_ok_red"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="10dp"
-            android:text="加入购物车"
-            android:textColor="@color/color_white"
-            android:textSize="16sp"/>
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_shop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/image_shopping_unselect"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="购物车"
+                    android:textColor="@color/color_text_dark"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/color_line"/>
+
+            <TextView
+                android:id="@+id/tv_join_shopCart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="加入购物车"
+                android:textColor="@color/color_text"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_buy"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/color_main_select"
+                android:gravity="center"
+                android:text="立即购买"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
     <RelativeLayout

@@ -14,8 +14,11 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
+
+import java.util.Date;
 
 public class MainActivityDetailActivity extends BaseActivity {
     private TextView tvGet;
@@ -48,23 +51,11 @@ public class MainActivityDetailActivity extends BaseActivity {
         tvRegistrationQuota = (TextView) findViewById(R.id.tv_registration_quota);
         tvRegistrationNumber = (TextView) findViewById(R.id.tv_registration_number);
         webview = (WebView) findViewById(R.id.webview);
-        if (getIntent().getIntExtra("index", 1) == 2) {
-            setrightTitle("上传作品", "#FFFFFF", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class);
-                    intent.putExtra("activityId",mData.getId());
-
-                    startActivity(intent);
-                }
-            });
-
-        }
     }
 
     @Override
     public void initData() {
-        getActivityDetail(getIntent().getStringExtra("id"), getLoginDto()==null?null:getLoginDto().getId());
+        getActivityDetail(getIntent().getStringExtra("id"), getLoginDto() == null ? null : getLoginDto().getId());
     }
 
     private ActivityDto mData;
@@ -81,14 +72,23 @@ public class MainActivityDetailActivity extends BaseActivity {
                         mData = activityDtoBaseDto.getData();
                         if (activityDtoBaseDto.getData().getApplyActivityId() == 0) {
                             tvGet.setText("报名");
+                            setrightTitle(null, null, null);
                         } else {
                             tvGet.setText("取消报名");
+                            setrightTitle("上传作品", "#FFFFFF", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class);
+                                    intent.putExtra("activityId", mData.getId());
+                                    startActivity(intent);
+                                }
+                            });
                         }
                         tvName.setText(activityDtoBaseDto.getData().getTitle());
 
-                        tvDate.setText("活动时间：" + activityDtoBaseDto.getData().getStartDate() +
+                        tvDate.setText("活动时间：" + DateUtil.dateToString(DateUtil.DATE_FORMAT, new Date(activityDtoBaseDto.getData().getStartDate())) +
                                 "~"
-                                + activityDtoBaseDto.getData().getEndDate());
+                                + DateUtil.dateToString(DateUtil.DATE_FORMAT, new Date(activityDtoBaseDto.getData().getEndDate())));
                         tvRegistrationQuota.setText("报名名额：" + activityDtoBaseDto.getData().getPeopleNum());
                         tvRegistrationNumber.setText("已报名人数：" + activityDtoBaseDto.getData().getAlreadyPeopleNum());
 
@@ -127,7 +127,7 @@ public class MainActivityDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityDetailActivity.this, AllWorksActivity.class);
-                intent.putExtra("data",mData);
+                intent.putExtra("data", mData);
                 startActivity(intent);
             }
         });
@@ -184,7 +184,7 @@ public class MainActivityDetailActivity extends BaseActivity {
      */
     private void applyActivity(String id, String uId) {
         showLoadingDialog();
-        viewModel.applyActivity(id,uId);
+        viewModel.applyActivity(id, uId);
         viewModel.getApplyData().observe(this, new Observer<BaseDto>() {
             @Override
             public void onChanged(@Nullable BaseDto baseDto) {

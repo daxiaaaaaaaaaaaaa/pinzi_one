@@ -131,17 +131,11 @@ public class ShopCardCShopAdapter extends RecyclerView.Adapter<ShopCardCShopAdap
             }
 
             holder.tvName.setText(dto.getName());
-//            if(dto.getApplyPlatform()==0){
-//                holder.tvUserPlatform.setText("适用平台：" + "全平台");
-//            }
-//            if(dto.getApplyPlatform()==1){
             holder.tvUserPlatform.setText("适用平台：" + "指定店铺");
-            //}
-
             if (TextUtils.isEmpty(dto.getValidityDate())) {
                 holder.tvDay.setText("有效期限：");
             } else {
-                holder.tvDay.setText("有效期限：" + DateUtil.dateToString(DateUtil.DATE_FORMAT_, new Date(Long.parseLong(dto.getValidityDate()))));
+                holder.tvDay.setText("有效期限：" + dto.getValidityDate());
             }
 
         }

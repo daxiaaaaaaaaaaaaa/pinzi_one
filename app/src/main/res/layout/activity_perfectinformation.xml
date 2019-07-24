@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/widget_size_55"
                 android:gravity="center_vertical"
-                android:hint="ips：填写详细地址以便后台审核"
+                android:hint="tips：填写详细地址以便后台审核"
                 android:paddingLeft="@dimen/widget_size_15"
                 android:textSize="@dimen/font_size_13"/>
 

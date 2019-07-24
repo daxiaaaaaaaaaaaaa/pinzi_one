@@ -71,7 +71,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
         linearLayoutManager = new LinearLayoutManager(this);
         datas = new ArrayList<>();
 
-        allWorkAdapter = new AllWorkAdapter(this, datas, this, this,1);
+        allWorkAdapter = new AllWorkAdapter(this, datas, this, this, 1);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(allWorkAdapter);
         srNoData.setEnableLoadMore(false);
@@ -83,7 +83,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
     @Override
     public void initData() {
         data = (ActivityDto) getIntent().getSerializableExtra("data");
-
+        showLoadingDialog();
         getActivityProductList(getLoginDto().getId(), data.getId());
     }
 
@@ -106,7 +106,6 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
      * @param aId 活动ID
      */
     private void getActivityProductList(String uId, String aId) {
-        showLoadingDialog();
         viewModel.getActivityProductList(uId, aId);
         viewModel.getProductData().observe(this, new Observer<BaseDto<List<ActivityProductDto>>>() {
             @Override
@@ -115,7 +114,10 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                 srHasData.finishRefresh();
                 srNoData.finishRefresh();
                 if (listBaseDto.isSuccess()) {
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
+                    if (EmptyUtils.isNotEmpty(listBaseDto.getData()))
+                    {
+                        srHasData.setVisibility(View.VISIBLE);
+                        srNoData.setVisibility(View.GONE);
                         datas.clear();
                         datas.addAll(listBaseDto.getData());
                         //datas.get(0).setVideo("http://lmp4.vjshi.com/2017-09-13/f55a900d89679ac1c9837d5b5aaf632a.mp4");
@@ -141,15 +143,17 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                         }.start();
 
                     } else {
-
+                        srHasData.setVisibility(View.GONE);
+                        srNoData.setVisibility(View.VISIBLE);
                     }
                 } else {
                     ToastUitl.showImageToastFail(listBaseDto.getMsg());
+                    srHasData.setVisibility(View.GONE);
+                    srNoData.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
-
 
 
     @Override

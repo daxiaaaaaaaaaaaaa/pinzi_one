@@ -158,7 +158,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-    }
+}
 
     @Override
     public void onResume() {

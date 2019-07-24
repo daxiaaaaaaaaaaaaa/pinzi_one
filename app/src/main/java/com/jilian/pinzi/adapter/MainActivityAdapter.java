@@ -51,9 +51,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                 .into(holder.ivPhoto);//在RequestBuilder 中使用自定义的ImageViewTarge
 
         holder.tvName.setText(datas.get(position).getTitle());
-        holder.tvDate.setText("活动时间："+datas.get(position).getStartDate()+
+        holder.tvDate.setText("活动时间："+DateUtil.dateToString(DateUtil.DATE_FORMAT,new Date(datas.get(position).getStartDate()))+
                 "~"
-                +datas.get(position).getStartDate());
+                +DateUtil.dateToString(DateUtil.DATE_FORMAT,new Date(datas.get(position).getEndDate())));
         holder.tvRegistrationQuota.setText("报名名额："+datas.get(position).getPeopleNum());
         holder.tvRegistrationNumber.setText("已报名人数："+datas.get(position).getAlreadyPeopleNum());
     }

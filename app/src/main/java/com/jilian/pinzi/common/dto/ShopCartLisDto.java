@@ -20,6 +20,26 @@ public class ShopCartLisDto implements Serializable {
     private double fastPrice;//true string   实际的价格（商品展示的价格）
     private double seckillPrice;//商品的 秒杀价格
     private Integer classes;// true string1.在首页加入 2.在采购中心加入
+    private int isEarnest;//    true     string  是否需要定金（0.否 1.是）
+
+    private double earnestRate;//     true     string    定金比例（单位%）
+
+    public int getIsEarnest() {
+        return isEarnest;
+    }
+
+    public void setIsEarnest(int isEarnest) {
+        this.isEarnest = isEarnest;
+    }
+
+    public double getEarnestRate() {
+        return earnestRate;
+    }
+
+    public void setEarnestRate(double earnestRate) {
+        this.earnestRate = earnestRate;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

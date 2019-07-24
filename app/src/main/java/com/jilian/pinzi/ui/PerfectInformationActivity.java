@@ -385,7 +385,7 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
                                     @Override
                                     protected void onGetPermissionsSuccess() {
                                         if (type == 1) {
-                                            SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 4 - oneDatas.size(), FROM_ALBUM);
+                                            SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 1, FROM_ALBUM);
                                         }
                                         if (type == 2) {
                                             SelectPhotoUtils.fromAlbum(PerfectInformationActivity.this, FILE_PROVIDER, 4 - twoDatas.size(), FROM_ALBUM);
@@ -410,7 +410,7 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
     }
 
     private String path;
-    private int type;
+    private int type;//1 营业执照 2 门店
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {

@@ -23,6 +23,41 @@ public class ShopGoodsDto implements Serializable {
     private String goodsImg;
     private int quantity;//数量
 
+
+    private int isEarnest;//    true     string  是否需要定金（0.否 1.是）
+
+    private double earnestRate;//     true     string    定金比例（单位%）
+
+    public int getIsEarnest() {
+        return isEarnest;
+    }
+
+    public void setIsEarnest(int isEarnest) {
+        this.isEarnest = isEarnest;
+    }
+
+    public double getEarnestRate() {
+        return earnestRate;
+    }
+
+    public void setEarnestRate(double earnestRate) {
+        this.earnestRate = earnestRate;
+    }
+
+    private String freight;// true string  运费
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getFreight() {
+        return freight;
+    }
+
+    public void setFreight(String freight) {
+        this.freight = freight;
+    }
+
     public int getQuantity() {
         return quantity;
     }

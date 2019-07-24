@@ -17,6 +17,7 @@ import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.ShopDetailDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
@@ -80,7 +81,7 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
                 super.run();
                 //对视频封面处理 耗时操作
 
-                Bitmap bitmap = getNetVideoBitmap(videoUrl);
+                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(videoUrl);
                 Message msg = Message.obtain();
                 msg.what = 1000;
                 msg.obj = bitmap;
@@ -111,23 +112,7 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
         JzvdStd.goOnPlayOnPause();
     }
 
-    public Bitmap getNetVideoBitmap(String videoUrl) {
-        Bitmap bitmap = null;
 
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            //根据url获取缩略图
-            retriever.setDataSource(videoUrl, new HashMap());
-            //获得第一帧图片
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } finally {
-            retriever.release();
-        }
-
-        return bitmap;
-    }
 
     @Override
     protected void loadData() {
