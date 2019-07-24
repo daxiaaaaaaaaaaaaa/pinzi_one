@@ -225,7 +225,6 @@ public class SettingActivity extends BaseActivity implements DownloadIntentServi
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
-                                finish();
                             }
                         });
                         tvOk.setOnClickListener(new View.OnClickListener() {

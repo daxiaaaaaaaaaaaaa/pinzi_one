@@ -72,7 +72,6 @@ import com.jilian.pinzi.common.vo.DiscountMoneyVo;
 import com.jilian.pinzi.common.vo.EditAdressVo;
 import com.jilian.pinzi.common.vo.GetWithdrawDepositVo;
 import com.jilian.pinzi.common.vo.GoodsByScoreVo;
-import com.jilian.pinzi.common.vo.InformationVo;
 import com.jilian.pinzi.common.vo.InvoiceVo;
 import com.jilian.pinzi.common.vo.LoginVo;
 import com.jilian.pinzi.common.vo.PayOrderVo;

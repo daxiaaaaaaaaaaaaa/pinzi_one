@@ -1,11 +1,21 @@
 package com.jilian.pinzi.common.msg;
 
+import com.jilian.pinzi.common.dto.GoodsDetailDto;
+
 import java.io.Serializable;
 
 public class MessageEvent implements Serializable {
     private WxPayMessage wxPayMessage;
     private ProductMessage productMessage;
+    private GoodsDetailDto goodsDetailDto;
 
+    public GoodsDetailDto getGoodsDetailDto() {
+        return goodsDetailDto;
+    }
+
+    public void setGoodsDetailDto(GoodsDetailDto goodsDetailDto) {
+        this.goodsDetailDto = goodsDetailDto;
+    }
     public ProductMessage getProductMessage() {
         return productMessage;
     }

@@ -12,6 +12,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.GoodsDetailDto;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
@@ -43,9 +44,12 @@ public class GoodsDetailCenterFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
+
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         webview = (WebView) view.findViewById(R.id.webview);
 
     }
@@ -61,13 +65,28 @@ public class GoodsDetailCenterFragment extends BaseFragment {
 
     }
 
+    /**
+     * //监听外来是否要去成功的界面
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getGoodsDetailDto())
+
+        ) {
+            initGoodetailView(event.getGoodsDetailDto());
+        }
+    }
 
     /**
      * 初始化商品详情的布局
      *
      * @param data
      */
-    public void initGoodetailView(GoodsDetailDto data) {
+    private void initGoodetailView(GoodsDetailDto data) {
         //图文详情
         String content = data.getContent();
 

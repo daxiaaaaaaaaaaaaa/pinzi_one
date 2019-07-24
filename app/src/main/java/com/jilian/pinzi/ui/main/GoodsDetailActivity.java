@@ -26,6 +26,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.GoodsDetailDto;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.OrderGoodsDto;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
@@ -48,6 +49,8 @@ import com.jilian.pinzi.utils.RxTimerUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.utils.UrlUtils;
 import com.jilian.pinzi.views.NoScrollViewPager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,8 +187,11 @@ public class GoodsDetailActivity extends BaseActivity {
         } else {
             ivCollect.setImageResource(R.drawable.image_colletion_selected);
         }
-        leftFragment.initGoodetailView(data);
-        centerFragment.initGoodetailView(data);
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setGoodsDetailDto(data);
+        EventBus.getDefault().post(messageEvent);
+//        leftFragment.initGoodetailView(data);
+//        centerFragment.initGoodetailView(data);
 
     }
 

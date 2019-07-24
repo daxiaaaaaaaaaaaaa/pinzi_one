@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.common.dto.LoginDto;
+import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class OneAdapter extends RecyclerView.Adapter<OneAdapter.ViewHolder> {
     private Activity mContext;
-    private List<TimeKillGoodsDto> datas;
+    private List<SeckillPrefectureDto> datas;
     private OneListener listener;
     private int classes;
 
@@ -43,7 +44,7 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.ViewHolder> {
         void onItemOneClick(View view, int position);
     }
 
-    public OneAdapter(Activity context, List<TimeKillGoodsDto> datas, OneListener listener,int classes) {
+    public OneAdapter(Activity context, List<SeckillPrefectureDto> datas, OneListener listener, int classes) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;

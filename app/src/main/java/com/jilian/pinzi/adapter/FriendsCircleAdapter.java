@@ -231,10 +231,12 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
                     intent.putExtra("url", datas.get(position).getVideo());
                     Bitmap bitmap = datas.get(position).getBitmap();
-                    ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
-                    byte [] bitmapByte =baos.toByteArray();
-                    intent.putExtra("bitmap",bitmapByte);
+                    if(EmptyUtils.isNotEmpty(bitmap)){
+                        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);
+                        byte [] bitmapByte =baos.toByteArray();
+                        intent.putExtra("bitmap",bitmapByte);
+                    }
 
                         // 添加跳转动画
                     context.startActivity(intent,

@@ -728,6 +728,8 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
             conpouQuantity = "0";
             conpouGoodsId = "0";
             couponId = "0";
+            //刷新优惠券
+            getDiscountConpou();
         }
         //刷新抵扣金额
         initDiscountMoney();
@@ -758,7 +760,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         //优惠券
         double counpou = Double.parseDouble(tvCard.getText().toString().substring(1));
         payCount = allCount + freight - deductionMoney - commisionNum - counpou;
-        return NumberUtils.forMatNumber(payCount);
+        return NumberUtils.forMatNumber(payCount<=0?0:payCount);
     }
 
 

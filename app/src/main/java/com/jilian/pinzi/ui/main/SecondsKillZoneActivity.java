@@ -45,7 +45,7 @@ import io.reactivex.annotations.NonNull;
  */
 public class SecondsKillZoneActivity extends BaseActivity implements CustomItemClickListener {
     private SecondsKillZoneAdapter adapter;
-    private List<TimeKillGoodsDto> datas;
+    private List<SeckillPrefectureDto> datas;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView recyclerView;
     private MainViewModel viewModel;
@@ -115,14 +115,14 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
                     srHasData.finishRefresh();
                     srHasData.finishLoadMore();
                     //有数据
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getTimeKillGoods())) {
+                    if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                         srNoData.setVisibility(View.GONE);
                         srHasData.setVisibility(View.VISIBLE);
                         rlTop.setVisibility(View.VISIBLE);
                         if (pageNo == 1) {
                             datas.clear();
                         }
-                        datas.addAll(listBaseDto.getData().get(0).getTimeKillGoods());
+                        datas.addAll(listBaseDto.getData());
                         adapter.notifyDataSetChanged();
                     } else {
                         //说明是上拉加载

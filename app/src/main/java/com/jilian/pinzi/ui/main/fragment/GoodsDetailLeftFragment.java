@@ -41,6 +41,7 @@ import com.jilian.pinzi.common.dto.GoodsDetailDto;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.ParameterDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
@@ -63,6 +64,10 @@ import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 import com.jilian.pinzi.views.RoundImageView;
 import com.jilian.pinzi.views.RoundViewPager;
 import com.jilian.pinzi.views.SlideSeeMoreLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -132,10 +137,12 @@ public class GoodsDetailLeftFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         tvFreight = (TextView) view.findViewById(R.id.tv_freight);
         HashMap<String, Integer> hashMap = new HashMap<>();
         hashMap.put(RecyclerViewSpacesItemDecoration.RIGHT_DECORATION, DisplayUtil.dip2px(getmActivity(), 15));//右间距
@@ -230,11 +237,28 @@ public class GoodsDetailLeftFragment
     private GoodsDetailDto mData;
 
     /**
+     * //监听外来是否要去成功的界面
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getGoodsDetailDto())
+
+        ) {
+            initGoodetailView(event.getGoodsDetailDto());
+        }
+    }
+
+
+    /**
      * 初始化商品详情的布局
      *
      * @param data
      */
-    public void initGoodetailView(GoodsDetailDto data) {
+    private void initGoodetailView(GoodsDetailDto data) {
         if (data == null) {
             return;
         }

@@ -117,12 +117,11 @@ public class EnableCardFragment extends BaseFragment implements CustomItemClickL
 
     @Override
     public void checkClick(int position) {
-        for (int i = 0; i <datas.size() ; i++) {
-            if(position == i){
-                datas.get(i) .setCheck(true);
-            }
-            else{
-                datas.get(i) .setCheck(false);
+        for (int i = 0; i < datas.size(); i++) {
+            if (position == i) {
+                datas.get(i).setCheck(!datas.get(i).isCheck());
+            } else {
+                datas.get(i).setCheck(false);
             }
         }
         adapter.notifyDataSetChanged();

@@ -63,7 +63,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     private TextView tvNextTime;
     private LinearLayout rlReturn;
     private RecyclerView rvOne;
-    private List<TimeKillGoodsDto> timeKillGoods;//秒杀专区
+    private List<SeckillPrefectureDto> timeKillGoods;//秒杀专区
     private OneAdapter oneAdapter;
     private LinearLayoutManager lm_one;
     private RecyclerView rvTwo;
@@ -264,10 +264,9 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
                     if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData()))
                     {
                         llKillGoods.setVisibility(View.VISIBLE);
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTimeKillGoods())) {
+                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
                             timeKillGoods.clear();
-                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData().get(0).getTimeKillGoods());
-                            timeKillGoods.add(new TimeKillGoodsDto());
+                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData());
                             oneAdapter.notifyDataSetChanged();
                         }
                         if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime())) {

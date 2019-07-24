@@ -133,7 +133,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     private List<MainRecommendDto> personData;//人气推荐
     private List<MainRecommendDto> newsData;//新品推荐
     private List<MainRecommendDto> returnData;//佣金反区
-    private List<TimeKillGoodsDto> timeKillGoods;//秒杀专区
+    private List<SeckillPrefectureDto> timeKillGoods;//秒杀专区
     private List<StoreShowDto> storeShows;//店铺展示
     private LinearLayout llKillGoods;
     private LinearLayout llBuyFour;
@@ -187,7 +187,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      * 获取店铺展示的数据
      */
     private void getStoreShowData() {
-        viewModel.StoreShow(1, 6,null,null,null,null,null,null,null,null);
+        viewModel.StoreShow(1, 6, null, null, null, null, null, null, null, null);
         viewModel.getStoreShowliveData().observe(this, new Observer<BaseDto<List<StoreShowDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<StoreShowDto>> listBaseDto) {
@@ -216,26 +216,16 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 try {
                     if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
                         llKillGoods.setVisibility(View.VISIBLE);
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTimeKillGoods())) {
+                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
                             timeKillGoods.clear();
-                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData().get(0).getTimeKillGoods());
+                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData());
                             oneAdapter.notifyDataSetChanged();
                         }
                         if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime())) {
-//                            if(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getNewTime()==0){
-//                                llKillGoods.setVisibility(View.GONE);
-//                            }
-//                            else{
                             llKillGoods.setVisibility(View.VISIBLE);
                             tvNextTime.setText("下一场 " + DateUtil.dateToString("HH:mm", new Date(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getNewTime())) + "开始");
-                            // s
                             long endTime = seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getEndTime();
-                            //开启一个倒计时
                             initTimeTask(endTime);
-
-                            //  }
-
-
                         }
                     } else {
                         llKillGoods.setVisibility(View.GONE);
@@ -251,6 +241,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     }
 
     private void initTimeTask(long endTime) {
+        MainRxTimerUtil.cancel();
         MainRxTimerUtil.interval(1000, new MainRxTimerUtil.IRxNext() {
             @Override
             public void doNext() {//获取现在的 时分秒 时间戳
@@ -260,7 +251,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                //单位 s
+                //单位 毫秒
                 long delTime = endTime - nowTime;
                 if (delTime <= 0) {
                     tvHour.setText("00");
@@ -438,10 +429,6 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         });
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
     @Override
     protected int getLayoutId() {
@@ -456,7 +443,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         rlReturn = (LinearLayout) view.findViewById(R.id.rl_return);
 
         llNews = (LinearLayout) view.findViewById(R.id.ll_news);
-        llAcivity = (LinearLayout)view. findViewById(R.id.ll_acivity);
+        llAcivity = (LinearLayout) view.findViewById(R.id.ll_acivity);
 
         //
         tvOneMore = (TextView) view.findViewById(R.id.tv_one_more);
@@ -532,7 +519,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         personData = new ArrayList<>();//人气推荐
         newsData = new ArrayList<>();//新品推荐
         returnData = new ArrayList<>();//佣金反渠
-        oneAdapter = new OneAdapter(getmActivity(), timeKillGoods, this,1);
+        oneAdapter = new OneAdapter(getmActivity(), timeKillGoods, this, 1);
         twoAdapter = new TwoAdapter(getmActivity(), returnData, this);
         threeAdapter = new ThreeAdapter(getmActivity(), storeShows, this);
         fourAdapter = new FourAdapter(getmActivity(), newsData, this);
@@ -569,7 +556,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getmActivity(),MainActivityActivity.class));
+                startActivity(new Intent(getmActivity(), MainActivityActivity.class));
 
 
             }
@@ -580,7 +567,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         llNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getmActivity(),MainNewsActivity.class));
+                startActivity(new Intent(getmActivity(), MainNewsActivity.class));
             }
         });
         /**
@@ -756,7 +743,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     ToastUitl.showImageToastFail("该功能开放给个人");
 
 
-            }
+                }
             }
         });
         llIntegralMall.setOnClickListener(new View.OnClickListener() {
@@ -924,7 +911,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     public void onItemThreeClick(View view, int position) {
         //在这里跳转到店铺展示的界面
-        ShopDetailActivity.startActivity(getContext(), storeShows.get(position).getId(),2);
+        ShopDetailActivity.startActivity(getContext(), storeShows.get(position).getId(), 2);
 
 
     }

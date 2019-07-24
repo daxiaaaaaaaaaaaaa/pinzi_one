@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.common.dto.LoginDto;
+import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.utils.NumberUtils;
@@ -23,10 +24,10 @@ import java.util.List;
 
 public class SecondsKillZoneAdapter extends RecyclerView.Adapter<SecondsKillZoneAdapter.ViewHolder> {
     private Activity mContext;
-    private List<TimeKillGoodsDto> datas;
+    private List<SeckillPrefectureDto> datas;
     private CustomItemClickListener listener;
 
-    public SecondsKillZoneAdapter(Activity context, List<TimeKillGoodsDto> datas, CustomItemClickListener listener) {
+    public SecondsKillZoneAdapter(Activity context, List<SeckillPrefectureDto> datas, CustomItemClickListener listener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
