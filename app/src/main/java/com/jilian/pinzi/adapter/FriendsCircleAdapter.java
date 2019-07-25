@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -20,7 +18,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,10 +45,8 @@ import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.common.dto.FriendTblCommentDto;
 import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.dto.LoginDto;
-import com.jilian.pinzi.ui.AllWorksActivity;
 import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.VideoPlayerActivity;
-import com.jilian.pinzi.ui.friends.imagepager.ImagePagerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -628,7 +623,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
                 // 评论好友的朋友圈
-                String name = comment.getCommentUser().getName() + ": ";
+                String name = (comment.getCommentUser()==null?"":comment.getCommentUser().getName()) + ": ";
                 String content = comment.getContent();
                 SpannableString ssName = new SpannableString(name);
                 ssName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_c71233)),
@@ -642,8 +637,8 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
                 tvContent.setText(ssb);
             } else {
                 // 评论好友的评论
-                String name1 = comment.getReplyCommentUser().getName(); // 回复评论人的姓名
-                String name2 = comment.getCommentUser().getName() + ": "; // 评论人姓名
+                String name1 = comment.getReplyCommentUser()==null?"":comment.getReplyCommentUser().getName(); // 回复评论人的姓名
+                String name2 = (comment.getCommentUser()==null?"":comment.getCommentUser().getName()) + ": "; // 评论人姓名
                 String content = comment.getContent();
                 SpannableString ssName1 = new SpannableString(name1);
                 ssName1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_c71233)),

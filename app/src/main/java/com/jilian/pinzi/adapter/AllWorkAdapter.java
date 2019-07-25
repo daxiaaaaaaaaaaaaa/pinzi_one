@@ -139,10 +139,13 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                 intent.putExtra("url", datas.get(position).getVideo());
                 Bitmap bitmap = datas.get(position).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] bitmapByte = baos.toByteArray();
-                intent.putExtra("bitmap", bitmapByte);
+                if(EmptyUtils.isNotEmpty(bitmap)){
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] bitmapByte = baos.toByteArray();
+                    intent.putExtra("bitmap", bitmapByte);
+                }
+
 
                 // 添加跳转动画
                 mContext.startActivity(intent,
