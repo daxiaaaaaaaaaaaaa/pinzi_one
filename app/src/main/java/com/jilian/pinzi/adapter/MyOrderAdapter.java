@@ -31,7 +31,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     private List<MyOrderDto> datas;
     private CustomItemClickListener listener;
     private String leftDatas[] = new String[]{"", "取消订单", "取消订单", "查看物流", "评价商品", "查看评价", "重新购买", "取消订单"};
-    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买", "删除订单", "立即付款"};
+    private String rightDatas[] = new String[]{"", "立即付款", "确认收货", "确认收货", "再次购买", "再次购买", "删除订单", "支付尾款"};
     private String status[] = new String[]{"", "等待付款", "等待发货", "等待收货", "交易完成", "交易完成", "交易关闭", "等待付款"};
     private OrderListener orderListener;
 

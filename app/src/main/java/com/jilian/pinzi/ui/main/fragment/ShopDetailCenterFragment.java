@@ -1,7 +1,10 @@
 package com.jilian.pinzi.ui.main.fragment;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
@@ -20,6 +24,7 @@ import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -41,6 +46,7 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
     private ShopPhotpAdapter adapter;
     private List<String> datas;
     private JzvdStd ivVideo;
+    private LinearLayout llCall;
 
 
     public void initDataView(ShopDetailDto mShopDetail) {
@@ -112,7 +118,38 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
         JzvdStd.goOnPlayOnPause();
     }
 
+    private void showTwoTipsDialog(String phone) {
+        if(TextUtils.isEmpty(phone)){
+            return;
+        }
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_confirm);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
+        TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
+        tvTitle.setText("拨打电话");
+        tvContent.setText(phone);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
+        TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
+        tvOk.setText("拨打");
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                Uri data = Uri.parse("tel:" + phone);
+                intent.setData(data);
+                startActivity(intent);
 
+
+            }
+        });
+        dialog.show();
+    }
 
     @Override
     protected void loadData() {
@@ -131,6 +168,8 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+
+        llCall = (LinearLayout) view.findViewById(R.id.ll_call);
         ivVideo = (JzvdStd) view.findViewById(R.id.iv_video);
         tvComment = (TextView) view.findViewById(R.id.tv_comment);
         tvTime = (TextView) view.findViewById(R.id.tv_time);
@@ -159,6 +198,12 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
 
     @Override
     protected void initListener() {
+        llCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTwoTipsDialog(tvShopDetailPhone.getText().toString());
+            }
+        });
 
     }
 

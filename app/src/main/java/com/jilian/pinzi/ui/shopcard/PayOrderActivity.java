@@ -403,12 +403,18 @@ public class PayOrderActivity extends BaseActivity {
      * 跳转到支付成功的界面
      */
     private void toPaySuccess() {
-        intent.putExtra("payCount", "¥ " + tvPayCount.getText().toString().substring(5));
-        intent.putExtra("orderNo", orderNo);
-        intent.putExtra("orderId", orderId);
-        startActivity(intent);
-        finish();
-        PinziApplication.clearSpecifyActivities(new Class[]{MyOrderWaitePayDetailActivity.class});
+        try {
+            intent.putExtra("payCount", "¥ " + tvPayCount.getText().toString().substring(5));
+            intent.putExtra("orderNo", orderNo);
+            intent.putExtra("orderId", orderId);
+            startActivity(intent);
+            finish();
+            PinziApplication.clearSpecifyActivities(new Class[]{MyOrderWaitePayDetailActivity.class});
+        }
+        catch (Exception e){
+           e.printStackTrace();
+        }
+
     }
 
     @Override

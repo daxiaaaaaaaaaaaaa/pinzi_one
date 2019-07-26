@@ -251,22 +251,21 @@
         <!--value的值填写渠道名称，例如yingyongbao。这里设置动态渠道变量-->
         <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
         <!--
-           配置APP版本号 1.0.0 测试  2.0.0 正式
-            阿里环境 使用版本号 1.0.0
 
-            开发版本  使用版本号 2.0.0
-
-           打包 线上版本 5使用版本号 5.0.0
 
             这里是为了区分不同发环境，和APP的版本号无关
         -->
         <meta-data
             android:name="BUGLY_APP_VERSION"
-            android:value="6.0.0"/>
+            android:value="V3.0.0"/>
         <!-- 配置APP渠道号 -->
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
-            android:value="6.0.0"/>
+            android:value="test"/>
+
+        <!--<meta-data-->
+            <!--android:name="BUGLY_APP_CHANNEL"-->
+            <!--android:value="test"/>-->
         <!-- 配置Bugly调试模式（true或者false） -->
         <meta-data
             android:name="BUGLY_ENABLE_DEBUG"

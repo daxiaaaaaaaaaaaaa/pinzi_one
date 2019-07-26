@@ -158,28 +158,34 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-}
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        //获取首页轮博图
-        getStartPage();
-
         //获取消息公告列表
         getMsgData();
         //获取新消息 是否红点
         getNewMsgData();
+        //获取秒杀专区的数据
+        getSeckillPrefectureData();
+
+    }
+
+    @Override
+    protected void initData() {
+        setCenterTitle("779百香街", "#FFFFFF");
+        //获取首页轮博图
+        getStartPage();
         //获取人气推荐数据
         getRecommenPersondData();
         //获取新品推荐数据
         getRecommendNewData();
         //获取返佣金专区数据
         getReturnCommissionData();
-        //获取秒杀专区的数据
-        getSeckillPrefectureData();
         //获取店铺展示的数据
         getStoreShowData();
+
 
     }
 
@@ -539,12 +545,6 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
 
     }
 
-    @Override
-    protected void initData() {
-        setCenterTitle("779百香街", "#FFFFFF");
-
-
-    }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
