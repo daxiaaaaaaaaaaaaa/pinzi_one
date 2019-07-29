@@ -7,7 +7,9 @@ public class ThirdUserLoginVo extends BaseVo {
     private String loginType;// false string 0微信 1QQ 2微博
     private String headImg;//false string 头像
     private String uName;//false string    名称
-    private String type;// false number 0,用户首次调用三方登录接口，二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
+    private String type;// false number    -1.第一次传参 0,用户输入手机号界面调用三方登录接口，
+    // 二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
+
     private String phone;// false number 电话号码
     private String msgCode;//false number     短信验证码
     private String InvitationCode;//false number    邀请码

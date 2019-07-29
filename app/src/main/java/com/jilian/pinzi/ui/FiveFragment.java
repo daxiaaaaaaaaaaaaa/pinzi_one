@@ -222,7 +222,7 @@ public class FiveFragment extends BaseFragment {
                     .load(((MainActivity)getmActivity()).getLoginDto().getHeadImg())
                     .into(ivHead);
             tvName.setText(((MainActivity)getmActivity()).getLoginDto().getName());
-            tvIniviteCode.setText("我的邀请码："+dto.getInvitationCode());
+            tvIniviteCode.setText("我的邀请码："+(dto.getInvitationCode()==null?"":dto.getInvitationCode()));
 
         }
         //获取新消息 是否红点

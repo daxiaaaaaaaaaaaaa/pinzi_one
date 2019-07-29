@@ -55,6 +55,7 @@ public class RegisterActivity extends BaseActivity {
     private TextView tvGetmsg;
     private ImageView ivEye;
     private RelativeLayout rlEyeOne;
+    private LinearLayout llSms;
 
 
     @Override
@@ -67,6 +68,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PinziApplication.addActivity(this);
+
     }
 
     @Override
@@ -100,6 +102,18 @@ public class RegisterActivity extends BaseActivity {
         tvGetmsg = (TextView) findViewById(R.id.tv_getmsg);
         ivEye = (ImageView) findViewById(R.id.iv_eye);
         rlEyeOne = (RelativeLayout) findViewById(R.id.rl_eye_one);
+
+        llSms = (LinearLayout) findViewById(R.id.ll_sms);
+        //从绑定手机号界面进来的
+        if (!TextUtils.isEmpty(getIntent().getStringExtra("phone"))) {
+            llSms.setVisibility(View.GONE);
+            etPhone.setEnabled(false);
+            etPhone.setText(getIntent().getStringExtra("phone"));
+            etPhone.setClearIconVisible(false);
+        } else {
+            llSms.setVisibility(View.VISIBLE);
+            etPhone.setEnabled(true);
+        }
 
 
     }
@@ -233,7 +247,21 @@ public class RegisterActivity extends BaseActivity {
                     ToastUitl.showImageToastFail("请输入正确的手机号码");
                     return;
                 }
-                register();
+                //如果是从绑定手机号界面过来的，就不需要手机验证码，否则需要手机验证码
+                if(TextUtils.isEmpty(getIntent().getStringExtra("phone"))){
+                    if (TextUtils.isEmpty(etCode.getText().toString())) {
+                        ToastUitl.showImageToastFail("验证码不能为空");
+                        return;
+                    }
+                }
+                if (TextUtils.isEmpty(getIntent().getStringExtra("loginId"))) {
+                    //普通注册
+                    register();
+                } else {
+                    //第三方登录
+                    threeLogin();
+                }
+
             }
         });
         tvRegisterUserService.setOnClickListener(v -> startActivity(new Intent(this, UserServiceActivity.class)));
@@ -326,7 +354,6 @@ public class RegisterActivity extends BaseActivity {
      */
     private void register() {
 
-
         getLoadingDialog().showDialog();
         //注册
         RegisterVo vo = new RegisterVo();
@@ -342,14 +369,7 @@ public class RegisterActivity extends BaseActivity {
                 getLoadingDialog().dismiss();
                 if (registerDtoBaseDto.isSuccess()) {
                     ToastUitl.showImageToastSuccess("注册成功");
-                    //普通登录
-                    if (TextUtils.isEmpty(getIntent().getStringExtra("loginId"))) {
-                        login();
-                    } else {
-                        //第三方登录
-                        threeLogin();
-                    }
-
+                    login();
                 } else {
                     ToastUitl.showImageToastFail(registerDtoBaseDto.getMsg());
                 }
@@ -374,22 +394,37 @@ public class RegisterActivity extends BaseActivity {
                     PinziApplication.clearAllActivitys();
                 }
 
-                else  if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
+                //未注册
+                else if (loginDtoBaseDto.getCode() == Constant.Server.REGISTER_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
-                   // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                    Intent intent = new Intent(RegisterActivity.this, RegisterActivity.class);
+                    intent.putExtra("loginId", getIntent().getStringExtra("loginId"));
+                    intent.putExtra("loginType", getIntent().getStringExtra("loginType"));
+                    intent.putExtra("headImg", getIntent().getStringExtra("headImg"));
+                    intent.putExtra("uName", getIntent().getStringExtra("uName"));
+                    startActivity(intent);
+
+                }
+                //已注册 需要绑定手机号码
+                else if (loginDtoBaseDto.getCode() == Constant.Server.BIND_CODE) {
+                    //按照 后台的人说 把 登录状态  保存到前端
+                    Intent intent = new Intent(RegisterActivity.this, BindPhoneActivity.class);
+                    intent.putExtra("loginId", getIntent().getStringExtra("loginId"));
+                    intent.putExtra("loginType", getIntent().getStringExtra("loginType"));
+                    intent.putExtra("headImg", getIntent().getStringExtra("headImg"));
+                    intent.putExtra("uName", getIntent().getStringExtra("uName"));
+                    startActivity(intent);
+
+                } else if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
+                    //按照 后台的人说 把 登录状态  保存到前端
                     Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
-                    intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                    intent.putExtra("userId", loginDtoBaseDto.getData().getId());
                     startActivity(intent);
                     finish();
-                }
-                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
-                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                } else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
-                }
-
-                else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
-                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                } else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
                     finish();
                 } else {
@@ -418,26 +453,19 @@ public class RegisterActivity extends BaseActivity {
                     PinziApplication.clearSpecifyActivities(new Class[]{LoginActivity.class});
                 }
                 //完善资料
-                else  if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
+                else if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
-                   // SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
-
                     Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
-                    intent.putExtra("userId",loginDtoBaseDto.getData().getId());
+                    intent.putExtra("userId", loginDtoBaseDto.getData().getId());
                     startActivity(intent);
-
                 }
                 //正在审核
-                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
-                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKING_CODE) {
                     startActivity(new Intent(RegisterActivity.this, UserCheckActivity.class));
-
                 }
                 //审核失败
-                else  if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
-                    //SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
+                else if (loginDtoBaseDto.getCode() == Constant.Server.CHECKFAILUER_CODE) {
                     startActivity(new Intent(RegisterActivity.this, UserCheckFailuerActivity.class));
-
                 } else {
                     ToastUitl.showImageToastFail(loginDtoBaseDto.getMsg());
                 }
@@ -452,7 +480,6 @@ public class RegisterActivity extends BaseActivity {
     private void updateEnableStatus() {
         if (!TextUtils.isEmpty(etPhone.getText().toString())
                 && !TextUtils.isEmpty(etPwd.getText().toString())
-                && !TextUtils.isEmpty(etCode.getText().toString())
                 && agreeCheck) {
             tvOk.setEnabled(true);
             tvOk.setBackgroundResource(R.drawable.shape_btn_login_normal);

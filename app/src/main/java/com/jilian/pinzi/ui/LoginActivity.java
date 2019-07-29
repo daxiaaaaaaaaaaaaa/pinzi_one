@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
     private String loginType;
-    private String type = "0";// false number 0,用户首次调用三方登录接口，二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
+    private String type = "-1";// false number 0,用户首次调用三方登录接口，二次调用需要携带以下参数且type类型的值必须为类型（1.普通用户 2.门店 3.二批商）
     @Override
     public void initListener() {
         umAuthListener = new UMAuthListener() {
@@ -141,6 +141,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onChanged(@Nullable BaseDto<LoginDto> loginDtoBaseDto) {
                         hideLoadingDialog();
+                        //状态码（200 登录成功，210 用户未注册，跳入注册页面，202用户未完善资料 ，204 用户审核中，206 用户未通过审核，400 注册中断 出现问题）
                         if (loginDtoBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                             SPUtil.putData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,loginDtoBaseDto.getData());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -159,6 +160,18 @@ public class LoginActivity extends BaseActivity {
                             startActivity(intent);
 
                         }
+                        //已注册 需要绑定手机号码
+                        else if(loginDtoBaseDto.getCode() == Constant.Server.BIND_CODE){
+                            //按照 后台的人说 把 登录状态  保存到前端
+                            Intent intent  = new Intent(LoginActivity.this, BindPhoneActivity.class);
+                            intent.putExtra("loginId",data.get("uid"));
+                            intent.putExtra("loginType",loginType);
+                            intent.putExtra("headImg",data.get("iconurl"));
+                            intent.putExtra("uName",data.get("name"));
+                            startActivity(intent);
+
+                        }
+
                         //完善信息
                         else  if(loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE){
                             //按照 后台的人说 把 登录状态  保存到前端

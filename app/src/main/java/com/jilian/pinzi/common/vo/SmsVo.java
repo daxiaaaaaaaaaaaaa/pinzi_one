@@ -6,7 +6,7 @@ public class SmsVo extends BaseVo {
 
     private String phone;//true string 电话
 
-    private Integer type;//   1.注册 2.找回密码
+    private Integer type;//   1.注册 2.找回密码 0 绑定手机号
 
 
     public String getPhone() {

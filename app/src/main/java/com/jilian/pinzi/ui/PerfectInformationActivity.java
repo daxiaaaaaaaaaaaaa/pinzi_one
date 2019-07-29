@@ -515,9 +515,11 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
         this.type = type;
         if (type == 1) {
             if (position == oneDatas.size() - 1) {
-                if (oneDatas.size() == 4) {
+                if (oneDatas.size() == 2) {
                     return;
-                } else {
+                }
+
+                else {
 
                     showSelectPhotoTypeDialog();
                 }

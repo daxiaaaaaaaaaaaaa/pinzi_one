@@ -21,6 +21,7 @@ public class Constant {
      */
     public static class Server {
         public final static int SUCCESS_CODE = 200;
+        public final static int BIND_CODE = 220;//已经注册 需要绑定手机号码
         public final static int REGISTER_CODE = 210;//未注册
         public final static int NOPERFORM_CODE = 202;//未完善资料
         public final static int CHECKING_CODE = 204;//用户审核中
