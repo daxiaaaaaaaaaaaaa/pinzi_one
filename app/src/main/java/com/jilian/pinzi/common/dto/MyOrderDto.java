@@ -10,7 +10,7 @@ public class MyOrderDto implements Serializable {
     private String id;// true number订单ID
     private String payScore;// true number  支付积分
     private int isReturn;// true string0.可以退货 1.超过退货日期
-    private Integer payStatus;// true number    支付状态（1.待支付 2.已支付，待发货 3.已发货 4.已完成，待评价 5.已评价 6.已取消）
+    private Integer payStatus;// true number    支付状态（1.待支付 2.已支付，待发货 3.已发货 4.已完成，待评价 5.已评价 6.已取消 7 等待付尾款）
     private long createDate;// true string       订单时间
     private int orderType;// true number1.商品 2.奖品
     private String awardName;// true string奖品名称

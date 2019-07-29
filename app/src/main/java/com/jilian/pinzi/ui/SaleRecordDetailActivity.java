@@ -17,6 +17,7 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.common.dto.SaleRecordDetailDto;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.DateUtil;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 
 import java.util.Date;
@@ -137,7 +138,10 @@ public class SaleRecordDetailActivity extends BaseActivity {
             if (saleRecordDetailDtoBaseDto == null) return;
             if (saleRecordDetailDtoBaseDto.isSuccess()) {
                 mSaleRecordDetail = saleRecordDetailDtoBaseDto.getData();
-                initViewData();
+                if(EmptyUtils.isNotEmpty(mSaleRecordDetail)){
+                    initViewData();
+                }
+
             } else {
                 ToastUitl.showImageToastFail(saleRecordDetailDtoBaseDto.getMsg());
             }

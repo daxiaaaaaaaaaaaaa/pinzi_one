@@ -187,12 +187,12 @@ public class PayOrderActivity extends BaseActivity {
 
         }
 
-        if (shopType == 1) {
-            rlGoods.setVisibility(View.VISIBLE);
-        }
-        if (shopType == 2) {
+//        if (shopType == 1) {
+//            rlGoods.setVisibility(View.VISIBLE);
+//        }
+//        if (shopType == 2) {
             rlGoods.setVisibility(View.GONE);
-        }
+        //}
     }
 
     /**

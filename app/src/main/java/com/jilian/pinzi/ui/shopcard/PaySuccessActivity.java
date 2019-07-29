@@ -1,5 +1,7 @@
 package com.jilian.pinzi.ui.shopcard;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +11,14 @@ import android.widget.TextView;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
+import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.OrderDetailDto;
 import com.jilian.pinzi.ui.MainActivity;
+import com.jilian.pinzi.ui.MyOrderWaitePayAfterDetailActivity;
 import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.my.MyOrderWaiteGetGoodDetailActivity;
+import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
+import com.jilian.pinzi.utils.ToastUitl;
 
 public class PaySuccessActivity extends BaseActivity {
     private TextView tvPayType;
@@ -31,10 +38,10 @@ public class PaySuccessActivity extends BaseActivity {
         super.onDestroy();
         PinziApplication.removeActivity(this);
     }
-
+    private MyViewModel viewModel;
     @Override
     protected void createViewModel() {
-
+        viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
     }
 
     @Override
@@ -62,9 +69,30 @@ public class PaySuccessActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        PinziApplication.clearSpecifyActivities(new Class[]{MyOrderWaitePayAfterDetailActivity.class});
+        PinziApplication.clearSpecifyActivities(new Class[]{MyOrderWaiteGetGoodDetailActivity.class});
+        getOrderDetail();
     }
-
+    private int payStatus;// true number   支付状态（1.待支付 2.已支付，待发货 3.已发货 4.已完成，待评价 5.已评价 6.已取消）
+    /**
+     * 获取订单详情
+     */
+    private void getOrderDetail() {
+        showLoadingDialog();
+        viewModel.getOrderDetail(getIntent().getStringExtra("orderId"));
+        viewModel.getOrderDetail().observe(this, new Observer<BaseDto<OrderDetailDto>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<OrderDetailDto> dto) {
+                hideLoadingDialog();
+                if(dto.isSuccess()){
+                    payStatus = dto.getData().getPayStatus();
+                }
+                else{
+                    ToastUitl.showImageToastFail(dto.getMsg());
+                }
+            }
+        });
+    }
     @Override
     public void initListener() {
         tvBack.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +106,23 @@ public class PaySuccessActivity extends BaseActivity {
         tvSeeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PaySuccessActivity.this, MyOrderWaiteGetGoodDetailActivity.class);
-                intent.putExtra("type",1);
-                intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
-                startActivity(intent);
-                finish();
+                if(payStatus==0){
+                    return;
+                }
+                if(payStatus==7){
+                    Intent intent = new Intent(PaySuccessActivity.this, MyOrderWaitePayAfterDetailActivity.class);
+                    intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Intent intent = new Intent(PaySuccessActivity.this, MyOrderWaiteGetGoodDetailActivity.class);
+                    intent.putExtra("type",1);// 1 代发货 2 待收货
+                    intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         });
     }

@@ -55,7 +55,6 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
     private ImageView ivCollect;
 
 
-
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -89,20 +88,26 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
 
     @Override
     public void initData() {
-        getInformationDetail(getIntent().getStringExtra("id"), getLoginDto()==null?null:getLoginDto().getId());
+        getInformationDetail(getIntent().getStringExtra("id"), getLoginDto() == null ? null : getLoginDto().getId());
     }
+
+    private boolean isGet;
 
     @Override
     public void initListener() {
         ivCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(MainNewsDetailActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(MainNewsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
                 if (EmptyUtils.isNotEmpty(mData)) {
+                    if (isGet) {
+                        return;
+                    }
+                    isGet = true;
                     if (mData.getCollectId() == 0) {
                         collectGoodsOrStore(getUserId(), mData.getId(), 3);
                     } else {
@@ -122,7 +127,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                         return false;
                     }
 
-                    if(TextUtils.isEmpty(etContent.getText().toString())){
+                    if (TextUtils.isEmpty(etContent.getText().toString())) {
                         return false;
                     }
                     //在这里做请求操作
@@ -134,7 +139,9 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
         });
 
     }
-    private  InformationtDetailDto mData;
+
+    private InformationtDetailDto mData;
+
     /**
      * 评论
      *
@@ -173,9 +180,9 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
             @Override
             public void onChanged(@Nullable BaseDto<InformationtDetailDto> detailDtoBaseDto) {
                 hideLoadingDialog();
+                isGet = false;
                 if (detailDtoBaseDto.isSuccess()) {
-                    if (EmptyUtils.isNotEmpty(detailDtoBaseDto.getData()))
-                    {
+                    if (EmptyUtils.isNotEmpty(detailDtoBaseDto.getData())) {
                         mData = detailDtoBaseDto.getData();
                         if (detailDtoBaseDto.getData().getCollectId() == 0) {
                             ivCollect.setImageResource(R.drawable.image_colletion_normal);
@@ -233,6 +240,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
             }
         });
     }
+
     /**
      * 取消收藏
      *

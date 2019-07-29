@@ -54,18 +54,24 @@ public class MyApplyServiceGoodAdapter extends RecyclerView.Adapter<MyApplyServi
         //超过退货日期
         if(dto.getIsReturn()==1){
             holder.tvRight.setBackgroundResource(R.drawable.shape_ok_dark);
+            holder.tvOut.setText("该商品已超过售后期");
             holder.tvOut.setVisibility(View.VISIBLE);
             holder.ivOut.setVisibility(View.VISIBLE);
         }
         //未超过 退货日期
         else{
-            holder.tvOut.setVisibility(View.GONE);
-            holder.ivOut.setVisibility(View.GONE);
-            //已经申请没超过退货
+
+            //已经申请了退货
             if(datas.get(position).getIsApply()==1){
                 holder.tvRight.setBackgroundResource(R.drawable.shape_ok_dark);
+                holder.tvOut.setText("该商品已申请退货");
+                holder.tvOut.setVisibility(View.VISIBLE);
+                holder.ivOut.setVisibility(View.VISIBLE);
             }
+            //未申请退货
             else{
+                holder.tvOut.setVisibility(View.GONE);
+                holder.ivOut.setVisibility(View.GONE);
                 holder.tvRight.setBackgroundResource(R.drawable.shape_ok_red);
             }
         }

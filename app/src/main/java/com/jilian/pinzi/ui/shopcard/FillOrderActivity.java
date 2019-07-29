@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.FillOrderAdapter;
@@ -33,10 +34,13 @@ import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.AddAddressActivity;
+import com.jilian.pinzi.ui.my.SettingActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.NumberUtils;
 import com.jilian.pinzi.utils.PinziDialogUtils;
+import com.jilian.pinzi.utils.RxTimerUtil;
+import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 
 import java.util.ArrayList;
@@ -554,7 +558,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addOrder();
+                showAddDialog();
 
             }
         });
@@ -605,7 +609,31 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
 
 
     }
+    private void showAddDialog() {
 
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_confirm_order_tips);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
+        TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
+        tvContent.setText("是否提交订单？");
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
+        TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                addOrder();
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
     /**
      * 下单
      */

@@ -40,10 +40,9 @@ import java.util.List;
 
 /**
  * 订单详情 待评价
- *
  */
 public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implements GoodClickListener {
-      private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<GoodsInfoDto> datas;
     private MyShipmentGoodAdapter goodAdapter;
@@ -71,17 +70,11 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
     private TextView tvReBuy;
     private MyViewModel viewModel;
     private TextView tvPhone;
-    private TextView tvTest;
     private int type;
     private LinearLayout llInvoice;
     private TextView tvShipperName;
     private TextView tvPreMoney;
-   // private TextView tvActivityAccount;
-
-
-
-
-
+    // private TextView tvActivityAccount;
 
 
     @Override
@@ -139,64 +132,72 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         tvComment = (TextView) findViewById(R.id.tv_comment);
         tvReBuy = (TextView) findViewById(R.id.tv_re_buy);
         tvPhone = (TextView) findViewById(R.id.tv_phone);
-        tvTest = (TextView) findViewById(R.id.tv_test);
+
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-       // tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+        // tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
 
     @Override
     public void initData() {
-        type = getIntent().getIntExtra("type",0);
+        type = getIntent().getIntExtra("type", 0);
         //未评价
-        if(type==1){
-            tvTest.setVisibility(View.GONE);
-            tvComment.setVisibility(View.VISIBLE);
+        if (type == 1) {
+
+            tvComment.setText("评价商品");
         }
-        if(type==2){
-            tvTest.setVisibility(View.INVISIBLE);
-            tvComment.setVisibility(View.GONE);
+        //已经评价
+        if (type == 2) {
+            tvComment.setText("查看评价");
         }
+
         getOrderDetail();
     }
 
 
-
     private OrderDetailDto mData;
+
     /**
      * 获取订单详情
-    public void initData() {
-        getOrderDetail();
+     * public void initData() {
+     * getOrderDetail();
      */
     private void getOrderDetail() {
         viewModel.getOrderDetail(getIntent().getStringExtra("orderId"));
         viewModel.getOrderDetail().observe(this, new Observer<BaseDto<OrderDetailDto>>() {
             @Override
             public void onChanged(@Nullable BaseDto<OrderDetailDto> dto) {
+
                 hideLoadingDialog();
-                if(dto.isSuccess()){
+                if (dto.isSuccess()) {
                     initDataView(dto.getData());
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastFail(dto.getMsg());
                 }
             }
         });
     }
+
     /**
      * 显示 各个界面的数据
+     *
      * @param data
      */
     private void initOrderDetailView(OrderDetailDto data) {
-        if(data.getOrderType()==2){
-            List<GoodsInfoDto>  goodsInfo = new ArrayList<>();
+        if (data.getOrderType() == 2) {
+            List<GoodsInfoDto> goodsInfo = new ArrayList<>();
             GoodsInfoDto dto = new GoodsInfoDto();
             dto.setName(data.getAwardName());
             dto.setQuantity("1");
             dto.setGoodsPrice(0);
             goodsInfo.add(dto);
             data.setGoodsInfo(goodsInfo);
+            tvComment.setVisibility(View.INVISIBLE);
+            tvApply.setVisibility(View.INVISIBLE);
+            tvReBuy.setVisibility(View.INVISIBLE);
+            tvDelete.setVisibility(View.VISIBLE);
+
         }
         //1.倒计时
         //2.姓名
@@ -206,43 +207,39 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
             String phone = data.getPhone().substring(0, 3) + "****" + data.getPhone().substring(7, 11);
             tvPhone.setText(phone);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             tvPhone.setText(data.getPhone());
         }
         //4.地址
-        tvAdrress.setText( data.getAddress());
+        tvAdrress.setText(data.getAddress());
         //5.商品合计
-        tvGoodAllAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        tvGoodAllAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
         //6.运费
-        tvFright.setText("¥"+NumberUtils.forMatNumber(data.getFreightPrice()));
+        tvFright.setText("¥" + NumberUtils.forMatNumber(data.getFreightPrice()));
         //7.优惠券
-        tvCardAcount.setText("¥"+NumberUtils.forMatNumber(data.getCouponRemission()));
+        tvCardAcount.setText("¥" + NumberUtils.forMatNumber(data.getCouponRemission()));
         //8.积分抵扣
-        if(data.getPayScore()>0){
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
-        }
-        else{
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getScoreDeduction()));
+        if (data.getPayScore() > 0) {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        } else {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getScoreDeduction()));
         }
         //9.佣金抵扣
-        tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        tvConponseAccount.setText("¥" + NumberUtils.forMatNumber(data.getCommissionDeduction()));
         //10.定金
-        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        tvPreMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayFirstMoney()));
         //10.活动金额 ???
         //  tvActivityAccount.setText("¥"+NumberUtils.forMatNumber(data));
         //11.发票类型
-        if(data.getType()==1){
+        if (data.getType() == 1) {
             tvInvoiceTye.setText("增值税专用发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-       else  if(data.getType()==2){
+        } else if (data.getType() == 2) {
             tvInvoiceTye.setText("增值税普通发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             llInvoice.setVisibility(View.GONE);
         }
         //12.发票抬头
@@ -252,9 +249,9 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         //14.订单编号
         tvOderNo.setText(data.getOrderNo());
         //15.提交时间
-        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getCreateDate())));
+        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getCreateDate())));
 //        //16.支付方式
-        switch (data.getPayWay()){
+        switch (data.getPayWay()) {
             case 1:
                 tvPayType.setText("微信");
                 break;
@@ -273,28 +270,31 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
 //            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
 //        }
 //        else{
-            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+        tvPayMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayMoney()));
 
-       // }
+        // }
 
         //18.付款时间
-        tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getPayDate())));
+        tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getPayDate())));
 
 //19发货人
         tvShipperName.setText(data.getShipperName());
     }
+
     /**
      * 初始化订单详情数据
+     *
      * @param data
      */
     private void initDataView(OrderDetailDto data) {
-        this.mData =data;
-        if(EmptyUtils.isNotEmpty(data.getGoodsInfo())){
+        this.mData = data;
+        if (EmptyUtils.isNotEmpty(data.getGoodsInfo())) {
             datas.addAll(data.getGoodsInfo());
             goodAdapter.notifyDataSetChanged();
         }
         initOrderDetailView(data);
     }
+
     @Override
     public void initListener() {
         tvCopy.setOnClickListener(new View.OnClickListener() {
@@ -311,8 +311,8 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         llTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this,OrderTrackActivity.class);
-                intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
+                Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, OrderTrackActivity.class);
+                intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
                 startActivity(intent);
             }
         });
@@ -326,16 +326,24 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(MyOrderFinishNoCommentDetailActivity.this,AfterSalesServiceActivity.class));
+                startActivity(new Intent(MyOrderFinishNoCommentDetailActivity.this, AfterSalesServiceActivity.class));
 
             }
         });
         tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this,PostEvaluationActivity.class);
-                intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
-                startActivity(intent);
+                if("评价商品".equals(tvComment.getText().toString())){
+                    Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, PostEvaluationActivity.class);
+                    intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
+                    startActivity(intent);
+                }
+                if("查看评价".equals(tvComment.getText().toString())){
+                    Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, PostEvaluationSeeActivity.class);
+                    intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -346,13 +354,12 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
                 //重新购买的时候  判断商品数量
                 //1个商品 跳到商品详情
                 //大于1个商品 跳到 首页
-                Intent intent ;
-                if(datas.size()==1){
-                    intent = new Intent(MyOrderFinishNoCommentDetailActivity.this,GoodsDetailActivity.class);
-                    intent.putExtra("goodsId",String.valueOf(datas.get(0).getGoodsId()));
-                }
-                else{
-                    intent = new Intent(MyOrderFinishNoCommentDetailActivity.this,MainActivity.class);
+                Intent intent;
+                if (datas.size() == 1) {
+                    intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, GoodsDetailActivity.class);
+                    intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                } else {
+                    intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, MainActivity.class);
                 }
                 startActivity(intent);
             }
@@ -362,17 +369,15 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
 
     @Override
     public void clickGoods(String goodId) {
-        Intent intent  = new Intent(this,GoodsDetailActivity.class);
-        intent.putExtra("goodsId",goodId);
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        intent.putExtra("goodsId", goodId);
         startActivity(intent);
     }
 
     /**
      * 删除订单
      */
-    public void showDeleteOrderDialog(String orderId)
-
-    {
+    public void showDeleteOrderDialog(String orderId) {
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_delete_order_tips);
       /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
@@ -383,7 +388,7 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                updateOrderStatus(3,orderId, 0);
+                updateOrderStatus(3, orderId, 0);
             }
         });
         tvNo.setOnClickListener(new View.OnClickListener() {
@@ -394,6 +399,7 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         });
         dialog.show();
     }
+
     /**
      * 更新订单状态
      *

@@ -98,8 +98,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         holder.rvGoods.setLayoutManager(linearLayoutManager);
         holder.rvGoods.setAdapter(new MyOrderGoodAdapter(mContext, datas.get(position).getGoodsInfo()));
-        holder.tvLeft.setText(leftDatas[datas.get(position).getPayStatus()]);
-        holder.tvRight.setText(rightDatas[datas.get(position).getPayStatus()]);
         holder.tvStatus.setText(status[datas.get(position).getPayStatus()]);
         holder.tvOrderNo.setText("订单编号：" + datas.get(position).getOrderNo());
         // private Integer payStatus;// true number    支付状态（1.待支付 2.已支付，待发货 3.已发货 4.已完成，待评价 5.已评价 6.已取消） 7 待付尾款
@@ -125,16 +123,16 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             case 3:
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
                 break;
-                //4.已完成，待评价
+            //4.已完成，待评价
             case 4:
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
 
                 break;
-                //5.已评价
+            //5.已评价
             case 5:
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
                 break;
-                //6.已取消
+            //6.已取消
             case 6:
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
                 break;
@@ -143,139 +141,159 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 holder.tvPrice.setText(NumberUtils.forMatNumber(Double.parseDouble(datas.get(position).getPayMoney())));
                 break;
 
-
         }
 
         holder.tvDate.setText("提交时间：" + DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_, new Date(datas.get(position).getCreateDate())));
-        if (datas.get(position).getPayStatus() != null && datas.get(position).getPayStatus() == 2) {
-            holder.tvLeft.setVisibility(View.GONE);
-        } else {
-            holder.tvLeft.setVisibility(View.VISIBLE);
-        }
-        holder.tvLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Integer type = datas.get(position).getPayStatus();
-                Intent intent = null;
-                if (type != null) switch (type) {
-                    case 1:
-                        //取消订单
-                        orderListener.showCancelOrderDialog(datas.get(position));
-                        break;
-                    case 2:
 
-                        break;
-                    case 3:
-                        //查看物流
-                        orderListener.checkOgistics(datas.get(position));
-                        break;
-                    case 4:
-                        //评价商品
-                        intent = new Intent(mContext, PostEvaluationActivity.class);
-                        intent.putExtra("orderId", datas.get(position).getId());
-                        mContext.startActivity(intent);
 
-                        break;
-                    case 5:
-                        //查看评价
-                        intent = new Intent(mContext, PostEvaluationSeeActivity.class);
-                        intent.putExtra("orderId", datas.get(position).getId());
-                        mContext.startActivity(intent);
-
-                        break;
-                    case 6:
-
-                        //重新购买
-                        //重新购买的时候  判断商品数量
-                        //1个商品 跳到商品详情
-                        //大于1个商品 跳到 首页
-
-                        if (datas.get(position).getGoodsInfo().size() == 1) {
-                            intent = new Intent(mContext, GoodsDetailActivity.class);
-                            intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
-                        } else {
-                            intent = new Intent(mContext, MainActivity.class);
-                        }
-                        mContext.startActivity(intent);
-                        break;
-                    case 7:
-                        //取消订单
-                        orderListener.showCancelOrderDialog(datas.get(position));
-                        break;
-                }
-
-            }
-        });
-        holder.tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Integer type = datas.get(position).getPayStatus();
-                Intent intent;
-                if (type != null) {
-                    switch (type) {
-                        case 1:
-                            //立即付款
-                            intent = new Intent(mContext, PayOrderActivity.class);
-                            intent.putExtra("orderDto", datas.get(position));
-                            mContext.startActivity(intent);
-                            break;
-                        case 2:
-                            //确认收货
-                            orderListener.showConfirmGoodsTipsDialog(datas.get(position));
-                            break;
-                        case 3:
-                            //确认收货
-                            orderListener.showConfirmGoodsTipsDialog(datas.get(position));
-
-                            break;
-                        case 4:
-                            //再次购买
-                            //重新购买的时候  判断商品数量
-                            //1个商品 跳到商品详情
-                            //大于1个商品 跳到 首页
-
-                            if (datas.get(position).getGoodsInfo().size() == 1) {
-                                intent = new Intent(mContext, GoodsDetailActivity.class);
-                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
-                            } else {
-                                intent = new Intent(mContext, MainActivity.class);
-                            }
-                            mContext.startActivity(intent);
-                            break;
-                        case 5:
-                            //再次购买
-                            //重新购买的时候  判断商品数量
-                            //1个商品 跳到商品详情
-                            //大于1个商品 跳到 首页
-                            if (datas.get(position).getGoodsInfo().size() == 1) {
-                                intent = new Intent(mContext, GoodsDetailActivity.class);
-                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
-                            } else {
-                                intent = new Intent(mContext, MainActivity.class);
-                            }
-                            mContext.startActivity(intent);
-                            break;
-                        case 6:
-                            //删除订单
-                            orderListener.showDeleteOrderDialog(datas.get(position));
-                            break;
-                        case 7:
-                            //立即付款
-                            intent = new Intent(mContext, PayOrderActivity.class);
-                            intent.putExtra("orderDto", datas.get(position));
-                            mContext.startActivity(intent);
-                            break;
-                    }
-                }
-
-            }
-        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onItemClick(null, position);
             }
         });
+
+        //最后的时候 判断是不是奖品 4.已完成，待评价 5.已评价 6.已取消
+        if (datas.get(position).getOrderType() == 2 &&
+                (datas.get(position).getPayStatus() == 4 || datas.get(position).getPayStatus() == 5 || datas.get(position).getPayStatus() == 6)) {
+            holder.tvLeft.setVisibility(View.GONE);
+            holder.tvRight.setVisibility(View.VISIBLE);
+            holder.tvRight.setText("删除订单");
+            holder.tvRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //删除订单
+                    orderListener.showDeleteOrderDialog(datas.get(position));
+                }
+            });
+        } else {
+            holder.tvLeft.setText(leftDatas[datas.get(position).getPayStatus()]);
+            holder.tvRight.setText(rightDatas[datas.get(position).getPayStatus()]);
+            if (datas.get(position).getPayStatus() != null && datas.get(position).getPayStatus() == 2) {
+                holder.tvLeft.setVisibility(View.GONE);
+            } else {
+                holder.tvLeft.setVisibility(View.VISIBLE);
+            }
+            holder.tvLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer type = datas.get(position).getPayStatus();
+                    Intent intent = null;
+                    if (type != null) switch (type) {
+                        case 1:
+                            //取消订单
+                            orderListener.showCancelOrderDialog(datas.get(position));
+                            break;
+                        case 2:
+
+                            break;
+                        case 3:
+                            //查看物流
+                            orderListener.checkOgistics(datas.get(position));
+                            break;
+                        case 4:
+                            //评价商品
+                            intent = new Intent(mContext, PostEvaluationActivity.class);
+                            intent.putExtra("orderId", datas.get(position).getId());
+                            mContext.startActivity(intent);
+
+                            break;
+                        case 5:
+                            //查看评价
+                            intent = new Intent(mContext, PostEvaluationSeeActivity.class);
+                            intent.putExtra("orderId", datas.get(position).getId());
+                            mContext.startActivity(intent);
+
+                            break;
+                        case 6:
+
+                            //重新购买
+                            //重新购买的时候  判断商品数量
+                            //1个商品 跳到商品详情
+                            //大于1个商品 跳到 首页
+
+                            if (datas.get(position).getGoodsInfo().size() == 1) {
+                                intent = new Intent(mContext, GoodsDetailActivity.class);
+                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                            } else {
+                                intent = new Intent(mContext, MainActivity.class);
+                            }
+                            mContext.startActivity(intent);
+                            break;
+                        case 7:
+                            //取消订单
+                            orderListener.showCancelOrderDialog(datas.get(position));
+                            break;
+                    }
+
+                }
+            });
+            holder.tvRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer type = datas.get(position).getPayStatus();
+                    Intent intent;
+                    if (type != null) {
+                        switch (type) {
+                            case 1:
+                                //立即付款
+                                intent = new Intent(mContext, PayOrderActivity.class);
+                                intent.putExtra("orderDto", datas.get(position));
+                                mContext.startActivity(intent);
+                                break;
+                            case 2:
+                                //确认收货
+                                orderListener.showConfirmGoodsTipsDialog(datas.get(position));
+                                break;
+                            case 3:
+                                //确认收货
+                                orderListener.showConfirmGoodsTipsDialog(datas.get(position));
+
+                                break;
+                            case 4:
+                                //再次购买
+                                //重新购买的时候  判断商品数量
+                                //1个商品 跳到商品详情
+                                //大于1个商品 跳到 首页
+
+                                if (datas.get(position).getGoodsInfo().size() == 1) {
+                                    intent = new Intent(mContext, GoodsDetailActivity.class);
+                                    intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                } else {
+                                    intent = new Intent(mContext, MainActivity.class);
+                                }
+                                mContext.startActivity(intent);
+                                break;
+                            case 5:
+                                //再次购买
+                                //重新购买的时候  判断商品数量
+                                //1个商品 跳到商品详情
+                                //大于1个商品 跳到 首页
+                                if (datas.get(position).getGoodsInfo().size() == 1) {
+                                    intent = new Intent(mContext, GoodsDetailActivity.class);
+                                    intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                } else {
+                                    intent = new Intent(mContext, MainActivity.class);
+                                }
+                                mContext.startActivity(intent);
+                                break;
+                            case 6:
+                                //删除订单
+                                orderListener.showDeleteOrderDialog(datas.get(position));
+                                break;
+                            case 7:
+                                //立即付款
+                                intent = new Intent(mContext, PayOrderActivity.class);
+                                intent.putExtra("orderDto", datas.get(position));
+                                mContext.startActivity(intent);
+                                break;
+                        }
+                    }
+
+                }
+            });
+        }
+
 
     }
 

@@ -49,7 +49,7 @@ public class MyCommentPhotoAdapter extends RecyclerView.Adapter<MyCommentPhotoAd
                 holder.ivClose.setVisibility(View.GONE);
                 holder.rlClose.setVisibility(View.GONE);
             }
-            if(getItemCount()==10&&position==9){
+            if(getItemCount()==4&&position==3){
                 holder.rlItem.setVisibility(View.GONE);
             }
             else{
