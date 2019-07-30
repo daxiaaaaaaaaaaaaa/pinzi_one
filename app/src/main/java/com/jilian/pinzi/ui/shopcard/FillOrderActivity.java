@@ -101,6 +101,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     private RelativeLayout rlCard;
     private RelativeLayout rlScore;
     private TextView tvPreMoney;//定金
+    private TextView tvAfterMoney;//尾款
+
+
 
 
     @Override
@@ -185,6 +188,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     @Override
     public void initView() {
         setNormalTitle("填写订单", v -> finish());
+        tvAfterMoney = (TextView) findViewById(R.id.tv_afterMoney);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
         rlCard = (RelativeLayout) findViewById(R.id.rl_card);
         rlScore = (RelativeLayout) findViewById(R.id.rl_score);
@@ -281,12 +285,9 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                         if (dto.getData().getGoodsId().contains(",") && dto.getData().getPrices().contains(",")) {
                             String prices[] = dto.getData().getPrices().split(",");
                             String goodIds[] = dto.getData().getGoodsId().split(",");
+                            //为每个商品设置价格
                             for (int i = 0; i < dtoList.size(); i++) {
-                                for (int j = 0; j < prices.length; j++) {
-                                    if (dtoList.get(i).getId().equals(goodIds[j])) {
-                                        dtoList.get(i).setPrice(Double.parseDouble(prices[j]));
-                                    }
-                                }
+                                dtoList.get(i).setPrice(Double.parseDouble(prices[i]));
                             }
                         } else {
                             double price = Double.parseDouble(dto.getData().getPrices());
@@ -388,11 +389,13 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                     tvDeductionMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getScoreRemission()));
                     tvCommisionNum.setText("¥" + NumberUtils.forMatNumber(dto.getData().getCommissionRemission()));
                     tvPreMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getEarnest()));
+                    tvAfterMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getPayMoney()));
                 } else {
                     tvCard.setText("¥0.00");
                     tvDeductionMoney.setText("¥0.00");
                     tvCommisionNum.setText("¥0.00");
                     tvPreMoney.setText("¥0.00");
+                    tvAfterMoney.setText("¥0.00");
                 }
                 tvPayCount.setText("¥" + getPayCount());
             }
@@ -827,6 +830,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     public void clickGoods(View view, int position) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goodsId", datas.get(position).getId());
+        intent.putExtra("classes",datas.get(position).getClasses());
         startActivity(intent);
     }
 }

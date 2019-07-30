@@ -144,10 +144,19 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
      * @return
      */
     @Override
+    public LiveData<BaseDto<CouponCentreDto>> getCouponDetail(String id) {
+        return request(Api.getCouponDetail(id)).send().get();
+    }
+    /**
+     * 优惠券详情
+     *
+     * @param
+     * @return
+     */
+    @Override
     public LiveData<BaseDto<CouponCentreDto>> CouponDetails(String id) {
         return request(Api.CouponDetails(id)).send().get();
     }
-
     /**
      * 用户签到
      *

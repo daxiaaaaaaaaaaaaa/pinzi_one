@@ -287,6 +287,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
                         dto.setName(datas.get(i).getName());
                         dto.setClasses(datas.get(i).getClasses());
                         dto.setTopScore(datas.get(i).getTopScore());
+
                         dtoList.add(dto);
 
                     }

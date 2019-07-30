@@ -1,5 +1,6 @@
 package com.jilian.pinzi.ui.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import com.jilian.pinzi.adapter.MyShipmentGoodAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.common.dto.GoodsInfoDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,13 @@ public class MyOrderFinishHasCommentDetailActivity extends BaseActivity implemen
 
 
     @Override
-    public void clickGoods(String goodId) {
+    public void clickGoods(String goodId,GoodsInfoDto dto) {
+        Intent intent  = new Intent(this, GoodsDetailActivity.class);
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
 
+        intent.putExtra("goodsId",goodId);
+        startActivity(intent);
     }
 }

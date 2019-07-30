@@ -24,7 +24,7 @@ public class MyShipmentGoodAdapter extends RecyclerView.Adapter<MyShipmentGoodAd
     private List<GoodsInfoDto> datas;
     private GoodClickListener listener;
     public interface  GoodClickListener{
-        void clickGoods(String goodId);
+        void clickGoods(String goodId,GoodsInfoDto dto);
     }
     public MyShipmentGoodAdapter(Activity context, List<GoodsInfoDto> datas, GoodClickListener listener) {
         mContext = context;
@@ -94,7 +94,7 @@ public class MyShipmentGoodAdapter extends RecyclerView.Adapter<MyShipmentGoodAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.clickGoods(String.valueOf(datas.get(getAdapterPosition()).getGoodsId()));
+                    listener.clickGoods(String.valueOf(datas.get(getAdapterPosition()).getGoodsId()),datas.get(getAdapterPosition()));
                 }
             });
         }

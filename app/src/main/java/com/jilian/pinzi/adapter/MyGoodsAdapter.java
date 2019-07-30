@@ -121,6 +121,9 @@ public class MyGoodsAdapter extends RecyclerView.Adapter<MyGoodsAdapter.ViewHold
     public void clickGoods(GoodlistDto dto) {
         Intent intent = new Intent(mContext, GoodsDetailActivity.class);
         intent.putExtra("goodsId", dto.getId());
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
         mContext.startActivity(intent);
     }
 

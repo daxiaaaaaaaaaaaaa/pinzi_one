@@ -81,6 +81,10 @@ public class GoodlistDto implements Serializable {
     private String isDelete;//truenumber    是否删除（0.否 1.是）
     private String collectId;
 
+
+
+
+
     public String getCollectId() {
         return collectId;
     }

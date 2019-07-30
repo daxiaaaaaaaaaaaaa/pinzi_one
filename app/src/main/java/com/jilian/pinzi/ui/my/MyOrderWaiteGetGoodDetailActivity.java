@@ -390,12 +390,16 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
     }
 
     @Override
-    public void clickGoods(String goodId) {
+    public void clickGoods(String goodId,GoodsInfoDto dto) {
         if(mData.getOrderType()==2){
             return;
         }
         Intent intent  = new Intent(this,GoodsDetailActivity.class);
         intent.putExtra("goodsId",goodId);
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
+
         startActivity(intent);
     }
     private List<OrderTrackDto.LogisticsBean> mDataList = new ArrayList<>();

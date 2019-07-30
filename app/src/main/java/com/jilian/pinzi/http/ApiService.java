@@ -321,7 +321,16 @@ public interface ApiService {
      * @return
      */
     @GET("personCenter/getCouponDetail")
-    Flowable<BaseDto<CouponCentreDto>> CouponDetails(@Query("cId") String cId);
+    Flowable<BaseDto<CouponCentreDto>> getCouponDetail(@Query("cId") String cId);
+
+    /**
+     * 优惠券详情
+     *
+     * @param
+     * @return
+     */
+    @GET("index/CouponDetails")
+    Flowable<BaseDto<CouponCentreDto>> CouponDetails(@Query("id") String id);
 
     /**
      * 用户签到

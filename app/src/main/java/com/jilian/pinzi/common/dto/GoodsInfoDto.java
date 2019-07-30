@@ -10,7 +10,7 @@ public class GoodsInfoDto implements Serializable {
     private String goodsId;//": 商品Id1,
     private double goodsPrice;//": 商品单价20,
     private String name;//": 商品名称"牛栏山 二锅头"
-    private double scoreBuy;//truenumber积分购买
+    private double scoreBuy;//truenumber积分购买 如果  scoreBuy 大于 0  就是积分商城买的 商品
     private double earnest;//
 
     public static long getSerialVersionUID() {

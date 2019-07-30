@@ -126,6 +126,14 @@ public interface MainRepository {
      * @param
      * @return
      */
+    LiveData<BaseDto<CouponCentreDto>> getCouponDetail(String id);
+
+    /**
+     * 优惠券详情
+     *
+     * @param
+     * @return
+     */
     LiveData<BaseDto<CouponCentreDto>> CouponDetails(String id);
 
     /**

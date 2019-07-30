@@ -67,11 +67,11 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
     private TextView tvOrderNo;
     private TextView tvCommiTime;
     private LinearLayout llInvoice;
-    private long fifityMin = 15*60*1000;//15分钟
+    private long fifityMin = 15 * 60 * 1000;//15分钟
     private TextView tvShipperName;
 
     private TextView tvPreMoney;
-   // private TextView tvActivityAccount;
+    // private TextView tvActivityAccount;
 
 
     @Override
@@ -86,6 +86,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         PinziApplication.removeActivity(this);
         MainRxTimerUtil.cancel();
     }
+
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
@@ -103,7 +104,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         linearLayoutManager = new LinearLayoutManager(this);
         datas = new ArrayList<>();
         recyclerView.setLayoutManager(linearLayoutManager);
-        goodAdapter = new MyShipmentGoodAdapter(this,datas,this);
+        goodAdapter = new MyShipmentGoodAdapter(this, datas, this);
         recyclerView.setAdapter(goodAdapter);
         tvTime = (TextView) findViewById(R.id.tv_time);
         tvName = (TextView) findViewById(R.id.tv_name);
@@ -128,25 +129,27 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
         //tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
+
     /**
      * 显示 各个界面的数据
+     *
      * @param data
      */
     private void initOrderDetailView(OrderDetailDto data) {
 
-            if(data.getOrderType()==2){
-                List<GoodsInfoDto>  goodsInfo = new ArrayList<>();
-                GoodsInfoDto dto = new GoodsInfoDto();
-                dto.setName(data.getAwardName());
-                dto.setQuantity("1");
-                dto.setGoodsPrice(0);
-                goodsInfo.add(dto);
-                data.setGoodsInfo(goodsInfo);
-            }
+        if (data.getOrderType() == 2) {
+            List<GoodsInfoDto> goodsInfo = new ArrayList<>();
+            GoodsInfoDto dto = new GoodsInfoDto();
+            dto.setName(data.getAwardName());
+            dto.setQuantity("1");
+            dto.setGoodsPrice(0);
+            goodsInfo.add(dto);
+            data.setGoodsInfo(goodsInfo);
+        }
 
         //1.倒计时
         long creatTime = data.getCreateDate();
-        startTimeTask(creatTime+fifityMin);
+        startTimeTask(creatTime + fifityMin);
         //2.姓名
         tvName.setText(data.getName());
         //3.电话
@@ -154,45 +157,41 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
             String phone = data.getPhone().substring(0, 3) + "****" + data.getPhone().substring(7, 11);
             tvPhone.setText(phone);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             tvPhone.setText(data.getPhone());
         }
         //4.地址
-        tvAdrress.setText( data.getAddress());
+        tvAdrress.setText(data.getAddress());
         //5.商品合计
-        tvGoodAllAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        tvGoodAllAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
         //6.运费
-        tvFright.setText("¥"+NumberUtils.forMatNumber(data.getFreightPrice()));
+        tvFright.setText("¥" + NumberUtils.forMatNumber(data.getFreightPrice()));
         //7.优惠券
-        tvCardAcount.setText("¥"+NumberUtils.forMatNumber(data.getCouponRemission()));
+        tvCardAcount.setText("¥" + NumberUtils.forMatNumber(data.getCouponRemission()));
         //8.积分抵扣
-        if(data.getPayScore()>0){
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
-        }
-        else{
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getScoreDeduction()));
+        if (data.getPayScore() > 0) {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        } else {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getScoreDeduction()));
         }
         //9.佣金抵扣
-        tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        tvConponseAccount.setText("¥" + NumberUtils.forMatNumber(data.getCommissionDeduction()));
 
         //10.定金
-        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        tvPreMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayFirstMoney()));
         //10.活动金额 ???
         //  tvActivityAccount.setText("¥"+NumberUtils.forMatNumber(data));
         //11.发票类型
         //11.发票类型
-        if(data.getType()==1){
+        if (data.getType() == 1) {
             tvInvoiceTye.setText("增值税专用发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else  if(data.getType()==2){
+        } else if (data.getType() == 2) {
             tvInvoiceTye.setText("增值税普通发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             llInvoice.setVisibility(View.GONE);
         }
         //12.发票抬头
@@ -202,7 +201,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         //14.订单编号
         tvOrderNo.setText(data.getOrderNo());
         //15.提交时间
-        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getCreateDate())));
+        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getCreateDate())));
 //        //16.支付方式
 //        switch (data.getPayWay()){
 //            case 1:
@@ -219,11 +218,10 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
 //                break;
 //        }
         //17.实付金额
-        if(data.getPayFirstMoney()>0){
-            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
-        }
-        else{
-            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+        if (data.getPayFirstMoney() > 0) {
+            tvPayMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        } else {
+            tvPayMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayMoney()));
 
         }
 
@@ -236,8 +234,8 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
     }
 
     /**
-     *
      * 开启倒计时
+     *
      * @param endTime
      */
     private void startTimeTask(long endTime) {
@@ -247,11 +245,10 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
                 long nowTime = new Date().getTime();
                 //单位 s
                 long delTime = endTime - nowTime;
-                if(delTime>0){
-                    String str  = DateUtil.timeToHms(delTime);
-                    tvTime.setText("剩余："+str.split(":")[0]+"时"+str.split(":")[1]+"分"+str.split(":")[2]+"秒");
-                }
-                else{
+                if (delTime > 0) {
+                    String str = DateUtil.timeToHms(delTime);
+                    tvTime.setText("剩余：" + str.split(":")[0] + "时" + str.split(":")[1] + "分" + str.split(":")[2] + "秒");
+                } else {
                     ToastUitl.showImageToastFail("订单已超时");
                     finish();
                 }
@@ -265,7 +262,9 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         getOrderDetail();
 
     }
+
     private OrderDetailDto mData;
+
     /**
      * 获取订单详情
      */
@@ -275,23 +274,24 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
             @Override
             public void onChanged(@Nullable BaseDto<OrderDetailDto> dto) {
                 hideLoadingDialog();
-                if(dto.isSuccess()){
+                if (dto.isSuccess()) {
                     initDataView(dto.getData());
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastFail(dto.getMsg());
                 }
             }
         });
     }
+
     /**
      * 初始化订单详情数据
+     *
      * @param data
      */
     private void initDataView(OrderDetailDto data) {
-        this.mData =data;
+        this.mData = data;
         mData.setOrderId(getIntent().getStringExtra("orderId"));
-        if(EmptyUtils.isNotEmpty(data.getGoodsInfo())){
+        if (EmptyUtils.isNotEmpty(data.getGoodsInfo())) {
             datas.addAll(data.getGoodsInfo());
             goodAdapter.notifyDataSetChanged();
         }
@@ -304,13 +304,13 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
         tvPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyOrderWaitePayDetailActivity.this,PayOrderActivity.class);
-                intent.putExtra("orderDetailDto",mData);
+                Intent intent = new Intent(MyOrderWaitePayDetailActivity.this, PayOrderActivity.class);
+                intent.putExtra("orderDetailDto", mData);
                 startActivity(intent);
             }
         });
 
-       tvCancel.setOnClickListener(new View.OnClickListener() {
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cancelOrder();
@@ -322,7 +322,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
      * 取消订单
      */
     private void cancelOrder() {
-        if(TextUtils.isEmpty(getIntent().getStringExtra("orderId"))){
+        if (TextUtils.isEmpty(getIntent().getStringExtra("orderId"))) {
             ToastUitl.showImageToastFail("订单不存在");
             return;
         }
@@ -429,6 +429,7 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
                 .setShowBottom(true)
                 .show(getSupportFragmentManager());
     }
+
     /**
      * 更新订单状态
      *
@@ -453,10 +454,15 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
             }
         });
     }
+
     @Override
-    public void clickGoods(String goodId) {
-        Intent intent  = new Intent(this,GoodsDetailActivity.class);
-        intent.putExtra("goodsId",goodId);
+    public void clickGoods(String goodId, GoodsInfoDto dto) {
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
+        intent.putExtra("goodsId", goodId);
         startActivity(intent);
     }
 }

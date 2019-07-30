@@ -96,6 +96,8 @@ public class MainViewModel extends ViewModel {
 
     private LiveData<BaseDto<CouponCentreDto>> couponDetailliveData;//优惠券详情
 
+    private LiveData<BaseDto<CouponCentreDto>> myCardDetailliveData;//优惠券详情
+
     private LiveData<BaseDto<String>> stringliveData;//领券优惠券
 
     private LiveData<BaseDto<String>> clockInliveData;//用户签到
@@ -205,6 +207,10 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto> deleteRechargeData;//删除充值记录
 
     private LiveData<BaseDto> deleteByIdsData;//删除提现记录
+
+    public LiveData<BaseDto<CouponCentreDto>> getMyCardDetailliveData() {
+        return myCardDetailliveData;
+    }
 
     public LiveData<BaseDto> getDeleteRechargeData() {
         return deleteRechargeData;
@@ -524,11 +530,20 @@ public class MainViewModel extends ViewModel {
      * @param
      * @return
      */
+    public void getCouponDetail(String id) {
+        mainRepository = new MainRepositoryImpl();
+        couponDetailliveData = mainRepository.getCouponDetail(id);
+    }
+    /**
+     * 优惠券详情
+     *
+     * @param
+     * @return
+     */
     public void CouponDetails(String id) {
         mainRepository = new MainRepositoryImpl();
-        couponDetailliveData = mainRepository.CouponDetails(id);
+        myCardDetailliveData = mainRepository.CouponDetails(id);
     }
-
     /**
      * 用户签到
      *

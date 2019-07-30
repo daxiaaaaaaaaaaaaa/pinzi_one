@@ -35,8 +35,12 @@ public class MyShipmentOrderAdapter extends RecyclerView.Adapter<MyShipmentOrder
     }
 
     @Override
-    public void clickGoods(String goodId) {
+    public void clickGoods(String goodId,GoodsInfoDto dto) {
         Intent intent  = new Intent(mContext,GoodsDetailActivity.class);
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
+
         intent.putExtra("goodsId",goodId);
         mContext.startActivity(intent);
     }

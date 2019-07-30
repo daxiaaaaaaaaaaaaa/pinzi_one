@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/color_white"
     android:descendantFocusability="blocksDescendants"
+    android:id="@+id/ll_foot"
     android:orientation="vertical">
 
     <RelativeLayout

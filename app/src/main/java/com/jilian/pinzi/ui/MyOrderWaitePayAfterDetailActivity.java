@@ -452,8 +452,11 @@ public class MyOrderWaitePayAfterDetailActivity extends BaseActivity implements 
         });
     }
     @Override
-    public void clickGoods(String goodId) {
+    public void clickGoods(String goodId,GoodsInfoDto dto) {
         Intent intent  = new Intent(this,GoodsDetailActivity.class);
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
         intent.putExtra("goodsId",goodId);
         startActivity(intent);
     }

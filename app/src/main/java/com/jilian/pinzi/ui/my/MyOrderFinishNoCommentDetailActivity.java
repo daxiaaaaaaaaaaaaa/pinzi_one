@@ -368,9 +368,12 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
 
 
     @Override
-    public void clickGoods(String goodId) {
+    public void clickGoods(String goodId,GoodsInfoDto dto) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goodsId", goodId);
+        if (dto.getScoreBuy() > 0) {
+            intent.putExtra("shopType", 2);//积分商城
+        }
         startActivity(intent);
     }
 

@@ -42,7 +42,7 @@ public class MyMyCouponsAdapter extends RecyclerView.Adapter<MyMyCouponsAdapter.
         ViewHolder viewHolder = new ViewHolder(view, listener);
         return viewHolder;
     }
-
+    String [] status = new String[]{"","(待审核)", "(审核成功)","(审核失败)"};
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (position == datas.size() - 1) {
@@ -50,7 +50,11 @@ public class MyMyCouponsAdapter extends RecyclerView.Adapter<MyMyCouponsAdapter.
         } else {
             holder.vLine.setVisibility(View.VISIBLE);
         }
-        holder.tvName.setText(datas.get(position).getTitle());
+
+        //1.待审核 2.审核成功 3.审核失败
+
+        holder.tvName.setText(datas.get(position).getTitle() +status[datas.get(position).getWdStatus()] );
+
         holder.tvCount.setText((datas.get(position).getStatus() == 1 ? "+" : "-") + NumberUtils.forMatNumber(datas.get(position).getSource()));
         holder.tvDate.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(datas.get(position).getCreateDate())));
         if (!TextUtils.isEmpty(datas.get(position).getBuyUserName())) {

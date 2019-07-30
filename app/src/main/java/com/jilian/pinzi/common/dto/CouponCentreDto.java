@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class CouponCentreDto implements Serializable {
     private static final long serialVersionUID = -6541354304971976027L;
     private String fullReduct;//": 20,
-    private String validityDate;//": "2018-11-15",
+
     private String name;//": "优惠券2",
     private String storeName;//": "全平台",
     private String id;//": 2,
@@ -16,6 +16,29 @@ public class CouponCentreDto implements Serializable {
     private String moneyOrDiscount;//": 5,
     private int useType;//": 2
     private int applyPlatform;
+    private int validity;//有效期（1.日期范围 2.固定天数）
+    private String fixDay;//固定天数
+    private String validityDate;//": "2018-11-15",
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getValidity() {
+        return validity;
+    }
+
+    public void setValidity(int validity) {
+        this.validity = validity;
+    }
+
+    public String getFixDay() {
+        return fixDay;
+    }
+
+    public void setFixDay(String fixDay) {
+        this.fixDay = fixDay;
+    }
 
     public int getApplyPlatform() {
         return applyPlatform;

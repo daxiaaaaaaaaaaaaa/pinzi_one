@@ -378,10 +378,18 @@ public class Api {
      * @param
      * @return
      */
+    public static Flowable<BaseDto<CouponCentreDto>> getCouponDetail(String id) {
+        return RequetRetrofit.getInstance().getCouponDetail(id);
+    }
+    /**
+     * 优惠券详情
+     *
+     * @param
+     * @return
+     */
     public static Flowable<BaseDto<CouponCentreDto>> CouponDetails(String id) {
         return RequetRetrofit.getInstance().CouponDetails(id);
     }
-
     /**
      * 用户签到
      *

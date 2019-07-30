@@ -16,6 +16,15 @@ public class MyRecordDto implements Serializable {
     private Double useCount;//使用的数量
     private String day;
     private String buyUserName;//":"系统名称",
+    private int wdStatus;//（提现状态）1.待审核 2.审核成功 3.审核失败
+
+    public int getWdStatus() {
+        return wdStatus;
+    }
+
+    public void setWdStatus(int wdStatus) {
+        this.wdStatus = wdStatus;
+    }
 
     public String getBuyUserName() {
         return buyUserName;

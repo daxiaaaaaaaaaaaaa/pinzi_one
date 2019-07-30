@@ -68,14 +68,14 @@ public class GetCardCenterAdapter extends RecyclerView.Adapter<GetCardCenterAdap
                 }
 
                 holder.tvName.setText(dto.getName());
-                if(dto.getApplyPlatform()==0){
-                    holder.tvUserPlatform.setText("适用平台：" + "全平台");
+                holder.tvUserPlatform.setText("适用平台：" + dto.getStoreName());
+                if(dto.getValidity()==1){
+                    holder.tvDay.setText("有效期限：" + (dto.getValidityDate()==null?"":dto.getValidityDate()));
                 }
-                if(dto.getApplyPlatform()==1){
-                    holder.tvUserPlatform.setText("适用平台：" + "指定店铺");
+                if(dto.getValidity()==2){
+                    holder.tvDay.setText("有效期限：" + (dto.getFixDay()==null?"":(dto.getFixDay()+"天")));
                 }
 
-                holder.tvDay.setText("有效期限：" + dto.getValidityDate());
             }
 
             holder.tvOk.setOnClickListener(new View.OnClickListener() {

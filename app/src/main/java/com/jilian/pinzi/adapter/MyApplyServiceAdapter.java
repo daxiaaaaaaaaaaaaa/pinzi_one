@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jilian.pinzi.R;
@@ -50,7 +51,14 @@ public class MyApplyServiceAdapter extends RecyclerView.Adapter<MyApplyServiceAd
         holder.rvGoods.setAdapter(new MyApplyServiceGoodAdapter(mContext,datas.get(position),getList(position) , goodClickListener));
         holder.tvOrderNo.setText("订单编号："+datas.get(position).getOrderNo());
         holder.tvTime.setText("时间:"+DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(datas.get(position).getCreateDate())));
-
+       //奖品
+        if(datas.get(position).getOrderType()==2){
+        holder.llFoot.setVisibility(View.GONE);
+        }
+        else{
+            //商品
+            holder.llFoot.setVisibility(View.VISIBLE);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +93,16 @@ public class MyApplyServiceAdapter extends RecyclerView.Adapter<MyApplyServiceAd
         private TextView tvOrderNo;
         private TextView tvTime;
         private RecyclerView rvGoods;
+        private LinearLayout llFoot;
+
+
 
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
             super(itemView);
             tvOrderNo = (TextView) itemView.findViewById(R.id.tv_order_no);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             rvGoods = (RecyclerView)itemView. findViewById(R.id.rv_goods);
-
+            llFoot = (LinearLayout) itemView.findViewById(R.id.ll_foot);
 
         }
 
