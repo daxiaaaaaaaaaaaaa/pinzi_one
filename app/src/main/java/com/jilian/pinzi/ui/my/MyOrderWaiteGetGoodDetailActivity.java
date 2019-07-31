@@ -344,8 +344,6 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
      */
     private void showConfirmGoodsTipsDialog() {
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_confirm_order_tips);
-      /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
-        TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 

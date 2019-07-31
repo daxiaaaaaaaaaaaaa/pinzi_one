@@ -737,9 +737,12 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
                     startActivity(intent);
                 } else {
-                    if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    if (PinziApplication.getInstance().getLoginDto().getType() == 2) {
                         Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                        intent.putExtra("classes", 2);
                         startActivity(intent);
+                    } else {
+                        ToastUitl.showImageToastFail("该功能开放给门店");
                     }
 
                 }

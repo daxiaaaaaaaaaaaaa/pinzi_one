@@ -423,8 +423,6 @@ public abstract class BaseOrderFragment extends BaseFragment implements CustomIt
     @Override
     public void showConfirmGoodsTipsDialog(MyOrderDto dto) {
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_confirm_order_tips);
-      /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
-        TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 

@@ -104,8 +104,6 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     private TextView tvAfterMoney;//尾款
 
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -499,7 +497,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         ivOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Double.parseDouble(tvPreMoney.getText().toString().substring(1))>0){
+                if (Double.parseDouble(tvPreMoney.getText().toString().substring(1)) > 0) {
                     ToastUitl.showImageToastSuccess("定金商品在结算尾款的时候抵扣积分");
                 }
                 one = !one;
@@ -517,7 +515,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         ivTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Double.parseDouble(tvPreMoney.getText().toString().substring(1))>0){
+                if (Double.parseDouble(tvPreMoney.getText().toString().substring(1)) > 0) {
                     ToastUitl.showImageToastSuccess("定金商品在结算尾款的时候抵扣佣金");
                 }
                 two = !two;
@@ -561,7 +559,16 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAddDialog();
+                String str = tvPayCount.getText().toString().substring(1);
+
+                //定金商品
+                double douPre = Double.parseDouble(str);
+                if (douPre > 0) {
+                    showAddDialog();
+                } else {
+                    addOrder();
+                }
+
 
             }
         });
@@ -612,12 +619,12 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
 
 
     }
+
     private void showAddDialog() {
 
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_confirm_order_tips);
-        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
-        tvContent.setText("是否提交订单？");
+        tvContent.setText("积分与优惠券在支付尾款时生效且定金商品取消订单不退回定金");
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
         TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
 
@@ -637,6 +644,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         dialog.show();
 
     }
+
     /**
      * 下单
      */
@@ -791,7 +799,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         //优惠券
         double counpou = Double.parseDouble(tvCard.getText().toString().substring(1));
         payCount = allCount + freight - deductionMoney - commisionNum - counpou;
-        return NumberUtils.forMatNumber(payCount<=0?0:payCount);
+        return NumberUtils.forMatNumber(payCount <= 0 ? 0 : payCount);
     }
 
 
@@ -830,7 +838,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     public void clickGoods(View view, int position) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goodsId", datas.get(position).getId());
-        intent.putExtra("classes",datas.get(position).getClasses());
+        intent.putExtra("classes", datas.get(position).getClasses());
         startActivity(intent);
     }
 }

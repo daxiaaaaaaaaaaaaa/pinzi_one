@@ -234,8 +234,8 @@ public class PayOrderActivity extends BaseActivity {
         }
     }
 
-    private int type;//支付方式 1.微信支付 2.支付宝支付 3.积分兑换 4.货到付款
-    private int payfright;
+    private Integer type;//支付方式 1.微信支付 2.支付宝支付 3.积分兑换 4.货到付款
+    private Integer payfright;
 
     @Override
     public void initListener() {
@@ -285,7 +285,7 @@ public class PayOrderActivity extends BaseActivity {
     /**
      * 去支付
      */
-    private void pay(String orderNo, int type, int payfright) {
+    private void pay(String orderNo, Integer type, Integer payfright) {
         showLoadingDialog();
         viewModel.payOrder(orderNo, type, payfright, "1");
         viewModel.getPay().observe(this, new Observer<BaseDto<String>>() {

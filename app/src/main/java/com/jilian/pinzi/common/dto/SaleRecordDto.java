@@ -23,7 +23,7 @@ public class SaleRecordDto implements Serializable {
 
     private long createDate;
     private String file;
-    private int goodsPrice;
+    private double goodsPrice;
     private int id;
     private String name;
     private String orderNo;
@@ -48,11 +48,15 @@ public class SaleRecordDto implements Serializable {
         this.file = file;
     }
 
-    public int getGoodsPrice() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public double getGoodsPrice() {
         return goodsPrice;
     }
 
-    public void setGoodsPrice(int goodsPrice) {
+    public void setGoodsPrice(double goodsPrice) {
         this.goodsPrice = goodsPrice;
     }
 

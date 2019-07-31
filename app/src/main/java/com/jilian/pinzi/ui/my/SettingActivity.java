@@ -137,7 +137,6 @@ public class SettingActivity extends BaseActivity implements DownloadIntentServi
     private void showLogoutDialog() {
 
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_confirm_order_tips);
-        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
         tvContent.setText("是否确认退出登录？");
         TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);

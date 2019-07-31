@@ -538,13 +538,13 @@ public class MyViewModel extends ViewModel {
      * @param payfright
      * @param platform 平台 1.APP支付 2.PC支付
      */
-    public void payOrder(String orderNo, int type, int payfright,String platform) {
+    public void payOrder(String orderNo, Integer type, Integer payfright,String platform) {
         repository = new MyRepositoryImpl();
         PayOrderVo vo = new PayOrderVo();
         vo.setOrderNo(orderNo);
         vo.setType(type);
         vo.setPlatform(platform);
-        vo.setPayfright(payfright);
+        vo.setPayfright(payfright==null?"":String.valueOf(payfright));
         pay = repository.payOrder(vo);
     }
 
