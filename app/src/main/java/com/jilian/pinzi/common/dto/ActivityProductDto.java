@@ -22,6 +22,15 @@ public class ActivityProductDto implements Serializable {
     private String uId;//用户 Id
     private String activityId;//活动ID
     private int isCheck;//是否通过审核
+    private int isCanVote;//0 不能投票 1 能投票
+
+    public int getIsCanVote() {
+        return isCanVote;
+    }
+
+    public void setIsCanVote(int isCanVote) {
+        this.isCanVote = isCanVote;
+    }
 
     public int getIsCheck() {
         return isCheck;

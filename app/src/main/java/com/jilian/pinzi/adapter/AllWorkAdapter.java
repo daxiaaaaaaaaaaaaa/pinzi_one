@@ -160,7 +160,14 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         });
         holder.tvName.setText(datas.get(position).getUserName());
         holder.tvContent.setText(datas.get(position).getContent());
-        holder.tvCount.setText("得票：" + datas.get(position).getVoteNum());
+        if(datas.get(position).getIsCanVote()==0){
+            holder.tvCount.setVisibility(View.GONE);
+        }
+        else{
+            holder.tvCount.setVisibility(View.VISIBLE);
+            holder.tvCount.setText("得票：" + datas.get(position).getVoteNum());
+        }
+
         Glide.with(mContext).
                 load(datas.get(position).getHeadImg()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
                 .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
