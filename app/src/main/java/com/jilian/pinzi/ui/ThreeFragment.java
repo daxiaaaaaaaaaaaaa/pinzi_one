@@ -37,8 +37,10 @@ import com.jilian.pinzi.common.dto.FriendTblCommentDto;
 import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.RxBus;
+import com.jilian.pinzi.ui.friends.FriendDetailActivity;
 import com.jilian.pinzi.ui.friends.MyFriendsCircleActivity;
 import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
+import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -97,6 +99,12 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             if (PinziApplication.getInstance().getLoginDto() == null) {
                 Intent intent = new Intent(getmActivity(), LoginActivity.class);
                 startActivity(intent);
+                return;
+            }
+            if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                    && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                    && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                ToastUitl.showImageToastFail("您是平台用户，只可浏览");
                 return;
             }
             startActivity(new Intent(mActivity, PublishFriendsActivity.class));
@@ -380,6 +388,17 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     @Override
     public void comment(int position, View view) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         //评论
         showPopupWindow(view, position, null);
     }
@@ -502,6 +521,17 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     @Override
     public void driendCircleDelete(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         getLoadingDialog().showDialog();
         viewModel.FriendCircleDelete(list.get(position).getId());
         viewModel.getDelete().observe(this, new Observer<BaseDto<String>>() {
@@ -522,6 +552,17 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 
     @Override
     public void like(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         this.mPosition = position;
         //点赞
         FriendCircleLike(list.get(position).getId(), PinziApplication.getInstance().getLoginDto().getId());
@@ -557,6 +598,17 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     @Override
     public void awnser(String id, View view) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         //根据回复 获取 评论ID
         for (int i = 1; i < list.size(); i++) {
             List<FriendTblCommentDto> commentList = list.get(i).getTblCommentList();

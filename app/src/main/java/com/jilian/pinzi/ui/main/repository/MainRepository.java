@@ -26,6 +26,7 @@ import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
@@ -209,7 +210,7 @@ public interface MainRepository {
      *
      * @return
      */
-    LiveData<BaseDto<List<SeckillPrefectureDto>>> SeckillPrefecture(SeckillPrefectureVo vo);
+    LiveData<BaseDto<SeckillDto>> SeckillPrefecture(SeckillPrefectureVo vo);
 
 
     /**

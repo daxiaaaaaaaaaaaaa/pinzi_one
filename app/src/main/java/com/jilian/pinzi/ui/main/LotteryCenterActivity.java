@@ -21,6 +21,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.LotteryInfoDto;
 import com.jilian.pinzi.common.dto.OrderGoodsDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
+import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.ThreeActivity;
 import com.jilian.pinzi.ui.main.viewmodel.LotteryViewModel;
 import com.jilian.pinzi.ui.my.MyTntegralDetailActivity;
@@ -232,6 +233,17 @@ public class LotteryCenterActivity extends BaseActivity {
             }
             @Override
             public void rotateBefore(ImageView goImg) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(LotteryCenterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 // 判断积分
                 getLoadingDialog().showDialog();
                 lotteryViewModel.getLotteryScore(PinziApplication.getInstance().getLoginDto().getId());

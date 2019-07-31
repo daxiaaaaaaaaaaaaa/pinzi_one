@@ -146,7 +146,7 @@ public class MemberActivity extends BaseActivity {
         tvFour.setText(isVips[4]+types[data.getType()]);
         tvFive.setText(isVips[5]+types[data.getType()]);
     }
-    private String []  types = new String[]{"","会员","会员","会员","会员"};
+    private String []  types = new String[]{"","会员","会员","会员","会员","会员"};
     private String []  isVips = new String[]{"","普通","金牌","铂金","钻石","皇冠"};
     @Override
     public void initListener() {

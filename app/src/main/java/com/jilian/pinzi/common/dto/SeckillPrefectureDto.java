@@ -18,8 +18,8 @@ public class SeckillPrefectureDto implements Serializable {
     private double channelBuy;//": 400.0,
     private double franchiseeBuy;//": 496.0,
     private double seckillPrice;//": 99.0,
-    private double seckillQuantity;//": 100,
-    private double residueQuantity;//": 100,
+    private int seckillQuantity;//": 100,
+    private int residueQuantity;//": 100,
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -109,15 +109,15 @@ public class SeckillPrefectureDto implements Serializable {
         return seckillQuantity;
     }
 
-    public void setSeckillQuantity(double seckillQuantity) {
+    public void setSeckillQuantity(int seckillQuantity) {
         this.seckillQuantity = seckillQuantity;
     }
 
-    public double getResidueQuantity() {
+    public int getResidueQuantity() {
         return residueQuantity;
     }
 
-    public void setResidueQuantity(double residueQuantity) {
+    public void setResidueQuantity(int residueQuantity) {
         this.residueQuantity = residueQuantity;
     }
 }

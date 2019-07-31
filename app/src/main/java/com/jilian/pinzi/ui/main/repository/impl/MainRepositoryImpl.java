@@ -27,6 +27,7 @@ import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
@@ -255,7 +256,7 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
      * @return
      */
     @Override
-    public LiveData<BaseDto<List<SeckillPrefectureDto>>> SeckillPrefecture(SeckillPrefectureVo vo) {
+    public LiveData<BaseDto<SeckillDto>> SeckillPrefecture(SeckillPrefectureVo vo) {
         return request(Api.SeckillPrefecture(vo)).send().get();
     }
 

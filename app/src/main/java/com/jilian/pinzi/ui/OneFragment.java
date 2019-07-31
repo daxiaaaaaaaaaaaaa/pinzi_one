@@ -39,6 +39,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
 import com.jilian.pinzi.common.dto.MsgDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
@@ -127,7 +128,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     private TextView tvHour;
     private TextView tvMin;
     private TextView tvSecond;
-    private TextView tvNextTime;
+
     private SmartRefreshLayout srHasData;
     //
     private List<MainRecommendDto> personData;//人气推荐
@@ -215,22 +216,20 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
      */
     private void getSeckillPrefectureData() {
         viewModel.SeckillPrefecture(1, 6);
-        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<List<SeckillPrefectureDto>>>() {
+        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<SeckillDto>>() {
             @Override
-            public void onChanged(@Nullable BaseDto<List<SeckillPrefectureDto>> seckillPrefectureDtoBaseDto) {
+            public void onChanged(@Nullable BaseDto<SeckillDto> seckillPrefectureDtoBaseDto) {
                 srHasData.finishRefresh();
                 try {
-                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
-                        llKillGoods.setVisibility(View.VISIBLE);
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
-                            timeKillGoods.clear();
-                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData());
-                            oneAdapter.notifyDataSetChanged();
-                        }
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime())) {
+                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())
+                            &&EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods())) {
                             llKillGoods.setVisibility(View.VISIBLE);
-                            tvNextTime.setText("下一场 " + DateUtil.dateToString("HH:mm", new Date(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getNewTime())) + "开始");
-                            long endTime = seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getEndTime();
+                            timeKillGoods.clear();
+                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods());
+                            oneAdapter.notifyDataSetChanged();
+
+                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getEndTime())) {
+                            long endTime = seckillPrefectureDtoBaseDto.getData().getEndTime();
                             initTimeTask(endTime);
                         }
                     } else {
@@ -260,6 +259,8 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 //单位 毫秒
                 long delTime = endTime - nowTime;
                 if (delTime <= 0) {
+                    MainRxTimerUtil.cancel();
+                    getSeckillPrefectureData();
                     tvHour.setText("00");
                     tvMin.setText("00");
                     tvSecond.setText("00");
@@ -464,7 +465,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         tvHour = (TextView) view.findViewById(R.id.tv_hour);
         tvMin = (TextView) view.findViewById(R.id.tv_min);
         tvSecond = (TextView) view.findViewById(R.id.tv_second);
-        tvNextTime = (TextView) view.findViewById(R.id.tv_next_time);
+
         rvOne = (RecyclerView) view.findViewById(R.id.rv_one);
         rvTwo = (RecyclerView) view.findViewById(R.id.rv_two);
         rvThree = (RecyclerView) view.findViewById(R.id.rv_three);
@@ -681,13 +682,20 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     startActivity(intent);
                     return;
                 }
-                if (PinziApplication.getInstance().getLoginDto().getType() == 4) {
+
+                if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
-                    intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
-                    ToastUitl.showImageToastFail("该功能开放给总经销商");
+                    if (PinziApplication.getInstance().getLoginDto().getType() == 4) {
+                        Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                        intent.putExtra("classes", 2);
+                        startActivity(intent);
+                    } else {
+                        ToastUitl.showImageToastFail("该功能开放给总经销商");
+                    }
                 }
+
 
             }
         });
@@ -699,13 +707,20 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     startActivity(intent);
                     return;
                 }
-                if (PinziApplication.getInstance().getLoginDto().getType() == 3) {
+                if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
-                    intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
-                    ToastUitl.showImageToastFail("该功能开放给二批商");
+                    if (PinziApplication.getInstance().getLoginDto().getType() == 3) {
+                        Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                        intent.putExtra("classes", 2);
+                        startActivity(intent);
+                    } else {
+                        ToastUitl.showImageToastFail("该功能开放给二批商");
+                    }
+
                 }
+
 
             }
         });
@@ -717,13 +732,18 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     startActivity(intent);
                     return;
                 }
-                if (PinziApplication.getInstance().getLoginDto().getType() == 2) {
+
+                if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
-                    intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
-                    ToastUitl.showImageToastFail("该功能开放给门店");
+                    if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                        Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                        startActivity(intent);
+                    }
+
                 }
+
 
             }
         });
@@ -735,15 +755,22 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     startActivity(intent);
                     return;
                 }
-                if (PinziApplication.getInstance().getLoginDto().getType() == 1) {
+
+                if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
-                    intent.putExtra("classes", 2);
                     startActivity(intent);
                 } else {
-                    ToastUitl.showImageToastFail("该功能开放给个人");
 
+                    if (PinziApplication.getInstance().getLoginDto().getType() == 1) {
+                        Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                        intent.putExtra("classes", 2);
+                        startActivity(intent);
+                    } else {
+                        ToastUitl.showImageToastFail("该功能开放给个人");
 
+                    }
                 }
+
             }
         });
         llIntegralMall.setOnClickListener(new View.OnClickListener() {

@@ -28,6 +28,7 @@ import com.jilian.pinzi.common.dto.BuyerCenterGoodsDto;
 import com.jilian.pinzi.common.dto.GoodsTypeDto;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.MainRecommendDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
@@ -57,10 +58,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     private MainViewModel viewModel;
 
     private LinearLayout llKillGoods;
-    private TextView tvHour;
-    private TextView tvMin;
-    private TextView tvSecond;
-    private TextView tvNextTime;
+
     private LinearLayout rlReturn;
     private RecyclerView rvOne;
     private List<SeckillPrefectureDto> timeKillGoods;//秒杀专区
@@ -81,13 +79,13 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     private RelativeLayout rlData;
     private TextView tvOneMore;
     private TextView tvTwoMore;
-
-
+    private TextView tvHour;
+    private TextView tvMin;
+    private TextView tvSecond;
 
     public int getClasses() {
-        return getIntent().getIntExtra("classes",1);
+        return getIntent().getIntExtra("classes", 1);
     }
-
 
 
     @Override
@@ -122,10 +120,10 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
 
         tvOneMore = (TextView) findViewById(R.id.tv_one_more);
         tvTwoMore = (TextView) findViewById(R.id.tv_two_more);
-
-
+        tvHour = (TextView) findViewById(R.id.tv_hour);
+        tvMin = (TextView) findViewById(R.id.tv_min);
+        tvSecond = (TextView) findViewById(R.id.tv_second);
         //上面
-
         rvTop = (RecyclerView) findViewById(R.id.rv_top);
         lm_top = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvTop.setLayoutManager(lm_top);
@@ -155,16 +153,12 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
         rvBottom.setAdapter(goodTypeAdapter);
 
 
-
         //
 
         rlData = (RelativeLayout) findViewById(R.id.rl_no_data);
         rlReturn = (LinearLayout) findViewById(R.id.rl_return);
         llKillGoods = (LinearLayout) findViewById(R.id.ll_kill_goods);
-        tvHour = (TextView) findViewById(R.id.tv_hour);
-        tvMin = (TextView) findViewById(R.id.tv_min);
-        tvSecond = (TextView) findViewById(R.id.tv_second);
-        tvNextTime = (TextView) findViewById(R.id.tv_next_time);
+
         rvOne = (RecyclerView) findViewById(R.id.rv_one);
         lm_one = new LinearLayoutManager(this);
         lm_one.setOrientation(LinearLayoutManager.HORIZONTAL);// 横向滑动
@@ -186,32 +180,29 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
             //采购中心进来
             LoginDto dto = PinziApplication.getInstance().getLoginDto();
 
-            if (dto.getType() == 1||getClasses()==1) {
+            if (dto.getType() == 1 || getClasses() == 1) {
                 setNormalTitle("个人采购中心", v -> finish());
-            }
-            else if (dto.getType() == 2) {
+            } else if (dto.getType() == 2) {
                 setNormalTitle("门店采购中心", v -> finish());
-            }
-            else if (dto.getType() == 3) {
+            } else if (dto.getType() == 3) {
                 setNormalTitle("二批商采购中心", v -> finish());
-            }
-            else if (dto.getType() == 4) {
+            } else if (dto.getType() == 4) {
                 setNormalTitle("总经销商采购中心", v -> finish());
             }
             setrightTitle("朋友圈", "#FFFFFF", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(new Intent(BuyCenterActivity.this, MainActivity.class));
-                    intent.putExtra("type",PinziApplication.getInstance().getLoginDto().getType());
-                    intent.putExtra("uId",PinziApplication.getInstance().getLoginDto().getId());
-                    intent.putExtra("index",2);
+                    intent.putExtra("type", PinziApplication.getInstance().getLoginDto().getType());
+                    intent.putExtra("uId", PinziApplication.getInstance().getLoginDto().getId());
+                    intent.putExtra("index", 2);
                     intent.putExtra("back", 2);
                     startActivity(intent);
                 }
             });
             //
             timeKillGoods = new ArrayList<>();//秒杀专区
-            oneAdapter = new OneAdapter(this, timeKillGoods, this,getClasses());
+            oneAdapter = new OneAdapter(this, timeKillGoods, this, getClasses());
             oneAdapter.setClasses(getClasses());
             rvOne.setAdapter(oneAdapter);
             rvOne.setFocusable(false);
@@ -257,24 +248,20 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
      */
     private void getSeckillPrefectureData() {
         viewModel.SeckillPrefecture(1, 3);
-        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<List<SeckillPrefectureDto>>>() {
+        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<SeckillDto>>() {
             @Override
-            public void onChanged(@Nullable BaseDto<List<SeckillPrefectureDto>> seckillPrefectureDtoBaseDto) {
+            public void onChanged(@Nullable BaseDto<SeckillDto> seckillPrefectureDtoBaseDto) {
                 try {
-                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData()))
-                    {
+                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())
+                            && EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods())) {
+
                         llKillGoods.setVisibility(View.VISIBLE);
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())) {
-                            timeKillGoods.clear();
-                            timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData());
-                            oneAdapter.notifyDataSetChanged();
-                        }
-                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime())) {
-                            llKillGoods.setVisibility(View.VISIBLE);
-                            tvNextTime.setText("下一场 " + DateUtil.dateToString("HH:mm", new Date(seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getNewTime())) + "开始");
-                            // s
-                            long endTime = seckillPrefectureDtoBaseDto.getData().get(0).getTblKillTime().getEndTime();
-                            //开启一个倒计时
+                        timeKillGoods.clear();
+                        timeKillGoods.addAll(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods());
+                        oneAdapter.notifyDataSetChanged();
+
+                        if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getEndTime())) {
+                            long endTime = seckillPrefectureDtoBaseDto.getData().getEndTime();
                             initTimeTask(endTime);
                         }
                     } else {
@@ -291,6 +278,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     }
 
     private void initTimeTask(long endTime) {
+        MainRxTimerUtil.cancel();
         MainRxTimerUtil.interval(1000, new MainRxTimerUtil.IRxNext() {
             @Override
             public void doNext() {//获取现在的 时分秒 时间戳
@@ -300,9 +288,11 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                //单位 s
+                //单位 毫秒
                 long delTime = endTime - nowTime;
                 if (delTime <= 0) {
+                    MainRxTimerUtil.cancel();
+                    getSeckillPrefectureData();
                     tvHour.setText("00");
                     tvMin.setText("00");
                     tvSecond.setText("00");
@@ -316,7 +306,8 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
             }
         });
     }
-    private int  screenWidth;
+    private int screenWidth;
+
     @Override
     public void initData() {
         //获取屏幕宽度
@@ -338,14 +329,14 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
                 if (listBaseDto.isSuccess() && EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                     typeDtos.addAll(listBaseDto.getData());
                     //算出个数
-                    int itemCount = screenWidth/DisplayUtil.dip2px(BuyCenterActivity.this,80);
-                    int position = getIntent().getIntExtra("position",0);
+                    int itemCount = screenWidth / DisplayUtil.dip2px(BuyCenterActivity.this, 80);
+                    int position = getIntent().getIntExtra("position", 0);
                     typeDtos.get(position).setSelected(true);
                     typeTopAdapter.notifyDataSetChanged();
 //                    if(typeDtos.size()>itemCount){
 //                        //向左移动一个单位
 //                        if(position>itemCount+1){
-                            rvTop.scrollToPosition(position);
+                    rvTop.scrollToPosition(position);
 //                        }
 //                    }
 
@@ -364,14 +355,14 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     private int pageNo = 1;//
     private int pageSize = 40;//
     private String entrance;
+
     private void initGoodData() {
-        if(getClasses()==1){
+        if (getClasses() == 1) {
             entrance = "2";
-        }
-        else{
+        } else {
             entrance = "1";
         }
-        viewModel.getBuyerCenterGoods(pageNo, pageSize, PinziApplication.getInstance().getLoginDto() == null ? 0 : PinziApplication.getInstance().getLoginDto().getType(), getGoodsType(),entrance);
+        viewModel.getBuyerCenterGoods(pageNo, pageSize, PinziApplication.getInstance().getLoginDto() == null ? 0 : PinziApplication.getInstance().getLoginDto().getType(), getGoodsType(), entrance);
         viewModel.getBuyerCenterGoodsliveData().observe(this, new Observer<BaseDto<List<BuyerCenterGoodsDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<BuyerCenterGoodsDto>> listBaseDto) {
@@ -411,7 +402,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BuyCenterActivity.this, MoreGoodsActivity.class);
-                intent.putExtra("return",2);
+                intent.putExtra("return", 2);
                 intent.putExtra("classes", getClasses());
                 startActivity(intent);
             }
@@ -457,12 +448,12 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
 //            intent.putExtra("classes", getClasses());
 //            startActivity(intent);
 //        } else {
-            intent = new Intent(this, GoodsDetailActivity.class);
-            intent.putExtra("goodsId", returnData.get(position).getId());
-            intent.putExtra("classes", getClasses());
-            startActivity(intent);
+        intent = new Intent(this, GoodsDetailActivity.class);
+        intent.putExtra("goodsId", returnData.get(position).getId());
+        intent.putExtra("classes", getClasses());
+        startActivity(intent);
 
-       // }
+        // }
     }
 
     @Override

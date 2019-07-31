@@ -18,6 +18,7 @@ import com.jilian.pinzi.adapter.SecondsKillZoneAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.MsgDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
@@ -106,23 +107,24 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
     //获取秒杀专区的数据
     private void getSeckillPrefectureData() {
         viewModel.SeckillPrefecture(pageNo, pageSize);
-        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<List<SeckillPrefectureDto>>>() {
+        viewModel.getSeckillPrefectureliveData().observe(this, new Observer<BaseDto<SeckillDto>>() {
             @Override
-            public void onChanged(@Nullable BaseDto<List<SeckillPrefectureDto>> listBaseDto) {
+            public void onChanged(@Nullable BaseDto<SeckillDto> seckillPrefectureDtoBaseDto) {
                 try {
                     getLoadingDialog().dismiss();
                     srNoData.finishRefresh();
                     srHasData.finishRefresh();
                     srHasData.finishLoadMore();
                     //有数据
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
+                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData())
+                            && EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods())) {
                         srNoData.setVisibility(View.GONE);
                         srHasData.setVisibility(View.VISIBLE);
                         rlTop.setVisibility(View.VISIBLE);
                         if (pageNo == 1) {
                             datas.clear();
                         }
-                        datas.addAll(listBaseDto.getData());
+                        datas.addAll(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods());
                         adapter.notifyDataSetChanged();
                     } else {
                         //说明是上拉加载
@@ -135,9 +137,9 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
                             rlTop.setVisibility(View.GONE);
                         }
                     }
-                    if (EmptyUtils.isNotEmpty(listBaseDto.getData().get(0).getTblKillTime())) {
+                    if (EmptyUtils.isNotEmpty(seckillPrefectureDtoBaseDto.getData().getEndTime())) {
                         //开启倒计时 单位S
-                        long endTime = listBaseDto.getData().get(0).getTblKillTime().getEndTime();
+                        long endTime = seckillPrefectureDtoBaseDto.getData().getEndTime();
                         initTimeTask(endTime);
                     }
 
@@ -175,6 +177,7 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
                 String str = null;
                 if (delTime <= 0) {
                     str = "00:00:00";
+                    finish();
                 } else {
                     str = DateUtil.timeToHms(delTime);
                 }

@@ -18,6 +18,7 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.CouponCentreDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.MyCarddetailActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -43,6 +44,7 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
     private LinearLayoutManager linearLayoutManager;
     private MainViewModel viewModel;
     private SmartRefreshLayout srNoData;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +76,7 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new CustomerItemDecoration(DisplayUtil.dip2px(this, 10)));
         datas = new ArrayList<>();
-        adapter = new GetCardCenterAdapter(this, datas, this,this);
+        adapter = new GetCardCenterAdapter(this, datas, this, this);
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
     }
@@ -135,7 +137,7 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, MyCarddetailActivity.class);
         intent.putExtra("id", datas.get(position).getId());
-        intent.putExtra(Constant.PARAM,"GetCardCenterActivity");
+        intent.putExtra(Constant.PARAM, "GetCardCenterActivity");
         startActivity(intent);
     }
 
@@ -146,6 +148,17 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
      */
     @Override
     public void toReceive(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(GetCardCenterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         getLoadingDialog().showDialog();
         viewModel.GetCoupon(datas.get(position).getId(), PinziApplication.getInstance().getLoginDto().getId());
         viewModel.getStringliveData().observe(this, new Observer<BaseDto<String>>() {

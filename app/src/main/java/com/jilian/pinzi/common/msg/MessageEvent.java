@@ -8,6 +8,15 @@ public class MessageEvent implements Serializable {
     private WxPayMessage wxPayMessage;
     private ProductMessage productMessage;
     private GoodsDetailDto goodsDetailDto;
+    private KillMessage killMessage;
+
+    public KillMessage getKillMessage() {
+        return killMessage;
+    }
+
+    public void setKillMessage(KillMessage killMessage) {
+        this.killMessage = killMessage;
+    }
 
     public GoodsDetailDto getGoodsDetailDto() {
         return goodsDetailDto;

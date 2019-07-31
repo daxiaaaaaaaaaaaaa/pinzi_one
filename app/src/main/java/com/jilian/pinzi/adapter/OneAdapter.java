@@ -19,10 +19,14 @@ import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
+import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.MainRxTimerUtil;
 import com.jilian.pinzi.utils.NumberUtils;
 import com.jilian.pinzi.utils.ScreenUtils;
 import com.jilian.pinzi.utils.UrlUtils;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -97,6 +101,8 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.ViewHolder> {
         holder.tvPerPrice.getPaint().setAntiAlias(true);//抗锯齿
         holder.tvPerPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG); //中划线
 
+
+
     }
 
     @Override
@@ -110,6 +116,8 @@ public class OneAdapter extends RecyclerView.Adapter<OneAdapter.ViewHolder> {
         private TextView tvName;
         private TextView tvPrice;
         private TextView tvPerPrice;
+
+
 
         private LinearLayout llItemWidth;
 

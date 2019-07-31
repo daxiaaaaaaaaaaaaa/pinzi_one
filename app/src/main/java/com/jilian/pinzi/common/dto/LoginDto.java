@@ -27,7 +27,7 @@ public class LoginDto implements Serializable {
     private String contact;//":null,
     private String linkPhone;//":null,
     private String imgUrl;//":null,
-    private int type;//":1,类型（1.普通用户 2.终端 3.渠道 4.总经销商）
+    private int type;//":1,类型（1.普通用户 2.终端 3.渠道 4.总经销商 5平台賬號）
     private int isVip;//":1,会员等级（1.会员 2.金牌 3.铂金 4.钻石 5.皇冠）
     private String checkStatus;//":2,
     private String isUse;//":0,

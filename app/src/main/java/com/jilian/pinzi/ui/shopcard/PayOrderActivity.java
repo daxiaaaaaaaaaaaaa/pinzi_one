@@ -246,7 +246,7 @@ public class PayOrderActivity extends BaseActivity {
                     type = 2;
                 }
                 if (shopType == 2) {
-                    type = 4;
+                    type = 3;
                     payfright = 2;
                 }
                 //去支付
@@ -260,7 +260,7 @@ public class PayOrderActivity extends BaseActivity {
                     type = 1;
                 }
                 if (shopType == 2) {
-                    type = 4;
+                    type = 3;
                     payfright = 1;
                 }
                 //去支付

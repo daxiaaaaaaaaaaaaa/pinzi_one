@@ -320,10 +320,6 @@ public class IntegralFillOrderActivity extends BaseActivity implements FillOrder
         rlSelectPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (getLoginDto().getType() == 1) {
-//                    ToastUitl.showImageToastFail("普通用户不能选择发货人");
-//                    return;
-//                }
                 if (EmptyUtils.isNotEmpty(dtoList)) {
                     Intent intent = new Intent(IntegralFillOrderActivity.this, SelectPersonActivity.class);
                     intent.putExtra("shipper",shipper);

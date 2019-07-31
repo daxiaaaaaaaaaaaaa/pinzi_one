@@ -30,6 +30,7 @@ import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.common.dto.QuestionDetailDto;
 import com.jilian.pinzi.common.dto.QuestionDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
@@ -118,7 +119,7 @@ public class MainViewModel extends ViewModel {
     private LiveData<BaseDto<List<MainRecommendDto>>> ReturnCommissionliveData;//返佣金专区
 
 
-    private LiveData<BaseDto<List<SeckillPrefectureDto>>> seckillPrefectureliveData;//秒杀专区
+    private LiveData<BaseDto<SeckillDto>> seckillPrefectureliveData;//秒杀专区
 
     private LiveData<BaseDto<List<StoreShowDto>>> storeShowliveData;//店铺展示
 
@@ -368,7 +369,7 @@ public class MainViewModel extends ViewModel {
         return goodsDetailliveData;
     }
 
-    public LiveData<BaseDto<List<SeckillPrefectureDto>>> getSeckillPrefectureliveData() {
+    public LiveData<BaseDto<SeckillDto>> getSeckillPrefectureliveData() {
         return seckillPrefectureliveData;
     }
 
@@ -534,6 +535,7 @@ public class MainViewModel extends ViewModel {
         mainRepository = new MainRepositoryImpl();
         couponDetailliveData = mainRepository.getCouponDetail(id);
     }
+
     /**
      * 优惠券详情
      *
@@ -544,6 +546,7 @@ public class MainViewModel extends ViewModel {
         mainRepository = new MainRepositoryImpl();
         myCardDetailliveData = mainRepository.CouponDetails(id);
     }
+
     /**
      * 用户签到
      *

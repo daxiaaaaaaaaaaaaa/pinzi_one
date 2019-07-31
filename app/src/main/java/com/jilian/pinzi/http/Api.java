@@ -50,6 +50,7 @@ import com.jilian.pinzi.common.dto.SaleRecordDetailDto;
 import com.jilian.pinzi.common.dto.SaleRecordDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.ShippmentDto;
@@ -598,7 +599,7 @@ public class Api {
      *
      * @return
      */
-    public static Flowable<BaseDto<List<SeckillPrefectureDto>>> SeckillPrefecture(SeckillPrefectureVo vo) {
+    public static Flowable<BaseDto<SeckillDto>> SeckillPrefecture(SeckillPrefectureVo vo) {
         return RequetRetrofit.getInstance().SeckillPrefecture(HttpUtil.convertVo2Params(vo));
     }
 

@@ -272,6 +272,17 @@ public class FriendDetailActivity extends CommonActivity {
         //
         // 删除该朋友圈
         tvItemListFriendsDel.setOnClickListener(v -> {
+            if (PinziApplication.getInstance().getLoginDto() == null) {
+                Intent intent = new Intent(FriendDetailActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return;
+            }
+            if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                    && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                    && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                return;
+            }
             Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
             dialog.setContentView(R.layout.dialog_bottom_layout);
             Window window = dialog.getWindow();
@@ -296,7 +307,17 @@ public class FriendDetailActivity extends CommonActivity {
 
         // 弹出点赞和评论 PopupWindow.
         rlCommentLike.setOnClickListener(v -> {
-
+            if (PinziApplication.getInstance().getLoginDto() == null) {
+                Intent intent = new Intent(FriendDetailActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return;
+            }
+            if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                    && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                    && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                return;
+            }
             View content = LayoutInflater.from(this).inflate(R.layout.popup_friends_msg, null, false);
             PopupWindow popupWindow = new PopupWindow(content,
                     ScreenUtils.dip2px(this, 180), ScreenUtils.dip2px(this, 40));
@@ -392,6 +413,17 @@ public class FriendDetailActivity extends CommonActivity {
      * @param parentId 回復 評論 ID
      */
     private void showPopupWindow(String fcId, String parentId) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(FriendDetailActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         // 一个自定义的布局，作为显示的内容
         MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(this, R.layout.dialog_input_comment);
         dialog.show();
@@ -416,6 +448,17 @@ public class FriendDetailActivity extends CommonActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(FriendDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 String comment = etComment.getText().toString();
                 if (TextUtils.isEmpty(comment)) {
                     return;
@@ -585,6 +628,17 @@ public class FriendDetailActivity extends CommonActivity {
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(FriendDetailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 if (TextUtils.isEmpty(etComment.getText().toString())) {
                     return;
                 }

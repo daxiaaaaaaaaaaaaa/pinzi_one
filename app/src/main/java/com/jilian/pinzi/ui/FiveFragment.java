@@ -51,8 +51,8 @@ public class FiveFragment extends BaseFragment {
     private LinearLayout llMyCard;
     private RelativeLayout rlMycollection;
     private RelativeLayout rlFoot;
-    private String []  types = new String[]{"","会员","会员","会员","会员"};
-    private String []  isVips = new String[]{"","普通","金牌","铂金","钻石","皇冠"};
+    private String[] types = new String[]{"", "会员", "会员", "会员", "会员", "会员"};
+    private String[] isVips = new String[]{"", "普通", "金牌", "铂金", "钻石", "皇冠"};
     /**
      * 地址管理
      */
@@ -85,11 +85,21 @@ public class FiveFragment extends BaseFragment {
     private TextView tvFiveMyLevels;
     private LinearLayout llQuestionnaireSurvey;
     private LinearLayout llActivity;
+    private LinearLayout llOne;
+    private LinearLayout llTwo;
+    private LinearLayout llThree;
+    private LinearLayout llFour;
 
 
-
-
-
+    private LinearLayout llFive;
+    private RelativeLayout rlOne;
+    private RelativeLayout rlTwo;
+    private RelativeLayout rlThree;
+    private RelativeLayout rlFour;
+    private RelativeLayout rlFive;
+    private RelativeLayout rlSix;
+    private RelativeLayout rlSeven;
+    private RelativeLayout rlEight;
 
 
     @Override
@@ -110,7 +120,20 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        llQuestionnaireSurvey = (LinearLayout)view. findViewById(R.id.ll_questionnaire_survey);
+        llFive = (LinearLayout) view.findViewById(R.id.ll_five);
+        rlOne = (RelativeLayout) view.findViewById(R.id.rl_one);
+        rlTwo = (RelativeLayout) view.findViewById(R.id.rl_two);
+        rlThree = (RelativeLayout) view.findViewById(R.id.rl_three);
+        rlFour = (RelativeLayout) view.findViewById(R.id.rl_four);
+        rlFive = (RelativeLayout) view.findViewById(R.id.rl_five);
+        rlSix = (RelativeLayout) view.findViewById(R.id.rl_six);
+        rlSeven = (RelativeLayout) view.findViewById(R.id.rl_seven);
+        rlEight = (RelativeLayout) view.findViewById(R.id.rl_eight);
+        llThree = (LinearLayout) view.findViewById(R.id.ll_three);
+        llFour = (LinearLayout) view.findViewById(R.id.ll_four);
+        llOne = (LinearLayout) view.findViewById(R.id.ll_one);
+        llTwo = (LinearLayout) view.findViewById(R.id.ll_two);
+        llQuestionnaireSurvey = (LinearLayout) view.findViewById(R.id.ll_questionnaire_survey);
         llActivity = (LinearLayout) view.findViewById(R.id.ll_activity);
         rlMember = (RelativeLayout) view.findViewById(R.id.rl_member);
         rlAddressManager = (RelativeLayout) view.findViewById(R.id.rl_five_address_manager);
@@ -131,15 +154,14 @@ public class FiveFragment extends BaseFragment {
         rlMyShipment = (RelativeLayout) view.findViewById(R.id.rl_my_shipment);
         rlOrder = (RelativeLayout) view.findViewById(R.id.rl_order);
         tvIniviteCode = (TextView) view.findViewById(R.id.tv_inivite_code);
-        ivSetting = (ImageView)view. findViewById(R.id.iv_setting);
+        ivSetting = (ImageView) view.findViewById(R.id.iv_setting);
         ivNew = (ImageView) view.findViewById(R.id.iv_new);
         rlFiveQrCode = (RelativeLayout) view.findViewById(R.id.rl_five_qr_code);
         tvFiveMyLevels = (TextView) view.findViewById(R.id.tv_five_my_levels);
-        if(EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())){
-            if(PinziApplication.getInstance().getLoginDto().getType()==1){
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())) {
+            if (PinziApplication.getInstance().getLoginDto().getType() == 1) {
                 rlMyShipment.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 rlMyShipment.setVisibility(View.VISIBLE);
             }
         }
@@ -152,19 +174,42 @@ public class FiveFragment extends BaseFragment {
         }
 
 
-
     }
 
     @Override
     protected void initData() {
         getMemberData();
+        initPlatformView();
+    }
+
+    /**
+     * 初始化平台账号的界面
+     */
+    private void initPlatformView() {
+
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            tvIniviteCode.setVisibility(View.GONE);
+            llOne.setVisibility(View.GONE);
+            llTwo.setVisibility(View.GONE);
+            llThree.setVisibility(View.GONE);
+            llFour.setVisibility(View.GONE);
+            llFive.setVisibility(View.VISIBLE);
+        } else {
+            llOne.setVisibility(View.VISIBLE);
+            llTwo.setVisibility(View.VISIBLE);
+            llThree.setVisibility(View.VISIBLE);
+            llFour.setVisibility(View.VISIBLE);
+            llFive.setVisibility(View.GONE);
+        }
     }
 
     /**
      * 获取新消息
      */
     private void getNewMsgData() {
-        if(PinziApplication.getInstance().getLoginDto()==null){
+        if (PinziApplication.getInstance().getLoginDto() == null) {
             return;
         }
         mainViewModel.MessageRead(2, PinziApplication.getInstance().getLoginDto().getId());
@@ -184,45 +229,53 @@ public class FiveFragment extends BaseFragment {
             }
         });
     }
+
     private void getMemberData() {
-        if(PinziApplication.getInstance().getLoginDto()==null){
+        if (PinziApplication.getInstance().getLoginDto() == null) {
             return;
         }
-            viewModel.MemberCenter(PinziApplication.getInstance().getLoginDto().getType(),PinziApplication.getInstance().getLoginDto().getId());
-            viewModel.getMember().observe(this, new Observer<BaseDto<MemberDto>>() {
-                @Override
-                public void onChanged(@Nullable BaseDto<MemberDto> dto) {
-                    if(dto.isSuccess()){
-                        initDataView(dto.getData());
-                    }
-                    else{
-                        ToastUitl.showImageToastFail(dto.getMsg());
-                    }
+        viewModel.MemberCenter(PinziApplication.getInstance().getLoginDto().getType(), PinziApplication.getInstance().getLoginDto().getId());
+        viewModel.getMember().observe(this, new Observer<BaseDto<MemberDto>>() {
+            @Override
+            public void onChanged(@Nullable BaseDto<MemberDto> dto) {
+                if (dto.isSuccess()) {
+                    initDataView(dto.getData());
+                } else {
+                    ToastUitl.showImageToastFail(dto.getMsg());
                 }
-            });
+            }
+        });
 
     }
 
     /**
-     *       private int type;// true number类型（1.普通用户 2.终端 3.渠道 4.总经销商）
-     *         private int isVip;// true number  会员等级（1.会员 2.金牌 3.铂金 4.钻石 5.皇冠）
+     * private int type;// true number类型（1.普通用户 2.终端 3.渠道 4.总经销商）
+     * private int isVip;// true number  会员等级（1.会员 2.金牌 3.铂金 4.钻石 5.皇冠）
+     *
      * @param data
      */
     private void initDataView(MemberDto data) {
-        tvMember.setText(isVips[data.getIsVip()]+types[data.getType()]);
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            tvMember.setText("平台账号");
+        } else {
+            tvMember.setText(isVips[data.getIsVip()] + types[data.getType()]);
+        }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LoginDto dto = ((MainActivity)getmActivity()).getLoginDto();
-        if(EmptyUtils.isNotEmpty(dto)){
+        LoginDto dto = ((MainActivity) getmActivity()).getLoginDto();
+        if (EmptyUtils.isNotEmpty(dto)) {
             Glide
                     .with(getmActivity())
-                    .load(((MainActivity)getmActivity()).getLoginDto().getHeadImg())
+                    .load(((MainActivity) getmActivity()).getLoginDto().getHeadImg())
                     .into(ivHead);
-            tvName.setText(((MainActivity)getmActivity()).getLoginDto().getName());
-            tvIniviteCode.setText("我的邀请码："+(dto.getInvitationCode()==null?"":dto.getInvitationCode()));
+            tvName.setText(((MainActivity) getmActivity()).getLoginDto().getName());
+            tvIniviteCode.setText("我的邀请码：" + (dto.getInvitationCode() == null ? "" : dto.getInvitationCode()));
 
         }
         //获取新消息 是否红点
@@ -273,14 +326,20 @@ public class FiveFragment extends BaseFragment {
 
             @Override
             public void onClick(View view) {
+
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    return;
+                }
                 startActivity(new Intent(getmActivity(), MemberActivity.class));
             }
         });
         ivShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(getmActivity(),LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -359,6 +418,13 @@ public class FiveFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getmActivity(), ServiceCenterActivity.class));
+            }
+        });
+
+        rlOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

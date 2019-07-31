@@ -18,7 +18,7 @@ public class MemberDto implements Serializable {
     private String contact;// true string   联系人
     private String linkPhone;// true string       联系电话
     private String imgUrl;// true string 图片（多张用逗号隔开）
-    private int type;// true number类型（1.普通用户 2.终端 3.渠道 4.总经销商）
+    private int type;// true number类型（1.普通用户 2.终端 3.渠道 4.总经销商 5 平台）
     private int isVip;// true number  会员等级（1.会员 2.金牌 3.铂金 4.钻石 5.皇冠）
     private int checkStatus;// true number    审核状态（1.待审核 2.审核通过 3.审核失败） type为2,3需填
     private int isUse;// true number    是否启用（0.启用 1.禁用）

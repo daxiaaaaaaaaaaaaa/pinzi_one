@@ -280,53 +280,57 @@ public class GoodsDetailActivity extends BaseActivity {
         llCutomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginDto loginDto = PinziApplication.getInstance().getLoginDto();
-                if (loginDto == null) {
+                if (PinziApplication.getInstance().getLoginDto() == null) {
                     Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
 
 
+                showLoadingDialog();
+                // 连接融云服务器
+                RongIM.connect(PinziApplication.getInstance().getLoginDto().getToken(), new RongIMClient.ConnectCallback() {
+                    /**
+                     * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
+                     * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
+                     */
+                    @Override
+                    public void onTokenIncorrect() {
+                        hideLoadingDialog();
+                        Log.d("WelcomeActivity", "--onTokenIncorrect");
+                    }
 
-//                showLoadingDialog();
-//                // 连接融云服务器
-//                RongIM.connect(loginDto.getToken(), new RongIMClient.ConnectCallback() {
-//                    /**
-//                     * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-//                     * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-//                     */
-//                    @Override
-//                    public void onTokenIncorrect() {
-//                        hideLoadingDialog();
-//                        Log.d("WelcomeActivity", "--onTokenIncorrect");
-//                    }
-//
-//                    /**
-//                     * 连接融云成功
-//                     *
-//                     * @param userid 当前 token 对应的用户 id
-//                     */
-//                    @Override
-//                    public void onSuccess(String userid) {
-//                        hideLoadingDialog();
-//                        RongIM.getInstance().refreshUserInfoCache(
-//                                new UserInfo(loginDto.getId(), loginDto.getName(), Uri.parse(loginDto.getHeadImg())));
-//                        RongIM.getInstance()
-//                                .startConversation(GoodsDetailActivity.this,
-//                                        Conversation.ConversationType.CUSTOMER_SERVICE, "KEFU154046100693716", "在线客服");
-//                    }
-//
-//                    /**
-//                     * 连接融云失败
-//                     *
-//                     * @param errorCode 错误码，可到官网 查看错误码对应的注释
-//                     */
-//                    @Override
-//                    public void onError(RongIMClient.ErrorCode errorCode) {
-//                        Log.d("WelcomeActivity", "--onError：" + errorCode.getValue());
-//                    }
-//                });
+                    /**
+                     * 连接融云成功
+                     *
+                     * @param userid 当前 token 对应的用户 id
+                     */
+                    @Override
+                    public void onSuccess(String userid) {
+                        hideLoadingDialog();
+                        RongIM.getInstance().refreshUserInfoCache(
+                                new UserInfo(PinziApplication.getInstance().getLoginDto().getId(), PinziApplication.getInstance().getLoginDto().getName(), Uri.parse(PinziApplication.getInstance().getLoginDto().getHeadImg())));
+                        RongIM.getInstance()
+                                .startConversation(GoodsDetailActivity.this,
+                                        Conversation.ConversationType.CUSTOMER_SERVICE, "KEFU154046100693716", "在线客服");
+                    }
+
+                    /**
+                     * 连接融云失败
+                     *
+                     * @param errorCode 错误码，可到官网 查看错误码对应的注释
+                     */
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        Log.d("WelcomeActivity", "--onError：" + errorCode.getValue());
+                    }
+                });
             }
         });
         //马上兑换
@@ -338,6 +342,12 @@ public class GoodsDetailActivity extends BaseActivity {
                     startActivity(intent);
                     return;
                 }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 showTipsDialog();
             }
         });
@@ -347,6 +357,12 @@ public class GoodsDetailActivity extends BaseActivity {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
                     Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
                     return;
                 }
                 if (!EmptyUtils.isNotEmpty(mData)) {
@@ -368,6 +384,12 @@ public class GoodsDetailActivity extends BaseActivity {
                     startActivity(intent);
                     return;
                 }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
                 intent.putExtra("index", 3);
                 intent.putExtra("back", 2);
@@ -380,6 +402,12 @@ public class GoodsDetailActivity extends BaseActivity {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
                     Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
                     return;
                 }
                 if (!EmptyUtils.isNotEmpty(mData)) {
@@ -408,6 +436,12 @@ public class GoodsDetailActivity extends BaseActivity {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
                     Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    return;
+                }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
                     return;
                 }
                 if (EmptyUtils.isNotEmpty(mData)) {

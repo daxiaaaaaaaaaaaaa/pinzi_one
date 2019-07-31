@@ -50,6 +50,7 @@ import com.jilian.pinzi.common.dto.SaleRecordDetailDto;
 import com.jilian.pinzi.common.dto.SaleRecordDto;
 import com.jilian.pinzi.common.dto.ScoreBuyGoodsDto;
 import com.jilian.pinzi.common.dto.ScoreOrCommissionDto;
+import com.jilian.pinzi.common.dto.SeckillDto;
 import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.ShipperDto;
 import com.jilian.pinzi.common.dto.ShippmentDto;
@@ -525,7 +526,7 @@ public interface ApiService {
      * @return
      */
     @GET("index/SeckillPrefecture")
-    Flowable<BaseDto<List<SeckillPrefectureDto>>> SeckillPrefecture(@QueryMap Map<String, String> map);
+    Flowable<BaseDto<SeckillDto>> SeckillPrefecture(@QueryMap Map<String, String> map);
 
     /**
      * 店铺展示

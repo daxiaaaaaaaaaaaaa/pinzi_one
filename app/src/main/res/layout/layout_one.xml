@@ -89,15 +89,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp">
-            <TextView
-                android:layout_centerVertical="true"
-                android:id="@+id/tv_next_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                tools:text="下一场 18:00 开始"
-                android:textColor="@color/color_text_dark"
-                android:textSize="13sp"/>
+
             <TextView
                 android:id="@+id/tv_one_more"
                 android:textColor="@color/color_text_dark"
