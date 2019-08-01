@@ -559,7 +559,7 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str = tvPayCount.getText().toString().substring(1);
+                String str = tvPreMoney.getText().toString().substring(1);
 
                 //定金商品
                 double douPre = Double.parseDouble(str);

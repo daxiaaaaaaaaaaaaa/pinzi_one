@@ -103,6 +103,12 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                     startActivity(intent);
                     return;
                 }
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 if (EmptyUtils.isNotEmpty(mData)) {
                     if (isGet) {
                         return;
@@ -126,7 +132,6 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                         startActivity(intent);
                         return false;
                     }
-
                     if (TextUtils.isEmpty(etContent.getText().toString())) {
                         return false;
                     }

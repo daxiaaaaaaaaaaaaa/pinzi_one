@@ -23,6 +23,7 @@ import com.jilian.pinzi.ui.main.fragment.ShopDetailRightFragment;
 import com.jilian.pinzi.ui.main.fragment.ShopDetailleftFragment;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.main.viewmodel.ShopViewModel;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.NoScrollViewPager;
 
@@ -133,6 +134,17 @@ public class ShopDetailActivity extends BaseActivity {
             // TODO: 转发
         });
         llShopAttention.setOnClickListener(v -> {
+            if (PinziApplication.getInstance().getLoginDto() == null) {
+                Intent intent = new Intent(ShopDetailActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return;
+            }
+            if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                    && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                    && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                return;
+            }
             // 关注商铺
             if (isAttention) {
                 // 取消关注

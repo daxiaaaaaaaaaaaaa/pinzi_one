@@ -354,8 +354,8 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
                 //重新购买的时候  判断商品数量
                 //1个商品 跳到商品详情
                 //大于1个商品 跳到 首页
-                Intent intent;
-                if (datas.size() == 1) {
+                 Intent intent;
+                 if (datas.size() == 1) {
                     intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, GoodsDetailActivity.class);
                     intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
                 } else {

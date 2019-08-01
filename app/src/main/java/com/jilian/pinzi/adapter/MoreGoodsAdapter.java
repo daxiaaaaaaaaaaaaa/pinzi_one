@@ -65,6 +65,15 @@ public class MoreGoodsAdapter extends RecyclerView.Adapter<MoreGoodsAdapter.View
                 }
             }
         }
+        else if (classes == 3) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getFranchiseeBuy()));
+        } else if (classes == 4) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getChannelBuy()));
+        } else if (classes == 5) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getTerminalBuy()));
+        } else if (classes == 6) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPersonBuy()));
+        }
         else{
             holder.tvPrice.setText("￥" + datas.get(position).getPersonBuy());
         }

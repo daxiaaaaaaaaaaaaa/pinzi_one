@@ -27,7 +27,8 @@ public class GoodTypeAdapter extends RecyclerView.Adapter<GoodTypeAdapter.ViewHo
     private List<BuyerCenterGoodsDto> datas;
     private CustomItemClickListener listener;
     private int classes;
-    public GoodTypeAdapter(Activity context, List<BuyerCenterGoodsDto> datas, CustomItemClickListener listener,int classes) {
+
+    public GoodTypeAdapter(Activity context, List<BuyerCenterGoodsDto> datas, CustomItemClickListener listener, int classes) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
@@ -47,21 +48,28 @@ public class GoodTypeAdapter extends RecyclerView.Adapter<GoodTypeAdapter.ViewHo
         holder.tvStoreName.setText(datas.get(position).getStoreName());
         LoginDto dto = PinziApplication.getInstance().getLoginDto();
         //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
-        if(classes == 2){
-            if (dto.getType()==1) {
+        if (classes == 2) {
+            if (dto.getType() == 1) {
                 holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPersonBuy()));
             }
-            if (dto.getType()==2) {
+            if (dto.getType() == 2) {
                 holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getTerminalBuy()));
             }
-            if (dto.getType()==3) {
+            if (dto.getType() == 3) {
                 holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getChannelBuy()));
             }
-            if (dto.getType()==4) {
+            if (dto.getType() == 4) {
                 holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getFranchiseeBuy()));
             }
-        }
-        else{
+        } else if (classes == 3) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getFranchiseeBuy()));
+        } else if (classes == 4) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getChannelBuy()));
+        } else if (classes == 5) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getTerminalBuy()));
+        } else if (classes == 6) {
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPersonBuy()));
+        } else {
             holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPersonBuy()));
         }
 
@@ -70,8 +78,7 @@ public class GoodTypeAdapter extends RecyclerView.Adapter<GoodTypeAdapter.ViewHo
                     .with(mContext)
                     .load(UrlUtils.getUrl(datas.get(position).getFile()))
                     .into(holder.ivHead);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -89,12 +96,11 @@ public class GoodTypeAdapter extends RecyclerView.Adapter<GoodTypeAdapter.ViewHo
         private TextView tvPrice;
 
 
-
         public ViewHolder(final View itemView, final CustomItemClickListener listener) {
             super(itemView);
-            ivHead = (ImageView)itemView. findViewById(R.id.iv_head);
+            ivHead = (ImageView) itemView.findViewById(R.id.iv_head);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
-            tvStoreName = (TextView)itemView. findViewById(R.id.tv_storeName);
+            tvStoreName = (TextView) itemView.findViewById(R.id.tv_storeName);
             tvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

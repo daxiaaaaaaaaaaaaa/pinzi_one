@@ -654,6 +654,14 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                     startActivity(intent);
                     return;
                 }
+
+
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
                 sign();
             }
         });
@@ -679,12 +687,14 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
             public void onClick(View view) {
                 if (PinziApplication.getInstance().getLoginDto() == null) {
                     Intent intent = new Intent(getmActivity(), LoginActivity.class);
+                    intent.putExtra("classes", 2);
                     startActivity(intent);
                     return;
                 }
 
                 if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                    intent.putExtra("classes", 3);
                     startActivity(intent);
                 } else {
                     if (PinziApplication.getInstance().getLoginDto().getType() == 4) {
@@ -709,6 +719,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 }
                 if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                    intent.putExtra("classes", 4);
                     startActivity(intent);
                 } else {
                     if (PinziApplication.getInstance().getLoginDto().getType() == 3) {
@@ -735,6 +746,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
 
                 if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                    intent.putExtra("classes", 5);
                     startActivity(intent);
                 } else {
                     if (PinziApplication.getInstance().getLoginDto().getType() == 2) {
@@ -761,6 +773,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
 
                 if (PinziApplication.getInstance().getLoginDto().getType() == 5) {
                     Intent intent = new Intent(getmActivity(), BuyCenterActivity.class);
+                    intent.putExtra("classes", 6);
                     startActivity(intent);
                 } else {
 

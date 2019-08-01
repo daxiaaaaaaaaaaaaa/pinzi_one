@@ -336,7 +336,6 @@ public class GoodsDetailLeftFragment
      */
     private void initPrice(GoodsDetailDto data) {
         LoginDto dto = PinziApplication.getInstance().getLoginDto();
-
         //从采购中心进来
         if (getmActivity().getIntent().getIntExtra("classes", 1) == 2) {
             //秒杀商品
@@ -362,22 +361,14 @@ public class GoodsDetailLeftFragment
                 tvPerPrice.setVisibility(View.GONE);
                 if (dto.getType() == 1) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
-
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getPersonBuy() * data.getEarnestRate() * 0.01));
-
-
                 }
                 if (dto.getType() == 2) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getTerminalBuy()));
-
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getTerminalBuy() * data.getEarnestRate() * 0.01));
-
-
                 }
                 if (dto.getType() == 3) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getChannelBuy()));
-
-
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getChannelBuy() * data.getEarnestRate() * 0.01));
                 }
                 if (dto.getType() == 4) {
@@ -386,7 +377,64 @@ public class GoodsDetailLeftFragment
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
                 }
             }
+        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 3) {
+            //秒杀商品
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
+                tvPerPrice.setVisibility(View.VISIBLE);
+                tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
+
+            } else {
+                tvPerPrice.setVisibility(View.GONE);
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
+            }
+
+        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 4) {
+            //秒杀商品
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
+                tvPerPrice.setVisibility(View.VISIBLE);
+                tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getChannelBuy()));
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
+
+            } else {
+                tvPerPrice.setVisibility(View.GONE);
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getChannelBuy()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getChannelBuy() * data.getEarnestRate() * 0.01));
+            }
+
+        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 5) {
+
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
+                tvPerPrice.setVisibility(View.VISIBLE);
+                tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getTerminalBuy()));
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
+
+            } else {
+                tvPerPrice.setVisibility(View.GONE);
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getTerminalBuy()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getTerminalBuy() * data.getEarnestRate() * 0.01));
+            }
+
+        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 6) {
+
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
+                tvPerPrice.setVisibility(View.VISIBLE);
+                tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
+
+            } else {
+                tvPerPrice.setVisibility(View.GONE);
+                tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getPersonBuy()));
+                tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getPersonBuy() * data.getEarnestRate() * 0.01));
+            }
+
         }
+
         //不是从采购中心进来
         else {
             //秒杀商品

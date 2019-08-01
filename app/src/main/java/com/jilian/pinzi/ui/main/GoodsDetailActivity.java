@@ -537,7 +537,9 @@ public class GoodsDetailActivity extends BaseActivity {
                     if (type == 4) {
                         dto.setPrice(mData.getFranchiseeBuy());
                     }
-                } else {
+                }
+
+                else {
                     dto.setPrice(mData.getPersonBuy());
                 }
 
@@ -605,7 +607,18 @@ public class GoodsDetailActivity extends BaseActivity {
                                 if (dto.getType() == 4) {
                                     tvPrice.setText(NumberUtils.forMatNumber(mData.getFranchiseeBuy()));
                                 }
-                            } else {
+                            }
+
+                            else if (getIntent().getIntExtra("classes", 1) == 3) {
+                                tvPrice.setText(NumberUtils.forMatNumber(mData.getFranchiseeBuy()));
+                            } else if (getIntent().getIntExtra("classes", 1) == 4) {
+                                tvPrice.setText(NumberUtils.forMatNumber(mData.getChannelBuy()));
+                            } else if (getIntent().getIntExtra("classes", 1) == 5) {
+                               tvPrice.setText(NumberUtils.forMatNumber(mData.getTerminalBuy()));
+                            } else if (getIntent().getIntExtra("classes", 1) == 6) {
+                                tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
+                            }
+                            else {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
                             }
                         }

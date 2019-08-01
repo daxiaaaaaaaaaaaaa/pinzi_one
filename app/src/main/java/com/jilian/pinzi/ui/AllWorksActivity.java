@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.AllWorkAdapter;
 import com.jilian.pinzi.base.BaseActivity;
@@ -25,6 +26,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.main.ShopDetailActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -187,6 +189,17 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
 
     @Override
     public void vote(int position) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(AllWorksActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
         showLoadingDialog();
         viewModel.voteActivityProduct(getLoginDto().getId(), datas.get(position).getId(), datas.get(position).getIsVote() == 0 ? 1 : 2);
         viewModel.getVoteData().observe(this, new Observer<BaseDto>() {
