@@ -249,6 +249,18 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
             TextView releaseTime = viewHolder.getView(R.id.tv_item_list_friends_minute);
             releaseTime.setText(DateUtil.getTimeFormatText(new Date(Long.valueOf(friend.getCreateDate()))));
 
+            TextView tvDelete = viewHolder.getView(R.id.tv_item_list_friends_del);
+            //判断 朋友圈 是不是 自己发 的 ，如果是自己 就能删除  如果不是 就不能删除
+            if(EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())){
+
+                if(datas.get(position).getuId().equals(PinziApplication.getInstance().getLoginDto().getId())){
+                    tvDelete.setVisibility(View.VISIBLE);
+                }
+                else{
+                    tvDelete.setVisibility(View.GONE);
+                }
+
+            }
             // 删除该朋友圈
             viewHolder.getView(R.id.tv_item_list_friends_del).setOnClickListener(v -> {
                 if (PinziApplication.getInstance().getLoginDto() == null) {

@@ -49,7 +49,7 @@ android {
         }
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "pini_v${defaultConfig.versionName}_${variant.buildType.name}_${new Date().format("yyyy-MM-dd_HH_mm")}.apk"
+                outputFileName = "pini_${defaultConfig.versionName}_${variant.buildType.name}_${new Date().format("yyyy-MM-dd_HH_mm")}.apk"
             }
         }
     }

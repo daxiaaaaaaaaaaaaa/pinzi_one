@@ -264,13 +264,39 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
                 //重新购买的时候  判断商品数量
                 //1个商品 跳到商品详情
                 //大于1个商品 跳到 首页
-                Intent intent;
+                Intent intent ;
                 if (datas.size() == 1) {
                     intent = new Intent(MyOrderCancelDetailActivity.this, GoodsDetailActivity.class);
-                    intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                    if (datas.get(0).getIsShow() == 1) {
+                        ToastUitl.showImageToastFail("商品已经下架");
+                        return;
+                    } else {
+                        //秒杀商品
+                        if (datas.get(0).getIsSeckill() == 1) {
+                            if (datas.get(0).getIsClose() == 0) {
+                                ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                                return;
+                            } else {
+                                intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                                intent.putExtra("type", 2);
+
+                            }
+                        }
+                        //普通商品
+                        else {
+                            if (datas.get(0).getScoreBuy() > 0) {
+                                intent.putExtra("shopType", 2);//积分商城
+                            }
+                            intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                        }
+
+                    }
+
                 } else {
                     intent = new Intent(MyOrderCancelDetailActivity.this, MainActivity.class);
+                    intent.putExtra("back", 2);
                 }
+
                 startActivity(intent);
             }
         });
