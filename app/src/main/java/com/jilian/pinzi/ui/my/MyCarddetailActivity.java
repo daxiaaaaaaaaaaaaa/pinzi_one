@@ -94,7 +94,7 @@ public class MyCarddetailActivity extends BaseActivity {
         }
         //店铺中心过来
         else if ("ShopDetailRightFragment".equals(param)) {
-            getCouponDetail();
+            CouponDetails();
             StoreCouponDto dto = (StoreCouponDto) getIntent().getSerializableExtra("data");
             //先判断价格
             //免费的

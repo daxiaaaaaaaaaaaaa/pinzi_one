@@ -131,7 +131,7 @@ public class ShopCardCShopAdapter extends RecyclerView.Adapter<ShopCardCShopAdap
             }
 
             holder.tvName.setText(dto.getName());
-            holder.tvUserPlatform.setText("适用平台：" + "指定店铺");
+            holder.tvUserPlatform.setText("适用平台：" + dto.getStoreName());
             if (TextUtils.isEmpty(dto.getValidityDate())) {
                 holder.tvDay.setText("有效期限：");
             } else {

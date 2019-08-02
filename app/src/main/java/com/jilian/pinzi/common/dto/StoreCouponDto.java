@@ -15,9 +15,18 @@ public class StoreCouponDto implements Serializable {
    private int fixDay;//  number         领券后固定天数后过期
    private int useType ;//     true     number     使用商品类型（1.全场通用 2.指定商品 3.指定分类）
    private String goodsOrType ;// 指定商品或指定分类
-   private long createDate ;//     true  number   创建时间
+   private String createDate ;//     true  number   创建时间
    private double price;// true   number     优惠券价格（0为该优惠券免费领取）
    private int isGet;//   true     number 是否已领取（0.否 >1是）
+    private String storeName;//": "全平台",
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
 
     public String getId() {
         return id;
@@ -107,11 +116,11 @@ public class StoreCouponDto implements Serializable {
         this.goodsOrType = goodsOrType;
     }
 
-    public long getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(long createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

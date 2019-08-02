@@ -54,9 +54,12 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
         tvShopDetailAddress.setText(mShopDetail.getCity() + mShopDetail.getArea() + mShopDetail.getAddress());
         //电话
         tvShopDetailPhone.setText(mShopDetail.getPhone());
-        //
+        //评分
+        tvComment.setText(mShopDetail.getStoreGrade()+"分");
+        //营业时间
+        tvTime.setText(mShopDetail.getOpenHour());
         datas.clear();
-        if (TextUtils.isEmpty(mShopDetail.getPathUrl())) {
+        if (!TextUtils.isEmpty(mShopDetail.getPathUrl())) {
             datas.clear();
             if (mShopDetail.getPathUrl().contains(",")) {
                 String[] array = mShopDetail.getPathUrl().split(",");
@@ -67,17 +70,18 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
             }
             adapter.notifyDataSetChanged();
         }
-        initVideo(mShopDetail.getVideoUrl());
+
+        initVideo(mShopDetail);
 
     }
 
     /**
      * 初始化视频
      *
-     * @param videoUrl
+     * @param detailDto
      */
-    private void initVideo(String videoUrl) {
-        if (TextUtils.isEmpty(videoUrl)) {
+    private void initVideo(ShopDetailDto detailDto) {
+        if (TextUtils.isEmpty(detailDto.getVideoUrl())) {
             return;
         }
         //开启子线程
@@ -87,10 +91,11 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
                 super.run();
                 //对视频封面处理 耗时操作
 
-                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(videoUrl);
+                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(detailDto.getVideoUrl());
+                detailDto.setBitmap(bitmap);
                 Message msg = Message.obtain();
                 msg.what = 1000;
-                msg.obj = bitmap;
+                msg.obj = detailDto;
                 handler.sendMessage(msg);
 
 
@@ -104,10 +109,11 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
             super.handleMessage(msg);
             getLoadingDialog().dismiss();
             if (msg.what == 1000) {
-                Bitmap bitmap = (Bitmap) msg.obj;
+                ShopDetailDto detailDto = (ShopDetailDto) msg.obj;
                 ivVideo.setVisibility(View.VISIBLE);
-                ivVideo.thumbImageView.setImageBitmap(bitmap);
-
+                ivVideo.thumbImageView.setImageBitmap(detailDto.getBitmap());
+                ivVideo.setUp(detailDto.getVideoUrl(), "",JzvdStd.SCREEN_WINDOW_NORMAL);
+                JzvdStd.setJzUserAction(null);
             }
         }
     };

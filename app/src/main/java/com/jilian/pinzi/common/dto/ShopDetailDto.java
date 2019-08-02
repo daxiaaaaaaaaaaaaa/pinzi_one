@@ -1,5 +1,7 @@
 package com.jilian.pinzi.common.dto;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +31,29 @@ public class ShopDetailDto implements Serializable {
     private String pathUrl;//     true   string   图片地址
 
     private String videoUrl;//true    string  视频地址
+    private Bitmap bitmap;
+    private String openHour;//营业时间
+
+
+    public String getOpenHour() {
+        return openHour;
+    }
+
+    public void setOpenHour(String openHour) {
+        this.openHour = openHour;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public void setStoreGrade(float storeGrade) {
         this.storeGrade = storeGrade;

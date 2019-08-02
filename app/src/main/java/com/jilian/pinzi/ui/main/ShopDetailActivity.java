@@ -30,6 +30,8 @@ import com.jilian.pinzi.views.NoScrollViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jzvd.JzvdStd;
+
 /**
  * 商铺详情 Activity
  */
@@ -224,6 +226,12 @@ public class ShopDetailActivity extends BaseActivity {
             }
         });
 
+    }
+
+    protected void onPause() {        super.onPause();   //     Jzvd.clearSavedProgress(this, null);
+        //home back
+        JzvdStd.goOnPlayOnPause();
+        JzvdStd.releaseAllVideos();
     }
 
     @Override
