@@ -14,11 +14,13 @@ import com.jilian.pinzi.common.dto.MyOrderDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.MainActivity;
 import com.jilian.pinzi.ui.main.GoodsDetailActivity;
+import com.jilian.pinzi.ui.my.MyOrderFinishNoCommentDetailActivity;
 import com.jilian.pinzi.ui.my.PostEvaluationActivity;
 import com.jilian.pinzi.ui.my.PostEvaluationSeeActivity;
 import com.jilian.pinzi.ui.shopcard.PayOrderActivity;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.NumberUtils;
+import com.jilian.pinzi.utils.ToastUitl;
 
 import java.util.Date;
 import java.util.List;
@@ -214,11 +216,38 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                             if (datas.get(position).getGoodsInfo().size() == 1) {
                                 intent = new Intent(mContext, GoodsDetailActivity.class);
-                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                if (datas.get(position).getGoodsInfo().get(0).getIsShow() == 1) {
+                                    ToastUitl.showImageToastFail("商品已经下架");
+                                    return;
+                                } else {
+                                    //秒杀商品
+                                    if (datas.get(position).getGoodsInfo().get(0).getIsSeckill() == 1) {
+                                        if (datas.get(position).getGoodsInfo().get(0).getIsClose() == 0) {
+                                            ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                                            return;
+                                        } else {
+                                            intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                            intent.putExtra("type", 2);
+
+                                        }
+                                    }
+                                    //普通商品
+                                    else {
+                                        if (datas.get(position).getGoodsInfo().get(0).getScoreBuy() > 0) {
+                                            intent.putExtra("shopType", 2);//积分商城
+                                        }
+                                        intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                    }
+
+                                }
+
                             } else {
                                 intent = new Intent(mContext, MainActivity.class);
+                                intent.putExtra("back", 2);
                             }
+
                             mContext.startActivity(intent);
+
                             break;
                         case 7:
                             //取消订单
@@ -258,10 +287,36 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
                                 if (datas.get(position).getGoodsInfo().size() == 1) {
                                     intent = new Intent(mContext, GoodsDetailActivity.class);
-                                    intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                    if (datas.get(position).getGoodsInfo().get(0).getIsShow() == 1) {
+                                        ToastUitl.showImageToastFail("商品已经下架");
+                                        return;
+                                    } else {
+                                        //秒杀商品
+                                        if (datas.get(position).getGoodsInfo().get(0).getIsSeckill() == 1) {
+                                            if (datas.get(position).getGoodsInfo().get(0).getIsClose() == 0) {
+                                                ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                                                return;
+                                            } else {
+                                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                                intent.putExtra("type", 2);
+
+                                            }
+                                        }
+                                        //普通商品
+                                        else {
+                                            if (datas.get(position).getGoodsInfo().get(0).getScoreBuy() > 0) {
+                                                intent.putExtra("shopType", 2);//积分商城
+                                            }
+                                            intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                        }
+
+                                    }
+
                                 } else {
                                     intent = new Intent(mContext, MainActivity.class);
+                                    intent.putExtra("back", 2);
                                 }
+
                                 mContext.startActivity(intent);
                                 break;
                             case 5:
@@ -271,10 +326,36 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                                 //大于1个商品 跳到 首页
                                 if (datas.get(position).getGoodsInfo().size() == 1) {
                                     intent = new Intent(mContext, GoodsDetailActivity.class);
-                                    intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                    if (datas.get(position).getGoodsInfo().get(0).getIsShow() == 1) {
+                                        ToastUitl.showImageToastFail("商品已经下架");
+                                        return;
+                                    } else {
+                                        //秒杀商品
+                                        if (datas.get(position).getGoodsInfo().get(0).getIsSeckill() == 1) {
+                                            if (datas.get(position).getGoodsInfo().get(0).getIsClose() == 0) {
+                                                ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                                                return;
+                                            } else {
+                                                intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                                intent.putExtra("type", 2);
+
+                                            }
+                                        }
+                                        //普通商品
+                                        else {
+                                            if (datas.get(position).getGoodsInfo().get(0).getScoreBuy() > 0) {
+                                                intent.putExtra("shopType", 2);//积分商城
+                                            }
+                                            intent.putExtra("goodsId", String.valueOf(datas.get(position).getGoodsInfo().get(0).getGoodsId()));
+                                        }
+
+                                    }
+
                                 } else {
                                     intent = new Intent(mContext, MainActivity.class);
+                                    intent.putExtra("back", 2);
                                 }
+
                                 mContext.startActivity(intent);
                                 break;
                             case 6:

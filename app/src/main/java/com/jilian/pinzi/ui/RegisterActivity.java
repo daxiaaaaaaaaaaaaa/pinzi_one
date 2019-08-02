@@ -310,6 +310,7 @@ public class RegisterActivity extends BaseActivity {
      * 获取验证码
      */
     private void getMsgCode() {
+        RxTimerUtil.cancel();
         getLoadingDialog().showDialog();
         SmsVo vo = new SmsVo();
         vo.setType(1);
@@ -320,10 +321,10 @@ public class RegisterActivity extends BaseActivity {
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 getLoadingDialog().dismiss();
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    //ToastUitl.showImageToastSuccess(stringBaseDto.getData());
-                    tvGetmsg.setText(String.valueOf(time + "s"));
+                   // ToastUitl.showImageToastSuccess(stringBaseDto.getData());
                     tvGetmsg.setEnabled(false);
                     tvGetmsg.setTextColor(getResources().getColor(R.color.color_text_dark));
+                    tvGetmsg.setText(String.valueOf(time + "s"));
                     RxTimerUtil.interval(1000, new RxTimerUtil.IRxNext() {
                         @Override
                         public void doNext() {
@@ -334,10 +335,14 @@ public class RegisterActivity extends BaseActivity {
                                 RxTimerUtil.cancel();
                                 time = 60;
                                 etPhone.setEnabled(true);
+                                //清除图标
+                                etPhone.setClearIconVisible(true);
                             } else {
                                 time--;
                                 tvGetmsg.setText(String.valueOf(time + "s"));
                                 etPhone.setEnabled(false);
+                                //清除图标
+                                etPhone.setClearIconVisible(false);
                             }
 
                         }

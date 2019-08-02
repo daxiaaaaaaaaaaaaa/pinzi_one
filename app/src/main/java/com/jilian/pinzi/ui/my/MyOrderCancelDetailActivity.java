@@ -35,10 +35,9 @@ import java.util.List;
 
 /**
  * 订单详情 已取消
- *
  */
 public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipmentGoodAdapter.GoodClickListener {
-      private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<GoodsInfoDto> datas;
     private MyShipmentGoodAdapter goodAdapter;
@@ -62,17 +61,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     private LinearLayout llInvoice;
     private TextView tvShipperName;
     private TextView tvPreMoney;
-   // private TextView tvActivityAccount;
-
-
-
-
-
-
-
-
-
-
+    // private TextView tvActivityAccount;
 
 
     @Override
@@ -134,11 +123,13 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     public void initData() {
         getOrderDetail();
     }
+
     private OrderDetailDto mData;
+
     /**
      * 获取订单详情
-     public void initData() {
-     getOrderDetail();
+     * public void initData() {
+     * getOrderDetail();
      */
     private void getOrderDetail() {
         viewModel.getOrderDetail(getIntent().getStringExtra("orderId"));
@@ -146,22 +137,23 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
             @Override
             public void onChanged(@Nullable BaseDto<OrderDetailDto> dto) {
                 hideLoadingDialog();
-                if(dto.isSuccess()){
+                if (dto.isSuccess()) {
                     initDataView(dto.getData());
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastFail(dto.getMsg());
                 }
             }
         });
     }
+
     /**
      * 显示 各个界面的数据
+     *
      * @param data
      */
     private void initOrderDetailView(OrderDetailDto data) {
-        if(data.getOrderType()==2){
-            List<GoodsInfoDto>  goodsInfo = new ArrayList<>();
+        if (data.getOrderType() == 2) {
+            List<GoodsInfoDto> goodsInfo = new ArrayList<>();
             GoodsInfoDto dto = new GoodsInfoDto();
             dto.setName(data.getAwardName());
             dto.setQuantity("1");
@@ -177,46 +169,42 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
             String phone = data.getPhone().substring(0, 3) + "****" + data.getPhone().substring(7, 11);
             tvPhone.setText(phone);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             tvPhone.setText(data.getPhone());
         }
         //4.地址
-        tvAdrress.setText( data.getAddress());
+        tvAdrress.setText(data.getAddress());
         //5.商品合计
-        tvGoodAllAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        tvGoodAllAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
         //6.运费
-        tvFright.setText("¥"+NumberUtils.forMatNumber(data.getFreightPrice()));
+        tvFright.setText("¥" + NumberUtils.forMatNumber(data.getFreightPrice()));
         //7.优惠券
-        tvCardAcount.setText("¥"+NumberUtils.forMatNumber(data.getCouponRemission()));
+        tvCardAcount.setText("¥" + NumberUtils.forMatNumber(data.getCouponRemission()));
         //8.积分抵扣
-        if(data.getPayScore()>0){
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
-        }
-        else{
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getScoreDeduction()));
+        if (data.getPayScore() > 0) {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        } else {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getScoreDeduction()));
         }
 
         //9.佣金抵扣
-        tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        tvConponseAccount.setText("¥" + NumberUtils.forMatNumber(data.getCommissionDeduction()));
         //10.定金
-        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        tvPreMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayFirstMoney()));
 
 
         //10.活动金额 ???
         //  tvActivityAccount.setText("¥"+NumberUtils.forMatNumber(data));
         //11.发票类型
-        if(data.getType()==1){
+        if (data.getType() == 1) {
             tvInvoiceTye.setText("增值税专用发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else if(data.getType()==2){
+        } else if (data.getType() == 2) {
             tvInvoiceTye.setText("增值税普通发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             llInvoice.setVisibility(View.GONE);
         }
         //12.发票抬头
@@ -226,9 +214,9 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
         //14.订单编号
         tvOrdeNo.setText(data.getOrderNo());
         //15.提交时间
-        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getCreateDate())));
+        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getCreateDate())));
         //16.支付方式
-        switch (data.getPayWay()){
+        switch (data.getPayWay()) {
             case 1:
                 tvPayType.setText("微信");
                 break;
@@ -246,18 +234,21 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
         tvShipperName.setText(data.getShipperName());
 
     }
+
     /**
      * 初始化订单详情数据
+     *
      * @param data
      */
     private void initDataView(OrderDetailDto data) {
-        this.mData =data;
-        if(EmptyUtils.isNotEmpty(data.getGoodsInfo())){
+        this.mData = data;
+        if (EmptyUtils.isNotEmpty(data.getGoodsInfo())) {
             datas.addAll(data.getGoodsInfo());
             goodAdapter.notifyDataSetChanged();
         }
         initOrderDetailView(data);
     }
+
     @Override
     public void initListener() {
         tvDelete.setOnClickListener(new View.OnClickListener() {
@@ -273,13 +264,12 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
                 //重新购买的时候  判断商品数量
                 //1个商品 跳到商品详情
                 //大于1个商品 跳到 首页
-                Intent intent ;
-                if(datas.size()==1){
-                    intent = new Intent(MyOrderCancelDetailActivity.this,GoodsDetailActivity.class);
-                    intent.putExtra("goodsId",String.valueOf(datas.get(0).getGoodsId()));
-                }
-                else{
-                    intent = new Intent(MyOrderCancelDetailActivity.this,MainActivity.class);
+                Intent intent;
+                if (datas.size() == 1) {
+                    intent = new Intent(MyOrderCancelDetailActivity.this, GoodsDetailActivity.class);
+                    intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                } else {
+                    intent = new Intent(MyOrderCancelDetailActivity.this, MainActivity.class);
                 }
                 startActivity(intent);
             }
@@ -289,9 +279,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     /**
      * 删除订单
      */
-    public void showDeleteOrderDialog(String orderId)
-
-    {
+    public void showDeleteOrderDialog(String orderId) {
         Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(this, R.layout.dialog_delete_order_tips);
       /*  TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView)dialog. findViewById(R.id.tv_content);*/
@@ -302,7 +290,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                updateOrderStatus(3,orderId, 0);
+                updateOrderStatus(3, orderId, 0);
             }
         });
         tvNo.setOnClickListener(new View.OnClickListener() {
@@ -313,6 +301,7 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
         });
         dialog.show();
     }
+
     /**
      * 更新订单状态
      *
@@ -339,13 +328,36 @@ public class MyOrderCancelDetailActivity extends BaseActivity implements MyShipm
     }
 
     @Override
-    public void clickGoods(String goodId,GoodsInfoDto dto) {
-        Intent intent  = new Intent(this,GoodsDetailActivity.class);
-        if (dto.getScoreBuy() > 0) {
-            intent.putExtra("shopType", 2);//积分商城
+    public void clickGoods(String goodId, GoodsInfoDto dto)
+    {
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        if (dto.getIsShow() == 1) {
+            ToastUitl.showImageToastFail("商品已经下架");
+            return;
+        } else {
+            //秒杀商品
+            if (dto.getIsSeckill() == 1) {
+                if (dto.getIsClose() == 0) {
+                    ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                    return;
+                } else {
+                    intent.putExtra("goodsId", goodId);
+                    intent.putExtra("type", 2);
+                    startActivity(intent);
+                }
+            }
+            //普通商品
+            else {
+
+                if (dto.getScoreBuy() > 0) {
+                    intent.putExtra("shopType", 2);//积分商城
+                }
+                intent.putExtra("goodsId", goodId);
+                startActivity(intent);
+            }
+
         }
 
-        intent.putExtra("goodsId",goodId);
-        startActivity(intent);
+
     }
 }

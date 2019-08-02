@@ -164,7 +164,7 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
                         dto.setId(String.valueOf(mGoodsList.get(i).getId()));
                         dto.setFile(mGoodsList.get(i).getFile());
                         dto.setName(mGoodsList.get(i).getName());
-                        //dto.setClasses(mGoodsList.get(i).getClasses());
+                        dto.setClasses(getClasses());
                         dto.setTopScore(mGoodsList.get(i).getScore());
                         dtoList.add(dto);
 
@@ -187,6 +187,7 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
                 intent.putExtra("goodsId", String.valueOf(mGoodsList.get(position).getId()));
+                intent.putExtra("classes", getClasses());
                 startActivity(intent);
             }
 
@@ -195,6 +196,10 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
                 return false;
             }
         });
+    }
+
+    public int getClasses() {
+        return getmActivity().getIntent().getIntExtra("classes", 1);
     }
 
     /**

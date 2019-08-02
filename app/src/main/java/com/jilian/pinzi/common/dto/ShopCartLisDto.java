@@ -23,6 +23,33 @@ public class ShopCartLisDto implements Serializable {
     private int isEarnest;//    true     string  是否需要定金（0.否 1.是）
 
     private double earnestRate;//     true     string    定金比例（单位%）
+    private int isShow;// (是否上下架（0.上架  1.下架）)
+    private int isSeckill;//(是否为秒杀商品（0.否  1.是）)
+    private int isClose;//(0.秒杀已结束或暂未秒杀  1.秒杀中)
+
+    public int getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(int isShow) {
+        this.isShow = isShow;
+    }
+
+    public int getIsSeckill() {
+        return isSeckill;
+    }
+
+    public void setIsSeckill(int isSeckill) {
+        this.isSeckill = isSeckill;
+    }
+
+    public int getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(int isClose) {
+        this.isClose = isClose;
+    }
 
     public int getIsEarnest() {
         return isEarnest;

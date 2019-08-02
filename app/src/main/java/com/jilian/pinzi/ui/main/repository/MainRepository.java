@@ -109,7 +109,7 @@ public interface MainRepository {
      * @param uId
      * @return
      */
-    LiveData<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId);
+    LiveData<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId,Integer startNum, Integer pageSize);
 
     /**
      * 领取优惠券

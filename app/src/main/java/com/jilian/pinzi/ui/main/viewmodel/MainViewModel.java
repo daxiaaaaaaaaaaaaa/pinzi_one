@@ -506,9 +506,9 @@ public class MainViewModel extends ViewModel {
      *
      * @param uId
      */
-    public void CouponCentre(String uId) {
+    public void CouponCentre(String uId,Integer startNum, Integer pageSize) {
         mainRepository = new MainRepositoryImpl();
-        couponliveData = mainRepository.CouponCentre(uId);
+        couponliveData = mainRepository.CouponCentre(uId,startNum,pageSize);
 
     }
 

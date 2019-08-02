@@ -315,6 +315,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
             }
         });
     }
+
     /**
      * 判断是否同时包含了定金 和 非定金商品
      *
@@ -334,6 +335,7 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
         }
 
     }
+
     /**
      * 选择全部 反选
      *
@@ -398,13 +400,32 @@ public class FourFragment extends BaseFragment implements CustomItemClickListene
     @Override
 
     public void onItemClick(View view, int position) {
+
         Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
-        intent.putExtra("goodsId", datas.get(position).getGoodsId());
-        intent.putExtra("classes", datas.get(position).getClasses());
-        if(datas.get(position).getSeckillPrice()>0){
-            //判斷是否是秒殺商品
-            intent.putExtra("type",2);
+        if (datas.get(position).getIsShow() == 1)
+        {
+            ToastUitl.showImageToastFail("商品已经下架");
+            return;
+        } else {
+            //秒杀商品
+            if (datas.get(position).getIsSeckill() == 1)
+            {
+                if (datas.get(position).getIsClose() == 0) {
+                    ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                    return;
+                } else {
+                    intent.putExtra("goodsId", datas.get(position).getGoodsId());
+                    intent.putExtra("classes", datas.get(position).getClasses());
+                }
+            }
+            //普通商品
+            else {
+                intent.putExtra("goodsId", datas.get(position).getGoodsId());
+                intent.putExtra("classes", datas.get(position).getClasses());
+            }
+
         }
+
         startActivity(intent);
     }
 

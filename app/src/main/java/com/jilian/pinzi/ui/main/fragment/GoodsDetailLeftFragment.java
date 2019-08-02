@@ -336,7 +336,7 @@ public class GoodsDetailLeftFragment
      */
     private void initPrice(GoodsDetailDto data) {
         LoginDto dto = PinziApplication.getInstance().getLoginDto();
-        //从采购中心进来
+        //不同用户 从采购中心进来
         if (getmActivity().getIntent().getIntExtra("classes", 1) == 2) {
             //秒杀商品
             if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
@@ -377,7 +377,8 @@ public class GoodsDetailLeftFragment
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
                 }
             }
-        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 3) {
+        }//平台  从总经销商进来
+        else if (getmActivity().getIntent().getIntExtra("classes", 1) == 3) {
             //秒杀商品
             if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
                 tvPerPrice.setVisibility(View.VISIBLE);
@@ -391,7 +392,9 @@ public class GoodsDetailLeftFragment
                 tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
             }
 
-        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 4) {
+        }
+        ////平台  从二批商进来
+        else if (getmActivity().getIntent().getIntExtra("classes", 1) == 4) {
             //秒杀商品
             if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
                 tvPerPrice.setVisibility(View.VISIBLE);
@@ -405,7 +408,9 @@ public class GoodsDetailLeftFragment
                 tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getChannelBuy() * data.getEarnestRate() * 0.01));
             }
 
-        } else if (getmActivity().getIntent().getIntExtra("classes", 1) == 5) {
+        }
+        ////平台  从门店进来
+        else if (getmActivity().getIntent().getIntExtra("classes", 1) == 5) {
 
             if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
                 tvPerPrice.setVisibility(View.VISIBLE);
@@ -771,6 +776,7 @@ public class GoodsDetailLeftFragment
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ShopDetailActivity.class);
                 intent.putExtra("shopId", String.valueOf(mData.getStoreId()));
+                intent.putExtra("classes", getClasses());
                 startActivity(intent);
 
             }
@@ -791,7 +797,9 @@ public class GoodsDetailLeftFragment
         });
 
     }
-
+    public int getClasses() {
+        return getmActivity().getIntent().getIntExtra("classes",1);
+    }
     private LinearLayoutManager lm_see_param;
 
     /**

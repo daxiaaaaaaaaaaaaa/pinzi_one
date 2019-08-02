@@ -358,8 +358,8 @@ public class Api {
      * @param uId
      * @return
      */
-    public static Flowable<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId) {
-        return RequetRetrofit.getInstance().CouponCentre(uId);
+    public static Flowable<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId,Integer startNum, Integer pageSize) {
+        return RequetRetrofit.getInstance().CouponCentre(uId,startNum,pageSize);
     }
 
     /**

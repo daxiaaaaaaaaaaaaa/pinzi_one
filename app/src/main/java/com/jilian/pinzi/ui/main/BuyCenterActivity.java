@@ -395,6 +395,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BuyCenterActivity.this, SecondsKillZoneActivity.class);
+                intent.putExtra("classes", getClasses());
                 startActivity(intent);
             }
         });

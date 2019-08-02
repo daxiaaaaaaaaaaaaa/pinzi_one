@@ -214,12 +214,15 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
         });
 
     }
-
+    public int getClasses() {
+        return getIntent().getIntExtra("classes", 1);
+    }
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
         intent.putExtra("goodsId", datas.get(position).getId());
         intent.putExtra("type", 2);
+        intent.putExtra("classes", getClasses());
         startActivity(intent);
     }
 }

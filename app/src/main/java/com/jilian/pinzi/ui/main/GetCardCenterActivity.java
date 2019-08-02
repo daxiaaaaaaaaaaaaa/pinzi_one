@@ -43,7 +43,12 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private MainViewModel viewModel;
+
+    private SmartRefreshLayout srHasData;
+
     private SmartRefreshLayout srNoData;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +75,9 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
     @Override
     public void initView() {
         setNormalTitle("领券中心", v -> finish());
+        srHasData = (SmartRefreshLayout) findViewById(R.id.sr_has_data);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        srNoData = (SmartRefreshLayout) findViewById(R.id.sr_no_data);
         linearLayoutManager = new LinearLayoutManager(this);
         srNoData = (SmartRefreshLayout) findViewById(R.id.sr_no_data);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -91,26 +98,38 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
         super.onResume();
         getCouponCentre();
     }
-
+    private int startNum = 1;//
+    private int pageSize = 20;//
     /**
      * 获取优惠券 代金券数据
      */
     private void getCouponCentre() {
-        viewModel.CouponCentre(PinziApplication.getInstance().getLoginDto().getId());
+        viewModel.CouponCentre(PinziApplication.getInstance().getLoginDto().getId(),startNum,pageSize);
         viewModel.getCouponliveData().observe(this, new Observer<BaseDto<List<CouponCentreDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<CouponCentreDto>> listBaseDto) {
+                getLoadingDialog().dismiss();
                 srNoData.finishRefresh();
+                srHasData.finishRefresh();
+                srHasData.finishLoadMore();
+                //有数据
                 if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                     srNoData.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    datas.clear();
+                    srHasData.setVisibility(View.VISIBLE);
+                    if (startNum == 1) {
+                        datas.clear();
+                    }
                     datas.addAll(listBaseDto.getData());
                     adapter.notifyDataSetChanged();
-
                 } else {
-                    srNoData.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
+                    //说明是上拉加载
+                    if (startNum > 1) {
+                        startNum--;
+                    } else {
+                        //第一次就没数据
+                        srNoData.setVisibility(View.VISIBLE);
+                        srHasData.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -118,9 +137,24 @@ public class GetCardCenterActivity extends BaseActivity implements CustomItemCli
 
     @Override
     public void initListener() {
+        srHasData.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                startNum = 1;
+                getCouponCentre();
+            }
+        });
+        srHasData.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                startNum++;
+                getCouponCentre();
+            }
+        });
         srNoData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                startNum = 1;
                 getCouponCentre();
             }
         });

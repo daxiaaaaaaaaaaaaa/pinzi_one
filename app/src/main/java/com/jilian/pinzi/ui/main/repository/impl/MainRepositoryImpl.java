@@ -122,8 +122,8 @@ public class MainRepositoryImpl extends CommonRepository implements MainReposito
      * @return
      */
     @Override
-    public LiveData<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId) {
-        return request(Api.CouponCentre(uId)).send().get();
+    public LiveData<BaseDto<List<CouponCentreDto>>> CouponCentre(String uId,Integer startNum, Integer pageSize) {
+        return request(Api.CouponCentre(uId,startNum,pageSize)).send().get();
     }
 
     /**

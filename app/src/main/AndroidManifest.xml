@@ -305,6 +305,10 @@
         <activity android:name=".ui.MainActivityActivity"/>
         <activity android:name=".ui.MainActivityDetailActivity"/>
         <activity android:name=".ui.shopcard.PayCardActivity"/>
+        <activity android:name=".ui.BuyRanActivity"/>
+        <activity android:name=".ui.OrderRanActivity"/>
+        <activity android:name=".ui.main.WebViewTitleActivity"/>
+        <activity android:name=".ui.CustomRanActivity"/>
 
         <!--<activity-->
         <!--android:name="com.alipay.sdk.app.H5PayActivity"-->

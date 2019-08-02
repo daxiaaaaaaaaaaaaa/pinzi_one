@@ -457,12 +457,32 @@ public class MyOrderWaitePayDetailActivity extends BaseActivity implements MyShi
 
     @Override
     public void clickGoods(String goodId, GoodsInfoDto dto) {
-        Intent intent = new Intent(this, GoodsDetailActivity.class);
 
-        if (dto.getScoreBuy() > 0) {
-            intent.putExtra("shopType", 2);//积分商城
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        if (dto.getIsShow() == 1) {
+            ToastUitl.showImageToastFail("商品已经下架");
+            return;
+        } else {
+            //秒杀商品
+            if (dto.getIsSeckill() == 1) {
+                if (dto.getIsClose() == 0) {
+                    ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                    return;
+                } else {
+                    intent.putExtra("goodsId", goodId);
+                    intent.putExtra("type", 2);
+                    startActivity(intent);
+                }
+            }
+            //普通商品
+            else {
+                if (dto.getScoreBuy() > 0) {
+                    intent.putExtra("shopType", 2);//积分商城
+                }
+                intent.putExtra("goodsId", goodId);
+                startActivity(intent);
+            }
+
         }
-        intent.putExtra("goodsId", goodId);
-        startActivity(intent);
     }
 }

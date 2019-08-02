@@ -252,6 +252,7 @@ public class ResetPwdActivity extends BaseActivity {
      * 获取验证码
      */
     private void getMsgCode() {
+        RxTimerUtil.cancel();
         getLoadingDialog().showDialog();
         SmsVo vo = new SmsVo();
         vo.setType(2);
@@ -276,10 +277,14 @@ public class ResetPwdActivity extends BaseActivity {
                                 RxTimerUtil.cancel();
                                 time = 60;
                                 etPhone.setEnabled(true);
+                                //清除图标
+                                etPhone.setClearIconVisible(true);
                             } else {
                                 time--;
                                 tvGetmsg.setText(String.valueOf(time + "s"));
                                 etPhone.setEnabled(false);
+                                //清除图标
+                                etPhone.setClearIconVisible(false);
                             }
 
                         }

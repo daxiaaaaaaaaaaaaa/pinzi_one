@@ -303,7 +303,7 @@ public interface ApiService {
      * @return
      */
     @GET("index/CouponCentre")
-    Flowable<BaseDto<List<CouponCentreDto>>> CouponCentre(@Query("uId") String uId);
+    Flowable<BaseDto<List<CouponCentreDto>>> CouponCentre(@Query("uId") String uId,@Query("startNum") Integer startNum,@Query("pageSize") Integer pageSize);
 
 
     /**

@@ -333,12 +333,12 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
         tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("评价商品".equals(tvComment.getText().toString())){
+                if ("评价商品".equals(tvComment.getText().toString())) {
                     Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, PostEvaluationActivity.class);
                     intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
                     startActivity(intent);
                 }
-                if("查看评价".equals(tvComment.getText().toString())){
+                if ("查看评价".equals(tvComment.getText().toString())) {
                     Intent intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, PostEvaluationSeeActivity.class);
                     intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
                     startActivity(intent);
@@ -354,27 +354,81 @@ public class MyOrderFinishNoCommentDetailActivity extends BaseActivity implement
                 //重新购买的时候  判断商品数量
                 //1个商品 跳到商品详情
                 //大于1个商品 跳到 首页
-                 Intent intent;
-                 if (datas.size() == 1) {
+                Intent intent ;
+                if (datas.size() == 1) {
                     intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, GoodsDetailActivity.class);
-                    intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                    if (datas.get(0).getIsShow() == 1) {
+                        ToastUitl.showImageToastFail("商品已经下架");
+                        return;
+                    } else {
+                        //秒杀商品
+                        if (datas.get(0).getIsSeckill() == 1) {
+                            if (datas.get(0).getIsClose() == 0) {
+                                ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                                return;
+                            } else {
+                                intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                                intent.putExtra("type", 2);
+
+                            }
+                        }
+                        //普通商品
+                        else {
+                            if (datas.get(0).getScoreBuy() > 0) {
+                                intent.putExtra("shopType", 2);//积分商城
+                            }
+                            intent.putExtra("goodsId", String.valueOf(datas.get(0).getGoodsId()));
+                        }
+
+                    }
+
                 } else {
                     intent = new Intent(MyOrderFinishNoCommentDetailActivity.this, MainActivity.class);
+                    intent.putExtra("back", 2);
                 }
+
                 startActivity(intent);
             }
         });
     }
 
-
+    /**
+     * private int isShow;// (是否上下架（0.上架  1.下架）)
+     * private int isSeckill;//(是否为秒杀商品（0.否  1.是）)
+     * private int isClose;//(0.秒杀已结束或暂未秒杀  1.秒杀中)
+     *
+     * @param goodId
+     * @param dto
+     */
     @Override
-    public void clickGoods(String goodId,GoodsInfoDto dto) {
+    public void clickGoods(String goodId, GoodsInfoDto dto) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
-        intent.putExtra("goodsId", goodId);
-        if (dto.getScoreBuy() > 0) {
-            intent.putExtra("shopType", 2);//积分商城
+        if (dto.getIsShow() == 1) {
+            ToastUitl.showImageToastFail("商品已经下架");
+            return;
+        } else {
+            //秒杀商品
+            if (dto.getIsSeckill() == 1) {
+                if (dto.getIsClose() == 0) {
+                    ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                    return;
+                } else {
+                    intent.putExtra("goodsId", goodId);
+                    intent.putExtra("type", 2);
+                    startActivity(intent);
+                }
+            }
+            //普通商品
+            else {
+
+                if (dto.getScoreBuy() > 0) {
+                    intent.putExtra("shopType", 2);//积分商城
+                }
+                intent.putExtra("goodsId", goodId);
+                startActivity(intent);
+            }
+
         }
-        startActivity(intent);
     }
 
     /**

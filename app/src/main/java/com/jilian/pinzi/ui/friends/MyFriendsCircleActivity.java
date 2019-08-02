@@ -88,6 +88,14 @@ public class MyFriendsCircleActivity extends BaseActivity implements MyFriendDet
     public void initView() {
         if (PinziApplication.getInstance().getLoginDto().getId().equals(getIntent().getStringExtra("uId"))) {
             setNormalTitle("朋友圈", v -> finish(), R.drawable.icon_friends_camera, v -> {
+
+                if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                        && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                        && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+                    ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+                    return;
+                }
+
                 // 进入发布朋友圈界面
                 startActivity(new Intent(this, PublishFriendsActivity.class));
             });

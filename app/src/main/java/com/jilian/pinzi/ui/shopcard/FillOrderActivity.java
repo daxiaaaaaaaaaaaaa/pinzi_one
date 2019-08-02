@@ -102,6 +102,14 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     private RelativeLayout rlScore;
     private TextView tvPreMoney;//定金
     private TextView tvAfterMoney;//尾款
+    private View vAfter;
+    private RelativeLayout rlAfter;
+    private RelativeLayout rlPre;
+    private View vPre;
+
+
+
+
 
 
     @Override
@@ -186,7 +194,12 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
     @Override
     public void initView() {
         setNormalTitle("填写订单", v -> finish());
+
+        rlPre = (RelativeLayout) findViewById(R.id.rl_pre);
+        vPre = (View) findViewById(R.id.v_pre);
         tvAfterMoney = (TextView) findViewById(R.id.tv_afterMoney);
+        rlAfter = (RelativeLayout) findViewById(R.id.rl_after);
+        vAfter = (View) findViewById(R.id.v_after);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
         rlCard = (RelativeLayout) findViewById(R.id.rl_card);
         rlScore = (RelativeLayout) findViewById(R.id.rl_score);
@@ -388,13 +401,33 @@ public class FillOrderActivity extends BaseActivity implements FillOrderAdapter.
                     tvCommisionNum.setText("¥" + NumberUtils.forMatNumber(dto.getData().getCommissionRemission()));
                     tvPreMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getEarnest()));
                     tvAfterMoney.setText("¥" + NumberUtils.forMatNumber(dto.getData().getPayMoney()));
+
                 } else {
                     tvCard.setText("¥0.00");
                     tvDeductionMoney.setText("¥0.00");
                     tvCommisionNum.setText("¥0.00");
                     tvPreMoney.setText("¥0.00");
                     tvAfterMoney.setText("¥0.00");
+
                 }
+
+                //判断是否要显示尾款
+                String str = tvPreMoney.getText().toString().substring(1);
+                //定金商品
+                double douPre = Double.parseDouble(str);
+                if (douPre > 0) {
+                    rlAfter.setVisibility(View.VISIBLE);
+                    vAfter.setVisibility(View.VISIBLE);
+                    rlPre.setVisibility(View.VISIBLE);
+                    vPre.setVisibility(View.VISIBLE);
+                } else {
+                    //不显示尾款
+                    rlAfter.setVisibility(View.GONE);
+                    vAfter.setVisibility(View.GONE);
+                    rlPre.setVisibility(View.GONE);
+                    vPre.setVisibility(View.GONE);
+                }
+
                 tvPayCount.setText("¥" + getPayCount());
             }
         });

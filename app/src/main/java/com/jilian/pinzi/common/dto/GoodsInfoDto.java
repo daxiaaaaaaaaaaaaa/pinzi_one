@@ -13,6 +13,34 @@ public class GoodsInfoDto implements Serializable {
     private double scoreBuy;//truenumber积分购买 如果  scoreBuy 大于 0  就是积分商城买的 商品
     private double earnest;//
 
+    private int isShow;// (是否上下架（0.上架  1.下架）)
+    private int isSeckill;//(是否为秒杀商品（0.否  1.是）)
+    private int isClose;//(0.秒杀已结束或暂未秒杀  1.秒杀中)
+
+    public int getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(int isShow) {
+        this.isShow = isShow;
+    }
+
+    public int getIsSeckill() {
+        return isSeckill;
+    }
+
+    public void setIsSeckill(int isSeckill) {
+        this.isSeckill = isSeckill;
+    }
+
+    public int getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(int isClose) {
+        this.isClose = isClose;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

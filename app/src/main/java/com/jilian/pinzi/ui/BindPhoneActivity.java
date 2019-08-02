@@ -136,6 +136,7 @@ public class BindPhoneActivity extends CommonActivity {
      * 获取验证码
      */
     private void getMsgCode() {
+        RxTimerUtil.cancel();
         getLoadingDialog().showDialog();
         SmsVo vo = new SmsVo();
         vo.setType(0);
@@ -160,10 +161,14 @@ public class BindPhoneActivity extends CommonActivity {
                                 RxTimerUtil.cancel();
                                 time = 60;
                                 etPhone.setEnabled(true);
+                                //清除图标
+                                etPhone.setClearIconVisible(true);
                             } else {
                                 time--;
                                 tvGetCode.setText(String.valueOf(time + "s"));
                                 etPhone.setEnabled(false);
+                                //清除图标
+                                etPhone.setClearIconVisible(false);
                             }
 
                         }

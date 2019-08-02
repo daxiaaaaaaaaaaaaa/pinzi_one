@@ -45,7 +45,7 @@ import java.util.List;
  * 订单详情 待收货
  */
 public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements MyShipmentGoodAdapter.GoodClickListener {
-      private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<GoodsInfoDto> datas;
     private MyShipmentGoodAdapter goodAdapter;
@@ -80,7 +80,7 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
     private TextView tvShipperName;
 
     private TextView tvPreMoney;
-  //  private TextView tvActivityAccount;
+    //  private TextView tvActivityAccount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,15 +143,17 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         llInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         tvShipperName = (TextView) findViewById(R.id.tv_ShipperName);
         tvPreMoney = (TextView) findViewById(R.id.tv_preMoney);
-      //  tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
+        //  tvActivityAccount = (TextView) findViewById(R.id.tv_activity_account);
     }
+
     /**
      * 显示 各个界面的数据
+     *
      * @param data
      */
     private void initOrderDetailView(OrderDetailDto data) {
-        if(data.getOrderType()==2){
-            List<GoodsInfoDto>  goodsInfo = new ArrayList<>();
+        if (data.getOrderType() == 2) {
+            List<GoodsInfoDto> goodsInfo = new ArrayList<>();
             GoodsInfoDto dto = new GoodsInfoDto();
             dto.setName(data.getAwardName());
             dto.setQuantity("1");
@@ -169,41 +171,37 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
             String phone = data.getPhone().substring(0, 3) + "****" + data.getPhone().substring(7, 11);
             tvPhone.setText(phone);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             tvPhone.setText(data.getPhone());
         }
 
         //4.地址
-        tvAdrress.setText( data.getAddress());
+        tvAdrress.setText(data.getAddress());
         //5.商品合计
-        tvGoodAllAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        tvGoodAllAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
         //6.运费
-        tvFright.setText("¥"+NumberUtils.forMatNumber(data.getFreightPrice()));
+        tvFright.setText("¥" + NumberUtils.forMatNumber(data.getFreightPrice()));
         //7.优惠券
-        tvCardAcount.setText("¥"+NumberUtils.forMatNumber(data.getCouponRemission()));    //8.积分抵扣
-        if(data.getPayScore()>0){
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
-        }
-        else{
-            tvPoinsAcount.setText("¥"+NumberUtils.forMatNumber(data.getScoreDeduction()));
+        tvCardAcount.setText("¥" + NumberUtils.forMatNumber(data.getCouponRemission()));    //8.积分抵扣
+        if (data.getPayScore() > 0) {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getGoodsTotalPrice()));
+        } else {
+            tvPoinsAcount.setText("¥" + NumberUtils.forMatNumber(data.getScoreDeduction()));
         }
         //9.佣金抵扣
-        tvConponseAccount.setText("¥"+NumberUtils.forMatNumber(data.getCommissionDeduction()));
+        tvConponseAccount.setText("¥" + NumberUtils.forMatNumber(data.getCommissionDeduction()));
         //10.定金
-        tvPreMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayFirstMoney()));
+        tvPreMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayFirstMoney()));
         //11.发票类型
-        if(data.getType()==1){
+        if (data.getType() == 1) {
             tvInvoiceTye.setText("增值税专用发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else if(data.getType()==2){
+        } else if (data.getType() == 2) {
             tvInvoiceTye.setText("增值税普通发票");
             tvInvoiceContent.setText("商品");
             llInvoice.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             llInvoice.setVisibility(View.GONE);
         }
         //12.发票抬头
@@ -213,9 +211,9 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         //14.订单编号
         tvOderNo.setText(data.getOrderNo());
         //15.提交时间
-        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getCreateDate())));
+        tvCommiTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getCreateDate())));
 //        //16.支付方式
-        switch (data.getPayWay()){
+        switch (data.getPayWay()) {
             case 1:
                 tvPayType.setText("微信");
                 break;
@@ -237,29 +235,32 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
 //            tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
 //
 //        }
-        tvPayMoney.setText("¥"+NumberUtils.forMatNumber(data.getPayMoney()));
+        tvPayMoney.setText("¥" + NumberUtils.forMatNumber(data.getPayMoney()));
 
         //18.付款时间
-        tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(data.getPayDate())));
+        tvPayTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(data.getPayDate())));
 
         //19发货人
         tvShipperName.setText(data.getShipperName());
     }
+
     @Override
     public void initData() {
-        type = getIntent().getIntExtra("type",0);
-        if(type==1){
+        type = getIntent().getIntExtra("type", 0);
+        if (type == 1) {
             tvOrderStatus.setText("等待发货");
             tvSeeTrack.setVisibility(View.GONE);
             llTrack.setVisibility(View.GONE);
         }
-        if(type==2){
+        if (type == 2) {
             tvOrderStatus.setText("等待收货");
             llTrack.setVisibility(View.VISIBLE);
         }
         getOrderDetail();
     }
+
     private OrderDetailDto mData;
+
     /**
      * 获取订单详情
      */
@@ -269,31 +270,33 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
             @Override
             public void onChanged(@Nullable BaseDto<OrderDetailDto> dto) {
                 hideLoadingDialog();
-                if(dto.isSuccess()){
+                if (dto.isSuccess()) {
                     initDataView(dto.getData());
-                }
-                else{
+                } else {
                     ToastUitl.showImageToastFail(dto.getMsg());
                 }
             }
         });
     }
+
     /**
      * 初始化订单详情数据
+     *
      * @param data
      */
     private void initDataView(OrderDetailDto data) {
-        this.mData =data;
-        if(EmptyUtils.isNotEmpty(this.mData)){
+        this.mData = data;
+        if (EmptyUtils.isNotEmpty(this.mData)) {
             initOrderDetailView(data);
             showDataview();
         }
-        if(EmptyUtils.isNotEmpty(data.getGoodsInfo())){
+        if (EmptyUtils.isNotEmpty(data.getGoodsInfo())) {
             datas.addAll(data.getGoodsInfo());
             goodAdapter.notifyDataSetChanged();
         }
 
     }
+
     @Override
     public void initListener() {
         tvCopy.setOnClickListener(new View.OnClickListener() {
@@ -310,24 +313,24 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         tvSeeTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!EmptyUtils.isNotEmpty(mDataList)){
+                if (!EmptyUtils.isNotEmpty(mDataList)) {
                     ToastUitl.showImageToastFail("暂无物流信息");
                     return;
                 }
-                Intent intent = new Intent(MyOrderWaiteGetGoodDetailActivity.this,OrderTrackActivity.class);
-                intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
+                Intent intent = new Intent(MyOrderWaiteGetGoodDetailActivity.this, OrderTrackActivity.class);
+                intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
                 startActivity(intent);
             }
         });
         llTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!EmptyUtils.isNotEmpty(mDataList)){
+                if (!EmptyUtils.isNotEmpty(mDataList)) {
                     ToastUitl.showImageToastFail("暂无物流信息");
                     return;
                 }
-                Intent intent = new Intent(MyOrderWaiteGetGoodDetailActivity.this,OrderTrackActivity.class);
-                intent.putExtra("orderId",getIntent().getStringExtra("orderId"));
+                Intent intent = new Intent(MyOrderWaiteGetGoodDetailActivity.this, OrderTrackActivity.class);
+                intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
                 startActivity(intent);
             }
         });
@@ -362,6 +365,7 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         });
         dialog.show();
     }
+
     /**
      * 更新订单状态
      *
@@ -388,18 +392,40 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
     }
 
     @Override
-    public void clickGoods(String goodId,GoodsInfoDto dto) {
-        if(mData.getOrderType()==2){
+    public void clickGoods(String goodId, GoodsInfoDto dto) {
+        if (mData.getOrderType() == 2) {
             return;
         }
-        Intent intent  = new Intent(this,GoodsDetailActivity.class);
-        intent.putExtra("goodsId",goodId);
-        if (dto.getScoreBuy() > 0) {
-            intent.putExtra("shopType", 2);//积分商城
-        }
 
-        startActivity(intent);
+        Intent intent = new Intent(this, GoodsDetailActivity.class);
+        if (dto.getIsShow() == 1) {
+            ToastUitl.showImageToastFail("商品已经下架");
+            return;
+        } else {
+            //秒杀商品
+            if (dto.getIsSeckill() == 1) {
+                if (dto.getIsClose() == 0) {
+                    ToastUitl.showImageToastFail("限时秒杀活动已经结束");
+                    return;
+                } else {
+                    intent.putExtra("goodsId", goodId);
+                    intent.putExtra("type", 2);
+                    startActivity(intent);
+                }
+            }
+            //普通商品
+            else {
+
+                if (dto.getScoreBuy() > 0) {
+                    intent.putExtra("shopType", 2);//积分商城
+                }
+                intent.putExtra("goodsId", goodId);
+                startActivity(intent);
+            }
+
+        }
     }
+
     private List<OrderTrackDto.LogisticsBean> mDataList = new ArrayList<>();
 
     private OrderTrackDto mOrderTrack;
@@ -411,30 +437,27 @@ public class MyOrderWaiteGetGoodDetailActivity extends BaseActivity implements M
         orderViewModel.getOrderTrackLiveData().observe(this, orderTrackDtoBaseDto -> {
             hideLoadingDialog();
             if (orderTrackDtoBaseDto == null) return;
-            if (orderTrackDtoBaseDto.isSuccess()&&EmptyUtils.isNotEmpty( orderTrackDtoBaseDto.getData())) {
+            if (orderTrackDtoBaseDto.isSuccess() && EmptyUtils.isNotEmpty(orderTrackDtoBaseDto.getData())) {
                 mOrderTrack = orderTrackDtoBaseDto.getData();
                 //19.快递
                 tvSenType.setText(mOrderTrack.getDeliveryMethodName());
 
                 if (EmptyUtils.isNotEmpty(mOrderTrack.getLogistics())) {
                     mDataList.addAll(mOrderTrack.getLogistics());
-                    if(!TextUtils.isEmpty(mOrderTrack.getLogistics().get(0).getAcceptStation())){
+                    if (!TextUtils.isEmpty(mOrderTrack.getLogistics().get(0).getAcceptStation())) {
                         tvAcceptStation.setText(mOrderTrack.getLogistics().get(0).getAcceptStation());
-                    }
-                    else{
+                    } else {
                         tvAcceptStation.setText("您的订单已进入库房，准备出库");
                     }
-                    if(!TextUtils.isEmpty(mOrderTrack.getLogistics().get(0).getAcceptTime())){
+                    if (!TextUtils.isEmpty(mOrderTrack.getLogistics().get(0).getAcceptTime())) {
                         tvAcceptTime.setText(mOrderTrack.getLogistics().get(0).getAcceptTime());
-                    }
-                    else{
-                        tvAcceptTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(mData.getPayDate())));
+                    } else {
+                        tvAcceptTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(mData.getPayDate())));
                     }
 
-                }
-                else{
+                } else {
                     tvAcceptStation.setText("您的订单已进入库房，准备出库");
-                    tvAcceptTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN,new Date(mData.getPayDate())));
+                    tvAcceptTime.setText(DateUtil.dateToString(DateUtil.DEFAULT_DATE_FORMATTER_MIN, new Date(mData.getPayDate())));
                 }
             } else {
                 ToastUitl.showImageToastFail(orderTrackDtoBaseDto.getMsg());

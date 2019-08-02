@@ -1,8 +1,10 @@
 package com.jilian.pinzi.ui;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -19,6 +21,8 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.MemberDto;
+import com.jilian.pinzi.ui.main.WebViewActivity;
+import com.jilian.pinzi.ui.main.WebViewTitleActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.AddressManagerActivity;
 import com.jilian.pinzi.ui.my.MemberActivity;
@@ -39,6 +43,7 @@ import com.jilian.pinzi.ui.my.WalletActivity;
 import com.jilian.pinzi.ui.my.MyLevelsActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.CircularImageView;
 import com.jilian.pinzi.views.NoScrollViewPager;
@@ -100,6 +105,14 @@ public class FiveFragment extends BaseFragment {
     private RelativeLayout rlSix;
     private RelativeLayout rlSeven;
     private RelativeLayout rlEight;
+    private LinearLayout llSix;
+    private RelativeLayout rlTen;
+    private RelativeLayout rlTelf;
+    private RelativeLayout rlNine;
+
+
+
+
 
 
     @Override
@@ -120,6 +133,10 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        rlNine = (RelativeLayout) view.findViewById(R.id.rl_nine);
+        llSix = (LinearLayout) view.findViewById(R.id.ll_six);
+        rlTen = (RelativeLayout) view.findViewById(R.id.rl_ten);
+        rlTelf = (RelativeLayout) view.findViewById(R.id.rl_telf);
         llFive = (LinearLayout) view.findViewById(R.id.ll_five);
         rlOne = (RelativeLayout) view.findViewById(R.id.rl_one);
         rlTwo = (RelativeLayout) view.findViewById(R.id.rl_two);
@@ -196,12 +213,14 @@ public class FiveFragment extends BaseFragment {
             llThree.setVisibility(View.GONE);
             llFour.setVisibility(View.GONE);
             llFive.setVisibility(View.VISIBLE);
+            llSix.setVisibility(View.VISIBLE);
         } else {
             llOne.setVisibility(View.VISIBLE);
             llTwo.setVisibility(View.VISIBLE);
             llThree.setVisibility(View.VISIBLE);
             llFour.setVisibility(View.VISIBLE);
             llFive.setVisibility(View.GONE);
+            llSix.setVisibility(View.GONE);
         }
     }
 
@@ -420,13 +439,152 @@ public class FiveFragment extends BaseFragment {
                 startActivity(new Intent(getmActivity(), ServiceCenterActivity.class));
             }
         });
-
+        //消费排行
         rlOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            Intent intent = new Intent(getmActivity(), CustomRanActivity.class);
+            startActivity(intent);
+            }
+        });
+
+        //订单统计
+        rlTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getmActivity(), OrderRanActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //营收统计
+        rlThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl",Constant.Server.url_08);
+                intent.putExtra("title","营收统计");
+                startActivity(intent);
 
             }
         });
+
+        //充值统计
+        rlFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl",Constant.Server.url_09);
+                intent.putExtra("title","充值统计");
+                startActivity(intent);
+            }
+        });
+
+        //提现统计
+        rlFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl",Constant.Server.url_09);
+                intent.putExtra("title","提现统计");
+                startActivity(intent);
+            }
+        });
+
+        //分享
+        rlSix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl",Constant.Server.url_10);
+                intent.putExtra("title","分享统计");
+                startActivity(intent);
+            }
+        });
+
+
+        //销售统计
+        rlSeven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getmActivity(), BuyRanActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //单品统计
+        rlEight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl", Constant.Server.url_16);
+                intent.putExtra("title","单品统计");
+                startActivity(intent);
+
+            }
+        });
+        //用户购买统计
+        rlNine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getmActivity(), WebViewTitleActivity.class);
+                intent.putExtra("linkUrl", Constant.Server.url_17);
+                intent.putExtra("title","用户购买统计");
+                startActivity(intent);
+            }
+        });
+
+        //售后服务
+        rlTen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getmActivity(), ServiceCenterActivity.class));
+            }
+        });
+
+        //客服电话
+        rlTelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTwoTipsDialog();
+            }
+        });
+
+
+    }
+    private void showTwoTipsDialog() {
+
+        Dialog dialog = PinziDialogUtils.getDialogNotTouchOutside(getmActivity(), R.layout.dialog_confirm);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
+        TextView tvContent = (TextView) dialog.findViewById(R.id.tv_content);
+        tvTitle.setText("客服热线");
+        tvContent.setText("0731-85061459");
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tv_no);
+        TextView tvOk = (TextView) dialog.findViewById(R.id.tv_ok);
+        tvOk.setText("拨打");
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                Uri data = Uri.parse("tel:" + "0731-85061459");
+                intent.setData(data);
+                startActivity(intent);
+
+
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
 
     }
