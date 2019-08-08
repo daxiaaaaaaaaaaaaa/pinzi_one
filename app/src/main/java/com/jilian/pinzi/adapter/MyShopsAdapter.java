@@ -112,7 +112,7 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopsAdapter.ViewHold
     @Override
     public void clickShop(BusinesslistDto dto) {
         //在这里跳转到店铺展示的界面
-        ShopDetailActivity.startActivity(mContext, dto.getId(),2);
+        ShopDetailActivity.startActivity(mContext, dto.getId(),2,null,null);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

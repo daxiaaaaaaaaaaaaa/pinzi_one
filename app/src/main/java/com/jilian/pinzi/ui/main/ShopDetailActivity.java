@@ -37,10 +37,12 @@ import cn.jzvd.JzvdStd;
  */
 public class ShopDetailActivity extends BaseActivity {
 
-    public static void startActivity(Context context, String shopId, int entrance) {
+    public static void startActivity(Context context, String shopId, int entrance,Double lat,Double lng) {
         Intent intent = new Intent(context, ShopDetailActivity.class);
         intent.putExtra("shopId", shopId);
         intent.putExtra("entrance", entrance);
+        intent.putExtra("lat", lat);
+        intent.putExtra("lng", lng);
         context.startActivity(intent);
     }
 

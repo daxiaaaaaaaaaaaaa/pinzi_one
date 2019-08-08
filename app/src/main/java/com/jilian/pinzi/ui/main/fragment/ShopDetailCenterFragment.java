@@ -20,10 +20,15 @@ import com.jilian.pinzi.adapter.ShopPhotpAdapter;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.ShopDetailDto;
+import com.jilian.pinzi.dialog.BaseNiceDialog;
+import com.jilian.pinzi.dialog.NiceDialog;
+import com.jilian.pinzi.dialog.ViewConvertListener;
+import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.MapUtils;
 import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 
@@ -47,9 +52,12 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
     private List<String> datas;
     private JzvdStd ivVideo;
     private LinearLayout llCall;
+    private LinearLayout llAdress;
 
 
+    private ShopDetailDto mShopDetail;
     public void initDataView(ShopDetailDto mShopDetail) {
+        this.mShopDetail = mShopDetail;
         //地址
         tvShopDetailAddress.setText(mShopDetail.getCity() + mShopDetail.getArea() + mShopDetail.getAddress());
         //电话
@@ -175,6 +183,7 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
 
+        llAdress = (LinearLayout) view.findViewById(R.id.ll_adress);
         llCall = (LinearLayout) view.findViewById(R.id.ll_call);
         ivVideo = (JzvdStd) view.findViewById(R.id.iv_video);
         tvComment = (TextView) view.findViewById(R.id.tv_comment);
@@ -204,6 +213,12 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
 
     @Override
     protected void initListener() {
+        llAdress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectMapDialog();
+            }
+        });
         llCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,5 +231,59 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
     @Override
     public void onItemClick(View view, int position) {
 
+    }
+    private void showSelectMapDialog() {
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_mppt_select)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+                        dialog.setOutCancel(false);
+
+
+                        TextView btnOne = (TextView) holder.getView(R.id.btn_one);
+                        TextView btnTwo = (TextView) holder.getView(R.id.btn_two);
+                        TextView btnThree = (TextView) holder.getView(R.id.btn_three);
+
+                        TextView btnCancel = (TextView) holder.getView(R.id.btn_cancel);
+
+                        btnCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+                        btnOne.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                MapUtils.goToGaodeMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+
+
+                            }
+                        });
+                        btnTwo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog.dismiss();
+                                MapUtils.goToBaiduMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+                            }
+                        });
+                        btnThree.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                MapUtils.goToTencentMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+                            }
+                        });
+
+
+
+
+                    }
+                })
+                .setShowBottom(true)
+                .show(getActivity().getSupportFragmentManager());
     }
 }

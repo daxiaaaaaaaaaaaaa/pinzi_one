@@ -264,7 +264,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                     if(mPointList.get(i).equals(latLng)){
                         StoreShowDto dto = datas.get(i);
                         //在这里跳转到店铺展示的界面
-                        ShopDetailActivity.startActivity(MoreShopsActivity.this, dto.getId(), 2);
+                        ShopDetailActivity.startActivity(MoreShopsActivity.this, dto.getId(), 2,latLng.latitude,latLng.longitude);
                         break;
                     }
                 }
@@ -369,7 +369,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void onItemClick(View view, int position) {
-        ShopDetailActivity.startActivity(this, datas.get(position).getId(), 2);
+        ShopDetailActivity.startActivity(this, datas.get(position).getId(), 2,datas.get(position).getLatitude(),datas.get(position).getLongitude());
     }
 
     @Override

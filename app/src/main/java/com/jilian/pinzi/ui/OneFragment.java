@@ -954,7 +954,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     @Override
     public void onItemThreeClick(View view, int position) {
         //在这里跳转到店铺展示的界面
-        ShopDetailActivity.startActivity(getContext(), storeShows.get(position).getId(), 2);
+        ShopDetailActivity.startActivity(getContext(), storeShows.get(position).getId(), 2,null,null);
 
 
     }

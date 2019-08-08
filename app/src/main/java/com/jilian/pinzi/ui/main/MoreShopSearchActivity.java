@@ -130,6 +130,6 @@ public class MoreShopSearchActivity extends BaseActivity implements CustomItemCl
     @Override
     public void onItemClick(View view, int position) {
         //在这里跳转到店铺展示的界面
-        ShopDetailActivity.startActivity(this, datas.get(position).getId(),2);
+        ShopDetailActivity.startActivity(this, datas.get(position).getId(),2,null,null);
     }
 }
