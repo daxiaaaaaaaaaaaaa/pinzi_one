@@ -10,8 +10,12 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -269,9 +273,9 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     private void updatePvOrUv() {
         String mac = MobileInfoUtil.getIMEI(this);
-        String goodsId =  getIntent().getStringExtra("goodsId");
+        String goodsId = getIntent().getStringExtra("goodsId");
         //浏览记录统计(查看商品详情时调用)
-        viewModel.updatePvOrUv(mac,goodsId);
+        viewModel.updatePvOrUv(mac, goodsId);
     }
 
     @Override
@@ -537,9 +541,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     if (type == 4) {
                         dto.setPrice(mData.getFranchiseeBuy());
                     }
-                }
-
-                else {
+                } else {
                     dto.setPrice(mData.getPersonBuy());
                 }
 
@@ -578,10 +580,11 @@ public class GoodsDetailActivity extends BaseActivity {
                         TextView tvName = (TextView) holder.getView(R.id.tv_name);
                         TextView tvPrice = (TextView) holder.getView(R.id.tv_price);
                         ImageView tvAdd = (ImageView) holder.getView(R.id.tv_add);
-                        TextView tvCount = (TextView) holder.getView(R.id.tv_count);
+                        EditText tvCount = (EditText) holder.getView(R.id.tv_count);
                         ImageView tvDel = (ImageView) holder.getView(R.id.tv_del);
                         TextView tvAddShop = (TextView) holder.getView(R.id.tv_add_shop);
                         TextView tvBuy = (TextView) holder.getView(R.id.tv_buy);
+                        tvCount.setSelection(tvCount.length());
                         Glide
                                 .with(GoodsDetailActivity.this)
                                 .load(UrlUtils.getUrl(mData.getFile()))
@@ -607,18 +610,15 @@ public class GoodsDetailActivity extends BaseActivity {
                                 if (dto.getType() == 4) {
                                     tvPrice.setText(NumberUtils.forMatNumber(mData.getFranchiseeBuy()));
                                 }
-                            }
-
-                            else if (getIntent().getIntExtra("classes", 1) == 3) {
+                            } else if (getIntent().getIntExtra("classes", 1) == 3) {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getFranchiseeBuy()));
                             } else if (getIntent().getIntExtra("classes", 1) == 4) {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getChannelBuy()));
                             } else if (getIntent().getIntExtra("classes", 1) == 5) {
-                               tvPrice.setText(NumberUtils.forMatNumber(mData.getTerminalBuy()));
+                                tvPrice.setText(NumberUtils.forMatNumber(mData.getTerminalBuy()));
                             } else if (getIntent().getIntExtra("classes", 1) == 6) {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
-                            }
-                            else {
+                            } else {
                                 tvPrice.setText(NumberUtils.forMatNumber(mData.getPersonBuy()));
                             }
                         }
@@ -628,6 +628,7 @@ public class GoodsDetailActivity extends BaseActivity {
                             public void onClick(View v) {
                                 int count = Integer.parseInt(tvCount.getText().toString());
                                 tvCount.setText(String.valueOf(count + 1));
+                                tvCount.setSelection(tvCount.length());
                             }
                         });
                         tvDel.setOnClickListener(new View.OnClickListener() {
@@ -638,6 +639,7 @@ public class GoodsDetailActivity extends BaseActivity {
                                     return;
                                 }
                                 tvCount.setText(String.valueOf(count - 1));
+                                tvCount.setSelection(tvCount.length());
                             }
                         });
                         ivClose.setOnClickListener(new View.OnClickListener() {
@@ -649,6 +651,10 @@ public class GoodsDetailActivity extends BaseActivity {
                         tvBuy.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if(TextUtils.isEmpty(tvCount.getText().toString())){
+                                    return;
+                                }
+                                dialog.dismiss();
                                 Intent intent = new Intent(GoodsDetailActivity.this, FillOrderActivity.class);
                                 OrderGoodsDto dto = new OrderGoodsDto();
                                 dto.setTopScore(mData.getTopScore());
@@ -657,7 +663,7 @@ public class GoodsDetailActivity extends BaseActivity {
                                 dto.setId(mData.getId());
                                 dto.setFile(mData.getFile());
                                 dto.setName(mData.getName());
-                               // dto.setEarnest(leftFragment.getEarnest());
+                                // dto.setEarnest(leftFragment.getEarnest());
                                 dto.setClasses(getIntent().getIntExtra("classes", 1));
                                 List<OrderGoodsDto> dtoList = new ArrayList<>();
                                 dtoList.add(dto);
@@ -665,14 +671,36 @@ public class GoodsDetailActivity extends BaseActivity {
                                 intent.putExtra("type", "2");
                                 intent.putExtra("orderType", "1");
                                 startActivity(intent);
-                                dialog.dismiss();
+
                             }
                         });
                         tvAddShop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if(TextUtils.isEmpty(tvCount.getText().toString())){
+                                    return;
+                                }
                                 dialog.dismiss();
                                 joinShopCart(getIntent().getIntExtra("classes", 1), getUserId(), mData.getId(), Integer.parseInt(tvCount.getText().toString()));
+                            }
+                        });
+                        tvCount.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                if (TextUtils.isEmpty(tvCount.getText().toString())||"0".equals(tvCount.getText().toString())) {
+                                    tvCount.setText("1");
+                                    tvCount.setSelection(tvCount.length());
+                                }
                             }
                         });
 

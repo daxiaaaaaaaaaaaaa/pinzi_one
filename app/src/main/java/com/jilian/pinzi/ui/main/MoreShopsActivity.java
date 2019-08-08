@@ -25,6 +25,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
@@ -234,6 +235,10 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     }
 
+    /**
+     * 展示 地图各个点
+     * @param data
+     */
     private void initMapPointView(List<StoreShowDto> data) {
         for (int i = 0; i <data.size() ; i++) {
             mPointList.add(new LatLng(data.get(i).getLatitude(), data.get(i).getLongitude()));
@@ -244,6 +249,38 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void initListener() {
+
+
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            //marker被点击时回调的方法
+            //若响应点击事件，返回true，否则返回false
+            //默认返回false
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //获取点击的位置
+                LatLng latLng  = marker.getPosition();
+                for (int i = 0; i <mPointList.size() ; i++) {
+                    //同一个对象
+                    if(mPointList.get(i).equals(latLng)){
+                        StoreShowDto dto = datas.get(i);
+                        //在这里跳转到店铺展示的界面
+                        ShopDetailActivity.startActivity(MoreShopsActivity.this, dto.getId(), 2);
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         //RxJava过滤操作符的应用-实时搜索功能
         RxTextView.textChanges(etSearch)
                 //监听输入完200毫秒之后发送事件
@@ -426,7 +463,8 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
         }
         //在地图上批量添加
         baiduMap.addOverlays(options);
-        baiduMap.addOverlays(options);
+
+
 
     }
 

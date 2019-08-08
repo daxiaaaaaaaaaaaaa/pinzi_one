@@ -243,7 +243,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
             public void onChanged(@Nullable BaseDto baseDto) {
                 hideLoadingDialog();
                 if (baseDto.isSuccess()) {
-                    ToastUitl.showImageToastSuccess("提交成功");
+                    ToastUitl.showImageToastSuccess("提交成功，待审核");
                     finish();
                     MessageEvent messageEvent = new MessageEvent();
                     ProductMessage productMessage = new ProductMessage();
@@ -303,7 +303,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                         public void onChanged(@Nullable BaseDto baseDto) {
                             hideLoadingDialog();
                             if (baseDto.isSuccess()) {
-                                ToastUitl.showImageToastSuccess("提交成功");
+                                ToastUitl.showImageToastSuccess("提交成功，待审核");
                                 finish();
                                 MessageEvent messageEvent = new MessageEvent();
                                 ProductMessage productMessage = new ProductMessage();
@@ -440,7 +440,7 @@ public class PublishWorksActivity extends BaseActivity implements CustomItemClic
                         public void onChanged(@Nullable BaseDto baseDto) {
                             hideLoadingDialog();
                             if (baseDto.isSuccess()) {
-                                ToastUitl.showImageToastSuccess("提交成功");
+                                ToastUitl.showImageToastSuccess("提交成功，待审核");
                                 finish();
                                 MessageEvent messageEvent = new MessageEvent();
                                 ProductMessage productMessage = new ProductMessage();

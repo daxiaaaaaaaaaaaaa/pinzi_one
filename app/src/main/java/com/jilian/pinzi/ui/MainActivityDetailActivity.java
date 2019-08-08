@@ -29,6 +29,8 @@ public class MainActivityDetailActivity extends BaseActivity {
     private TextView tvRegistrationNumber;
     private WebView webview;
     private MainViewModel viewModel;
+    private TextView tvUpload;
+
 
 
     @Override
@@ -44,6 +46,8 @@ public class MainActivityDetailActivity extends BaseActivity {
     @Override
     public void initView() {
         setNormalTitle("活动详情", v -> finish());
+
+        tvUpload = (TextView) findViewById(R.id.tv_upload);
         tvGet = (TextView) findViewById(R.id.tv_get);
         tvSee = (TextView) findViewById(R.id.tv_see);
         tvName = (TextView) findViewById(R.id.tv_name);
@@ -73,16 +77,10 @@ public class MainActivityDetailActivity extends BaseActivity {
                         if (activityDtoBaseDto.getData().getApplyActivityId() == 0) {
                             tvGet.setText("报名");
                             setrightTitle(null, null, null);
+                            tvUpload.setVisibility(View.GONE);
                         } else {
                             tvGet.setText("取消报名");
-                            setrightTitle("上传作品", "#FFFFFF", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class);
-                                    intent.putExtra("activityId", mData.getId());
-                                    startActivity(intent);
-                                }
-                            });
+                            tvUpload.setVisibility(View.VISIBLE);
                         }
                         tvName.setText(activityDtoBaseDto.getData().getTitle());
 
@@ -123,6 +121,14 @@ public class MainActivityDetailActivity extends BaseActivity {
 
     @Override
     public void initListener() {
+        tvUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityDetailActivity.this, PublishWorksActivity.class);
+                intent.putExtra("activityId", mData.getId());
+                startActivity(intent);
+            }
+        });
         tvSee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

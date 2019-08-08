@@ -100,13 +100,25 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="@dimen/widget_size_25"
+                android:layout_marginBottom="@dimen/widget_size_15"
                 android:background="@drawable/shape_red_input_bg"
                 android:gravity="center"
                 android:text="查看作品"
                 android:textColor="@color/color_main_select"
                 android:textSize="16sp"/>
 
+            <TextView
+                android:id="@+id/tv_upload"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="@dimen/widget_size_25"
+                android:background="@drawable/shape_red_input_bg"
+                android:gravity="center"
+                android:text="上传作品"
+                android:textColor="@color/color_main_select"
+                android:textSize="16sp"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

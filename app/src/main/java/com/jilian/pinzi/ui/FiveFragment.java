@@ -195,9 +195,10 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        getMemberData();
+
         initPlatformView();
     }
+
 
     /**
      * 初始化平台账号的界面
@@ -299,6 +300,8 @@ public class FiveFragment extends BaseFragment {
         }
         //获取新消息 是否红点
         getNewMsgData();
+        //获取会员等级
+        getMemberData();
 
     }
 
