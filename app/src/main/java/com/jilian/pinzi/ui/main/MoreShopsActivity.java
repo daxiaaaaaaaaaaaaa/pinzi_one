@@ -3,15 +3,14 @@ package com.jilian.pinzi.ui.main;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,31 +18,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
-import com.bumptech.glide.Glide;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+
+
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
-import com.jilian.pinzi.adapter.CommonPagerAdapter;
 import com.jilian.pinzi.adapter.MoreShopsAdapter;
-import com.jilian.pinzi.adapter.ViewPagerIndicator;
-import com.jilian.pinzi.adapter.common.BannerAdapter;
-import com.jilian.pinzi.adapter.common.BannerViewAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.common.dto.BannerDto;
-import com.jilian.pinzi.common.dto.StartPageDto;
 import com.jilian.pinzi.common.dto.StoreShowDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.listener.ViewPagerItemClickListener;
@@ -64,10 +58,12 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.annotations.NonNull;
@@ -75,7 +71,7 @@ import io.reactivex.annotations.NonNull;
 /**
  * 更多店铺
  */
-public class MoreShopsActivity extends BaseActivity implements CustomItemClickListener, ViewPagerItemClickListener, BDLocationListener {
+public class MoreShopsActivity extends BaseActivity implements CustomItemClickListener, ViewPagerItemClickListener, AMapLocationListener {
 
     private RecyclerView recyclerView;
     private MoreShopsAdapter adapter;
@@ -86,9 +82,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     private MainViewModel viewModel;
     private LinearLayout llNormal;
     private LinearLayout llMap;
-    private MapView mapView;
-    //地图对象
-    private BaiduMap baiduMap;
+
     private RelativeLayout rlArea;
     private RelativeLayout rlDistance;
     private RelativeLayout rlScore;
@@ -96,11 +90,25 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     private ImageView ivDistance;
     private TextView tvArea;
 
+    private MapView mapView;
+    private AMap aMap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);// 此方法必须重写
+        aMap = mapView.getMap();
         PinziApplication.addActivity(this);
+
+        //获取店铺展示的数据
+        showLoadingDialog();
+        initGaode();
+        //定位
+        //启动定位
+        mlocationClient.startLocation();
+
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(14));//方法设置地图的缩放级别，记住带在地图初始化的时候调用，而非定位成功后调用。
     }
 
     @Override
@@ -121,13 +129,13 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void initView() {
+
+
         setNormalTitle("更多店铺", v -> finish());
         tvArea = (TextView) findViewById(R.id.tv_area);
         etSearch = (EditText) findViewById(R.id.et_search);
         llNormal = (LinearLayout) findViewById(R.id.ll_normal);
         llMap = (LinearLayout) findViewById(R.id.ll_map);
-        mapView = (MapView) findViewById(R.id.mapView);
-        baiduMap = mapView.getMap();
         srHasData = (SmartRefreshLayout) findViewById(R.id.sr_has_data);
         srNoData = (SmartRefreshLayout) findViewById(R.id.sr_no_data);
         rlArea = (RelativeLayout) findViewById(R.id.rl_area);
@@ -182,21 +190,67 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
     @Override
     public void initData() {
 
-        //获取店铺展示的数据
-        showLoadingDialog();
-        //定位
-        startLocationCilent();
+    }
+
+    //声明mlocationClient对象
+    public AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    public AMapLocationClientOption mLocationOption = null;
+
+    private void initGaode() {
+
+        mlocationClient = new AMapLocationClient(this);
+//初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+//设置定位监听
+        mlocationClient.setLocationListener(this);
+//设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+//设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+// 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+// 在定位结束后，在合适的生命周期调用onDestroy()方法
+// 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sd
+//
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        myLocationStyle.interval(2000000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+//aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
+        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+
+        // 定义 Marker 点击事件监听
+        AMap.OnMarkerClickListener markerClickListener = new AMap.OnMarkerClickListener() {
+            // marker 对象被点击时回调的接口
+            // 返回 true 则表示接口已响应事件，否则返回false
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int index = marker.getPeriod();
+                Log.e(TAG, "onMarkerClick: "+index );
+                //获取点击的位置
+                LatLng latLng = marker.getPosition();
+                for (int i = 0; i < mPointList.size(); i++) {
+                    //同一个对象
+                    if (mPointList.get(i).equals(latLng)) {
+                        StoreShowDto dto = datas.get(i);
+                        //在这里跳转到店铺展示的界面
+                        ShopDetailActivity.startActivity(MoreShopsActivity.this, dto.getId(), 2, latLng.latitude, latLng.longitude);
+                        break;
+                    }
+                }
+                return false;
+            }
+        };
+// 绑定 Marker 被点击事件
+        aMap.setOnMarkerClickListener(markerClickListener);
+
 
     }
 
-    /**
-     * 开启定位
-     */
-    private void startLocationCilent() {
-
-        PinziApplication.getInstance().mLocationClient.start();
-        PinziApplication.getInstance().mLocationClient.registerLocationListener(this);
-    }
 
     private int pageNo = 1;//
     private int pageSize = 20;//
@@ -219,7 +273,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                     }
                     datas.addAll(dto.getData());
                     adapter.notifyDataSetChanged();
-                    initMapPointView(dto.getData());
+                    initMapPointView(datas);
                 } else {
                     //说明是上拉加载
                     if (pageNo > 1) {
@@ -237,10 +291,13 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     /**
      * 展示 地图各个点
+     *
      * @param data
      */
     private void initMapPointView(List<StoreShowDto> data) {
-        for (int i = 0; i <data.size() ; i++) {
+        mPointList.clear();
+        for (int i = 0; i < data.size(); i++) {
+
             mPointList.add(new LatLng(data.get(i).getLatitude(), data.get(i).getLongitude()));
         }
         showPointsInBaiduMap(mPointList);
@@ -249,36 +306,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void initListener() {
-
-
-        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            //marker被点击时回调的方法
-            //若响应点击事件，返回true，否则返回false
-            //默认返回false
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //获取点击的位置
-                LatLng latLng  = marker.getPosition();
-                for (int i = 0; i <mPointList.size() ; i++) {
-                    //同一个对象
-                    if(mPointList.get(i).equals(latLng)){
-                        StoreShowDto dto = datas.get(i);
-                        //在这里跳转到店铺展示的界面
-                        ShopDetailActivity.startActivity(MoreShopsActivity.this, dto.getId(), 2,latLng.latitude,latLng.longitude);
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-
-
-
-
-
-
-
-
 
 
         //RxJava过滤操作符的应用-实时搜索功能
@@ -356,7 +383,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                     @Override
                     public void run() {
                         CityPickerView pickerView = getPickerInstance();
-
                         Message message = Message.obtain();
                         message.obj = pickerView;
                         message.what = 1001;
@@ -369,7 +395,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void onItemClick(View view, int position) {
-        ShopDetailActivity.startActivity(this, datas.get(position).getId(), 2,datas.get(position).getLatitude(),datas.get(position).getLongitude());
+        ShopDetailActivity.startActivity(this, datas.get(position).getId(), 2, datas.get(position).getLatitude(), datas.get(position).getLongitude());
     }
 
     @Override
@@ -377,14 +403,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
 
     }
 
-    @Override
-    public void onReceiveLocation(BDLocation bdLocation) {
-        initMapLocation(bdLocation.getLatitude(), bdLocation.getLongitude());
-        this.lat = bdLocation.getLatitude();
-        this.lot = bdLocation.getLongitude();
-        PinziApplication.getInstance().mLocationClient.stop();
-        getStoreShowData();
-    }
 
     List<LatLng> mPointList = new ArrayList<>();
     private double lat;//false string  纬度（用户定位地址）
@@ -447,52 +465,48 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
      * @param pointList
      */
     private void showPointsInBaiduMap(List<LatLng> pointList) {
-
-        //创建OverlayOptions的集合
-        List<OverlayOptions> options = new ArrayList<>();
         for (int i = 0; i < pointList.size(); i++) {
-            //构建MarkerOption，用于在地图上添加Marker
-            MarkerOptions option = new MarkerOptions();
-            option.position(pointList.get(i));
-            //构建Marker图标
-            option.icon(BitmapDescriptorFactory
-                    .fromResource(R.drawable.image_location_target));
-            //在地图上添加Marker，并显示
-            options.add(option);
-            //定义文字所显示的坐标点
+            MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                    .decodeResource(getResources(), R.drawable.image_map_location))).position(pointList.get(i)).title(datas.get(i).getName());
+            aMap.addMarker(markerOption);
         }
-        //在地图上批量添加
-        baiduMap.addOverlays(options);
-
 
 
     }
 
 
-    /**
-     * 定位到某个坐标点
-     *
-     * @param latitude
-     * @param longitude
-     */
-    private void initMapLocation(double latitude, double longitude) {
-        // 开启定位图层
-        baiduMap.setMyLocationEnabled(true);
-        // 构造定位数据
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(200)
-                // 此处设置开发者获取到的方向信息，顺时针0-360
-                .direction(100).latitude(latitude)
-                .longitude(longitude).build();
-        // 设置定位数据
-        baiduMap.setMyLocationData(locData);
-        // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
-        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                .fromResource(R.drawable.image_now_adress);
-        MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker);
-        baiduMap.setMyLocationConfiguration(config);
-        // 当不需要定位图层时关闭定位图层
-        baiduMap.setMyLocationEnabled(false);
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        mlocationClient.stopLocation();
+        if (lat != 0 && lot != 0) {
+            return;
+        }
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                lat = amapLocation.getLatitude();//获取纬度
+                lot = amapLocation.getLongitude();//获取经度
+                amapLocation.getAccuracy();//获取精度信息
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date(amapLocation.getTime());
+                df.format(date);//定位时间
+                getStoreShowData();
+
+
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+                ToastUitl.showImageToastFail("定位失败");
+                getStoreShowData();
+            }
+        } else {
+            ToastUitl.showImageToastFail("定位失败");
+            getStoreShowData();
+        }
+
 
     }
 }

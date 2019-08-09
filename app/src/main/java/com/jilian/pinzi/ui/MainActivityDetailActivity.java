@@ -3,7 +3,11 @@ package com.jilian.pinzi.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -13,12 +17,16 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.ActivityDto;
+import com.jilian.pinzi.common.dto.ShopDetailDto;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 
 import java.util.Date;
+
+import cn.jzvd.JzvdStd;
 
 public class MainActivityDetailActivity extends BaseActivity {
     private TextView tvGet;
@@ -30,6 +38,9 @@ public class MainActivityDetailActivity extends BaseActivity {
     private WebView webview;
     private MainViewModel viewModel;
     private TextView tvUpload;
+    private JzvdStd ivVideo;
+
+
 
 
 
@@ -54,6 +65,7 @@ public class MainActivityDetailActivity extends BaseActivity {
         tvDate = (TextView) findViewById(R.id.tv_date);
         tvRegistrationQuota = (TextView) findViewById(R.id.tv_registration_quota);
         tvRegistrationNumber = (TextView) findViewById(R.id.tv_registration_number);
+        ivVideo = (JzvdStd) findViewById(R.id.iv_video);
         webview = (WebView) findViewById(R.id.webview);
     }
 
@@ -96,6 +108,11 @@ public class MainActivityDetailActivity extends BaseActivity {
                         //content是后台返回的h5标签
                         webview.loadDataWithBaseURL(null,
                                 getHtmlData(content), "text/html", "utf-8", null);
+                        //視頻不為空
+                        if(!TextUtils.isEmpty(activityDtoBaseDto.getData().getVideo())){
+                            initVideo(activityDtoBaseDto.getData());
+                        }
+
                     }
                 } else {
                     ToastUitl.showImageToastFail(activityDtoBaseDto.getMsg());
@@ -105,6 +122,61 @@ public class MainActivityDetailActivity extends BaseActivity {
         });
     }
 
+    /**
+
+    /**
+     * 初始化视频
+     *
+     * @param dto
+     */
+    private void initVideo(ActivityDto dto) {
+        if (TextUtils.isEmpty(dto.getVideo())) {
+            return;
+        }
+        //开启子线程
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                //对视频封面处理 耗时操作
+
+                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(dto.getVideo());
+                dto.setBitmap(bitmap);
+                Message msg = Message.obtain();
+                msg.what = 1000;
+                msg.obj = dto;
+                handler.sendMessage(msg);
+
+
+            }
+        }.start();
+    }
+
+    /**
+     * 显示视频图片
+     * 初始化视频
+     */
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            getLoadingDialog().dismiss();
+            if (msg.what == 1000) {
+                ActivityDto dto = (ActivityDto) msg.obj;
+                ivVideo.setVisibility(View.VISIBLE);
+                ivVideo.thumbImageView.setImageBitmap(dto.getBitmap());
+                ivVideo.setUp(dto.getVideo(), "", JzvdStd.SCREEN_WINDOW_NORMAL);
+                JzvdStd.setJzUserAction(null);
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        JzvdStd.goOnPlayOnPause();
+        JzvdStd.releaseAllVideos();
+    }
     /**
      * 加载html标签
      *

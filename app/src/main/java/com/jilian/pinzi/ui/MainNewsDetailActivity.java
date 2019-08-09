@@ -3,6 +3,9 @@ package com.jilian.pinzi.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +23,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.MainNewsCommentAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
+import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.CommentListDto;
 import com.jilian.pinzi.common.dto.GoodsDetailDto;
 import com.jilian.pinzi.common.dto.InformationtDetailDto;
@@ -28,6 +32,7 @@ import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.main.repository.impl.MainRepositoryImpl;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ToastUitl;
@@ -38,6 +43,8 @@ import com.jilian.pinzi.views.MyRecyclerView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cn.jzvd.JzvdStd;
 
 /**
  * 咨询详情
@@ -53,6 +60,9 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
     private MainNewsCommentAdapter adapter;
     private MainViewModel viewModel;
     private ImageView ivCollect;
+    private JzvdStd ivVideo;
+
+
 
 
     @Override
@@ -75,7 +85,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
         webview = (WebView) findViewById(R.id.webview);
         recyclerView = (CusRecyclerView) findViewById(R.id.recyclerView);
         etContent = (EditText) findViewById(R.id.et_content);
-
+        ivVideo = (JzvdStd) findViewById(R.id.iv_video);
         linearLayoutManager = new CustomerLinearLayoutManager(this);
         linearLayoutManager.setCanScrollVertically(false);
         datas = new ArrayList<>();
@@ -204,6 +214,11 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                         //content是后台返回的h5标签
                         webview.loadDataWithBaseURL(null,
                                 getHtmlData(content), "text/html", "utf-8", null);
+
+                        //視頻不為空
+                        if(!TextUtils.isEmpty(detailDtoBaseDto.getData().getVideo())){
+                            initVideo(detailDtoBaseDto.getData());
+                        }
                     }
                 } else {
                     ToastUitl.showImageToastFail(detailDtoBaseDto.getMsg());
@@ -213,7 +228,62 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
 
     }
 
+    /**
 
+     /**
+     * 初始化视频
+     *
+     * @param dto
+     */
+    private void initVideo(InformationtDetailDto dto) {
+        if (TextUtils.isEmpty(dto.getVideo())) {
+            return;
+        }
+        //开启子线程
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                //对视频封面处理 耗时操作
+
+                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(dto.getVideo());
+                dto.setBitmap(bitmap);
+                Message msg = Message.obtain();
+                msg.what = 1000;
+                msg.obj = dto;
+                handler.sendMessage(msg);
+
+
+            }
+        }.start();
+    }
+
+    /**
+     * 显示视频图片
+     * 初始化视频
+     */
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            getLoadingDialog().dismiss();
+            if (msg.what == 1000) {
+                ActivityDto dto = (ActivityDto) msg.obj;
+                ivVideo.setVisibility(View.VISIBLE);
+                ivVideo.thumbImageView.setImageBitmap(dto.getBitmap());
+                ivVideo.setUp(dto.getVideo(), "", JzvdStd.SCREEN_WINDOW_NORMAL);
+                JzvdStd.setJzUserAction(null);
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        JzvdStd.goOnPlayOnPause();
+        JzvdStd.releaseAllVideos();
+
+    }
     /**
      * 加载html标签
      *

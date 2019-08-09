@@ -9,10 +9,6 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
-
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.ssl.SslContextFactory;
 import com.jilian.pinzi.utils.SPUtil;
@@ -26,14 +22,18 @@ import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import cn.jzvd.JZDataSource;
+import cn.jzvd.JzvdStd;
 import io.rong.imkit.RongIM;
 
 //import android.content.res.Configuration;
 //import android.content.res.Configuration;
+
 /**
  * 全局application
  *
@@ -68,7 +68,6 @@ public class PinziApplication extends MultiDexApplication {
     }
 
 
-
     // IWXAPI 是第三方app和微信通信的openApi接口
     private IWXAPI api;
 
@@ -79,6 +78,7 @@ public class PinziApplication extends MultiDexApplication {
     public void setApi(IWXAPI api) {
         this.api = api;
     }
+
     private void regToWx() {
         // 通过WXAPIFactory工厂，获取IWXAPI的实例
         api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, true);
@@ -87,13 +87,13 @@ public class PinziApplication extends MultiDexApplication {
         api.registerApp(Constant.APP_ID);
 
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
         MultiDex.install(this);
         instance = this;
-       initYOUMENG();
-        initBaidu();
+        initYOUMENG();
         context = getApplicationContext();
         // android 7.0系统解决拍照的问题
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -119,7 +119,7 @@ public class PinziApplication extends MultiDexApplication {
          * 参数4:设备类型，必须参数，传参数为UMConfigure.DEVICE_TYPE_PHONE则表示手机；传参数为UMConfigure.DEVICE_TYPE_BOX则表示盒子；默认为手机
          * 参数5:Push推送业务的secret，需要集成Push功能时必须传入Push的secret，否则传空
          */
-        UMConfigure.init(this,"5d19bc014ca3574b380002bc","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        UMConfigure.init(this, "5d19bc014ca3574b380002bc", "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         /**
          * 友盟相关平台配置。注意友盟官方新文档中没有这项配置，但是如果不配置会吊不起来相关平台的授权界面
          */
@@ -127,44 +127,13 @@ public class PinziApplication extends MultiDexApplication {
 
         PlatformConfig.setQQZone("1109240675", "GXQmVq9zyOPswdeC");//QQAPPID和AppSecret
 
-        PlatformConfig.setSinaWeibo("1582232369", "74e0e851fe199ec2f32bac9b9dcb15d3","http://39.108.14.94:9010");//微博
+        PlatformConfig.setSinaWeibo("1582232369", "74e0e851fe199ec2f32bac9b9dcb15d3", "http://39.108.14.94:9010");//微博
     }
 
 
-    public LocationClient mLocationClient = null;
 
-    public LocationClient getmLocationClient() {
-        return mLocationClient;
-    }
 
-    public void setmLocationClient(LocationClient mLocationClient) {
-        this.mLocationClient = mLocationClient;
-    }
 
-    /**
-     * 初始化百度地图
-     */
-    private void initBaidu() {
-        //注意该方法要再setContentView方法之前实现
-        SDKInitializer.initialize(getApplicationContext());
-        mLocationClient = new LocationClient(this);     //声明LocationClient类
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
-        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-        option.setOpenGps(true);//可选，默认false,设置是否使用gps
-        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-        option.setIgnoreKillProcess(true);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        option.SetIgnoreCacheException(true);//可选，默认false，设置是否收集CRASH信息，默认收集
-        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-        mLocationClient.setLocOption(option);
-    }
     /**
      * 注册微信支付
      */
@@ -181,8 +150,8 @@ public class PinziApplication extends MultiDexApplication {
         super.onConfigurationChanged(newConfig);
     }
 
-    public LoginDto getLoginDto(){
-        return SPUtil.getData(Constant.SP_VALUE.SP,Constant.SP_VALUE.LOGIN_DTO,LoginDto.class,null);
+    public LoginDto getLoginDto() {
+        return SPUtil.getData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, LoginDto.class, null);
     }
 
     /**
@@ -242,7 +211,6 @@ public class PinziApplication extends MultiDexApplication {
     }
 
 
-
     //是否有下方虚拟栏
     public static boolean isNavigationBarAvailable() {
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
@@ -251,8 +219,8 @@ public class PinziApplication extends MultiDexApplication {
     }
 
     /**
+     * 获取下方虚拟栏高度  
      *
-     获取下方虚拟栏高度  
      * @return
      */
     public static int getNavigationBarHeight() {

@@ -1,5 +1,7 @@
 package com.jilian.pinzi.common.dto;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +15,24 @@ public class InformationtDetailDto implements Serializable {
     private long createDate;//      true   number        创建时间
     private int collectId;//  true   number 0.未收藏 >0收藏Id
     private List<CommentListDto> commentList;//评论列表
+    private String video;//视频地址
+    private Bitmap bitmap;
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public String getId() {
         return id;

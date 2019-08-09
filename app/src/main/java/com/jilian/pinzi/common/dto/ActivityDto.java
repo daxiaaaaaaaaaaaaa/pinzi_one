@@ -1,5 +1,7 @@
 package com.jilian.pinzi.common.dto;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class ActivityDto implements Serializable {
@@ -16,6 +18,24 @@ public class ActivityDto implements Serializable {
    private long createDate;//      true     number      创建时间
    private int applyActivityId;// true  number     =0未报名 >0报名
    private String acitvityId;//活动ID
+    private String video;//视频地址
+    private Bitmap bitmap;
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
 
     public String getAcitvityId() {
         return acitvityId;

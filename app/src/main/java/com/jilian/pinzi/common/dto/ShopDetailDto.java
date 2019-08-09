@@ -33,7 +33,24 @@ public class ShopDetailDto implements Serializable {
     private String videoUrl;//true    string  视频地址
     private Bitmap bitmap;
     private String openHour;//营业时间
+    private double longitude;//经度
+    private double latitude;//维度
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
     public String getOpenHour() {
         return openHour;

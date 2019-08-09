@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 
-import com.baidu.mapapi.model.LatLng;
+
+import com.amap.api.maps2d.model.LatLng;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
  * 地图相关工具类
  */
 public class MapUtils {
+    private static final String TAG ="MapUtils" ;
+
     /**
      * 判断 地图是否安卓
      * @param packageName 包名
@@ -42,6 +46,8 @@ public class MapUtils {
      * @param mAddressStr 地址
      */
     public static  void goToBaiduMap(Context context,Double mLat,Double mLng,String mAddressStr) {
+//        LatLng latLng = GCJ2BD(new LatLng(mLat,mLng));
+        Log.e(TAG, "goToBaiduMap: "+ mLat+":"+mLng+":"+mAddressStr);
         if (!isInstalled("com.baidu.BaiduMap",context)) {
             ToastUitl.showImageToastFail("请先安装百度地图客户端");
             return;
@@ -63,11 +69,12 @@ public class MapUtils {
      * @param mAddressStr
      */
     public static  void goToGaodeMap(Context context,Double mLat,Double mLng,String mAddressStr) {
+        Log.e(TAG, "goToGaodeMap: "+ mLat+":"+mLng+":"+mAddressStr);
         if (!isInstalled("com.autonavi.minimap",context)) {
             ToastUitl.showImageToastFail("请先安装高德地图客户端");
             return;
         }
-        LatLng endPoint = ChanLatLonUtils.baiduToAliyun(new LatLng(mLat, mLng));//百度——>阿里云
+        LatLng endPoint = new LatLng(mLat, mLng);//百度——>阿里云
         StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=").append("amap");
         stringBuffer.append("&lat=").append(endPoint.latitude)
                 .append("&lon=").append(endPoint.longitude).append("&keywords=" + mAddressStr)
@@ -86,6 +93,7 @@ public class MapUtils {
      * @param mAddressStr
      */
     public static  void goToTencentMap(Context context,Double mLat,Double mLng,String mAddressStr) {
+        Log.e(TAG, "goToTencentMap: "+ mLat+":"+mLng+":"+mAddressStr);
         if (!isInstalled("com.tencent.map",context)) {
             ToastUitl.showImageToastFail( "请先安装腾讯地图客户端");
             return;

@@ -41,8 +41,8 @@ public class ShopDetailActivity extends BaseActivity {
         Intent intent = new Intent(context, ShopDetailActivity.class);
         intent.putExtra("shopId", shopId);
         intent.putExtra("entrance", entrance);
-        intent.putExtra("lat", lat);
-        intent.putExtra("lng", lng);
+        intent.putExtra("lat", lat);//参数作废
+        intent.putExtra("lng", lng);//参数作废
         context.startActivity(intent);
     }
 

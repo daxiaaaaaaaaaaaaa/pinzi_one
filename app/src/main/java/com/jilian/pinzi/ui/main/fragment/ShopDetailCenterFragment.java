@@ -257,7 +257,7 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
-                                MapUtils.goToGaodeMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+                                MapUtils.goToGaodeMap(getActivity(),mShopDetail.getLatitude(),mShopDetail.getLongitude(),tvShopDetailAddress.getText().toString());
 
 
                             }
@@ -267,14 +267,14 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
                             public void onClick(View v) {
 
                                 dialog.dismiss();
-                                MapUtils.goToBaiduMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+                                MapUtils.goToBaiduMap(getActivity(),mShopDetail.getLatitude(),mShopDetail.getLongitude(),tvShopDetailAddress.getText().toString());
                             }
                         });
                         btnThree.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
-                                MapUtils.goToTencentMap(getActivity(),getActivity().getIntent().getDoubleExtra("lat",0),getActivity().getIntent().getDoubleExtra("lng",0),tvShopDetailAddress.getText().toString());
+                                MapUtils.goToTencentMap(getActivity(),mShopDetail.getLatitude(),mShopDetail.getLongitude(),tvShopDetailAddress.getText().toString());
                             }
                         });
 
