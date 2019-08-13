@@ -48,6 +48,19 @@ public class LoginDto implements Serializable {
     //        public final static int CHECKING_CODE = 204;//用户审核中
     //        public final static int CHECKFAILUER_CODE = 206;// 用户未通过审核;
     private int code;//
+    private String sessionId;//
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public int getCode() {
         return code;

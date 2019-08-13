@@ -80,14 +80,14 @@
 
             </WebView>
             <cn.jzvd.JzvdStd
-                android:id="@+id/iv_video"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/widget_size_196"
-                android:layout_marginLeft="@dimen/widget_size_15"
-                android:layout_marginTop="@dimen/widget_size_15"
-                android:layout_marginRight="@dimen/widget_size_15"
-                android:scaleType="fitXY"
-                android:visibility="gone"/>
+            android:id="@+id/iv_video"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_size_196"
+            android:layout_marginLeft="@dimen/widget_size_15"
+            android:layout_marginTop="@dimen/widget_size_15"
+            android:layout_marginRight="@dimen/widget_size_15"
+            android:scaleType="fitXY"
+            android:visibility="invisible"/>
             <TextView
                 android:id="@+id/tv_get"
                 android:layout_width="match_parent"

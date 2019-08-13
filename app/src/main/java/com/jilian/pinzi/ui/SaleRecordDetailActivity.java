@@ -199,6 +199,6 @@ public class SaleRecordDetailActivity extends BaseActivity {
         tvExpressName.setText("快递名称：" + mSaleRecordDetail.getCourierName());
         tvExpressNum.setText("快递单号：" + mSaleRecordDetail.getCourierNo());
 
-        tvReason.setText(mSaleRecordDetail.getReason());
+        tvReason.setText(mSaleRecordDetail.getDescribtion());
     }
 }

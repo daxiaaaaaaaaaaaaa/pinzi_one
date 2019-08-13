@@ -79,7 +79,7 @@ public class IntegralMallActivity extends BaseActivity implements CustomItemClic
      * 获取商品信息
      */
     private void getScoreBuyGoods() {
-        viewModel.getScoreBuyGoods(pageNo, pageSize, getLoginDto()==null?0:getLoginDto().getType(), 1);
+        viewModel.getScoreBuyGoods(pageNo, pageSize, getLoginDto() == null ? 0 : getLoginDto().getType(), 1);
         viewModel.getScoreBuyGoodsliveData().observe(this, new Observer<BaseDto<List<ScoreBuyGoodsDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<ScoreBuyGoodsDto>> addressDtoBaseDto) {
@@ -109,7 +109,9 @@ public class IntegralMallActivity extends BaseActivity implements CustomItemClic
             }
         });
     }
+
     private List<StartPageDto> list;
+
     /**
      * 获取轮播图
      */
@@ -122,7 +124,7 @@ public class IntegralMallActivity extends BaseActivity implements CustomItemClic
                 if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
                     list.addAll(listBaseDto.getData());
                     viewPager.addOnPageChangeListener(new ViewPagerIndicator(IntegralMallActivity.this, viewPager, llIndcator, list.size()));
-                    commonPagerAdapter = new MainPagerAdapter(list, IntegralMallActivity.this,IntegralMallActivity.this);
+                    commonPagerAdapter = new MainPagerAdapter(list, IntegralMallActivity.this, IntegralMallActivity.this);
                     viewPager.setAdapter(commonPagerAdapter);
                 }
 
@@ -152,8 +154,8 @@ public class IntegralMallActivity extends BaseActivity implements CustomItemClic
         setrightImage(R.drawable.image_shop, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PinziApplication.getInstance().getLoginDto()==null){
-                    Intent intent = new Intent(IntegralMallActivity.this,LoginActivity.class);
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(IntegralMallActivity.this, LoginActivity.class);
                     startActivity(intent);
                     return;
                 }
@@ -216,25 +218,44 @@ public class IntegralMallActivity extends BaseActivity implements CustomItemClic
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, GoodsDetailActivity.class);
+        intent.putExtra("classes", getClasses());
         intent.putExtra("goodsId", datas.get(position).getId());
-        intent.putExtra("shopType",2);//积分商城
+        intent.putExtra("shopType", 2);//积分商城
         startActivity(intent);
 
     }
 
     @Override
     public void onViewPageItemClick(View view, int position) {
-        if(list.get(position).getJumpType()==1){
+        if (list.get(position).getJumpType() == 1) {
             String linkUrl = list.get(position).getLinkUrl();
             Intent intent = new Intent(this, WebViewActivity.class);
             intent.putExtra("linkUrl", linkUrl);
             startActivity(intent);
         }
-        if(list.get(position).getJumpType()==2){
+        if (list.get(position).getJumpType() == 2) {
             Intent intent = new Intent(this, GoodsDetailActivity.class);
+            intent.putExtra("classes", getClasses());
             intent.putExtra("goodsId", list.get(position).getGoodId());
             startActivity(intent);
         }
 
     }
+
+    /**
+     * 获取类别
+     * @return
+     */
+    public int getClasses() {
+        //未登录 或者是  用户为普通用户 1
+        if (PinziApplication.getInstance().getLoginDto() == null
+                || PinziApplication.getInstance().getLoginDto().getType() == 1) {
+            return 1;
+        } else {
+            //非普通用户
+            return 2;
+        }
+
+    }
+
 }

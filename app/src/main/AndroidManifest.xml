@@ -86,52 +86,52 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
 
 
     <!--允许程序打开网络套接字-->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!--允许程序设置内置sd卡的写权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--允许程序获取网络状态-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!--允许程序访问WiFi网络信息-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!--允许程序读写手机状态和身份-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
         android:name=".PinziApplication"
         android:allowBackup="true"
         android:icon="@drawable/image_logo"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LoginActivity"/>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.PerfectInformationActivity"/>
         <activity android:name=".ui.UserCheckActivity"/>
@@ -142,6 +142,7 @@
         <!-- android:launchMode="singleTask -->
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".ui.WelcomeActivity"
@@ -174,7 +175,7 @@
         <activity android:name=".ui.my.ShopAtActivity"/>
         <activity android:name=".ui.my.ServiceCenterActivity"/>
         <activity android:name=".ui.my.TopUpActivity"/>
-        <activity android:name=".ui.my.TopUpSuccessActivity" />
+        <activity android:name=".ui.my.TopUpSuccessActivity"/>
         <activity android:name=".ui.my.WithdrawalActivity"/>
         <activity android:name=".ui.my.WithdrawalAuditActivity"/>
         <activity android:name=".ui.my.MyCouponsRecordActivity"/>
@@ -234,7 +235,13 @@
         <activity android:name=".ui.MyActivityActivity"/>
         <activity android:name=".ui.PublishWorksActivity"/>
         <activity android:name=".ui.my.AboutActivity"/>
-        <activity android:name=".ui.VideoPlayerActivity" android:theme="@style/BigImageTranslateTheme"/>
+        <activity
+            android:theme="@style/translucent"
+            android:name=".ui.ReloginActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.VideoPlayerActivity"
+            android:theme="@style/BigImageTranslateTheme"/>
         <activity android:name=".ui.QuestionnaireSurveyDetailFinishActivity"/>
         <activity android:name=".ui.MyOrderWaitePayAfterDetailActivity"/>
 
@@ -255,12 +262,10 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"/>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="EKKpj2h11CC2B4deq4cD1PcG4awl7pmM"/>
-
-
-
 
 
         <meta-data
@@ -273,9 +278,13 @@
             android:value="d1518291-5dc9-45d2-91f4-91a7bc0c58b8"/>
 
         <!--value的值填写你在友盟后台申请的应用Appkey-->
-        <meta-data android:value="5ac6e5a2b27b0a7200000082" android:name="UMENG_APPKEY"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5ac6e5a2b27b0a7200000082"/>
         <!--value的值填写渠道名称，例如yingyongbao。这里设置动态渠道变量-->
-        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}"/>
         <!--
 
 
@@ -290,8 +299,8 @@
             android:value="test"/>
 
         <!--<meta-data-->
-            <!--android:name="BUGLY_APP_CHANNEL"-->
-            <!--android:value="test"/>-->
+        <!--android:name="BUGLY_APP_CHANNEL"-->
+        <!--android:value="test"/>-->
         <!-- 配置Bugly调试模式（true或者false） -->
         <meta-data
             android:name="BUGLY_ENABLE_DEBUG"
@@ -348,7 +357,7 @@
         <!--android:exported="false"-->
         <!--android:screenOrientation="behind" >-->
         <!--</activity>-->
-    <activity android:name=".ui.AllWorksActivity"/>
+        <activity android:name=".ui.AllWorksActivity"/>
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -362,31 +371,26 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
-
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="tencent100424468" />
+                <data android:scheme="tencent100424468"/>
             </intent-filter>
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
 
     </application>

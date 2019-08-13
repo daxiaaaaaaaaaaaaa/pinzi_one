@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
@@ -43,12 +45,12 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
     private ClickListener clickVideoListener;
     private int type;
 
-    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickListener clickVideoListener, int type) {
+    public AllWorkAdapter(Activity context, List<ActivityProductDto> datas, CustomItemClickListener listener, ClickListener clickVideoListener) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
         this.clickVideoListener = clickVideoListener;
-        this.type = type;
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -160,16 +162,10 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         });
         holder.tvName.setText(datas.get(position).getUserName());
         holder.tvContent.setText(datas.get(position).getContent());
-        if(datas.get(position).getIsCanVote()==0){
-            holder.tvSend.setVisibility(View.GONE);
-        }
-        else{
-            holder.tvSend.setVisibility(View.VISIBLE);
 
-        }
         holder.tvCount.setText("得票：" + datas.get(position).getVoteNum());
         Glide.with(mContext).
-                load(datas.get(position).getHeadImg()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
+                load(TextUtils.isEmpty(datas.get(position).getImgUrl())?datas.get(position).getHeadImg():datas.get(position).getImgUrl()).error(R.drawable.ic_launcher_background) //异常时候显示的图片
                 .placeholder(R.drawable.ic_launcher_background) //加载成功前显示的图片
                 .fallback(R.drawable.ic_launcher_background) //url为空的时候,显示的图片
                 .into(holder.ivHead);//在RequestBuilder 中使用自定义的ImageViewTarge
@@ -180,16 +176,36 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
                 clickVideoListener.vote(position);
             }
         });
-        //投票
-        if (type == 1) {
+        if(PinziApplication.getInstance().getLoginDto()!=null){
+            if(PinziApplication.getInstance().getLoginDto().getId().equals(datas.get(position).getuId())){
+                holder.tvSend.setText("编辑");
+                holder.tvSend.setVisibility(View.VISIBLE);
+                holder.tvSend.setBackground(null);
+            }
+            else{
+                if(datas.get(position).getIsCanVote()==0){
+                    holder.tvSend.setVisibility(View.GONE);
+                }
+                else{
+                    holder.tvSend.setVisibility(View.VISIBLE);
+
+                }
+                holder.tvSend.setText(datas.get(position).getIsVote() == 0 ? "投票" : "取消投票");
+                holder.tvSend.setBackgroundResource(R.drawable.shape_input_one_bg);
+            }
+        }
+        else{
+            if(datas.get(position).getIsCanVote()==0){
+                holder.tvSend.setVisibility(View.GONE);
+            }
+            else{
+                holder.tvSend.setVisibility(View.VISIBLE);
+
+            }
             holder.tvSend.setText(datas.get(position).getIsVote() == 0 ? "投票" : "取消投票");
             holder.tvSend.setBackgroundResource(R.drawable.shape_input_one_bg);
         }
-        //编辑
-        if (type == 2) {
-            holder.tvSend.setText("编辑");
-            holder.tvSend.setBackground(null);
-        }
+
 
     }
 

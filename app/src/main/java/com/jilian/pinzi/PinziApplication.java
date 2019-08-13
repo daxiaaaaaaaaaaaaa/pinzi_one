@@ -1,17 +1,21 @@
 package com.jilian.pinzi;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
+
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.ssl.SslContextFactory;
+import com.jilian.pinzi.ui.ReloginActivity;
+import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.SPUtil;
+import com.jilian.pinzi.utils.ToastUitl;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -22,14 +26,13 @@ import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import cn.jzvd.JZDataSource;
-import cn.jzvd.JzvdStd;
 import io.rong.imkit.RongIM;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 //import android.content.res.Configuration;
 //import android.content.res.Configuration;
@@ -131,9 +134,6 @@ public class PinziApplication extends MultiDexApplication {
     }
 
 
-
-
-
     /**
      * 注册微信支付
      */
@@ -187,6 +187,21 @@ public class PinziApplication extends MultiDexApplication {
 
     /**
      * 释放所有正在运行的Activity
+     * 除了某个
+     */
+    public static void clearAllActivitysAdditionActivty(Activity activity) {
+        for (int i = 0; i < runActivities.size(); i++) {
+            if(activity!=runActivities.get(i)){
+                runActivities.get(i).finish();
+            }
+
+        }
+        runActivities.clear();
+    }
+
+
+    /**
+     * 释放所有正在运行的Activity
      */
     public static void clearAllActivitys() {
         for (int i = 0; i < runActivities.size(); i++) {
@@ -211,27 +226,17 @@ public class PinziApplication extends MultiDexApplication {
     }
 
 
-    //是否有下方虚拟栏
-    public static boolean isNavigationBarAvailable() {
-        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-        boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-        return (!(hasBackKey && hasHomeKey));
-    }
-
     /**
-     * 获取下方虚拟栏高度  
+     * 登陆失效 退出登录
      *
-     * @return
+     * @param msg
      */
-    public static int getNavigationBarHeight() {
-        if (isNavigationBarAvailable()) {
-            Resources resources = PinziApplication.getInstance().getResources();
-            int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                return resources.getDimensionPixelSize(resourceId);
-            }
-        }
-        return 0;
+    public void logout(String msg) {
+        Intent intent = new Intent(getInstance(), ReloginActivity.class);
+        intent.putExtra("msg", msg);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        getInstance().startActivity(intent);
+
     }
 
 

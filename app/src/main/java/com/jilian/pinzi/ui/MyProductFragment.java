@@ -94,7 +94,7 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         stringIntegerHashMap.put(RecyclerViewSpacesItemDecoration.BOTTOM_DECORATION, DisplayUtil.dip2px(getmActivity(), 10));//下间距
         recyclerview.addItemDecoration(new RecyclerViewSpacesItemDecoration(stringIntegerHashMap));
         datas = new ArrayList<>();
-        adapter = new AllWorkAdapter(getmActivity(), datas, this, this, 2);
+        adapter = new AllWorkAdapter(getmActivity(), datas, this, this);
         recyclerview.setAdapter(adapter);
     }
 

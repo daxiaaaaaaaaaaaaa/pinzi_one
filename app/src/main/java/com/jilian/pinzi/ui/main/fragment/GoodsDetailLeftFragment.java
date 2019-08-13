@@ -314,7 +314,7 @@ public class GoodsDetailLeftFragment
     }
 
     /**
-     * 初始化商城的类型
+     * 初始化商城的类型i
      */
     private void initShopType() {
         //积分商城
@@ -337,9 +337,11 @@ public class GoodsDetailLeftFragment
     private void initPrice(GoodsDetailDto data) {
         LoginDto dto = PinziApplication.getInstance().getLoginDto();
         //不同用户 从采购中心进来
-        if (getmActivity().getIntent().getIntExtra("classes", 1) == 2) {
+        if (getmActivity().getIntent().getIntExtra("classes", 1) == 2)
+        {
             //秒杀商品
-            if (getmActivity().getIntent().getIntExtra("type", 1) == 2) {
+            if (getmActivity().getIntent().getIntExtra("type", 1) == 2)
+            {
                 tvPerPrice.setVisibility(View.VISIBLE);
                 //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
                 if (dto.getType() == 1) {
@@ -373,7 +375,6 @@ public class GoodsDetailLeftFragment
                 }
                 if (dto.getType() == 4) {
                     tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
-
                     tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy() * data.getEarnestRate() * 0.01));
                 }
             }
@@ -385,7 +386,6 @@ public class GoodsDetailLeftFragment
                 tvPerPrice.setText("原价¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));
                 tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getSeckillPrice()));
                 tvEarnest.setText("定金：¥" + NumberUtils.forMatNumber(data.getSeckillPrice() * data.getEarnestRate() * 0.01));
-
             } else {
                 tvPerPrice.setVisibility(View.GONE);
                 tvPrice.setText("¥" + NumberUtils.forMatNumber(data.getFranchiseeBuy()));

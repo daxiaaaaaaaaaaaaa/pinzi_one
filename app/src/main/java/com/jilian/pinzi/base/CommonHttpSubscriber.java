@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.jilian.pinzi.Constant;
+import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.exception.ApiException;
 import com.jilian.pinzi.exception.ExceptionEngine;
 import com.jilian.pinzi.exception.ServerException;
@@ -56,7 +57,14 @@ public class CommonHttpSubscriber<T> implements Subscriber<BaseDto<T>> {
                 || t.getCode() == Constant.Server.CHECKFAILUER_CODE
                 || t.getCode() == Constant.Server.CHECKING_CODE) {
             onFinish(t);
-        } else {
+            // PinziApplication.getInstance().logout("登录失效测试");
+        }
+        //登录失效
+        else if (t.isLogOut()) {
+            PinziApplication.getInstance().logout(t.getMsg());
+        }
+        //抛异常了
+        else {
             ex = ExceptionEngine.handleException(new ServerException(t.getCode(), t.getMsg()));
             getErrorDto(ex);
         }
@@ -64,9 +72,15 @@ public class CommonHttpSubscriber<T> implements Subscriber<BaseDto<T>> {
 
     @Override
     public void onError(Throwable t) {
-        Log.e(TAG, "onError{}" + t);
-        ex = ExceptionEngine.handleException(t);
-        getErrorDto(ex);
+        if(t.getLocalizedMessage().contains("HTTP 403 Forbidden")){
+            PinziApplication.getInstance().logout("您的账号登录已失效，请重新登录");
+        }
+        else{
+            Log.e(TAG, "onError{}" + t);
+            ex = ExceptionEngine.handleException(t);
+            getErrorDto(ex);
+        }
+
     }
 
     /**

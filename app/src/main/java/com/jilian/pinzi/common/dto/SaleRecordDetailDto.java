@@ -41,7 +41,7 @@ public class SaleRecordDetailDto implements Serializable {
     private String receiveAddress;
     private String receiveName;
     private String receivePhone;
-    private int refundPrice;
+    private double refundPrice;
     private String serviceNo;
     private int status;
 
@@ -149,11 +149,15 @@ public class SaleRecordDetailDto implements Serializable {
         this.receivePhone = receivePhone;
     }
 
-    public int getRefundPrice() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public double getRefundPrice() {
         return refundPrice;
     }
 
-    public void setRefundPrice(int refundPrice) {
+    public void setRefundPrice(double refundPrice) {
         this.refundPrice = refundPrice;
     }
 

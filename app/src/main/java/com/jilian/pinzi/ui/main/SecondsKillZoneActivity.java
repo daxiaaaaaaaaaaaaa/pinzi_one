@@ -91,7 +91,7 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new CustomerItemDecoration(1));
-        adapter = new SecondsKillZoneAdapter(this, datas, this);
+        adapter = new SecondsKillZoneAdapter(this, datas, this,getClasses());
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
 

@@ -9,8 +9,9 @@ import java.io.Serializable;
  */
 public class ActivityProductDto implements Serializable {
 
-    private String headImg;//  true     string  头像
+
     private int voteNum;//   true  number     投票数
+
     private String pathUrl;//    true    string             图片路径
     private String id;//  true   number        作品Id
     private String userName;//   true     string     用户名
@@ -23,6 +24,24 @@ public class ActivityProductDto implements Serializable {
     private String activityId;//活动ID
     private int isCheck;//是否通过审核
     private int isCanVote;//0 不能投票 1 能投票
+    private String imgUrl;//头像
+    private String headImg;//  true     string  头像
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public int getIsCanVote() {
         return isCanVote;
@@ -64,13 +83,7 @@ public class ActivityProductDto implements Serializable {
         this.bitmap = bitmap;
     }
 
-    public String getHeadImg() {
-        return headImg;
-    }
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
 
     public int getVoteNum() {
         return voteNum;

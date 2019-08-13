@@ -26,11 +26,12 @@ public class SecondsKillZoneAdapter extends RecyclerView.Adapter<SecondsKillZone
     private Activity mContext;
     private List<SeckillPrefectureDto> datas;
     private CustomItemClickListener listener;
-
-    public SecondsKillZoneAdapter(Activity context, List<SeckillPrefectureDto> datas, CustomItemClickListener listener) {
+    private int classes;
+    public SecondsKillZoneAdapter(Activity context, List<SeckillPrefectureDto> datas, CustomItemClickListener listener,int classes) {
         mContext = context;
         this.datas = datas;
         this.listener = listener;
+        this.classes = classes;
     }
 
     @Override
@@ -49,18 +50,24 @@ public class SecondsKillZoneAdapter extends RecyclerView.Adapter<SecondsKillZone
             holder.tvPrePrice.setText("原价¥" + datas.get(position).getPersonBuy());
         }
         else{
-            if (dto.getType() == 1) {
+            if(classes==2){
+                if (dto.getType() == 1) {
+                    holder.tvPrePrice.setText("原价¥" + datas.get(position).getPersonBuy());
+                }
+                if (dto.getType() == 2) {
+                    holder.tvPrePrice.setText("原价¥" + datas.get(position).getTerminalBuy());
+                }
+                if (dto.getType() == 3) {
+                    holder.tvPrePrice.setText("原价¥" + datas.get(position).getChannelBuy());
+                }
+                if (dto.getType() == 4) {
+                    holder.tvPrePrice.setText("原价¥" + datas.get(position).getFranchiseeBuy());
+                }
+            }
+            else{
                 holder.tvPrePrice.setText("原价¥" + datas.get(position).getPersonBuy());
             }
-            if (dto.getType() == 2) {
-                holder.tvPrePrice.setText("原价¥" + datas.get(position).getTerminalBuy());
-            }
-            if (dto.getType() == 3) {
-                holder.tvPrePrice.setText("原价¥" + datas.get(position).getChannelBuy());
-            }
-            if (dto.getType() == 4) {
-                holder.tvPrePrice.setText("原价¥" + datas.get(position).getFranchiseeBuy());
-            }
+
         }
 
         Glide

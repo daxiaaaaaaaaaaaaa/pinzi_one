@@ -219,6 +219,9 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                         if(!TextUtils.isEmpty(detailDtoBaseDto.getData().getVideo())){
                             initVideo(detailDtoBaseDto.getData());
                         }
+                        else{
+                            ivVideo.setVisibility(View.GONE);
+                        }
                     }
                 } else {
                     ToastUitl.showImageToastFail(detailDtoBaseDto.getMsg());
@@ -239,6 +242,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
         if (TextUtils.isEmpty(dto.getVideo())) {
             return;
         }
+        showLoadingDialog();
         //开启子线程
         new Thread() {
             @Override
@@ -266,7 +270,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            getLoadingDialog().dismiss();
+            hideLoadingDialog();
             if (msg.what == 1000) {
                 ActivityDto dto = (ActivityDto) msg.obj;
                 ivVideo.setVisibility(View.VISIBLE);

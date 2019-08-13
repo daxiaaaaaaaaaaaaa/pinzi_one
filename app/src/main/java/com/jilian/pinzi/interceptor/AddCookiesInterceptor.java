@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jilian.pinzi.Constant;
+import com.jilian.pinzi.PinziApplication;
+import com.jilian.pinzi.common.dto.LoginDto;
+import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.SPUtil;
 
 
@@ -32,6 +35,12 @@ public class AddCookiesInterceptor implements Interceptor {
                 Log.v("OkHttp", "Adding Header: " + cookie); // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp
             }
         }
+       LoginDto loginDto =  PinziApplication.getInstance().getLoginDto();
+        if(EmptyUtils.isNotEmpty(loginDto)){
+            builder.addHeader("phone", loginDto.getPhone());
+            builder.addHeader("sessionId",loginDto.getSessionId());
+        }
+
         return chain.proceed(builder.build());
     }
 }

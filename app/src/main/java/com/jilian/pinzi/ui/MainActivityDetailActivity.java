@@ -112,7 +112,9 @@ public class MainActivityDetailActivity extends BaseActivity {
                         if(!TextUtils.isEmpty(activityDtoBaseDto.getData().getVideo())){
                             initVideo(activityDtoBaseDto.getData());
                         }
-
+                        else{
+                            ivVideo.setVisibility(View.GONE);
+                        }
                     }
                 } else {
                     ToastUitl.showImageToastFail(activityDtoBaseDto.getMsg());
@@ -133,12 +135,12 @@ public class MainActivityDetailActivity extends BaseActivity {
         if (TextUtils.isEmpty(dto.getVideo())) {
             return;
         }
+        showLoadingDialog();
         //开启子线程
         new Thread() {
             @Override
             public void run() {
                 super.run();
-                //对视频封面处理 耗时操作
 
                 Bitmap bitmap = BitmapUtils.getNetVideoBitmap(dto.getVideo());
                 dto.setBitmap(bitmap);
@@ -160,13 +162,14 @@ public class MainActivityDetailActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            getLoadingDialog().dismiss();
+            hideLoadingDialog();
             if (msg.what == 1000) {
                 ActivityDto dto = (ActivityDto) msg.obj;
                 ivVideo.setVisibility(View.VISIBLE);
                 ivVideo.thumbImageView.setImageBitmap(dto.getBitmap());
                 ivVideo.setUp(dto.getVideo(), "", JzvdStd.SCREEN_WINDOW_NORMAL);
                 JzvdStd.setJzUserAction(null);
+
             }
         }
     };

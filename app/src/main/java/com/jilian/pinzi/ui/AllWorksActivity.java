@@ -73,7 +73,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
         linearLayoutManager = new LinearLayoutManager(this);
         datas = new ArrayList<>();
 
-        allWorkAdapter = new AllWorkAdapter(this, datas, this, this, 1);
+        allWorkAdapter = new AllWorkAdapter(this, datas, this, this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(allWorkAdapter);
         srNoData.setEnableLoadMore(false);

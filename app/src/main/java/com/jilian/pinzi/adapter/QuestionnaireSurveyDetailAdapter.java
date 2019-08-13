@@ -53,7 +53,7 @@ public class QuestionnaireSurveyDetailAdapter extends RecyclerView.Adapter<Quest
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.tvName.setText(datas.get(position).getTitle());
+        holder.tvName.setText((position+1)+"."+datas.get(position).getTitle()+"("+(datas.get(position).getIsRadio()==1?"单选":"多选")+")");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         holder.recyclerView.setLayoutManager(linearLayoutManager);
         //设置选中 和 不选中

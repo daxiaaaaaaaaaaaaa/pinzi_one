@@ -324,9 +324,9 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
-                    startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
+                    //startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
                     ToastUitl.showImageToastSuccess("提交成功");
-                   // startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
+                     startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
                     finish();
                 } else {
                     ToastUitl.showImageToastFail(stringBaseDto.getMsg());

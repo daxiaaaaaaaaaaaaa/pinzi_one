@@ -19,7 +19,9 @@ public class BaseDto<T> implements Serializable{
     private int totalRecord;//": null, 总量
     private int pageNo;//": null
     private T data;
-
+    public boolean isLogOut(){
+        return code==403;
+    }
     public boolean isSuccess() {
         return code == 200;
     }
