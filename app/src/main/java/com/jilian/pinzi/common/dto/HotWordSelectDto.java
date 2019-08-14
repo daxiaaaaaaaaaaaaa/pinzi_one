@@ -21,7 +21,7 @@ public class HotWordSelectDto implements Serializable {
               private String content;//": "
         private String giveScore;//": 5,
         private String getCommission;//": 0,
-        private String scoreBuy;//": 50,
+        private double scoreBuy;//": 50,
         private String topScore;//": 0,
         private String isShow;//": 0,
         private String recommend;//": 0,
@@ -31,6 +31,28 @@ public class HotWordSelectDto implements Serializable {
         private String isRecommend;//": 0,
         private String freight;//": "0.00",
         private String createDate;//": 1541669914000
+        private int isSeckill;//秒杀商品
+        private double seckillPrice;//秒杀价格
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getIsSeckill() {
+        return isSeckill;
+    }
+
+    public void setIsSeckill(int isSeckill) {
+        this.isSeckill = isSeckill;
+    }
+
+    public double getSeckillPrice() {
+        return seckillPrice;
+    }
+
+    public void setSeckillPrice(double seckillPrice) {
+        this.seckillPrice = seckillPrice;
+    }
 
     public String getId() {
         return id;
@@ -168,11 +190,11 @@ public class HotWordSelectDto implements Serializable {
         this.getCommission = getCommission;
     }
 
-    public String getScoreBuy() {
+    public double getScoreBuy() {
         return scoreBuy;
     }
 
-    public void setScoreBuy(String scoreBuy) {
+    public void setScoreBuy(double scoreBuy) {
         this.scoreBuy = scoreBuy;
     }
 

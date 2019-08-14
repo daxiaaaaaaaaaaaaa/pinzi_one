@@ -28,6 +28,7 @@ import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.KillRxTimerUtil;
 import com.jilian.pinzi.utils.MainRxTimerUtil;
+import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.CustomerItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -91,7 +92,7 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new CustomerItemDecoration(1));
-        adapter = new SecondsKillZoneAdapter(this, datas, this,getClasses());
+        adapter = new SecondsKillZoneAdapter(this, datas, this, getClasses());
         recyclerView.setAdapter(adapter);
         srNoData.setEnableLoadMore(false);
 
@@ -126,6 +127,22 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
                         }
                         datas.addAll(seckillPrefectureDtoBaseDto.getData().getTimeKillGoods());
                         adapter.notifyDataSetChanged();
+                        //看是否是点击
+                        if (isClick)
+                        {
+                            if (datas.size() == preSize) {
+                                Intent intent = new Intent(SecondsKillZoneActivity.this, GoodsDetailActivity.class);
+                                intent.putExtra("goodsId", datas.get(position).getId());
+                                intent.putExtra("type", 2);
+                                intent.putExtra("classes", getClasses());
+                                startActivity(intent);
+                            } else {
+                                ToastUitl.showImageToastFail("商品已经下架");
+                            }
+                        }
+                        isClick = false;
+                        SecondsKillZoneActivity.this.position = 0;
+
                     } else {
                         //说明是上拉加载
                         if (pageNo > 1) {
@@ -214,15 +231,27 @@ public class SecondsKillZoneActivity extends BaseActivity implements CustomItemC
         });
 
     }
+
     public int getClasses() {
         return getIntent().getIntExtra("classes", 1);
     }
+
+    private int preSize;
+    private boolean isClick;
+    private int position;
+
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, GoodsDetailActivity.class);
-        intent.putExtra("goodsId", datas.get(position).getId());
-        intent.putExtra("type", 2);
-        intent.putExtra("classes", getClasses());
-        startActivity(intent);
+        //先刷新一下接口
+        //先前的数据长度
+        preSize = datas.size();
+        //刷新接口
+        pageNo = 1;
+        this.position = position;
+        isClick = true;
+        showLoadingDialog();
+        getSeckillPrefectureData();
+
+
     }
 }

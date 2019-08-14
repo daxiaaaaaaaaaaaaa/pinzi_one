@@ -336,8 +336,22 @@ public class SearchActivity extends BaseActivity implements CustomItemClickListe
 
     @Override
     public void clickGoods(int position) {
+        //对秒杀商品，积分商品，普通商品区分
        Intent intent = new Intent(this ,GoodsDetailActivity.class);
        intent.putExtra("goodsId", selectDtoList.get(position).getId());
+       //秒杀商品
+       if(selectDtoList.get(position).getIsSeckill()==1
+               &&selectDtoList.get(position).getSeckillPrice()>0){
+           intent.putExtra("type", 2);
+       }
+       //积分商品
+       else if(selectDtoList.get(position).getScoreBuy()>0){
+           intent.putExtra("shopType", 2);//积分商城
+       }
+//       //普通商品
+//       else{
+//
+//       }
        startActivity(intent);
     }
 }

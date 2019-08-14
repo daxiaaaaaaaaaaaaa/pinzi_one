@@ -81,9 +81,25 @@ public class GoodlistDto implements Serializable {
     private String isDelete;//truenumber    是否删除（0.否 1.是）
     private String collectId;
 
+    private int isSeckill;//秒杀商品
+    private double seckillPrice;//秒杀价格
 
 
+    public int getIsSeckill() {
+        return isSeckill;
+    }
 
+    public void setIsSeckill(int isSeckill) {
+        this.isSeckill = isSeckill;
+    }
+
+    public double getSeckillPrice() {
+        return seckillPrice;
+    }
+
+    public void setSeckillPrice(double seckillPrice) {
+        this.seckillPrice = seckillPrice;
+    }
 
     public String getCollectId() {
         return collectId;

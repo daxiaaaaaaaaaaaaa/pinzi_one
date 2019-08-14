@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.my.MyInfoActivity;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.views.CircularImageView;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
@@ -40,7 +42,10 @@ public class ShopPhotpAdapter extends RecyclerView.Adapter<ShopPhotpAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
+        Glide
+                .with(mContext)
+                .load(datas.get(position))
+                .into(holder.ivHead);
     }
 
     @Override

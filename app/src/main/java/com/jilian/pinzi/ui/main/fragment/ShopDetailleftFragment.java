@@ -187,6 +187,12 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(getmActivity(), GoodsDetailActivity.class);
                 intent.putExtra("goodsId", String.valueOf(mGoodsList.get(position).getId()));
+
+                float score = mGoodsList.get(position).getScore();
+                //积分商品
+                if(score>0){
+                    intent.putExtra("shopType", 2);//积分商城
+                }
                 intent.putExtra("classes", getClasses());
                 startActivity(intent);
             }

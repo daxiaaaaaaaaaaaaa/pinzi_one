@@ -109,6 +109,8 @@ public class FiveFragment extends BaseFragment {
     private RelativeLayout rlTen;
     private RelativeLayout rlTelf;
     private RelativeLayout rlNine;
+    private ImageView ivQCode;
+
 
 
 
@@ -175,6 +177,8 @@ public class FiveFragment extends BaseFragment {
         ivNew = (ImageView) view.findViewById(R.id.iv_new);
         rlFiveQrCode = (RelativeLayout) view.findViewById(R.id.rl_five_qr_code);
         tvFiveMyLevels = (TextView) view.findViewById(R.id.tv_five_my_levels);
+        ivQCode = (ImageView) view.findViewById(R.id.iv_q_code);
+
         if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())) {
             if (PinziApplication.getInstance().getLoginDto().getType() == 1) {
                 rlMyShipment.setVisibility(View.GONE);
@@ -320,12 +324,18 @@ public class FiveFragment extends BaseFragment {
                 startActivity(new Intent(getmActivity(), QuestionnaireSurveyActivity.class));
             }
         });
-        rlFiveQrCode.setOnClickListener(new View.OnClickListener() {
+        ivQCode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 startActivity(new Intent(getmActivity(), QrCodeActivity.class));
             }
         });
+//        rlFiveQrCode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
         ivSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
