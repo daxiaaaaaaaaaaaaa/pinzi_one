@@ -65,7 +65,17 @@ public class SearchGoodAdapter extends RecyclerView.Adapter<SearchGoodAdapter.Vi
 //        LoginDto dto = PinziApplication.getInstance().getLoginDto();
 //        //类型（1.普通用户 2.终端 3.渠道 4.总经销商）
 //        if (dto.getType()==1) {
+        //秒杀商品
+        if(datas.get(position).getIsSeckill()==1
+                &&datas.get(position).getSeckillPrice()>0){
+            holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getSeckillPrice()));
+        }
+        else{
+            //普通商品
             holder.tvPrice.setText(NumberUtils.forMatNumber(datas.get(position).getPersonBuy()));
+        }
+
+
 //        }
 //        if (dto.getType()==2) {
 //            holder.tvPrice.setText(datas.get(position).getTerminalBuy());

@@ -186,7 +186,7 @@ public class BuyCardActivity extends BaseActivity {
      * 支付
      */
     private void pay() {
-        String payCount = tvPayCount.getText().toString().replace("￥", "");
+        String payCount = tvPayCount.getText().toString().substring(1, tvPayCount.getText().toString().length());
         BuyCouponVo vo = new BuyCouponVo();
         vo.setuId(getUserId());
         vo.setMoney(payCount);

@@ -2,58 +2,37 @@ package com.jilian.pinzi.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.PostEvaluationPhotoAdapter;
-import com.jilian.pinzi.adapter.PublishFriendsAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.base.CommonActivity;
-import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.PhotoDto;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
-import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.listener.PhotpItemClickListener;
-import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
-import com.jilian.pinzi.ui.friends.SelectImageActivity;
 import com.jilian.pinzi.ui.viewmodel.UserViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
-import com.jilian.pinzi.utils.EmptyUtils;
-import com.jilian.pinzi.utils.ImageUtils;
 import com.jilian.pinzi.utils.PermissionsObserver;
 import com.jilian.pinzi.utils.PhoneUtils;
-import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.utils.selectphoto.SelectPhotoUtils;
 import com.jilian.pinzi.views.CustomerGridLayManager;
@@ -62,17 +41,15 @@ import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
 import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 import static com.jilian.pinzi.Constant.FINALVALUE.FILE_PROVIDER;
 
@@ -326,6 +303,8 @@ public class PerfectInformationActivity extends BaseActivity implements PhotpIte
                 if (stringBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     //startActivity(new Intent(PerfectInformationActivity.this, UserCheckActivity.class));
                     ToastUitl.showImageToastSuccess("提交成功");
+                    PinziApplication.clearSpecifyActivities(new Class[]{LoginActivity.class});
+                    PinziApplication.clearSpecifyActivities(new Class[]{RegisterActivity.class});
                      startActivity(new Intent(PerfectInformationActivity.this, MainActivity.class));
                     finish();
                 } else {

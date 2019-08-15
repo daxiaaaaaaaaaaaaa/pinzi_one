@@ -189,8 +189,6 @@ public class ShopDetailRightFragment extends BaseFragment implements CustomItemC
             return;
         }
 
-
-
         getLoadingDialog().showDialog();
         viewModel.GetCoupon(datas.get(position).getId(), PinziApplication.getInstance().getLoginDto().getId());
         viewModel.getStringliveData().observe(this, new Observer<BaseDto<String>>() {

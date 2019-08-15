@@ -100,10 +100,12 @@ public class SelectCardActivity extends BaseActivity {
      * 选择优惠券
      */
     private void getDiscountConpou() {
+        showLoadingDialog();
         mainViewModel.getDiscountConpou(getUserId(), getIntent().getStringExtra("goodsId"), getIntent().getStringExtra("quantity"), getIntent().getStringExtra("classes"));
         mainViewModel.getDiscountConpouDtoliveData().observe(this, new Observer<BaseDto<DiscountConpouDto>>() {
             @Override
             public void onChanged(@Nullable BaseDto<DiscountConpouDto> dto) {
+                hideLoadingDialog();
                 enableCardFragment.getData(dto.getData().getUsableList());
                 disableCardFragment.getData(dto.getData().getDisabledList());
 

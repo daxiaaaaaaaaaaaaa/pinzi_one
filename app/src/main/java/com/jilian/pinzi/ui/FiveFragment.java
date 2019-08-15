@@ -219,6 +219,7 @@ public class FiveFragment extends BaseFragment {
             llFour.setVisibility(View.GONE);
             llFive.setVisibility(View.VISIBLE);
             llSix.setVisibility(View.VISIBLE);
+            ivQCode.setVisibility(View.GONE);
         } else {
             llOne.setVisibility(View.VISIBLE);
             llTwo.setVisibility(View.VISIBLE);
@@ -226,6 +227,7 @@ public class FiveFragment extends BaseFragment {
             llFour.setVisibility(View.VISIBLE);
             llFive.setVisibility(View.GONE);
             llSix.setVisibility(View.GONE);
+            ivQCode.setVisibility(View.VISIBLE);
         }
     }
 
@@ -413,7 +415,8 @@ public class FiveFragment extends BaseFragment {
         llWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getmActivity(), WalletActivity.class));
+                return;
+               // startActivity(new Intent(getmActivity(), WalletActivity.class));
             }
         });
         llPoint.setOnClickListener(new View.OnClickListener() {

@@ -17,6 +17,7 @@ import com.jilian.pinzi.common.dto.CouponCentreDto;
 import com.jilian.pinzi.common.dto.StoreCouponDto;
 import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.MainActivity;
+import com.jilian.pinzi.ui.main.BuyCardActivity;
 import com.jilian.pinzi.ui.main.IntegralMallActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.shopcard.PaySuccessActivity;
@@ -78,7 +79,7 @@ public class MyCarddetailActivity extends BaseActivity {
         tvUserConditions = (TextView) findViewById(R.id.tv_user_conditions);
 
     }
-
+    private StoreCouponDto dto;
     @Override
     public void initData() {
         param = getIntent().getStringExtra(Constant.PARAM);
@@ -95,7 +96,7 @@ public class MyCarddetailActivity extends BaseActivity {
         //店铺中心过来
         else if ("ShopDetailRightFragment".equals(param)) {
             CouponDetails();
-            StoreCouponDto dto = (StoreCouponDto) getIntent().getSerializableExtra("data");
+             dto = (StoreCouponDto) getIntent().getSerializableExtra("data");
             //先判断价格
             //免费的
             if (dto.getPrice() <= 0) {
@@ -258,7 +259,8 @@ public class MyCarddetailActivity extends BaseActivity {
                         toReceive(id);
                     }
                     if (tvOk.getText().toString().equals("购买")) {
-                        toBuy(id);
+                        //购买
+                        toBuy();
                     }
 
                 }
@@ -270,9 +272,12 @@ public class MyCarddetailActivity extends BaseActivity {
     /**
      * 购买优惠券
      *
-     * @param id
      */
-    private void toBuy(String id) {
+    private void toBuy() {
+
+        Intent intent = new Intent(this, BuyCardActivity.class);
+        intent.putExtra("data", dto);
+        startActivity(intent);
     }
 
     /**

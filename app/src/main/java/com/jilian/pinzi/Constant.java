@@ -38,13 +38,13 @@ public class Constant {
         //微信
         public static String WX_URL = " https://api.weixin.qq.com/sns/oauth2/";
 
-
+        //二维码
         public static String FIRE_URL = "http://39.108.14.94:9088";
 
+        // 7 牛 视频
+        public final static String SEVEN_URL = "http://qiniu.dhygvip.com";
 
-        public final static String SEVEN_URL = "http://ptk6jx7j2.bkt.clouddn.com";
-
-
+        //下载更新
         public static String DOWN_URL = "http://39.108.14.94:9007/";
 
 

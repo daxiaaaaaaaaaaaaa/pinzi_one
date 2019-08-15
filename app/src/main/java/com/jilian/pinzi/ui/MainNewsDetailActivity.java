@@ -250,7 +250,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
                 super.run();
                 //对视频封面处理 耗时操作
 
-                Bitmap bitmap = BitmapUtils.getNetVideoBitmap(dto.getVideo());
+                Bitmap bitmap = BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(dto.getVideo()));
                 dto.setBitmap(bitmap);
                 Message msg = Message.obtain();
                 msg.what = 1000;
@@ -272,7 +272,7 @@ public class MainNewsDetailActivity extends BaseActivity implements CustomItemCl
             super.handleMessage(msg);
             hideLoadingDialog();
             if (msg.what == 1000) {
-                ActivityDto dto = (ActivityDto) msg.obj;
+                InformationtDetailDto dto = (InformationtDetailDto) msg.obj;
                 ivVideo.setVisibility(View.VISIBLE);
                 ivVideo.thumbImageView.setImageBitmap(dto.getBitmap());
                 ivVideo.setUp(dto.getVideo(), "", JzvdStd.SCREEN_WINDOW_NORMAL);

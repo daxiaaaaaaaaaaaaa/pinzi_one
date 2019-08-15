@@ -423,6 +423,7 @@ public class RegisterActivity extends BaseActivity {
                 } else if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
                     Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
+                    SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     intent.putExtra("userId", loginDtoBaseDto.getData().getId());
                     startActivity(intent);
                     finish();
@@ -460,6 +461,7 @@ public class RegisterActivity extends BaseActivity {
                 //完善资料
                 else if (loginDtoBaseDto.getCode() == Constant.Server.NOPERFORM_CODE) {
                     //按照 后台的人说 把 登录状态  保存到前端
+                    SPUtil.putData(Constant.SP_VALUE.SP, Constant.SP_VALUE.LOGIN_DTO, loginDtoBaseDto.getData());
                     Intent intent = new Intent(RegisterActivity.this, PerfectInformationActivity.class);
                     intent.putExtra("userId", loginDtoBaseDto.getData().getId());
                     startActivity(intent);

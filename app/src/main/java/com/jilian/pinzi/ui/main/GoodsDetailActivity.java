@@ -623,35 +623,57 @@ public class GoodsDetailActivity extends BaseActivity {
                             }
                         }
 
-                        tvAdd.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int count = Integer.parseInt(tvCount.getText().toString());
-                                tvCount.setText(String.valueOf(count + 1));
-                                tvCount.setSelection(tvCount.length());
-                            }
-                        });
+                        //减法
                         tvDel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if(TextUtils.isEmpty(tvCount.getText().toString())){
+                                    tvCount.setText(String.valueOf(1));
+                                    tvCount.setSelection(tvCount.length());
+                                    return;
+                                }
                                 int count = Integer.parseInt(tvCount.getText().toString());
                                 if (count == 1) {
+                                    return;
+                                }
+                                if(count==0){
+                                    tvCount.setText(String.valueOf(1));
+                                    tvCount.setSelection(tvCount.length());
                                     return;
                                 }
                                 tvCount.setText(String.valueOf(count - 1));
                                 tvCount.setSelection(tvCount.length());
                             }
                         });
+                        //关闭
                         ivClose.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
                             }
                         });
-                        tvBuy.setOnClickListener(new View.OnClickListener() {
+                        //加法
+                        tvAdd.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if(TextUtils.isEmpty(tvCount.getText().toString())){
+                                    tvCount.setText(String.valueOf(1));
+                                    tvCount.setSelection(tvCount.length());
+                                    return;
+                                }
+                                int count = Integer.parseInt(tvCount.getText().toString());
+                                tvCount.setText(String.valueOf(count + 1));
+                                tvCount.setSelection(tvCount.length());
+                            }
+                        });
+                        tvBuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (TextUtils.isEmpty(tvCount.getText().toString())
+                                        ||"0".equals(tvCount.getText().toString())
+                                        ||tvCount.getText().toString().startsWith("-")
+                                        ||tvCount.getText().toString().startsWith("0"))
+                                {
                                     return;
                                 }
                                 dialog.dismiss();
@@ -677,32 +699,18 @@ public class GoodsDetailActivity extends BaseActivity {
                         tvAddShop.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(TextUtils.isEmpty(tvCount.getText().toString())){
+                                if (TextUtils.isEmpty(tvCount.getText().toString())
+                                        ||"0".equals(tvCount.getText().toString())
+                                        ||tvCount.getText().toString().startsWith("-")
+                                        ||tvCount.getText().toString().startsWith("0"))
+                                {
                                     return;
                                 }
                                 dialog.dismiss();
                                 joinShopCart(getIntent().getIntExtra("classes", 1), getUserId(), mData.getId(), Integer.parseInt(tvCount.getText().toString()));
                             }
                         });
-                        tvCount.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                if (TextUtils.isEmpty(tvCount.getText().toString())||"0".equals(tvCount.getText().toString())) {
-                                    tvCount.setText("1");
-                                    tvCount.setSelection(tvCount.length());
-                                }
-                            }
-                        });
 
                     }
                 })

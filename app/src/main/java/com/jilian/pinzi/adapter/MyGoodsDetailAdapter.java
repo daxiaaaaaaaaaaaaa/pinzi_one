@@ -50,7 +50,16 @@ public class MyGoodsDetailAdapter extends RecyclerView.Adapter<MyGoodsDetailAdap
                 holder.tvPrice.setText("积分"+ NumberUtils.forMatOneNumber(datas.get(position).getScoreBuy()));
             }
             else{
-                holder.tvPrice.setText("￥"+datas.get(position).getPersonBuy());
+                //秒杀商品
+                if(datas.get(position).getIsSeckill()==1
+                        &&datas.get(position).getSeckillPrice()>0){
+                    holder.tvPrice.setText("￥"+NumberUtils.forMatNumber(datas.get(position).getSeckillPrice()));
+                }
+                // 普通商品
+                else{
+                    holder.tvPrice.setText("￥"+datas.get(position).getPersonBuy());
+                }
+
             }
 //        }
 //        if (dto.getType()==2) {

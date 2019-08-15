@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -723,16 +724,25 @@ public class GoodsDetailLeftFragment
             try {
                 String parameterContent = mData.getParameterContent();
                 String parameterName = mData.getParameterName();
-                if (parameterContent.contains(",") && parameterName.contains(",")) {
-                    String[] names = parameterName.split(",");
-                    String[] content = parameterContent.split(",");
-                    parameterDtoList = new ArrayList<>();
-                    for (int i = 0; i < names.length; i++) {
-                        ParameterDto dto = new ParameterDto(names[i], content[i]);
-                        parameterDtoList.add(dto);
+                if(!TextUtils.isEmpty(parameterContent)
+                        &&!TextUtils.isEmpty(parameterName)){
+                    if (parameterContent.contains(",") && parameterName.contains(",")) {
+                        String[] names = parameterName.split(",");
+                        String[] content = parameterContent.split(",");
+                        parameterDtoList = new ArrayList<>();
+                        for (int i = 0; i < names.length; i++) {
+                            ParameterDto dto = new ParameterDto(names[i], content[i]);
+                            parameterDtoList.add(dto);
 
+                        }
+                    }
+                    else{
+                        parameterDtoList = new ArrayList<>();
+                        ParameterDto dto = new ParameterDto(parameterName, parameterContent);
+                        parameterDtoList.add(dto);
                     }
                 }
+
             } catch (Exception e) {
                 Log.e(TAG, "initParamDara{} " + e);
             }

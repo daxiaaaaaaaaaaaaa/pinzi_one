@@ -83,22 +83,9 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PinziApplication.addActivity(this);
+        PinziApplication.clearAllActivitysAdditionActivty(this);
 
-    }
 
-    /**
-     *
-     */
-    private void initBottomHeight() {
-        Log.e(TAG, "initBottomHeight: ....");
-        if (isNavigationBarShow()) {
-            int height = getNavigationBarHeight();
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(llBottom.getLayoutParams());
-            lp.setMargins(0, 0, 0, height);
-            Log.e(TAG, "initBottomHeight: ...." + height);
-            llBottom.setLayoutParams(lp);
-
-        }
     }
 
     //获取虚拟按键的高度
@@ -150,6 +137,7 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        viewPager.setCurrentItem(0);
     }
 
     @Override

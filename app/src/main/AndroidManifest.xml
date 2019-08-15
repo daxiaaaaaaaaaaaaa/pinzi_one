@@ -131,7 +131,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.LoginActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTask"/>
         <activity android:name=".ui.RegisterActivity"/>
         <activity android:name=".ui.PerfectInformationActivity"/>
         <activity android:name=".ui.UserCheckActivity"/>
@@ -142,7 +142,7 @@
         <!-- android:launchMode="singleTask -->
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".ui.WelcomeActivity"
@@ -241,7 +241,7 @@
             android:launchMode="singleTask"/>
         <activity
             android:name=".ui.VideoPlayerActivity"
-            android:theme="@style/BigImageTranslateTheme"/>
+            android:theme="@style/BigImageTranslateTheme"  android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.QuestionnaireSurveyDetailFinishActivity"/>
         <activity android:name=".ui.MyOrderWaitePayAfterDetailActivity"/>
 
@@ -336,9 +336,9 @@
         <activity android:name=".ui.my.TwoActivity"/>
         <activity android:name=".ui.ThreeActivity"/>
         <activity android:name=".ui.MainNewsActivity"/>
-        <activity android:name=".ui.MainNewsDetailActivity"/>
+        <activity android:name=".ui.MainNewsDetailActivity"  android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.MainActivityActivity"/>
-        <activity android:name=".ui.MainActivityDetailActivity"/>
+        <activity android:name=".ui.MainActivityDetailActivity"   android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.shopcard.PayCardActivity"/>
         <activity android:name=".ui.BuyRanActivity"/>
         <activity android:name=".ui.OrderRanActivity"/>

@@ -22,6 +22,9 @@ public class BaseDto<T> implements Serializable{
     public boolean isLogOut(){
         return code==403;
     }
+    public boolean isDiable(){
+        return code==401;
+    }
     public boolean isSuccess() {
         return code == 200;
     }

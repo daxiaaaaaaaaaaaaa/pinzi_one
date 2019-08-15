@@ -27,6 +27,7 @@ import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.common.vo.BuyCouponVo;
 import com.jilian.pinzi.ui.main.BuyCardActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.ui.my.MyCarddetailActivity;
 import com.jilian.pinzi.ui.my.MyOrderWaitePayDetailActivity;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.AlipayUtil;
@@ -126,7 +127,7 @@ public class PayCardActivity extends BaseActivity {
                 && event.getWxPayMessage().getPayCode() == 200
                 && PinziApplication.getInstance().getWxPayType() == 2) {
             finish();
-            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
+            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class, MyCarddetailActivity.class});
         }
     }
 
@@ -171,8 +172,9 @@ public class PayCardActivity extends BaseActivity {
                     //微信支付
                     if (type == 1) {
                         if (tvPayCount.getText().toString().substring(5).equals("0.00")) {
+                            ToastUitl.showImageToastSuccess("购买成功");
                             finish();
-                            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
+                            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class, MyCarddetailActivity.class});
                         } else {
                             wxPay(stringBaseDto.getData());
                         }
@@ -181,8 +183,9 @@ public class PayCardActivity extends BaseActivity {
                     //支付宝支付
                     else if (type == 2) {
                         if (tvPayCount.getText().toString().substring(5).equals("0.00")) {
+                            ToastUitl.showImageToastSuccess("购买成功");
                             finish();
-                            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
+                            PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class, MyCarddetailActivity.class});
                         } else {
                             aliPay(stringBaseDto.getData());
                         }
@@ -237,7 +240,7 @@ public class PayCardActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(resultSet) && resultSet.contains("9000")) {
                     ToastUitl.showImageToastSuccess("支付成功");
                     finish();
-                    PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class});
+                    PinziApplication.clearSpecifyActivities(new Class[]{BuyCardActivity.class, MyCarddetailActivity.class});
                 } else {
                     ToastUitl.showImageToastFail(resultSet);
                 }
