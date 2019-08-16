@@ -36,6 +36,7 @@ import com.jilian.pinzi.common.dto.FriendCircleListDto;
 import com.jilian.pinzi.common.dto.FriendTblCommentDto;
 import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.friends.FriendDetailActivity;
 import com.jilian.pinzi.ui.friends.MyFriendsCircleActivity;
@@ -50,6 +51,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,6 +96,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         llBottom = (LinearLayout) getmActivity().findViewById(R.id.ll_bottom);
         recyclerView = view.findViewById(R.id.rv_three);
         srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
@@ -111,6 +117,12 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         });
 
         initRecyclerView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initRecyclerView() {
@@ -147,7 +159,21 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         startActivity(intent);
     }
 
-
+    /**
+     *
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getMainCreatMessage())
+                && event.getMainCreatMessage().getCode() == 200
+        ) {
+            getData();
+        }
+    }
     @Override
     protected void initData() {
         getData();

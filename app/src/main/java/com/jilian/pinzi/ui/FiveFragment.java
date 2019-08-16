@@ -21,6 +21,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.base.BaseFragment;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.common.dto.MemberDto;
+import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.ui.main.WebViewActivity;
 import com.jilian.pinzi.ui.main.WebViewTitleActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
@@ -47,6 +48,10 @@ import com.jilian.pinzi.utils.PinziDialogUtils;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.CircularImageView;
 import com.jilian.pinzi.views.NoScrollViewPager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class FiveFragment extends BaseFragment {
     private RelativeLayout rlMember;
@@ -111,7 +116,22 @@ public class FiveFragment extends BaseFragment {
     private RelativeLayout rlNine;
     private ImageView ivQCode;
 
-
+    /**
+     *
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getMainCreatMessage())
+                && event.getMainCreatMessage().getCode() == 200
+                ) {
+            //初始化平台賬號
+            initPlatformView();
+        }
+    }
 
 
 
@@ -135,6 +155,7 @@ public class FiveFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         rlNine = (RelativeLayout) view.findViewById(R.id.rl_nine);
         llSix = (LinearLayout) view.findViewById(R.id.ll_six);
         rlTen = (RelativeLayout) view.findViewById(R.id.rl_ten);
@@ -198,9 +219,16 @@ public class FiveFragment extends BaseFragment {
     }
 
     @Override
-    protected void initData() {
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Override
+    protected void initData() {
+        //初始化平台賬號
         initPlatformView();
+
     }
 
 
@@ -308,6 +336,7 @@ public class FiveFragment extends BaseFragment {
         getNewMsgData();
         //获取会员等级
         getMemberData();
+
 
     }
 

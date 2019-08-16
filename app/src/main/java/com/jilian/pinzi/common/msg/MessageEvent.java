@@ -9,6 +9,15 @@ public class MessageEvent implements Serializable {
     private ProductMessage productMessage;
     private GoodsDetailDto goodsDetailDto;
     private KillMessage killMessage;
+    private MainCreatMessage mainCreatMessage;
+
+    public MainCreatMessage getMainCreatMessage() {
+        return mainCreatMessage;
+    }
+
+    public void setMainCreatMessage(MainCreatMessage mainCreatMessage) {
+        this.mainCreatMessage = mainCreatMessage;
+    }
 
     public KillMessage getKillMessage() {
         return killMessage;

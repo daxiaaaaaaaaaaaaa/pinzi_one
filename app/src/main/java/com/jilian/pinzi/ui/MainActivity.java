@@ -33,6 +33,9 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.VersionInfoDto;
+import com.jilian.pinzi.common.msg.MainCreatMessage;
+import com.jilian.pinzi.common.msg.MessageEvent;
+import com.jilian.pinzi.common.msg.WxPayMessage;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
@@ -43,6 +46,8 @@ import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.RxTimerUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.NoScrollViewPager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +143,12 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         viewPager.setCurrentItem(0);
+        //首页创建，像各个fragment发送消息
+        MessageEvent messageEvent = new MessageEvent();
+        MainCreatMessage message = new MainCreatMessage();
+        message.setCode(200);
+        messageEvent.setMainCreatMessage(message);
+        EventBus.getDefault().post(messageEvent);
     }
 
     @Override
