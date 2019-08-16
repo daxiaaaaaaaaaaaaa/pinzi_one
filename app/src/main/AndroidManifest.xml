@@ -308,7 +308,7 @@
 
         <activity
             android:name=".ui.main.ShopDetailActivity"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.OrderTrackActivity"/>
         <activity android:name=".ui.SaleRecordDetailActivity"/>
         <activity android:name=".ui.my.PostEvaluationSeeActivity"/>
