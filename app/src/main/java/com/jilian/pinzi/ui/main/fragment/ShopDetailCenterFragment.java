@@ -1,10 +1,12 @@
 package com.jilian.pinzi.ui.main.fragment;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +27,7 @@ import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.listener.CustomItemClickListener;
+import com.jilian.pinzi.ui.main.ViewPhotosActivity;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -37,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
 import cn.jzvd.JzvdStd;
 
 public class ShopDetailCenterFragment extends BaseFragment implements CustomItemClickListener {
@@ -228,8 +232,13 @@ public class ShopDetailCenterFragment extends BaseFragment implements CustomItem
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(View view, int position) {
+        Intent intent = new Intent(getmActivity(), ViewPhotosActivity.class);
+        intent.putExtra("url", datas.get(position));
+        intent.putExtra("position", position);
+        getmActivity().startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getmActivity()).toBundle());
 
     }
     private void showSelectMapDialog() {

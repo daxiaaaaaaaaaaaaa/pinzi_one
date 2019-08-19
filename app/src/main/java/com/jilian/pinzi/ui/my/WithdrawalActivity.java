@@ -29,6 +29,11 @@ public class WithdrawalActivity extends BaseActivity {
     private EditText etAccount;
     private TextView tvOk;
     private MyViewModel viewModel;
+    private TextView tvOne;
+    private TextView tvTwo;
+    private View vOne;
+    private View vTwo;
+    private int classify =1;
 
 
     @Override
@@ -61,6 +66,11 @@ public class WithdrawalActivity extends BaseActivity {
         etAccountname = (EditText) findViewById(R.id.et_accountname);
         etAccount = (EditText) findViewById(R.id.et_account);
         tvOk = (TextView) findViewById(R.id.tv_ok);
+        tvOne = (TextView) findViewById(R.id.tv_one);
+        tvTwo = (TextView) findViewById(R.id.tv_two);
+        vOne = (View) findViewById(R.id.v_one);
+        vTwo = (View) findViewById(R.id.v_two);
+
     }
 
     @Override
@@ -128,6 +138,26 @@ public class WithdrawalActivity extends BaseActivity {
 
             }
         });
+        tvOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vOne.setVisibility(View.VISIBLE);
+                vTwo.setVisibility(View.INVISIBLE);
+                classify =1 ;
+                etAccount.setHint("请输入支付宝账号");
+            }
+        });
+        tvTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                vOne.setVisibility(View.INVISIBLE);
+                vTwo.setVisibility(View.VISIBLE);
+                classify =2 ;
+                etAccount.setHint("请输入银行卡账号");
+            }
+        });
+
     }
 
     private Integer type;
@@ -137,7 +167,7 @@ public class WithdrawalActivity extends BaseActivity {
      */
     private void getMoney() {
         getLoadingDialog().showDialog();
-        viewModel.getWithdrawDeposit(getLoginDto().getId(), etMoney.getText().toString(), etAccountname.getText().toString(), etAccount.getText().toString(), type);
+        viewModel.getWithdrawDeposit(getLoginDto().getId(), etMoney.getText().toString(), etAccountname.getText().toString(), etAccount.getText().toString(), type,classify);
         viewModel.getWithdrawDepositListliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {

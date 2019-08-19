@@ -1143,7 +1143,11 @@ public interface ApiService {
     @POST("withdrawDeposit/deleteByIds")
     Flowable<BaseDto> deleteByIds(@Query("ids") String ids);
 
-
+    /**
+     * 第三方登录
+     * @param vo
+     * @return
+     */
     @POST("user/ThirdUserLogin")
     Flowable<BaseDto<LoginDto>> ThirdUserLogin(@Body ThirdUserLoginVo vo);
 

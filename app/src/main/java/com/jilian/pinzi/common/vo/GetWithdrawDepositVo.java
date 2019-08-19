@@ -18,6 +18,16 @@ public class GetWithdrawDepositVo extends BaseVo {
 
     private Integer type;//true string1.钱包 2.佣金
 
+    private int classify;//1.支付宝 2.银行卡
+
+    public int getClassify() {
+        return classify;
+    }
+
+    public void setClassify(int classify) {
+        this.classify = classify;
+    }
+
     public String getuId() {
         return uId;
     }

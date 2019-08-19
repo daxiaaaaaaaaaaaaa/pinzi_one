@@ -1,19 +1,14 @@
 package com.jilian.pinzi.ui;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,10 +18,8 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.AllWorkAdapter;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.common.dto.ActivityDto;
 import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
-import com.jilian.pinzi.ui.main.ShopDetailActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
@@ -37,7 +30,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +41,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
     private LinearLayoutManager linearLayoutManager;
     private AllWorkAdapter allWorkAdapter;
     private List<ActivityProductDto> datas;
-    private ActivityDto data;//活动
+    private String id;//活动 ID
     private MainViewModel viewModel;
 
     @Override
@@ -84,9 +76,9 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
 
     @Override
     public void initData() {
-        data = (ActivityDto) getIntent().getSerializableExtra("data");
+        id = getIntent().getStringExtra("id");
         showLoadingDialog();
-        getActivityProductList(getLoginDto().getId(), data.getId());
+        getActivityProductList(getLoginDto().getId(), id);
     }
 
     private Handler handler = new Handler() {
@@ -163,14 +155,14 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
         srHasData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                getActivityProductList(getLoginDto().getId(), data.getId());
+                getActivityProductList(getLoginDto().getId(), id);
             }
         });
 
         srNoData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                getActivityProductList(getLoginDto().getId(), data.getId());
+                getActivityProductList(getLoginDto().getId(), id);
             }
         });
     }
@@ -208,7 +200,7 @@ public class AllWorksActivity extends BaseActivity implements CustomItemClickLis
                 hideLoadingDialog();
                 if (baseDto.isSuccess()) {
                     ToastUitl.showImageToastSuccess("操作成功");
-                    getActivityProductList(getLoginDto().getId(), data.getId());
+                    getActivityProductList(getLoginDto().getId(), id);
                 } else {
                     ToastUitl.showImageToastFail(baseDto.getMsg());
                 }

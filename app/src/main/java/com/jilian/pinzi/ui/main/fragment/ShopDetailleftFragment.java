@@ -86,7 +86,7 @@ public class ShopDetailleftFragment extends BaseFragment implements ShopGoodsAda
     }
 
     private void initRecyclerView() {
-        mGoodsAdapter = new ShopGoodsAdapter(getmActivity(), R.layout.item_my_goods_detail, mGoodsList, this);
+        mGoodsAdapter = new ShopGoodsAdapter(getmActivity(), R.layout.item_my_goods_detail, mGoodsList, this,getmActivity().getIntent().getIntExtra("classes", 1));
         rvShopDetail.setLayoutManager(new LinearLayoutManager(getmActivity()));
         rvShopDetail.setAdapter(mGoodsAdapter);
     }

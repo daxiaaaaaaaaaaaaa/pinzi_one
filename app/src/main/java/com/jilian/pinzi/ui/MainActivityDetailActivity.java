@@ -1,9 +1,11 @@
 package com.jilian.pinzi.ui;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -141,15 +143,12 @@ public class MainActivityDetailActivity extends BaseActivity {
             @Override
             public void run() {
                 super.run();
-
                 Bitmap bitmap = BitmapUtils.getNetVideoBitmap(dto.getVideo());
                 dto.setBitmap(bitmap);
                 Message msg = Message.obtain();
                 msg.what = 1000;
                 msg.obj = dto;
                 handler.sendMessage(msg);
-
-
             }
         }.start();
     }
@@ -208,7 +207,7 @@ public class MainActivityDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityDetailActivity.this, AllWorksActivity.class);
-                intent.putExtra("data", mData);
+                intent.putExtra("id", mData.getId());
                 startActivity(intent);
             }
         });
@@ -285,5 +284,11 @@ public class MainActivityDetailActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
     }
 }

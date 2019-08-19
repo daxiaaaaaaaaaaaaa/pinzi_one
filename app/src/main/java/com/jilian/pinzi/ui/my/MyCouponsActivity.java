@@ -287,26 +287,26 @@ public class MyCouponsActivity extends BaseActivity implements CustomItemClickLi
 
     @Override
     public void deleteRecord(int pisition) {
-        Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
-        dialog.setContentView(R.layout.dialog_bottom_layout);
-        Window window = dialog.getWindow();
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        layoutParams.dimAmount = 0.5f;
-        window.setGravity(Gravity.BOTTOM);
-        window.setAttributes(layoutParams);
-
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-        dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
-            // TODO 删除
-            dialog.dismiss();
-            delete(datas.get(pisition).getId(),datas.get(pisition).getStatus());
-        });
-        dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
-            dialog.dismiss();
-
-        });
+//        Dialog dialog = new Dialog(this, R.style.dialogFullscreen);
+//        dialog.setContentView(R.layout.dialog_bottom_layout);
+//        Window window = dialog.getWindow();
+//        WindowManager.LayoutParams layoutParams = window.getAttributes();
+//        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+//        layoutParams.dimAmount = 0.5f;
+//        window.setGravity(Gravity.BOTTOM);
+//        window.setAttributes(layoutParams);
+//
+//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.show();
+//        dialog.findViewById(R.id.btn_dialog_bottom_del).setOnClickListener(v1 -> {
+//            // TODO 删除
+//            dialog.dismiss();
+//            delete(datas.get(pisition).getId(),datas.get(pisition).getStatus());
+//        });
+//        dialog.findViewById(R.id.btn_dialog_bottom_cancel).setOnClickListener(v1 -> {
+//            dialog.dismiss();
+//
+//        });
     }
 
     /**

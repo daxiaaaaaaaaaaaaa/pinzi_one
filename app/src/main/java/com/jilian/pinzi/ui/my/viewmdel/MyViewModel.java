@@ -434,13 +434,14 @@ public class MyViewModel extends ViewModel {
      * @param account
      * @param type
      */
-    public void getWithdrawDeposit(String uId, String money, String accountName, String account, Integer type) {
+    public void getWithdrawDeposit(String uId, String money, String accountName, String account, Integer type,int classify ) {
         GetWithdrawDepositVo vo = new GetWithdrawDepositVo();
         vo.setuId(uId);
         vo.setMoney(money);
         vo.setAccountName(accountName);
         vo.setAccount(account);
         vo.setType(type);
+        vo.setClassify(classify);
         repository = new MyRepositoryImpl();
         withdrawDepositListliveData = repository.getWithdrawDeposit(vo);
     }
