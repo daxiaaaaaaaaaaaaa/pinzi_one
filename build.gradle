@@ -3,7 +3,6 @@
 buildscript {
     repositories {
         google()
-        mavenCentral()
         jcenter()
 
     }
@@ -17,10 +16,9 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io" }
         google()
-        mavenCentral()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
     project.ext {
         compileSdkVersion=27
