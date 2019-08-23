@@ -344,7 +344,7 @@
         <activity android:name=".ui.OrderRanActivity"/>
         <activity android:name=".ui.main.WebViewTitleActivity"/>
         <activity android:name=".ui.CustomRanActivity"/>
-
+        <activity android:name=".ui.ThreeFragmentActity"/>
         <!--<activity-->
         <!--android:name="com.alipay.sdk.app.H5PayActivity"-->
         <!--android:configChanges="orientation|keyboardHidden|navigation"-->

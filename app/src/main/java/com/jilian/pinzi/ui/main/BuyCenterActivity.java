@@ -33,6 +33,7 @@ import com.jilian.pinzi.common.dto.SeckillPrefectureDto;
 import com.jilian.pinzi.common.dto.TimeKillGoodsDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.MainActivity;
+import com.jilian.pinzi.ui.ThreeFragmentActity;
 import com.jilian.pinzi.ui.friends.MyFriendsCircleActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DateUtil;
@@ -47,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * 采购中心
@@ -192,7 +195,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
             setrightTitle("朋友圈", "#FFFFFF", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(new Intent(BuyCenterActivity.this, MainActivity.class));
+                    Intent intent = new Intent(new Intent(BuyCenterActivity.this, ThreeFragmentActity.class));
                     intent.putExtra("type", PinziApplication.getInstance().getLoginDto().getType());
                     intent.putExtra("uId", PinziApplication.getInstance().getLoginDto().getId());
                     intent.putExtra("index", 2);

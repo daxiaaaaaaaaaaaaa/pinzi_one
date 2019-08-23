@@ -65,6 +65,7 @@ public class PaySuccessActivity extends BaseActivity {
         tvBack = (TextView) findViewById(R.id.tv_back);
         tvPayType.setText(getIntent().getStringExtra("payType"));
         tvPayCount.setText(getIntent().getStringExtra("payCount"));
+        ToastUitl.showImageToastSuccess("支付成功！感谢您使用779百香街，我们将竭诚为您提供优质的产品的服务");
     }
 
     @Override

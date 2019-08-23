@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.media.MediaMetadataRetriever;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -27,9 +25,8 @@ import android.widget.TextView;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.FriendsCircleAdapter;
+import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
-import com.jilian.pinzi.base.BaseFragment;
-import com.jilian.pinzi.common.dto.ActivityProductDto;
 import com.jilian.pinzi.common.dto.FriendCircleDto;
 import com.jilian.pinzi.common.dto.FriendCircleListDetailDto;
 import com.jilian.pinzi.common.dto.FriendCircleListDto;
@@ -38,10 +35,8 @@ import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
-import com.jilian.pinzi.ui.friends.FriendDetailActivity;
 import com.jilian.pinzi.ui.friends.MyFriendsCircleActivity;
 import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
-import com.jilian.pinzi.ui.main.GoodsDetailActivity;
 import com.jilian.pinzi.ui.viewmodel.FriendViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -57,13 +52,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
-public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.FriendListener {
+public class ThreeFragmentActity extends BaseActivity implements FriendsCircleAdapter.FriendListener {
 
     private RecyclerView recyclerView;
     private FriendsCircleAdapter friendsCircleAdapter;
@@ -74,12 +68,8 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     public int height = 0;
     private int previousKeyboardHeight = -1;
 
-    public LinearLayout llBottom;
 
-    @Override
-    protected void loadData() {
 
-    }
 
     @Override
     protected void createViewModel() {
@@ -87,23 +77,22 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     }
 
     @Override
-    protected int getLayoutId() {
+    public int intiLayout() {
         return R.layout.fragment_three;
     }
 
-    private int pageNo = 1;//
-    private int pageSize = 20;//
-
     @Override
-    protected void initView(View view, Bundle savedInstanceState) {
+    public void initView() {
+
         EventBus.getDefault().register(this);
-        llBottom = (LinearLayout) getmActivity().findViewById(R.id.ll_bottom);
-        recyclerView = view.findViewById(R.id.rv_three);
-        srHasData = (SmartRefreshLayout) view.findViewById(R.id.sr_has_data);
-        srNoData = (SmartRefreshLayout) view.findViewById(R.id.sr_no_data);
-        setNormalTitle("朋友圈", R.drawable.icon_friends_camera, v -> {
+        recyclerView = findViewById(R.id.rv_three);
+        srHasData = (SmartRefreshLayout) findViewById(R.id.sr_has_data);
+        srNoData = (SmartRefreshLayout) findViewById(R.id.sr_no_data);
+
+
+        setNormalTitle("朋友圈", v -> finish(), R.drawable.icon_friends_camera, v -> {
             if (PinziApplication.getInstance().getLoginDto() == null) {
-                Intent intent = new Intent(getmActivity(), LoginActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return;
             }
@@ -113,78 +102,16 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                 ToastUitl.showImageToastFail("您是平台用户，只可浏览");
                 return;
             }
-            startActivity(new Intent(mActivity, PublishFriendsActivity.class));
+            startActivity(new Intent(this, PublishFriendsActivity.class));
+
         });
 
         initRecyclerView();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
-    private void initRecyclerView() {
-        list = new ArrayList<>();
-        list.add(null);
-        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this,getmActivity());
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setAdapter(friendsCircleAdapter);
-        friendsCircleAdapter.setOnItemClickListener(new FriendsCircleAdapter.OnItemClickListener() {
-            @Override
-            public void onHeadClick(View view, int position) {
-                // TODO 进入我的朋友圈界面
-                if (PinziApplication.getInstance().getLoginDto() == null) {
-                    Intent intent = new Intent(getmActivity(), LoginActivity.class);
-                    getmActivity().startActivity(intent);
-                    return;
-                }
-                toMineFriend(PinziApplication.getInstance().getLoginDto().getName(), PinziApplication.getInstance().getLoginDto().getHeadImg(), PinziApplication.getInstance().getLoginDto().getId());
-            }
-        });
-    }
-
-    /**
-     * 去我的朋友圈
-     *
-     * @param id
-     */
-    @Override
-    public void toMineFriend(String name, String url, String id) {
-        Intent intent = new Intent(new Intent(mActivity, MyFriendsCircleActivity.class));
-        intent.putExtra("uId", id);
-        intent.putExtra("url", url);
-        intent.putExtra("name", name);
-        startActivity(intent);
-    }
-
-    /**
-     *
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent event) {
-        /* Do something */
-        if (EmptyUtils.isNotEmpty(event)
-                && EmptyUtils.isNotEmpty(event.getMainCreatMessage())
-                && event.getMainCreatMessage().getCode() == 200
-        ) {
-            getData();
-        }
-    }
-    @Override
-    protected void initData() {
+    public void initData() {
         getData();
-        //根據類型  顯示界面
-        if (getmActivity().getIntent().getStringExtra("uId") != null && getmActivity().getIntent().getIntExtra("back", 1) == 2) {
-            setleftImage(R.drawable.image_back, true, null);
-            llBottom.setVisibility(View.GONE);
-        } else {
-            llBottom.setVisibility(View.VISIBLE);
-
-        }
         //监听外来是否要刷新
         RxBus.getInstance().toObservable().map(new Function<Object, FriendMsg>() {
             @Override
@@ -203,6 +130,94 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         });
     }
 
+    @Override
+    public void initListener() {
+        srHasData.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if (getIntent().getStringExtra("uId") != null) {
+                    pageNo = 1;
+                    getUserTypeFriendCircleList();
+                } else {
+                    pageNo = 1;
+                    getFriendList();
+                }
+
+            }
+        });
+        srHasData.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+                if (getIntent().getStringExtra("uId") != null) {
+                    pageNo++;
+                    getUserTypeFriendCircleList();
+                } else {
+                    pageNo++;
+                    getFriendList();
+                }
+
+
+            }
+        });
+    }
+
+    private int pageNo = 1;//
+    private int pageSize = 20;//
+
+
+
+
+    private void initRecyclerView() {
+        list = new ArrayList<>();
+        list.add(null);
+        friendsCircleAdapter = new FriendsCircleAdapter(this, list, this, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(friendsCircleAdapter);
+        friendsCircleAdapter.setOnItemClickListener(new FriendsCircleAdapter.OnItemClickListener() {
+            @Override
+            public void onHeadClick(View view, int position) {
+                // TODO 进入我的朋友圈界面
+                if (PinziApplication.getInstance().getLoginDto() == null) {
+                    Intent intent = new Intent(ThreeFragmentActity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                toMineFriend(PinziApplication.getInstance().getLoginDto().getName(), PinziApplication.getInstance().getLoginDto().getHeadImg(), PinziApplication.getInstance().getLoginDto().getId());
+            }
+        });
+    }
+
+    /**
+     * 去我的朋友圈
+     *
+     * @param id
+     */
+    @Override
+    public void toMineFriend(String name, String url, String id) {
+        Intent intent = new Intent(new Intent(this, MyFriendsCircleActivity.class));
+        intent.putExtra("uId", id);
+        intent.putExtra("url", url);
+        intent.putExtra("name", name);
+        startActivity(intent);
+    }
+
+    /**
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        /* Do something */
+        if (EmptyUtils.isNotEmpty(event)
+                && EmptyUtils.isNotEmpty(event.getMainCreatMessage())
+                && event.getMainCreatMessage().getCode() == 200
+        ) {
+            getData();
+        }
+    }
+
+
+
     /**
      * 获取数据
      */
@@ -210,9 +225,9 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         pageNo = 1;
         //采購中心進來的
         //根據類型 判斷 獲取數據 接口
-        if (getmActivity().getIntent().getIntExtra("type", 0) != 1
+        if (getIntent().getIntExtra("type", 0) != 1
                 &&
-                getmActivity().getIntent().getStringExtra("uId") != null && getmActivity().getIntent().getIntExtra("back", 1) == 2) {
+               getIntent().getStringExtra("uId") != null && getIntent().getIntExtra("back", 1) == 2) {
             //獲取類型朋友圈接口
             getUserTypeFriendCircleList();
         } else {
@@ -231,7 +246,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      * 用戶類型朋友圈
      */
     private void getUserTypeFriendCircleList() {
-        viewModel.UserTypeFriendCircleList(pageNo, pageSize, getmActivity().getIntent().getStringExtra("uId"), getmActivity().getIntent().getIntExtra("type", 0));
+        viewModel.UserTypeFriendCircleList(pageNo, pageSize, getIntent().getStringExtra("uId"), getIntent().getIntExtra("type", 0));
         viewModel.getUserTypeFriendCircleList().observe(this, new Observer<BaseDto<List<FriendCircleDto>>>() {
             @Override
             public void onChanged(@Nullable BaseDto<List<FriendCircleDto>> listBaseDto) {
@@ -267,7 +282,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                             //对视频封面处理 耗时操作
                             for (int i = 0; i < list.size(); i++) {
                                 //视频地址不为空
-                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
+                                if (EmptyUtils.isNotEmpty(list.get(i)) && EmptyUtils.isNotEmpty(list.get(i).getVideo())) {
                                     list.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(list.get(i).getVideo())));
                                 }
                             }
@@ -299,7 +314,6 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             friendsCircleAdapter.notifyDataSetChanged();
         }
     };
-
 
 
     /**
@@ -344,7 +358,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                             //对视频封面处理 耗时操作
                             for (int i = 0; i < list.size(); i++) {
                                 //视频地址不为空
-                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
+                                if (EmptyUtils.isNotEmpty(list.get(i)) && EmptyUtils.isNotEmpty(list.get(i).getVideo())) {
                                     list.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(list.get(i).getVideo())));
                                     handler.sendEmptyMessage(1000);
                                 }
@@ -370,42 +384,12 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         });
     }
 
-    @Override
-    protected void initListener() {
 
-        srHasData.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                if (getmActivity().getIntent().getStringExtra("uId") != null) {
-                    pageNo = 1;
-                    getUserTypeFriendCircleList();
-                } else {
-                    pageNo = 1;
-                    getFriendList();
-                }
-
-            }
-        });
-        srHasData.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-                if (getmActivity().getIntent().getStringExtra("uId") != null) {
-                    pageNo++;
-                    getUserTypeFriendCircleList();
-                } else {
-                    pageNo++;
-                    getFriendList();
-                }
-
-
-            }
-        });
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -417,7 +401,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     @Override
     public void comment(int position, View view) {
         if (PinziApplication.getInstance().getLoginDto() == null) {
-            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
         }
@@ -440,7 +424,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
      */
     private void showPopupWindow(View view, int position, String id) {
         // 一个自定义的布局，作为显示的内容
-        MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(getmActivity(), R.layout.dialog_input_comment);
+        MyPinziDialogUtils dialog = MyPinziDialogUtils.getDialog(this, R.layout.dialog_input_comment);
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
         EditText etComment = (EditText) dialog.findViewById(R.id.et_comment);
@@ -494,16 +478,16 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             }
         }, 400);
 
-        getmActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Rect rect = new Rect();
-                        getmActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+                        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
                         int displayHeight = rect.bottom - rect.top;
-                        int height = getmActivity().getWindow().getDecorView().getHeight();
+                        int height = getWindow().getDecorView().getHeight();
                         int keyboardHeight = height - displayHeight;
                         if (previousKeyboardHeight != keyboardHeight) {
                             boolean hide = (double) displayHeight / height > 0.8;
@@ -550,7 +534,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     @Override
     public void driendCircleDelete(int position) {
         if (PinziApplication.getInstance().getLoginDto() == null) {
-            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
         }
@@ -581,7 +565,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     @Override
     public void like(int position) {
         if (PinziApplication.getInstance().getLoginDto() == null) {
-            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
         }
@@ -627,7 +611,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     @Override
     public void awnser(String id, View view) {
         if (PinziApplication.getInstance().getLoginDto() == null) {
-            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
         }

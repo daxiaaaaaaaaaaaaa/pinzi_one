@@ -106,25 +106,6 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
     }
 
 
-    public boolean isNavigationBarShow() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            Point realSize = new Point();
-            display.getSize(size);
-            display.getRealSize(realSize);
-            boolean result = realSize.y != size.y;
-            return realSize.y != size.y;
-        } else {
-            boolean menu = ViewConfiguration.get(this).hasPermanentMenuKey();
-            boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-            if (menu || back) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
 
 
     @Override
@@ -142,13 +123,14 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(intent.getIntExtra("index",0));
         //首页创建，像各个fragment发送消息
         MessageEvent messageEvent = new MessageEvent();
         MainCreatMessage message = new MainCreatMessage();
         message.setCode(200);
         messageEvent.setMainCreatMessage(message);
         EventBus.getDefault().post(messageEvent);
+
     }
 
     @Override

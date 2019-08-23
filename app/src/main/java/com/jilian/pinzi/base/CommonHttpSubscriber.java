@@ -61,10 +61,12 @@ public class CommonHttpSubscriber<T> implements Subscriber<BaseDto<T>> {
         }
         //登录失效
         else if (t.isLogOut()) {
+            //403
             PinziApplication.getInstance().logout("您的账号登录已失效，请重新登录");
         }
         //  该账号被删除或被禁用
         else if (t.isDiable()) {
+            //401
             PinziApplication.getInstance().logout("您的账号被删除或被禁用");
         }
         //抛异常了

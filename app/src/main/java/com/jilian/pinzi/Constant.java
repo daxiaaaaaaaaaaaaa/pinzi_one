@@ -39,7 +39,7 @@ public class Constant {
         public static String WX_URL = " https://api.weixin.qq.com/sns/oauth2/";
 
         //二维码
-        public static String FIRE_URL = "http://39.108.14.94:9088";
+        public static String FIRE_URL = "http://39.108.14.94:9082";
 
         // 7 牛 视频
         public final static String SEVEN_URL = "http://qiniu.dhygvip.com";
