@@ -433,12 +433,14 @@ public class MyViewModel extends ViewModel {
      * @param accountName
      * @param account
      * @param type
+     * @param name
      */
-    public void getWithdrawDeposit(String uId, String money, String accountName, String account, Integer type,int classify ) {
+    public void getWithdrawDeposit(String uId, String money, String accountName, String name,String account, Integer type,int classify ) {
         GetWithdrawDepositVo vo = new GetWithdrawDepositVo();
         vo.setuId(uId);
         vo.setMoney(money);
         vo.setAccountName(accountName);
+        vo.setName(name);
         vo.setAccount(account);
         vo.setType(type);
         vo.setClassify(classify);

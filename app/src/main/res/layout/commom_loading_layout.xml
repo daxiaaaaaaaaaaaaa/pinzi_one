@@ -7,6 +7,7 @@
               android:orientation="vertical">
 
     <com.wang.avi.AVLoadingIndicatorView
+
         android:id="@+id/avi"
         style="@style/AVLoadingIndicatorView"
         android:layout_width="90dp"

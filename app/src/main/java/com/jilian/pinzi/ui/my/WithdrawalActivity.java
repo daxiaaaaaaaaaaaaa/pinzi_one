@@ -25,7 +25,7 @@ import com.jilian.pinzi.utils.ToastUitl;
 public class WithdrawalActivity extends BaseActivity {
 
     private EditText etMoney;
-    private EditText etAccountname;
+    private EditText etName;
     private EditText etAccount;
     private TextView tvOk;
     private MyViewModel viewModel;
@@ -34,6 +34,10 @@ public class WithdrawalActivity extends BaseActivity {
     private View vOne;
     private View vTwo;
     private int classify =1;
+    private View vCenter;
+    private EditText etBankName;
+
+
 
 
     @Override
@@ -63,13 +67,15 @@ public class WithdrawalActivity extends BaseActivity {
         setNormalTitle("提现", v -> finish());
         tvOk = (TextView) findViewById(R.id.tv_ok);
         etMoney = (EditText) findViewById(R.id.et_money);
-        etAccountname = (EditText) findViewById(R.id.et_accountname);
+        etName = (EditText) findViewById(R.id.et_name);
         etAccount = (EditText) findViewById(R.id.et_account);
         tvOk = (TextView) findViewById(R.id.tv_ok);
         tvOne = (TextView) findViewById(R.id.tv_one);
         tvTwo = (TextView) findViewById(R.id.tv_two);
         vOne = (View) findViewById(R.id.v_one);
         vTwo = (View) findViewById(R.id.v_two);
+        vCenter = (View) findViewById(R.id.v_center);
+        etBankName = (EditText) findViewById(R.id.et_bank_name);
 
     }
 
@@ -86,6 +92,10 @@ public class WithdrawalActivity extends BaseActivity {
                 if(Double.parseDouble(etMoney.getText().toString())<=0){
                         ToastUitl.showImageToastFail("提现金额要大于0");
                         return;
+                }
+                if(classify==2&&TextUtils.isEmpty(etBankName.getText().toString())){
+                    ToastUitl.showImageToastFail("请输入银行名称");
+                    return;
                 }
                 getMoney();
             }
@@ -106,7 +116,7 @@ public class WithdrawalActivity extends BaseActivity {
 
             }
         });
-        etAccountname.addTextChangedListener(new TextWatcher() {
+        etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -141,20 +151,35 @@ public class WithdrawalActivity extends BaseActivity {
         tvOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(classify==1){
+                    return;
+                }
                 vOne.setVisibility(View.VISIBLE);
                 vTwo.setVisibility(View.INVISIBLE);
                 classify =1 ;
                 etAccount.setHint("请输入支付宝账号");
+                vCenter.setVisibility(View.GONE);
+                etBankName.setVisibility(View.GONE);
+                etAccount.setText(null);
+                etBankName.setText(null);
+                initBtnStatus();
             }
         });
         tvTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(classify==2){
+                    return;
+                }
                 vOne.setVisibility(View.INVISIBLE);
                 vTwo.setVisibility(View.VISIBLE);
                 classify =2 ;
                 etAccount.setHint("请输入银行卡账号");
+                vCenter.setVisibility(View.VISIBLE);
+                etBankName.setVisibility(View.VISIBLE);
+                etAccount.setText(null);
+                etBankName.setText(null);
+                initBtnStatus();
             }
         });
 
@@ -167,7 +192,7 @@ public class WithdrawalActivity extends BaseActivity {
      */
     private void getMoney() {
         getLoadingDialog().showDialog();
-        viewModel.getWithdrawDeposit(getLoginDto().getId(), etMoney.getText().toString(), etAccountname.getText().toString(), etAccount.getText().toString(), type,classify);
+        viewModel.getWithdrawDeposit(getLoginDto().getId(), etMoney.getText().toString(), etBankName.getText().toString(),etName.getText().toString(), etAccount.getText().toString(), type,classify);
         viewModel.getWithdrawDepositListliveData().observe(this, new Observer<BaseDto<String>>() {
             @Override
             public void onChanged(@Nullable BaseDto<String> stringBaseDto) {
@@ -188,7 +213,7 @@ public class WithdrawalActivity extends BaseActivity {
 
     private void initBtnStatus() {
         if (TextUtils.isEmpty(etAccount.getText().toString()) ||
-                TextUtils.isEmpty(etAccountname.getText().toString()) ||
+                TextUtils.isEmpty(etName.getText().toString()) ||
                 TextUtils.isEmpty(etMoney.getText().toString())) {
             tvOk.setEnabled(false);
             tvOk.setBackgroundResource(R.drawable.shape_btn_login_dark);
