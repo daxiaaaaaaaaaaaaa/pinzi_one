@@ -38,6 +38,7 @@ import com.jilian.pinzi.common.dto.FriendlLikeDto;
 import com.jilian.pinzi.common.msg.FriendMsg;
 import com.jilian.pinzi.common.msg.MessageEvent;
 import com.jilian.pinzi.common.msg.RxBus;
+import com.jilian.pinzi.common.tesk.Task;
 import com.jilian.pinzi.ui.friends.FriendDetailActivity;
 import com.jilian.pinzi.ui.friends.MyFriendsCircleActivity;
 import com.jilian.pinzi.ui.friends.PublishFriendsActivity;
@@ -59,6 +60,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -128,7 +133,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     private void initRecyclerView() {
         list = new ArrayList<>();
         list.add(null);
-        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this,getmActivity());
+        friendsCircleAdapter = new FriendsCircleAdapter(mActivity, list, this, getmActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setAdapter(friendsCircleAdapter);
         friendsCircleAdapter.setOnItemClickListener(new FriendsCircleAdapter.OnItemClickListener() {
@@ -160,8 +165,6 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
     }
 
     /**
-     *
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -174,6 +177,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             getData();
         }
     }
+
     @Override
     protected void initData() {
         getData();
@@ -226,7 +230,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
         super.onResume();
 
     }
-
+    private int i = 0;
     /**
      * 用戶類型朋友圈
      */
@@ -259,22 +263,24 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                         }
                     }
                     friendsCircleAdapter.notifyDataSetChanged();
-                    //开启子线程
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            //对视频封面处理 耗时操作
-                            for (int i = 0; i < list.size(); i++) {
-                                //视频地址不为空
-                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
-                                    list.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(list.get(i).getVideo())));
-                                }
-                            }
-                            handler.sendEmptyMessage(1000);
+                    /**
+                     * 线程池
+                     */
+                    ExecutorService executor = Executors.newCachedThreadPool();
+                    Task task = new Task(list);
+                    Future<List<FriendCircleListDto>> result = executor.submit(task);
+                    executor.shutdown();
+                    try {
+                        list.clear();
+                        list.addAll(result.get());
 
-                        }
-                    }.start();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    friendsCircleAdapter.notifyDataSetChanged();
+
 
 
                 } else {
@@ -299,7 +305,6 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
             friendsCircleAdapter.notifyDataSetChanged();
         }
     };
-
 
 
     /**
@@ -344,7 +349,7 @@ public class ThreeFragment extends BaseFragment implements FriendsCircleAdapter.
                             //对视频封面处理 耗时操作
                             for (int i = 0; i < list.size(); i++) {
                                 //视频地址不为空
-                                if (EmptyUtils.isNotEmpty(list.get(i))&&EmptyUtils.isNotEmpty(list.get(i).getVideo()) ) {
+                                if (EmptyUtils.isNotEmpty(list.get(i)) && EmptyUtils.isNotEmpty(list.get(i).getVideo())) {
                                     list.get(i).setBitmap(BitmapUtils.getScanBitmap(BitmapUtils.getNetVideoBitmap(list.get(i).getVideo())));
                                     handler.sendEmptyMessage(1000);
                                 }

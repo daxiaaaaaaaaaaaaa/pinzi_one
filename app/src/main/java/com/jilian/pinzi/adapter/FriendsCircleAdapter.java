@@ -48,6 +48,7 @@ import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.ui.LoginActivity;
 import com.jilian.pinzi.ui.VideoPlayerActivity;
 import com.jilian.pinzi.ui.main.ViewPhotosActivity;
+import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.ScreenUtils;
@@ -225,7 +226,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
                     intent.putExtra("url", datas.get(position).getVideo());
-                    Bitmap bitmap = datas.get(position).getBitmap();
+                    Bitmap bitmap = BitmapUtils.getScanBitmap(datas.get(position).getBitmap());
                     if(EmptyUtils.isNotEmpty(bitmap)){
                         ByteArrayOutputStream baos=new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100,baos);

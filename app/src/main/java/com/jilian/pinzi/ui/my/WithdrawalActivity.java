@@ -19,6 +19,8 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
 import com.jilian.pinzi.utils.ToastUitl;
 
+import java.beans.IndexedPropertyChangeEvent;
+
 /**
  * 提现
  */
@@ -76,6 +78,7 @@ public class WithdrawalActivity extends BaseActivity {
         vTwo = (View) findViewById(R.id.v_two);
         vCenter = (View) findViewById(R.id.v_center);
         etBankName = (EditText) findViewById(R.id.et_bank_name);
+
 
     }
 
