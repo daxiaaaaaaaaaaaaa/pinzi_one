@@ -8,7 +8,6 @@ import android.webkit.JavascriptInterface;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
-import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.UrlUtils;
 import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
 import com.tamic.jswebview.view.ProgressBarWebView;
@@ -67,7 +66,7 @@ public class WebViewTitleActivity extends BaseActivity {
         if (linkUrl != null && !linkUrl.startsWith("http")) {
             linkUrl = "http://" + linkUrl;
         }
-        linkUrl = UrlUtils.addUrlParamsNoEncode(linkUrl,"id",PinziApplication.getInstance().getLoginDto().getId());
+        linkUrl = UrlUtils.addUrlParamsNoEncode(linkUrl,"userID",PinziApplication.getInstance().getLoginDto().getId());
         Log.e(TAG, "linkUrl: "+linkUrl );
         mProgressBarWebView.loadUrl(linkUrl);
     }
