@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
@@ -18,7 +17,6 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
-import com.jilian.pinzi.ui.NewsNoticeDetailActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

@@ -2,6 +2,8 @@ package com.jilian.pinzi.utils;
 
 import android.text.TextUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,5 +43,59 @@ public class UrlUtils {
             return list;
         }
 
+    }
+
+    /**
+     * 拼接参数 没有编码
+     * @param url
+     * @param key
+     * @param val
+     * @return
+     */
+    public static String addUrlParamsNoEncode(String url, String key, String val) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+        try {
+            String and = "&";
+            String dy = "=";
+            if (!url.contains(key)) {
+                if (url.contains("?")) {
+                    url += and + key + dy + val;
+                } else {
+                    url += "?" + key + dy + val;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    /**
+     * 拼接参数 编码
+     * @param url
+     * @param key
+     * @param val
+     * @return
+     */
+    public static String addUrlParamsEncode(String url, String key, String val) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+        try {
+            String and = URLEncoder.encode("&", "utf-8");
+            String dy = URLEncoder.encode("=", "utf-8");
+            if (!url.contains(key)) {
+                if (url.contains("?")) {
+                    url += and + key + dy + val;
+                } else {
+                    url += "?" + key + dy + val;
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 }
