@@ -133,26 +133,26 @@ public class ToastUitl {
 
     }
 
-    /**
-     * 带图片吐司 成功
-     *
-     * @param tvStr 消息
-     * @return imageToast
-     */
-    public static Toast showImageToastSuccess(String tvStr) {
-        if (imageToast == null) {
-            imageToast = new Toast(PinziApplication.getContext());
-        }
-        View view = LayoutInflater.from(PinziApplication.getContext()).inflate(R.layout.toast_custom, null);
-        TextView tv = (TextView) view.findViewById(R.id.toast_custom_tv);
-        tv.setText(TextUtils.isEmpty(tvStr) ? "" : tvStr);
-        ImageView iv = (ImageView) view.findViewById(R.id.toast_custom_iv);
-        iv.setImageResource(R.mipmap.ic_success);
-        imageToast.setView(view);
-        imageToast.setGravity(Gravity.CENTER, 0, 0);
-        imageToast.show();
-        return imageToast;
-    }
+//    /**
+//     * 带图片吐司 成功
+//     *
+//     * @param tvStr 消息
+//     * @return imageToast
+//     */
+//    public static Toast showImageToastSuccess(String tvStr) {
+//        if (imageToast == null) {
+//            imageToast = new Toast(PinziApplication.getContext());
+//        }
+//        View view = LayoutInflater.from(PinziApplication.getContext()).inflate(R.layout.toast_custom, null);
+//        TextView tv = (TextView) view.findViewById(R.id.toast_custom_tv);
+//        tv.setText(TextUtils.isEmpty(tvStr) ? "" : tvStr);
+//        ImageView iv = (ImageView) view.findViewById(R.id.toast_custom_iv);
+//        iv.setImageResource(R.mipmap.ic_success);
+//        imageToast.setView(view);
+//        imageToast.setGravity(Gravity.CENTER, 0, 0);
+//        imageToast.show();
+//        return imageToast;
+//    }
 
     /**
      * 带图片吐司 失败
@@ -164,14 +164,31 @@ public class ToastUitl {
         if (imageToast == null) {
             imageToast = new Toast(PinziApplication.getContext());
         }
-        View view = LayoutInflater.from(PinziApplication.getContext()).inflate(R.layout.toast_custom, null);
+        View view = LayoutInflater.from(PinziApplication.getContext()).inflate(R.layout.layout_toast_tips, null);
         TextView tv = (TextView) view.findViewById(R.id.toast_custom_tv);
-        tv.setText(TextUtils.isEmpty(tvStr) ? "" : tvStr);
-        ImageView iv = (ImageView) view.findViewById(R.id.toast_custom_iv);
-        iv.setImageResource(R.mipmap.ic_warm);
+        tv.setText(tvStr);
         imageToast.setView(view);
         imageToast.setGravity(Gravity.CENTER, 0, 0);
         imageToast.setDuration(Toast.LENGTH_SHORT);
+        imageToast.show();
+        return imageToast;
+    }
+    /**
+     * 带图片吐司 提示
+     *
+     * @param tvStr 消息
+     * @return imageToast
+     */
+    public static Toast showImageToastSuccess(String tvStr) {
+        if (imageToast == null) {
+            imageToast = new Toast(PinziApplication.getContext());
+        }
+        View view = LayoutInflater.from(PinziApplication.getContext()).inflate(R.layout.layout_toast_tips, null);
+        TextView tv = (TextView) view.findViewById(R.id.toast_custom_tv);
+        tv.setText(tvStr);
+        imageToast.setView(view);
+        imageToast.setGravity(Gravity.CENTER, 0, 0);
+        imageToast.setDuration(Toast.LENGTH_LONG);
         imageToast.show();
         return imageToast;
     }

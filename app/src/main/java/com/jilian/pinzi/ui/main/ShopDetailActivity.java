@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
@@ -24,6 +25,7 @@ import com.jilian.pinzi.ui.main.fragment.ShopDetailleftFragment;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.main.viewmodel.ShopViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.NoScrollViewPager;
 
@@ -128,6 +130,7 @@ public class ShopDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         mStoreId = getIntent().getStringExtra("shopId");
+
     }
 
     @Override

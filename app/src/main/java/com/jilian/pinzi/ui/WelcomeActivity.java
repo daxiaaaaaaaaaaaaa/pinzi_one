@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.StartPageDto;
@@ -18,6 +19,7 @@ import com.jilian.pinzi.common.msg.RxBus;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.PermissionsObserver;
+import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -26,6 +28,7 @@ import java.util.List;
 public class WelcomeActivity extends FragmentActivity {
 
     private MainViewModel viewModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

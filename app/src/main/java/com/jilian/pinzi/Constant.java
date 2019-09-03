@@ -103,7 +103,7 @@ public class Constant {
     public static class SP_VALUE {
 
         public static final String SP = "sp";//sp
-            public static final String CONSTANT = "constant";//
+        public static final String CONSTANT = "constant";//
         public static final String ISCOMIN = "is_comin";//是否进入过APP
         public static final String LOGIN_DTO = "LOGIN_DTO";//登录实体key
         public static final String SESSION_ID = "session_id";//
@@ -112,6 +112,8 @@ public class Constant {
         public static final String HISTORY = "history";//
 
         public static final String INVOICE = "invoice";//发票信息
+
+        public static final String INSTALL_SP = "install_sp";//sp
     }
 
     /**

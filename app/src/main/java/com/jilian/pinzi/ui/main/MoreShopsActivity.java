@@ -33,6 +33,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jilian.pinzi.Constant;
 import com.jilian.pinzi.PinziApplication;
 import com.jilian.pinzi.R;
 import com.jilian.pinzi.adapter.MoreShopsAdapter;
@@ -46,6 +47,7 @@ import com.jilian.pinzi.ui.MainActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.SPUtil;
 import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 import com.lljjcoder.Interface.OnCityItemClickListener;
@@ -261,6 +263,7 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
             @Override
             public void onChanged(@Nullable BaseDto<List<StoreShowDto>> dto) {
                 getLoadingDialog().dismiss();
+
                 srNoData.finishRefresh();
                 srHasData.finishRefresh();
                 srHasData.finishLoadMore();
@@ -295,6 +298,10 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
      * @param data
      */
     private void initMapPointView(List<StoreShowDto> data) {
+        if(SPUtil.getData(Constant.SP_VALUE.INSTALL_SP,"firstInstall",Integer.class,0)==0){
+            ToastUitl.showImageToastSuccess("点击右上角地图按钮可以切换查看模式哦");
+        }
+        SPUtil.putData(Constant.SP_VALUE.INSTALL_SP,"firstInstall",1);
         mPointList.clear();
         for (int i = 0; i < data.size(); i++) {
 
