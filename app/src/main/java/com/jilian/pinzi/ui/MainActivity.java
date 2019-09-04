@@ -175,6 +175,7 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
         //
         mainTapPagerAdapter = new CommonViewPagerAdapter(getSupportFragmentManager(), mFragmentList);
         viewPager.setAdapter(mainTapPagerAdapter);
+        getVersionInfo();
 
     }
 

@@ -499,8 +499,6 @@ public class MoreShopsActivity extends BaseActivity implements CustomItemClickLi
                 Date date = new Date(amapLocation.getTime());
                 df.format(date);//定位时间
                 getStoreShowData();
-
-
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"

@@ -18,6 +18,7 @@ import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.common.dto.LoginDto;
 import com.jilian.pinzi.ui.my.fragment.AfterSaleRecordFragment;
 import com.jilian.pinzi.ui.my.fragment.AfterSaleServiceFragment;
+import com.jilian.pinzi.views.AddWxDialogUtils;
 import com.jilian.pinzi.views.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -70,44 +71,45 @@ public class AfterSalesServiceActivity extends BaseActivity {
         setrightImage(R.drawable.image_customer_service, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoadingDialog();
-                LoginDto loginDto = PinziApplication.getInstance().getLoginDto();
-                // 连接融云服务器
-                RongIM.connect(loginDto.getToken(), new RongIMClient.ConnectCallback() {
-                    /**
-                     * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-                     * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-                     */
-                    @Override
-                    public void onTokenIncorrect() {
-                        Log.d("WelcomeActivity", "--onTokenIncorrect");
-                    }
-
-                    /**
-                     * 连接融云成功
-                     *
-                     * @param userid 当前 token 对应的用户 id
-                     */
-                    @Override
-                    public void onSuccess(String userid) {
-                        hideLoadingDialog();
-                        RongIM.getInstance().refreshUserInfoCache(
-                                new UserInfo(loginDto.getId(), loginDto.getName(), Uri.parse(loginDto.getHeadImg())));
-                        RongIM.getInstance()
-                                .startConversation(AfterSalesServiceActivity.this,
-                                        Conversation.ConversationType.CUSTOMER_SERVICE, "KEFU154046100693716", "在线客服");
-                    }
-
-                    /**
-                     * 连接融云失败
-                     *
-                     * @param errorCode 错误码，可到官网 查看错误码对应的注释
-                     */
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                        Log.d("WelcomeActivity", "--onError：" + errorCode.getValue());
-                    }
-                });
+//                showLoadingDialog();
+//                LoginDto loginDto = PinziApplication.getInstance().getLoginDto();
+//                // 连接融云服务器
+//                RongIM.connect(loginDto.getToken(), new RongIMClient.ConnectCallback() {
+//                    /**
+//                     * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
+//                     * 2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
+//                     */
+//                    @Override
+//                    public void onTokenIncorrect() {
+//                        Log.d("WelcomeActivity", "--onTokenIncorrect");
+//                    }
+//
+//                    /**
+//                     * 连接融云成功
+//                     *
+//                     * @param userid 当前 token 对应的用户 id
+//                     */
+//                    @Override
+//                    public void onSuccess(String userid) {
+//                        hideLoadingDialog();
+//                        RongIM.getInstance().refreshUserInfoCache(
+//                                new UserInfo(loginDto.getId(), loginDto.getName(), Uri.parse(loginDto.getHeadImg())));
+//                        RongIM.getInstance()
+//                                .startConversation(AfterSalesServiceActivity.this,
+//                                        Conversation.ConversationType.CUSTOMER_SERVICE, "KEFU154046100693716", "在线客服");
+//                    }
+//
+//                    /**
+//                     * 连接融云失败
+//                     *
+//                     * @param errorCode 错误码，可到官网 查看错误码对应的注释
+//                     */
+//                    @Override
+//                    public void onError(RongIMClient.ErrorCode errorCode) {
+//                        Log.d("WelcomeActivity", "--onError：" + errorCode.getValue());
+//                    }
+//                });
+                AddWxDialogUtils.showAddWxDialog(AfterSalesServiceActivity.this);
 
             }
         });
