@@ -18,6 +18,7 @@ import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.MsgDto;
 import com.jilian.pinzi.listener.CustomItemClickListener;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
+import com.jilian.pinzi.utils.BadgeUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,13 @@ public class SystemMsgAdapter extends RecyclerView.Adapter<SystemMsgAdapter.View
         MsgDto newsDto =datas.get(position);
         if(EmptyUtils.isNotEmpty(newsDto)){
             holder.tvTitle.setText(newsDto.getTitle());
-            holder.tvContent.setText(newsDto.getContent());
+
+
+
+            //content是后台返回的h5标签
+            holder.tvContent.loadDataWithBaseURL(null,
+                    getHtmlData(newsDto.getContent()), "text/html", "utf-8", null);
+
             //消息的时间
             String day = DateUtil.dateToString(DateUtil.DATE_FORMAT_,new Date(newsDto.getCreateDate()));
             // 昨天
@@ -81,6 +88,19 @@ public class SystemMsgAdapter extends RecyclerView.Adapter<SystemMsgAdapter.View
         }
 
     }
+    /**
+     * 加载html标签
+     *
+     * @param bodyHTML
+     * @return
+     */
+    private String getHtmlData(String bodyHTML) {
+        String head = "<head>" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
+                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
+                "</head>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
+    }
 
     @Override
     public int getItemCount() {
@@ -91,7 +111,7 @@ public class SystemMsgAdapter extends RecyclerView.Adapter<SystemMsgAdapter.View
 
         private TextView tvDay;
         private TextView tvTitle;
-        private TextView tvContent;
+        private WebView tvContent;
         private TextView tvDetail;
         private ImageView ivPoints;
 
@@ -103,7 +123,7 @@ public class SystemMsgAdapter extends RecyclerView.Adapter<SystemMsgAdapter.View
             super(itemView);
             tvDay = (TextView)itemView. findViewById(R.id.tv_day);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
-            tvContent = (TextView) itemView.findViewById(R.id.tv_content);
+            tvContent = (WebView) itemView.findViewById(R.id.tv_content);
             tvDetail = (TextView) itemView.findViewById(R.id.tv_detail);
             ivPoints = (ImageView) itemView.findViewById(R.id.iv_points);
         }

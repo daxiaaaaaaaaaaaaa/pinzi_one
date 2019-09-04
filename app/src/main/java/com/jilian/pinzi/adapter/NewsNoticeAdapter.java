@@ -3,6 +3,7 @@ package com.jilian.pinzi.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,10 +41,16 @@ public class NewsNoticeAdapter extends CommonAdapter<MsgDto> {
         TextView tvEdit = holder.getView(R.id.tv_detail);
         TextView tvDay = holder.getView(R.id.tv_day);
         TextView tvTitle = holder.getView(R.id.tv_title);
-        TextView tvContent = holder.getView(R.id.tv_content);
+        WebView tvContent = holder.getView(R.id.tv_content);
         ImageView ivPoints= holder.getView(R.id.iv_points);
         tvTitle.setText(newsDto.getTitle());
-        tvContent.setText(newsDto.getContent());
+
+
+        //content是后台返回的h5标签
+        tvContent.loadDataWithBaseURL(null,
+                getHtmlData(newsDto.getContent()), "text/html", "utf-8", null);
+
+
         //消息的时间
         String day = DateUtil.dateToString(DateUtil.DATE_FORMAT_,new Date(newsDto.getCreateDate()));
         // 昨天
@@ -74,6 +81,19 @@ public class NewsNoticeAdapter extends CommonAdapter<MsgDto> {
         tvEdit.setOnClickListener(v -> {
             if (onItemClickListener != null) onItemClickListener.onEditClick(tvEdit, position);
         });
+    }
+    /**
+     * 加载html标签
+     *
+     * @param bodyHTML
+     * @return
+     */
+    private String getHtmlData(String bodyHTML) {
+        String head = "<head>" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
+                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
+                "</head>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
     private OnItemClickListener onItemClickListener;
 

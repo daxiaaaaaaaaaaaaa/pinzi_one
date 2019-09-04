@@ -33,7 +33,7 @@ public class QrCodeActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        String url = Constant.Server.FIRE_URL+"?code="+getLoginDto().getCode()+"&userId = "+getLoginDto().getId();
+        String url = Constant.Server.FIRE_URL+"?code="+getLoginDto().getCode()+"&userId="+getLoginDto().getId();
         Log.e(TAG, "url: "+url );
         Bitmap bitmap = ZXingUtils.createQRImage(url, DisplayUtil.dip2px(this,230),  DisplayUtil.dip2px(this,230));
         ivQcode.setImageBitmap(bitmap);

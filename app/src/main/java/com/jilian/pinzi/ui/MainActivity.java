@@ -42,6 +42,7 @@ import com.jilian.pinzi.dialog.ViewConvertListener;
 import com.jilian.pinzi.dialog.ViewHolder;
 import com.jilian.pinzi.service.DownloadIntentService;
 import com.jilian.pinzi.ui.my.viewmdel.MyViewModel;
+import com.jilian.pinzi.utils.BadgeUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
 import com.jilian.pinzi.utils.RxTimerUtil;
 import com.jilian.pinzi.utils.ToastUitl;
@@ -91,19 +92,9 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
         PinziApplication.clearAllActivitysAdditionActivty(this);
 
 
+
     }
 
-    //获取虚拟按键的高度
-    public static int getNavigationBarHeight() {
-        int result = 0;
-        Resources res = PinziApplication.getContext().getResources();
-        int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = res.getDimensionPixelSize(resourceId);
-        }
-
-        return result;
-    }
 
 
 
@@ -374,7 +365,11 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
             }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
         } else {
-            System.exit(0);
+            //System.exit(0);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+
         }
     }
 

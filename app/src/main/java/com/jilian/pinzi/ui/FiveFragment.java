@@ -90,7 +90,7 @@ public class FiveFragment extends BaseFragment {
     private ImageView ivSetting;
     private MyViewModel viewModel;
     private MainViewModel mainViewModel;
-    private ImageView ivNew;
+    private TextView ivNew;
     private RelativeLayout rlFiveQrCode;
     private TextView tvFiveMyLevels;
     private LinearLayout llQuestionnaireSurvey;
@@ -195,7 +195,7 @@ public class FiveFragment extends BaseFragment {
         rlOrder = (RelativeLayout) view.findViewById(R.id.rl_order);
         tvIniviteCode = (TextView) view.findViewById(R.id.tv_inivite_code);
         ivSetting = (ImageView) view.findViewById(R.id.iv_setting);
-        ivNew = (ImageView) view.findViewById(R.id.iv_new);
+        ivNew = (TextView) view.findViewById(R.id.iv_new);
         rlFiveQrCode = (RelativeLayout) view.findViewById(R.id.rl_five_qr_code);
         tvFiveMyLevels = (TextView) view.findViewById(R.id.tv_five_my_levels);
         ivQCode = (ImageView) view.findViewById(R.id.iv_q_code);
@@ -273,6 +273,7 @@ public class FiveFragment extends BaseFragment {
                 if (integerBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     if (integerBaseDto.getData() != null && integerBaseDto.getData() >= 1) {
                         ivNew.setVisibility(View.VISIBLE);
+                        ivNew.setText(integerBaseDto.getData()+"");
                     } else {
                         ivNew.setVisibility(View.GONE);
                     }

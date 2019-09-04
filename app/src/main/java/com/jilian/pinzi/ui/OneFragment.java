@@ -60,6 +60,7 @@ import com.jilian.pinzi.ui.main.ShopDetailActivity;
 import com.jilian.pinzi.ui.main.WebViewActivity;
 import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.ui.my.SystemMsgActivity;
+import com.jilian.pinzi.utils.BadgeUtil;
 import com.jilian.pinzi.utils.DateUtil;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
@@ -123,7 +124,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
     private ImageView ivTop;
     private MainViewModel viewModel;
     private TextView tvMsgTitle;
-    private ImageView ivNew;
+    private TextView ivNew;
     private LinearLayout llSign;
     private TextView tvHour;
     private TextView tvMin;
@@ -404,11 +405,16 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
                 if (integerBaseDto.getCode() == Constant.Server.SUCCESS_CODE) {
                     if (integerBaseDto.getData() != null && integerBaseDto.getData() >= 1) {
                         ivNew.setVisibility(View.VISIBLE);
+                        ivNew.setText(integerBaseDto.getData()+"");
+                        BadgeUtil.setBadgeCount(getmActivity(),integerBaseDto.getData(),R.drawable.image_red_point);
                     } else {
                         ivNew.setVisibility(View.GONE);
+                        BadgeUtil.resetBadgeCount(getmActivity(),R.drawable.image_red_point);
                     }
                 } else {
                     ivNew.setVisibility(View.GONE);
+                    BadgeUtil.resetBadgeCount(getmActivity(),R.drawable.image_red_point);
+
                 }
 
             }
@@ -479,7 +485,7 @@ public class OneFragment extends BaseFragment implements OneAdapter.OneListener,
         llGetcardCenter = (LinearLayout) view.findViewById(R.id.ll_getcard_center);
         llLotteryCenter = (LinearLayout) view.findViewById(R.id.ll_lottery_center);
         llIntegralMall = (LinearLayout) view.findViewById(R.id.ll_integral_mall);
-        ivNew = (ImageView) view.findViewById(R.id.iv_new);
+        ivNew = (TextView) view.findViewById(R.id.iv_new);
         llBuyOne = (LinearLayout) view.findViewById(R.id.ll_buy_one);
         llBuyTwo = (LinearLayout) view.findViewById(R.id.ll_buy_two);
         llBuyThree = (LinearLayout) view.findViewById(R.id.ll_buy_three);

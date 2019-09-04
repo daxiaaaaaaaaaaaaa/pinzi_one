@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.jilian.pinzi.PinziApplication;
@@ -22,7 +23,7 @@ public class NewsNoticeDetailActivity extends BaseActivity {
     private TextView tvMsgTitle;
     private MainViewModel viewModel;
     private TextView tvDay;
-    private TextView tvContent;
+    private WebView tvContent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class NewsNoticeDetailActivity extends BaseActivity {
         setNormalTitle("公告详情", v -> finish());
         tvMsgTitle = (TextView) findViewById(R.id.tv_msg_title);
         tvDay = (TextView) findViewById(R.id.tv_day);
-        tvContent = (TextView) findViewById(R.id.tv_content);
+        tvContent = (WebView) findViewById(R.id.tv_content);
 
     }
     @Override
@@ -86,7 +87,8 @@ public class NewsNoticeDetailActivity extends BaseActivity {
      */
     private void initMsgDetailView(MsgDto msgDto) {
         tvMsgTitle.setText(msgDto.getTitle());
-        tvContent.setText(msgDto.getContent());
+        tvContent.loadDataWithBaseURL(null,
+                getHtmlData(msgDto.getContent()), "text/html", "utf-8", null);
         //消息的时间
         String day = DateUtil.dateToString(DateUtil.DATE_FORMAT_, new Date(msgDto.getCreateDate()));
         // 昨天
@@ -110,5 +112,18 @@ public class NewsNoticeDetailActivity extends BaseActivity {
     @Override
     public void initListener() {
 
+    }
+    /**
+     * 加载html标签
+     *
+     * @param bodyHTML
+     * @return
+     */
+    private String getHtmlData(String bodyHTML) {
+        String head = "<head>" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
+                "<style>img{max-width: 100%; width:auto; height:auto!important;}</style>" +
+                "</head>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 }

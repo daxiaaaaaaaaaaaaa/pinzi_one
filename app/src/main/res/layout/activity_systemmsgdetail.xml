@@ -29,7 +29,7 @@
         tools:text="2017年5月5日 10:00"
         android:textColor="@color/color_text_dark"/>
 
-    <TextView
+    <WebView
         android:id="@+id/tv_content"
         android:textColor="@color/color_text_dark"
         android:textSize="16sp"
@@ -38,5 +38,5 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        tools:text="尊敬的用户，为了给您带来更好的体验，秒杀专区业务将于2017年4月26日22：00-2017年4月27日09:00期间进行系统升级，升级期间秒杀专区入口将暂时下线。升级后可正常充值和查看充值记录，请有需要的用户提前充值或者在系统升级后再充值。给您带来的不便，敬请谅解。感谢您一如既往的支持。"/>
+        />
 </LinearLayout>

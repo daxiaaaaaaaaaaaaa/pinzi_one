@@ -30,13 +30,6 @@
                     android:layout_marginLeft="15dp"
                     android:src="@drawable/image_msg"/>
 
-                <ImageView
-                    android:id="@+id/iv_new"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginLeft="26dp"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/image_red_point"/>
 
                 <ImageView
                     android:id="@+id/iv_setting"
@@ -126,6 +119,16 @@
                         android:textSize="13sp"
                         tools:text="我的邀请码：111"/>
                 </LinearLayout>
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:gravity="center"
+                    android:id="@+id/iv_new"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="26dp"
+                    android:background="@drawable/image_red_point"/>
+
             </RelativeLayout>
 
             <LinearLayout
