@@ -385,7 +385,6 @@ public class MainActivity extends BaseActivity implements DownloadIntentService.
             @Override
             public void onChanged(@Nullable BaseDto<VersionInfoDto> versionInfoDtoBaseDto) {
                 String versionName = PackageUtils.getVersionName(MainActivity.this);
-                Log.e(TAG, "onChanged: "+versionInfoDtoBaseDto.getData().getVersionNo());
                 if (versionInfoDtoBaseDto.isSuccess()
                         && EmptyUtils.isNotEmpty(versionInfoDtoBaseDto.getData())) {
                     if (!versionName.equals(versionInfoDtoBaseDto.getData().getVersionNo())) {

@@ -98,11 +98,15 @@ public class MainNewsActivity extends BaseActivity implements NewsTypeAdapter.Ty
                 hideLoadingDialog();
                 if (listBaseDto.isSuccess()) {
                     if (EmptyUtils.isNotEmpty(listBaseDto.getData())) {
+                        rvTop.setVisibility(View.VISIBLE);
                         typeDtos.clear();
                         typeDtos.addAll(listBaseDto.getData());
                         initSelect(0);
                         typeTopAdapter.notifyDataSetChanged();
                         getInformationList(typeDtos.get(0).getId());
+                    }
+                    else{
+                        rvTop.setVisibility(View.GONE);
                     }
                 } else {
                     ToastUitl.showImageToastFail(listBaseDto.getMsg());
@@ -150,6 +154,10 @@ public class MainNewsActivity extends BaseActivity implements NewsTypeAdapter.Ty
         srNoData.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if(!EmptyUtils.isNotEmpty(typeDtos)){
+                    srNoData.finishRefresh();
+                    return;
+                }
                 pageNo = 1;
                 getInformationList(typeDtos.get(selectPosition).getId());
             }

@@ -64,22 +64,22 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig
             {
-        applicationId "com.jilian.pinzi"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        flavorDimensions "versionCode"
-        multiDexEnabled true
+                applicationId "com.jilian.pinzi"
+                minSdkVersion rootProject.ext.minSdkVersion
+                targetSdkVersion rootProject.ext.targetSdkVersion
+                versionCode rootProject.ext.versionCode
+                versionName rootProject.ext.versionName
+                testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+                flavorDimensions "versionCode"
+                multiDexEnabled true
 
-        vectorDrawables.useSupportLibrary = true
-        ndk {
-            // 设置支持的SO库架构
-            abiFilters "armeabi-v7a", "x86", 'armeabi'
-        }
-        manifestPlaceholders = [qqappid: "1109240675"]
-    }
+                vectorDrawables.useSupportLibrary = true
+                ndk {
+                    // 设置支持的SO库架构
+                    abiFilters "armeabi-v7a", "x86", 'armeabi'
+                }
+                manifestPlaceholders = [qqappid: "1109240675"]
+            }
     dexOptions {
         incremental true
     }
@@ -256,4 +256,3 @@ dependencies {
     implementation files('libs/AMap_Location_V4.7.0_20190708.jar')
     implementation files('libs/BaiduLBS_Android.jar')
 }
-
