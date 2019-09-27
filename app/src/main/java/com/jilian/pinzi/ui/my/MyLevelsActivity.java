@@ -224,6 +224,7 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
                 tvTwo.setTextColor(getResources().getColor(R.color.color_text));
                 tvThree.setTextColor(getResources().getColor(R.color.color_text));
                 tvFour.setTextColor(getResources().getColor(R.color.color_text));
+                pageNo =1;
                 type = 1;
                 getInviteList();
             }
@@ -237,6 +238,7 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
                 tvThree.setTextColor(getResources().getColor(R.color.color_text));
                 tvFour.setTextColor(getResources().getColor(R.color.color_text));
                 type = 2;
+                pageNo =1;
                 getInviteList();
             }
         });
@@ -249,6 +251,7 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
                 tvOne.setTextColor(getResources().getColor(R.color.color_text));
                 tvFour.setTextColor(getResources().getColor(R.color.color_text));
                 type = 3;
+                pageNo =1;
                 getInviteList();
             }
         });
@@ -261,6 +264,7 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
                 tvThree.setTextColor(getResources().getColor(R.color.color_text));
                 tvOne.setTextColor(getResources().getColor(R.color.color_text));
                 type = 4;
+                pageNo =1;
                 getInviteList();
             }
         });

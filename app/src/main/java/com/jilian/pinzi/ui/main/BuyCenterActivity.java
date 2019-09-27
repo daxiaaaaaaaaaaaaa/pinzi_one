@@ -117,7 +117,7 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
     public int intiLayout() {
         return R.layout.activity_buycenter;
     }
-
+    private int type;
     @Override
     public void initView() {
 
@@ -185,18 +185,43 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
 
             if (dto.getType() == 1 || getClasses() == 1) {
                 setNormalTitle("个人采购中心", v -> finish());
+                type = 1;
+
             } else if (dto.getType() == 2) {
                 setNormalTitle("门店采购中心", v -> finish());
+                type = 2;
             } else if (dto.getType() == 3) {
                 setNormalTitle("二批商采购中心", v -> finish());
+                type = 3;
             } else if (dto.getType() == 4) {
                 setNormalTitle("总经销商采购中心", v -> finish());
+                type = 4;
+            }
+            else if (dto.getType() == 5) {
+
+                if(getIntent().getIntExtra("classes",0)==3){
+                    setNormalTitle("总经销商采购中心", v -> finish());
+                    type = 4;
+                }
+                if(getIntent().getIntExtra("classes",0)==4){
+                    setNormalTitle("二批商采购中心", v -> finish());
+                    type = 3;
+                }
+                if(getIntent().getIntExtra("classes",0)==5){
+                    setNormalTitle("门店采购中心", v -> finish());
+                    type = 2;
+                }
+                if(getIntent().getIntExtra("classes",0)==6){
+                    setNormalTitle("个人采购中心", v -> finish());
+                    type = 1;
+                }
+
             }
             setrightTitle("朋友圈", "#FFFFFF", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(new Intent(BuyCenterActivity.this, ThreeFragmentActity.class));
-                    intent.putExtra("type", PinziApplication.getInstance().getLoginDto().getType());
+                    intent.putExtra("type", type);
                     intent.putExtra("uId", PinziApplication.getInstance().getLoginDto().getId());
                     intent.putExtra("index", 2);
                     intent.putExtra("back", 2);
