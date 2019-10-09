@@ -30,6 +30,7 @@ import com.jilian.pinzi.ui.main.viewmodel.MainViewModel;
 import com.jilian.pinzi.utils.BitmapUtils;
 import com.jilian.pinzi.utils.DisplayUtil;
 import com.jilian.pinzi.utils.EmptyUtils;
+import com.jilian.pinzi.utils.ToastUitl;
 import com.jilian.pinzi.views.RecyclerViewSpacesItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -224,18 +225,54 @@ public class MyProductFragment extends BaseFragment implements CustomItemClickLi
         }
     }
 
-
+    /**
+     * 投票或者编辑
+     *
+     * @param position
+     * @param text
+     */
     @Override
-    public void vote(int position) {
-        Intent intent = new Intent(getmActivity(), PublishWorksActivity.class);
-        intent.putExtra("url", datas.get(position).getPathUrl());
-        intent.putExtra("video", datas.get(position).getVideo());
-        if(EmptyUtils.isNotEmpty(datas.get(position).getBitmap())){
-            intent.putExtra("bitmap", BitmapUtils.getScanBitmap(datas.get(position).getBitmap()));
+    public void vote(int position, String text) {
+        if (PinziApplication.getInstance().getLoginDto() == null) {
+            Intent intent = new Intent(getmActivity(), LoginActivity.class);
+            startActivity(intent);
+            return;
         }
-        intent.putExtra("content", datas.get(position).getContent());
-        intent.putExtra("activityId", datas.get(position).getActivityId());
-        startActivity(intent);
+        if (EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto())
+                && EmptyUtils.isNotEmpty(PinziApplication.getInstance().getLoginDto().getType())
+                && PinziApplication.getInstance().getLoginDto().getType() == 5) {
+            ToastUitl.showImageToastFail("您是平台用户，只可浏览");
+            return;
+        }
+        if ("编辑".equals(text)) {
+            Intent intent = new Intent(getmActivity(), PublishWorksActivity.class);
+            intent.putExtra("url", datas.get(position).getPathUrl());
+            intent.putExtra("video", datas.get(position).getVideo());
+            if (EmptyUtils.isNotEmpty(datas.get(position).getBitmap())) {
+                intent.putExtra("bitmap", BitmapUtils.getScanBitmap(datas.get(position).getBitmap()));
+            }
+            intent.putExtra("content", datas.get(position).getContent());
+            intent.putExtra("activityId", datas.get(position).getActivityId());
+            startActivity(intent);
+
+        }
+        if ("投票".equals(text)) {
+            getLoadingDialog().showDialog();
+            viewModel.voteActivityProduct(getLoginDto().getId(), datas.get(position).getId(), datas.get(position).getIsVote() == 0 ? 1 : 2);
+            viewModel.getVoteData().observe(this, new Observer<BaseDto>() {
+                @Override
+                public void onChanged(@Nullable BaseDto baseDto) {
+                    getLoadingDialog().dismiss();
+                    if (baseDto.isSuccess()) {
+                        ToastUitl.showImageToastSuccess("操作成功");
+                        pageNo = 1;
+                        getMyProduct();
+                    } else {
+                        ToastUitl.showImageToastFail(baseDto.getMsg());
+                    }
+                }
+            });
+        }
 
     }
 }

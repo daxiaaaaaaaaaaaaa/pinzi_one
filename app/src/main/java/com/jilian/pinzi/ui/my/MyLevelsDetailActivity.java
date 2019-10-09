@@ -91,7 +91,7 @@ public class MyLevelsDetailActivity extends BaseActivity implements CustomItemCl
     private int pageNo = 1;//
     private int pageSize = 20;//
     /**
-     * 获取地址列表
+     * 获取下级详情
      */
     private void getInviteeDetail() {
         viewModel.getInviteeDetail(getUserId(), getIntent().getStringExtra("inviteeId"), pageNo,pageSize);

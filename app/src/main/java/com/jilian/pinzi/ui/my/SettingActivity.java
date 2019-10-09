@@ -23,6 +23,7 @@ import com.jilian.pinzi.R;
 import com.jilian.pinzi.base.BaseActivity;
 import com.jilian.pinzi.base.BaseDto;
 import com.jilian.pinzi.common.dto.VersionInfoDto;
+import com.jilian.pinzi.demo.TestActivity;
 import com.jilian.pinzi.dialog.BaseNiceDialog;
 import com.jilian.pinzi.dialog.NiceDialog;
 import com.jilian.pinzi.dialog.ViewConvertListener;
@@ -129,7 +130,7 @@ public class SettingActivity extends BaseActivity implements DownloadIntentServi
         rlAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingActivity.this, AboutActivity.class));
+                startActivity(new Intent(SettingActivity.this, TestActivity.class));
             }
         });
     }

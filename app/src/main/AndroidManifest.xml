@@ -245,6 +245,7 @@
         <activity android:name=".ui.MyActivityActivity"/>
         <activity android:name=".ui.PublishWorksActivity"/>
         <activity android:name=".ui.my.AboutActivity"/>
+        <activity android:name=".demo.TestActivity"/>
         <activity
             android:theme="@style/translucent"
             android:name=".ui.ReloginActivity"

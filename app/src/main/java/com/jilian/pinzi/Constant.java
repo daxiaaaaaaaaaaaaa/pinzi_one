@@ -1,5 +1,7 @@
 package com.jilian.pinzi;
 
+import com.jilian.pinzi.ui.PackageUtils;
+
 /**
  * 全局常量
  *
@@ -105,7 +107,8 @@ public class Constant {
         public static final String SP = "sp";//sp
         public static final String CONSTANT = "constant";//
         public static final String ISCOMIN = "is_comin";//是否进入过APP
-        public static final String LOGIN_DTO = "LOGIN_DTO";//登录实体key
+        public  final static  String LOGIN_DTO =
+                "LOGIN_DTO"+ PackageUtils.getVersionName(PinziApplication.getInstance());//登录实体key
         public static final String SESSION_ID = "session_id";//
 
         public static final String HISTORY_SP = "history_sp";//sp

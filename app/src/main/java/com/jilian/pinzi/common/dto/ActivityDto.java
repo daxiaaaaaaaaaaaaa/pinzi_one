@@ -20,6 +20,15 @@ public class ActivityDto implements Serializable {
    private String acitvityId;//活动ID
     private String video;//视频地址
     private Bitmap bitmap;
+    private int isApplyProduct;//  =0未上传活动  >0已上传活动;
+
+    public int getIsApplyProduct() {
+        return isApplyProduct;
+    }
+
+    public void setIsApplyProduct(int isApplyProduct) {
+        this.isApplyProduct = isApplyProduct;
+    }
 
     public Bitmap getBitmap() {
         return bitmap;

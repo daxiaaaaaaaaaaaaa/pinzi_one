@@ -36,7 +36,10 @@ public class AddCookiesInterceptor implements Interceptor {
             }
         }
        LoginDto loginDto =  PinziApplication.getInstance().getLoginDto();
-        if(EmptyUtils.isNotEmpty(loginDto)){
+        if(EmptyUtils.isNotEmpty(loginDto)
+                &&EmptyUtils.isNotEmpty(loginDto.getSessionId())
+                &EmptyUtils.isNotEmpty(loginDto.getPhone()))
+        {
             builder.addHeader("phone", loginDto.getPhone());
             builder.addHeader("sessionId",loginDto.getSessionId());
         }

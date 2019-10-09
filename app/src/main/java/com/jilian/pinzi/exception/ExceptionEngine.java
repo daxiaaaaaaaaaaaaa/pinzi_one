@@ -27,7 +27,7 @@ public class ExceptionEngine {
         if (e instanceof HttpException) {             //HTTP错误
             HttpException httpExc = (HttpException) e;
             ex = new ApiException(e, httpExc.code());
-            ex.setMsg("网络错误，请稍后再试");  //均视为网络错误
+            ex.setMsg("网络连接错误，请稍后再试");  //均视为网络错误
             return ex;
         } else if (e instanceof ServerException) {    //服务器返回的错误
            ServerException serverExc = (ServerException) e;
@@ -46,12 +46,12 @@ public class ExceptionEngine {
             return ex;
         } else if (e instanceof SocketTimeoutException) {//网络超时
             ex = new ApiException(e, TIME_OUT_ERROR);
-            ex.setMsg("网络连接超时，请稍后再试");
+            ex.setMsg("服务器连接超时，请稍后再试");
             return ex;
         }
         else if (e instanceof UnknownHostException) {//网络异常
             ex = new ApiException(e, UNKNOWNHOSTEXCEPTION);
-            ex.setMsg("网络异常，请检查您的网络连接");
+            ex.setMsg("网络连接错误，请稍后再试");
             return ex;
         }
         else {  //未知错误

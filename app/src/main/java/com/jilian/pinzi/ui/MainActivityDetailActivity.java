@@ -43,9 +43,6 @@ public class MainActivityDetailActivity extends BaseActivity {
     private JzvdStd ivVideo;
 
 
-
-
-
     @Override
     protected void createViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -96,6 +93,14 @@ public class MainActivityDetailActivity extends BaseActivity {
                             tvGet.setText("取消报名");
                             tvUpload.setVisibility(View.VISIBLE);
                         }
+                        //已经上传作品
+                        if (activityDtoBaseDto.getData().getIsApplyProduct() == 1) {
+                            tvGet.setVisibility(View.GONE);
+                        }
+                        //未上传作品
+                        else {
+                            tvGet.setVisibility(View.VISIBLE);
+                        }
                         tvName.setText(activityDtoBaseDto.getData().getTitle());
 
                         tvDate.setText("活动时间：" + DateUtil.dateToString(DateUtil.DATE_FORMAT, new Date(activityDtoBaseDto.getData().getStartDate())) +
@@ -111,10 +116,9 @@ public class MainActivityDetailActivity extends BaseActivity {
                         webview.loadDataWithBaseURL(null,
                                 getHtmlData(content), "text/html", "utf-8", null);
                         //視頻不為空
-                        if(!TextUtils.isEmpty(activityDtoBaseDto.getData().getVideo())){
+                        if (!TextUtils.isEmpty(activityDtoBaseDto.getData().getVideo())) {
                             initVideo(activityDtoBaseDto.getData());
-                        }
-                        else{
+                        } else {
                             ivVideo.setVisibility(View.GONE);
                         }
                     }
@@ -127,8 +131,7 @@ public class MainActivityDetailActivity extends BaseActivity {
     }
 
     /**
-
-    /**
+     * /**
      * 初始化视频
      *
      * @param dto
@@ -179,6 +182,7 @@ public class MainActivityDetailActivity extends BaseActivity {
         JzvdStd.goOnPlayOnPause();
         JzvdStd.releaseAllVideos();
     }
+
     /**
      * 加载html标签
      *

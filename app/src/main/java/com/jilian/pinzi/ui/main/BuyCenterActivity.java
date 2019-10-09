@@ -408,7 +408,6 @@ public class BuyCenterActivity extends BaseActivity implements OneAdapter.OneLis
                 } else {
                     rvBottom.setVisibility(View.GONE);
                     rlData.setVisibility(View.VISIBLE);
-
                 }
             }
         });

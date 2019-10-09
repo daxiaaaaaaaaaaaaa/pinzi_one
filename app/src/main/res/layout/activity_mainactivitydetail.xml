@@ -89,6 +89,7 @@
             android:scaleType="fitXY"
             android:visibility="invisible"/>
             <TextView
+
                 android:id="@+id/tv_get"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

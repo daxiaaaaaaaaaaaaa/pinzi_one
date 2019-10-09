@@ -86,11 +86,11 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         void clickVideo(int position);
 
         /**
-         * 投票
+         * 投票 或者 编辑
          *
          * @param position
          */
-        void vote(int position);
+        void vote(int position,String text);
     }
 
 
@@ -173,7 +173,7 @@ public class AllWorkAdapter extends RecyclerView.Adapter<AllWorkAdapter.ViewHold
         holder.tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickVideoListener.vote(position);
+                clickVideoListener.vote(position,holder.tvSend.getText().toString());
             }
         });
         if(PinziApplication.getInstance().getLoginDto()!=null){
