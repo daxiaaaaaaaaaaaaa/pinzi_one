@@ -103,8 +103,8 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
         etPhone = (EditText) findViewById(R.id.et_phone);
         tvOk = (TextView) findViewById(R.id.tv_ok);
         tvInvitationCode = (TextView) findViewById(R.id.tv_invitationCode);
-        if (EmptyUtils.isNotEmpty(getLoginDto()) && getLoginDto().getType() != 1) {
 
+        if (EmptyUtils.isNotEmpty(getLoginDto()) && getLoginDto().getType() != 1) {
             tvThree.setVisibility(View.INVISIBLE);
             tvFour.setVisibility(View.INVISIBLE);
             tvFour.setEnabled(false);
@@ -114,7 +114,6 @@ public class MyLevelsActivity extends CommonActivity implements CustomItemClickL
             setNormalTitle("服务关系", v -> finish());
             tvAdd.setText("+添加服务商");
             etPhone.setHint("输入服务商账号");
-
         }
 
 

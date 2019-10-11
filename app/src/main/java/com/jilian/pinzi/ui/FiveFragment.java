@@ -130,6 +130,7 @@ public class FiveFragment extends BaseFragment {
                 ) {
             //初始化平台賬號
             initPlatformView();
+            initLevel();
         }
     }
 
@@ -208,16 +209,17 @@ public class FiveFragment extends BaseFragment {
             }
         }
 
+        initLevel();
 
+
+    }
+    public void initLevel(){
         if (EmptyUtils.isNotEmpty(getLoginDto()) && getLoginDto().getType() != 1) {
             if (getLoginDto().getType() != 1) {
                 tvFiveMyLevels.setText("服务关系");
             }
         }
-
-
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
